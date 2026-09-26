@@ -1,0 +1,18 @@
+ConoceRD 0.16 PiP native capture, L3, 2026-09-26
+Commit: d6b3c7b74e2b930ae37c38bdea95a3c7f16cc6fc
+APK: debug, com.conocerd.app, versionName 0.16.0, versionCode 168066
+APK SHA-256: c9bb06c4763d8761b8e7fb87bf41b387352a62298e12df915ab7a300037f8d7d
+Device: Android emulator Pixel7_API35, emulator-5554, density override 160 dpi
+GPU: -gpu host; emulator log selected Intel Iris Xe OpenGL ES 3.0 / Vulkan host
+Account: synthetic test session already on the shared emulator
+Scenario: GPS simulado enabled, Olas y Ojos de Origen route active, simulator playing at about 60 km/h
+Preflight: real Mapbox map and tiles visible; no addStyleImage, Mapbox style, NullPointerException, PlatformException or FATAL EXCEPTION in adb logcat filter
+Bounds command: adb shell dumpsys activity service SystemUIService WMShell
+
+Minimum: display override 340x604 dp; WMShell mBounds=Rect(132, 311 - 324, 419), size 192x108 dp, mMinSize=Point(192, 108). This is the system floor on this viewport. The minimum was reached by changing the emulator viewport, not by a pinch gesture at 430x748.
+Default: display override 430x748 dp; WMShell size 239x134 dp.
+Maximum: display override 430x748 dp; WMShell mBounds=Rect(16, 347 - 414, 570), size 398x223 dp, mMaxSize=Point(398, 223). Reached by double tapping the PiP.
+Return: launched the same task from the emulator launcher, restored display override 430x748 dp; full-screen screenshot shows the original guidance, map, Mapbox ornaments and bottom sheet margins.
+
+At 108 dp, the street label is hidden; the distance, turn arrow, Mapbox logo and attribution i remain visible. At 223 dp, guidance is a single line with ellipsis. The simulated GPS label is hidden in PiP while its 4 dp orange strip remains.
+No physical phone was present in adb devices -l. Elias supplied two prior-build phone PiP screenshots privately for comparison; they are not included in this public evidence.
