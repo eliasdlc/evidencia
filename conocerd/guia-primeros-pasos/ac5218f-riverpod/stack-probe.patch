@@ -1,0 +1,16 @@
+diff --git i/lib/main.dart w/lib/main.dart
+index 1c7dc4a..5735d7e 100644
+--- i/lib/main.dart
++++ w/lib/main.dart
+@@ -187,6 +187,11 @@ void main() {
+       );
+     },
+     (error, stack) {
++      if (error.toString().contains('called during build')) {
++        for (final line in stack.toString().split('\n')) {
++          debugPrintSynchronously('[DEBUG-7a52] $line');
++        }
++      }
+       _log.e('Uncaught zone error', error: error, stackTrace: stack);
+       // Si Firebase no llegó a inicializar, registrar a Crashlytics lanzaría:
+       // se protege para no perder el error original de la zona.
