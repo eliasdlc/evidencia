@@ -1,0 +1,400 @@
+{
+  "inventory": [
+    "Stop and highway gate",
+    "Walking quote and distance warning",
+    "Only current leg changes and survives restart",
+    "Walking point camera HUD and card transition",
+    "Off-map direct bearing and return to mapped route",
+    "Live filtered trace is never persisted",
+    "Scripted route and native transition recordings",
+    "Physical indoor GPS and activity recognition",
+    "One spoken walking cue"
+  ],
+  "requirements": [
+    {
+      "requirement": "Stop and highway gate",
+      "decision": "GPS under 0.5 m/s for 3 s or still/onFoot with low GPS speed; fresh accuracy, highway veto first.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000223016",
+      "channel": "test",
+      "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/998027a76927f3cb7014245d74da3d91c4573cbb/lib/features/navigation/domain/walk_switch.dart"
+        },
+        {
+          "kind": "command",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "flutter test --no-pub --concurrency=1: 1,737 passed, 1 skipped; walk_switch_test.dart covers moving, stopped, highway and accuracy",
+          "channel": "test"
+        }
+      ]
+    },
+    {
+      "requirement": "Walking quote and distance warning",
+      "decision": "Same 1200 m and 15 min rule as pretrip; long walking quote recommends car or motorcycle but allows walking.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000223016",
+      "channel": "device-simulated",
+      "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/998027a76927f3cb7014245d74da3d91c4573cbb/lib/features/navigation/presentation/screens/active_trip_screen.dart"
+        },
+        {
+          "kind": "capture",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/998027a/far-warning-landscape-998027a.png",
+          "inspected": true,
+          "receipt": {
+            "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "apkSha256": "e5a129225b557d40c05dbfdeab05f9c52ea04df7cca875e350979664dbefb838",
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "channel": "device-simulated",
+            "distributed": false
+          }
+        },
+        {
+          "kind": "capture",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/998027a/l6-landscape-transition-proof-998027a.mp4",
+          "inspected": true,
+          "receipt": {
+            "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "apkSha256": "e5a129225b557d40c05dbfdeab05f9c52ea04df7cca875e350979664dbefb838",
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "channel": "device-simulated",
+            "distributed": false
+          }
+        }
+      ]
+    },
+    {
+      "requirement": "Only current leg changes and survives restart",
+      "decision": "Legacy future null modes are materialized before current leg changes; Firestore stores the trip and route key.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000223016",
+      "channel": "test",
+      "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/998027a76927f3cb7014245d74da3d91c4573cbb/lib/features/navigation/domain/walk_switch.dart"
+        },
+        {
+          "kind": "command",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "walk_switch_test.dart: current leg and later modes survive Firestore model roundtrip; emulator restart resumed walking",
+          "channel": "test"
+        },
+        {
+          "kind": "capture",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/998027a/walk-resumed-portrait-998027a.png",
+          "inspected": true,
+          "receipt": {
+            "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "apkSha256": "e5a129225b557d40c05dbfdeab05f9c52ea04df7cca875e350979664dbefb838",
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "channel": "device-simulated",
+            "distributed": false
+          }
+        }
+      ]
+    },
+    {
+      "requirement": "Walking point camera HUD and card transition",
+      "decision": "The walking scene activates without ending the trip. Portrait and landscape videos show one build changing from car marker and card to point and walking HUD.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000223016",
+      "channel": "device-simulated",
+      "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/998027a76927f3cb7014245d74da3d91c4573cbb/lib/features/navigation/presentation/providers/active_trip_provider.dart"
+        },
+        {
+          "kind": "capture",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/998027a/portrait-transition-998027a.mp4",
+          "inspected": true,
+          "receipt": {
+            "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "apkSha256": "e5a129225b557d40c05dbfdeab05f9c52ea04df7cca875e350979664dbefb838",
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "channel": "device-simulated",
+            "distributed": false
+          }
+        },
+        {
+          "kind": "capture",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/998027a/l6-landscape-transition-proof-998027a.mp4",
+          "inspected": true,
+          "receipt": {
+            "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "apkSha256": "e5a129225b557d40c05dbfdeab05f9c52ea04df7cca875e350979664dbefb838",
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "channel": "device-simulated",
+            "distributed": false
+          }
+        },
+        {
+          "kind": "capture",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/998027a/walk-portrait-998027a.png",
+          "inspected": true,
+          "receipt": {
+            "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "apkSha256": "e5a129225b557d40c05dbfdeab05f9c52ea04df7cca875e350979664dbefb838",
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "channel": "device-simulated",
+            "distributed": false
+          }
+        },
+        {
+          "kind": "capture",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/998027a/walk-landscape-998027a.png",
+          "inspected": true,
+          "receipt": {
+            "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "apkSha256": "e5a129225b557d40c05dbfdeab05f9c52ea04df7cca875e350979664dbefb838",
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "channel": "device-simulated",
+            "distributed": false
+          }
+        }
+      ]
+    },
+    {
+      "requirement": "Off-map direct bearing and return to mapped route",
+      "decision": "The final script test leaves the mapped corridor and returns. A native excerpt on bdbb023 shows direct bearing on the same unchanged off-network code path.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000223016",
+      "channel": "test",
+      "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/998027a76927f3cb7014245d74da3d91c4573cbb/lib/features/navigation/presentation/providers/active_trip_provider.dart"
+        },
+        {
+          "kind": "command",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "sim_script_test.dart: detour exceeds 40 m from route and returns within 10 m; walking suppresses reroute loop",
+          "channel": "test"
+        },
+        {
+          "kind": "capture",
+          "sha": "bdbb023209f7b0c750592671d39d0cfba7e533d2",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/bdbb023/offnetwork-portrait-bdbb023.png",
+          "inspected": true,
+          "receipt": {
+            "sha": "bdbb023209f7b0c750592671d39d0cfba7e533d2",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "channel": "device-simulated",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "distributed": false
+          }
+        },
+        {
+          "kind": "capture",
+          "sha": "bdbb023209f7b0c750592671d39d0cfba7e533d2",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/bdbb023/offnetwork-proof-bdbb023.mp4",
+          "inspected": true,
+          "receipt": {
+            "sha": "bdbb023209f7b0c750592671d39d0cfba7e533d2",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "channel": "device-simulated",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "distributed": false
+          }
+        }
+      ]
+    },
+    {
+      "requirement": "Live filtered trace is never persisted",
+      "decision": "Only accurate plausible fixes enter state memory; ending the trip resets state.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000223016",
+      "channel": "test",
+      "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/998027a76927f3cb7014245d74da3d91c4573cbb/lib/features/navigation/domain/walk_switch.dart"
+        },
+        {
+          "kind": "command",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "walk_switch_test.dart: poor accuracy and impossible jumps are discarded; trace is held only in ActiveTripState and cleared on endTrip",
+          "channel": "test"
+        }
+      ]
+    },
+    {
+      "requirement": "Scripted route and native transition recordings",
+      "decision": "The final simulator script drives, stops, switches, detours and returns in unit tests and portrait native video. A manual stop and opt-in switch is recorded in landscape on the same final APK.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000223016",
+      "channel": "device-simulated",
+      "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/998027a76927f3cb7014245d74da3d91c4573cbb/lib/features/navigation/data/services/simulation/sim_script.dart"
+        },
+        {
+          "kind": "capture",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/998027a/portrait-transition-998027a.mp4",
+          "inspected": true,
+          "receipt": {
+            "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "apkSha256": "e5a129225b557d40c05dbfdeab05f9c52ea04df7cca875e350979664dbefb838",
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "channel": "device-simulated",
+            "distributed": false
+          }
+        },
+        {
+          "kind": "capture",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "channel": "device-simulated",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/cambio-a-pie/998027a/l6-landscape-transition-proof-998027a.mp4",
+          "inspected": true,
+          "receipt": {
+            "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+            "packageId": "com.conocerd.app",
+            "versionName": "0.0.0",
+            "versionCode": 1,
+            "apkSha256": "e5a129225b557d40c05dbfdeab05f9c52ea04df7cca875e350979664dbefb838",
+            "device": "emulator-5580",
+            "buildKind": "local debug APK",
+            "utc": "2026-09-26T16:44:47.003857+00:00",
+            "channel": "device-simulated",
+            "distributed": false
+          }
+        }
+      ]
+    },
+    {
+      "requirement": "Physical indoor GPS and activity recognition",
+      "decision": "Physical indoor GPS, activity recognition and the spoken cue remain phone checks for Elias. No phone was used.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000223016",
+      "channel": "real-trip",
+      "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+      "state": "Implemented",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/998027a76927f3cb7014245d74da3d91c4573cbb/lib/features/navigation/presentation/providers/active_trip_provider.dart"
+        }
+      ]
+    },
+    {
+      "requirement": "One spoken walking cue",
+      "decision": "The switch invokes a single voice speak call after persistence. Audible playback is pending phone verification.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000223016",
+      "channel": "real-trip",
+      "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+      "state": "Implemented",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/998027a76927f3cb7014245d74da3d91c4573cbb/lib/features/navigation/presentation/providers/active_trip_provider.dart"
+        }
+      ]
+    }
+  ],
+  "buildReceipt": {
+    "sha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+    "packageId": "com.conocerd.app",
+    "versionName": "0.0.0",
+    "versionCode": 1,
+    "apkSha256": "e5a129225b557d40c05dbfdeab05f9c52ea04df7cca875e350979664dbefb838",
+    "device": "emulator-5580",
+    "buildKind": "local debug APK",
+    "utc": "2026-09-26T16:44:47.003857+00:00",
+    "channel": "device-simulated",
+    "distributed": false
+  },
+  "checks": {
+    "flutterAnalyzeNoPub": "0 issues",
+    "flutterTestNoPubConcurrency1": "1737 passed, 1 skipped",
+    "githubActions": "https://github.com/eliasdlc/conocerd/actions/runs/36253942288/job/108437049668",
+    "gitSha": "998027a76927f3cb7014245d74da3d91c4573cbb",
+    "gitClean": true
+  }
+}
