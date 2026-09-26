@@ -1,0 +1,145 @@
+{
+  "inventory": [
+    "Reproduce error class on current dev without #172",
+    "Run matching native flow on guide head",
+    "Capture and compare full native initialization stacks",
+    "Isolate framework behavior from guide code",
+    "Clean native log for this error class"
+  ],
+  "requirements": [
+    {
+      "requirement": "Reproduce error class on current dev without #172",
+      "decision": "Coordinator 26 Sep: compare dev without #172 against guide, capture full native stacks, fix a guide-caused regression or prove baseline reproduction. Login overflow excluded. Only L1 merges.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000218009",
+      "sha": "d46159b2172152c959f5728acc4c718452f76769",
+      "channel": "native",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "d46159b2172152c959f5728acc4c718452f76769",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/d46159b2172152c959f5728acc4c718452f76769/lib/core/presentation/screens/main_layout_screen.dart"
+        },
+        {
+          "kind": "capture",
+          "sha": "d46159b2172152c959f5728acc4c718452f76769",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/guia-primeros-pasos/ac5218f-riverpod/dev-unmodified-1-detail.png",
+          "channel": "native",
+          "receipt": {
+            "sha": "d46159b2172152c959f5728acc4c718452f76769",
+            "versionName": "0.15.0-l5.d46159b",
+            "versionCode": 1100
+          },
+          "inspected": true
+        },
+        {
+          "kind": "command",
+          "sha": "d46159b2172152c959f5728acc4c718452f76769",
+          "channel": "native",
+          "reference": "check_log.py dev-unmodified-1-private.log and dev-unmodified-2-private.log: exit 1, 2 events each, ExploreScreen and DestinationDetailScreen; diagnostic sign-in adds MainLayoutScreen. https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/guia-primeros-pasos/ac5218f-riverpod/comparison-counts.json"
+        }
+      ]
+    },
+    {
+      "requirement": "Run matching native flow on guide head",
+      "decision": "Coordinator 26 Sep: compare dev without #172 against guide, capture full native stacks, fix a guide-caused regression or prove baseline reproduction. Login overflow excluded. Only L1 merges.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000218009",
+      "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+      "channel": "native",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/ac5218fb421f90c12852bb7a86d6273a5835934a/lib/core/presentation/screens/main_layout_screen.dart"
+        },
+        {
+          "kind": "capture",
+          "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+          "reference": "https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/guia-primeros-pasos/ac5218f-riverpod/guide-unmodified-3-detail.png",
+          "channel": "native",
+          "receipt": {
+            "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+            "versionName": "0.15.0-l5.ac5218f",
+            "versionCode": 1014
+          },
+          "inspected": true
+        },
+        {
+          "kind": "command",
+          "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+          "channel": "native",
+          "reference": "check_log.py guide-unmodified-3-private.log: exit 1, 2 events, same ExploreScreen and DestinationDetailScreen; diagnostic sign-in adds MainLayoutScreen. https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/guia-primeros-pasos/ac5218f-riverpod/comparison-counts.json"
+        }
+      ]
+    },
+    {
+      "requirement": "Capture and compare full native initialization stacks",
+      "decision": "Coordinator 26 Sep: compare dev without #172 against guide, capture full native stacks, fix a guide-caused regression or prove baseline reproduction. Login overflow excluded. Only L1 merges.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000218009",
+      "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+      "channel": "nonvisual",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/ac5218fb421f90c12852bb7a86d6273a5835934a/lib/core/presentation/screens/main_layout_screen.dart"
+        },
+        {
+          "kind": "command",
+          "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+          "channel": "nonvisual",
+          "reference": "Identical logging-only probe on both bases, recorded in diagnostic-builds.json and stack-probe.patch. MainLayout stack frames 0 through 25 identical. App frames differ at valid readers: dev watchDockTrip, guide firstStepsControllerProvider watch. https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/guia-primeros-pasos/ac5218f-riverpod/guide-auth-full-stacks.txt"
+        }
+      ]
+    },
+    {
+      "requirement": "Isolate framework behavior from guide code",
+      "decision": "Coordinator 26 Sep: compare dev without #172 against guide, capture full native stacks, fix a guide-caused regression or prove baseline reproduction. Login overflow excluded. Only L1 merges.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000218009",
+      "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+      "channel": "test",
+      "state": "Verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/ac5218fb421f90c12852bb7a86d6273a5835934a/lib/core/presentation/screens/main_layout_screen.dart"
+        },
+        {
+          "kind": "command",
+          "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+          "channel": "test",
+          "reference": "Standalone refresh_test.dart imports no ConoceRD code. 3.3.2 fails in dev twice, guide once, standalone once; 3.4.3 standalone passes 1 test. Existing guide lifecycle tests pass 2 tests. App dependencies unchanged. https://raw.githubusercontent.com/eliasdlc/evidencia/main/conocerd/guia-primeros-pasos/ac5218f-riverpod/riverpod_framework_probe_test.dart"
+        }
+      ]
+    },
+    {
+      "requirement": "Clean native log for this error class",
+      "decision": "Coordinator 26 Sep: compare dev without #172 against guide, capture full native stacks, fix a guide-caused regression or prove baseline reproduction. Login overflow excluded. Only L1 merges.",
+      "ticket": "https://projects.zoho.com/portal/eliasdlc2005gmaildotcom#zp/task-detail/2716136000000218009",
+      "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+      "channel": "native",
+      "state": "Requested",
+      "evidence": [
+        {
+          "kind": "code",
+          "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+          "reference": "https://github.com/eliasdlc/conocerd/blob/ac5218fb421f90c12852bb7a86d6273a5835934a/lib/core/presentation/screens/main_layout_screen.dart"
+        },
+        {
+          "kind": "command",
+          "sha": "ac5218fb421f90c12852bb7a86d6273a5835934a",
+          "channel": "native",
+          "reference": "NOT SATISFIED: unchanged Riverpod 3.3.2 still reproduces on both branches. Shared dependency fix must be routed by L1. This report does not claim zero errors or that all eight prior occurrences were individually reproduced."
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Original RouteDetailScreen and ProfileCard occurrences did not recur in the curated-route/Profile or dev wizard probes. Attribution of those individual occurrences is not proven.",
+    "Three of five original widget contexts reproduced on dev; this proves the error class is not introduced exclusively by #172.",
+    "3.4.3 green result is a standalone test, not a native ConoceRD validation."
+  ]
+}
