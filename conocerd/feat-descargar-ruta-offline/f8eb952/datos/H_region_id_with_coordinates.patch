@@ -1,0 +1,15 @@
+diff --git i/lib/features/navigation/data/offline/offline_download_controller.dart w/lib/features/navigation/data/offline/offline_download_controller.dart
+index 0e825b30..3de9b5d5 100644
+--- i/lib/features/navigation/data/offline/offline_download_controller.dart
++++ w/lib/features/navigation/data/offline/offline_download_controller.dart
+@@ -207,7 +207,9 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+     bool current() => ref.mounted && epoch == _epoch;
+     final previous = _record;
+     final kept = previous == null ? null : _settled();
+-    final regionId = '${target.regionId}-${clock.now().millisecondsSinceEpoch}';
++    final regionId =
++        '${target.regionId}-${clock.now().millisecondsSinceEpoch}-'
++        '${target.stopPoints.map((p) => (p.latitude * 1e4).round().toRadixString(36) + (p.longitude.abs() * 1e4).round().toRadixString(36)).join()}';
+     _inflightRegion = regionId;
+     final signal = Completer<void>();
+     _cancelSignal = signal;
