@@ -1,0 +1,15 @@
+diff --git i/lib/features/navigation/data/offline/offline_download_controller.dart w/lib/features/navigation/data/offline/offline_download_controller.dart
+index 1f1920bb..f537d630 100644
+--- i/lib/features/navigation/data/offline/offline_download_controller.dart
++++ w/lib/features/navigation/data/offline/offline_download_controller.dart
+@@ -224,10 +224,6 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+       // Con un desalojo en marcha el disco del SDK está en 1 byte: la carga
+       // espera a que termine (cancelar sigue sin esperar nada).
+       final evicting = _eviction;
+-      if (evicting != null) {
+-        await Future.any<void>([evicting, signal.future]);
+-        if (_cancelRequested || !current()) throw const _Cancelled();
+-      }
+       // Las fichas y el mapa bajan a la vez: con las fichas primero, la barra
+       // se quedaba en 0 % los segundos que tardan sus consultas.
+       final prefetch = ref
