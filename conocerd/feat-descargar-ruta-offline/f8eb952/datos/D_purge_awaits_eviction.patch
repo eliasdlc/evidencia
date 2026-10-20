@@ -1,0 +1,18 @@
+diff --git i/lib/features/navigation/data/offline/offline_map_backend.dart w/lib/features/navigation/data/offline/offline_map_backend.dart
+index fe2ce31f..2a94050c 100644
+--- i/lib/features/navigation/data/offline/offline_map_backend.dart
++++ w/lib/features/navigation/data/offline/offline_map_backend.dart
+@@ -366,12 +366,6 @@ Future<void> purgeOfflineMaps({
+ 
+   await sweep(regionIds, removeRegion);
+   await sweep(styleUris, removeStyle);
+-  unawaited(
+-    Future<void>.sync(evictUnused).then<void>(
+-      (_) {},
+-      onError: (Object error, StackTrace stack) =>
+-          onEvictionError?.call(error, stack),
+-    ),
+-  );
++  await evictUnused();
+   if (failure != null) throw failure!;
+ }
