@@ -1,0 +1,15 @@
+diff --git i/lib/features/navigation/data/offline/offline_download_controller.dart w/lib/features/navigation/data/offline/offline_download_controller.dart
+index 1f1920bb..4ff8d0ab 100644
+--- i/lib/features/navigation/data/offline/offline_download_controller.dart
++++ w/lib/features/navigation/data/offline/offline_download_controller.dart
+@@ -358,9 +358,7 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+     final backend = _backend;
+     final previous = _eviction;
+     late final Future<void> run;
+-    final started = previous == null
+-        ? Future<void>.sync(backend.evictUnused)
+-        : previous.then<void>((_) => backend.evictUnused());
++    final started = Future<void>.sync(backend.evictUnused);
+     run = started
+         .then<void>(
+           (_) {},
