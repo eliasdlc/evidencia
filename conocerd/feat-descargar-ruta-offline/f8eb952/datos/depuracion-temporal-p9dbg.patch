@@ -1,0 +1,139 @@
+diff --git i/lib/features/navigation/data/offline/offline_download_controller.dart w/lib/features/navigation/data/offline/offline_download_controller.dart
+index 1f1920bb..e3ca1d9f 100644
+--- i/lib/features/navigation/data/offline/offline_download_controller.dart
++++ w/lib/features/navigation/data/offline/offline_download_controller.dart
+@@ -1,4 +1,5 @@
+ import 'dart:async';
++import 'package:flutter/foundation.dart' show debugPrint;
+ import 'dart:math' as math;
+ 
+ import 'package:clock/clock.dart';
+@@ -205,9 +206,10 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+   /// vieja como estaba. Una región que no llegó a registrarse (cancelada o
+   /// fallida) se borra, y con ella el estilo si no queda ningún viaje.
+   Future<void> download(OfflineTripTarget target) async {
+-    if (_busy) return;
++    if (_busy) { debugPrint('P9DBG download ignored: busy'); return; }
+     _busy = true;
+     _cancelRequested = false;
++    debugPrint('P9DBG download start eviction=${_eviction != null}');
+     final epoch = _epoch;
+     bool current() => ref.mounted && epoch == _epoch;
+     final previous = _record;
+@@ -224,15 +226,18 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+       // Con un desalojo en marcha el disco del SDK está en 1 byte: la carga
+       // espera a que termine (cancelar sigue sin esperar nada).
+       final evicting = _eviction;
++      debugPrint('P9DBG gate evicting=${evicting != null}');
+       if (evicting != null) {
+         await Future.any<void>([evicting, signal.future]);
+         if (_cancelRequested || !current()) throw const _Cancelled();
+       }
+       // Las fichas y el mapa bajan a la vez: con las fichas primero, la barra
+       // se quedaba en 0 % los segundos que tardan sus consultas.
++      debugPrint('P9DBG calling backend.download $regionId');
+       final prefetch = ref
+           .read(offlineItineraryPrefetcherProvider)
+           .prefetch(target);
++      unawaited(prefetch.then((_) => debugPrint('P9DBG prefetch done $regionId'), onError: (Object e) => debugPrint('P9DBG prefetch error $regionId $e')));
+       final load = _backend.download(
+         regionId,
+         corridorFor(target).toGeoJson(),
+@@ -255,6 +260,7 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+       );
+       // Si la carga abandonada termina después, su región se borra: nadie la
+       // va a registrar.
++      unawaited(load.then((v) => debugPrint('P9DBG load done $regionId $v'), onError: (Object e) => debugPrint('P9DBG load error $regionId $e')));
+       unawaited(
+         _afterLoadSettles(load, regionId, () => abandoned || !current()),
+       );
+@@ -285,6 +291,7 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+       }
+       if (current()) state = _settled();
+     } catch (error) {
++      debugPrint('P9DBG download catch $regionId $error');
+       abandoned = true;
+       if (!current()) return;
+       state = _cancelRequested
+@@ -294,7 +301,9 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+               kept: kept,
+               estimatedBytes: _estimate,
+             );
++      debugPrint('P9DBG discard start $regionId');
+       await _discardUnrecorded(regionId);
++      debugPrint('P9DBG discard end $regionId');
+     } finally {
+       if (!signal.isCompleted) signal.complete();
+       if (epoch == _epoch) {
+@@ -341,6 +350,7 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+       final recorded = await _store.all();
+       final otherRunning =
+           _inflightRegion != null && _inflightRegion != regionId;
++      debugPrint('P9DBG late settle $regionId recorded=${recorded.length} otherRunning=$otherRunning');
+       if (recorded.isEmpty && !otherRunning) _evictInBackground();
+     } catch (error, stack) {
+       _log.w(
+@@ -361,6 +371,7 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+     final started = previous == null
+         ? Future<void>.sync(backend.evictUnused)
+         : previous.then<void>((_) => backend.evictUnused());
++    debugPrint('P9DBG evict scheduled chained=${previous != null}');
+     run = started
+         .then<void>(
+           (_) {},
+@@ -398,6 +409,7 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+   Future<void> cancel() async {
+     final regionId = _inflightRegion;
+     if (!_busy || regionId == null) return;
++    debugPrint('P9DBG cancel $regionId');
+     _cancelRequested = true;
+     _cancelSignal?.complete();
+     state = _record == null
+diff --git i/lib/features/navigation/data/offline/offline_map_backend.dart w/lib/features/navigation/data/offline/offline_map_backend.dart
+index fe2ce31f..ee6f999b 100644
+--- i/lib/features/navigation/data/offline/offline_map_backend.dart
++++ w/lib/features/navigation/data/offline/offline_map_backend.dart
+@@ -1,4 +1,5 @@
+ import 'dart:async';
++import 'package:flutter/foundation.dart' show debugPrint;
+ import 'dart:math' as math;
+ 
+ import 'package:flutter/services.dart' show PlatformException;
+@@ -208,17 +209,21 @@ class MapboxOfflineMapBackend implements OfflineMapBackend {
+   Future<void> cancel(String regionId) async {
+     // El plugin no expone el `Cancelable` nativo; borrar la región hace que la
+     // carga pendiente termine con `Canceled`.
++    debugPrint('P9DBG sdk cancel->removeRegion $regionId begin');
+     await (await _tiles).removeRegion(regionId);
++    debugPrint('P9DBG sdk cancel->removeRegion $regionId end');
+   }
+ 
+   @override
+   Future<void> remove(String regionId, {required bool lastDownload}) async {
++    debugPrint('P9DBG sdk remove $regionId lastDownload=$lastDownload begin');
+     await removeOfflineMap(
+       removeRegion: () async => (await _tiles).removeRegion(regionId),
+       removeStyle: lastDownload
+           ? () async => (await _styles).removeStylePack(styleUri)
+           : null,
+     );
++    debugPrint('P9DBG sdk remove $regionId end');
+   }
+ 
+   /// Bajar la cuota del `TileStore` al mínimo y devolverla a la de fábrica
+@@ -228,11 +233,13 @@ class MapboxOfflineMapBackend implements OfflineMapBackend {
+   @override
+   Future<void> evictUnused() async {
+     final store = await _tiles;
++    debugPrint('P9DBG sdk evict begin');
+     await evictOrphanedTiles(
+-      hasRegions: () async => (await store.allTileRegions()).isNotEmpty,
+-      setQuota: store.setDiskQuota,
++      hasRegions: () async { final n = (await store.allTileRegions()).length; debugPrint('P9DBG sdk evict regions=$n'); return n > 0; },
++      setQuota: (b) { debugPrint('P9DBG sdk quota=$b'); store.setDiskQuota(b); },
+       settle: () => Future<void>.delayed(_evictionSettle),
+     );
++    debugPrint('P9DBG sdk evict end');
+   }
+ 
+   static const Duration _evictionSettle = Duration(seconds: 2);
