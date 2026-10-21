@@ -1,0 +1,59 @@
+"""Parche de diagnostico (NO se compromete): anota que etapa del prefetch falla y con que excepcion."""
+p = "/home/decruce/dev/wt/conocerd/feat/descargar-ruta-offline/lib/features/navigation/data/offline/offline_itinerary_prefetcher.dart"
+s = open(p, encoding="utf-8").read()
+def rep(a, b):
+    global s
+    assert s.count(a) == 1, a[:60]
+    s = s.replace(a, b)
+rep("import 'package:cloud_firestore/cloud_firestore.dart';", "import 'package:cloud_firestore/cloud_firestore.dart';\nimport 'package:flutter/foundation.dart' show debugPrint;")
+rep("""    final missing = <OfflinePart>{};
+    try {""", """    final missing = <OfflinePart>{};
+    final sw = Stopwatch()..start();
+    debugPrint('P9DIAG start stops=${target.stopIds.length} photos=${target.coverImageUrls.length} health=${healthWarmPoints(target).length} timeouts side=${_timeout.inSeconds}s stopPages=${_stopPagesTimeout.inSeconds}s');
+    try {""")
+rep("""    } on TimeoutException {
+      missing.add(OfflinePart.stopPages);
+    }
+""", """      debugPrint('P9DIAG stopPages ok ms=${sw.elapsedMilliseconds}');
+    } on TimeoutException {
+      debugPrint('P9DIAG stopPages TIMEOUT ms=${sw.elapsedMilliseconds}');
+      missing.add(OfflinePart.stopPages);
+    }
+""")
+rep("""            .downloadFile(url)
+            .timeout(_timeout)
+            .then(
+              (_) {},
+              onError: (_) {
+                missing.add(OfflinePart.photos);
+              },
+            ),""", """            .downloadFile(url)
+            .timeout(_timeout)
+            .then(
+              (_) {
+                debugPrint('P9DIAG photo ok ms=${sw.elapsedMilliseconds} url=$url');
+              },
+              onError: (Object e) {
+                debugPrint('P9DIAG photo FAIL ms=${sw.elapsedMilliseconds} url=$url type=${e.runtimeType} error=$e');
+                missing.add(OfflinePart.photos);
+              },
+            ),""")
+rep("""              (result) {
+                if (result.isLeft()) missing.add(OfflinePart.emergencies);
+              },
+              onError: (_) {
+                missing.add(OfflinePart.emergencies);
+              },""", """              (result) {
+                debugPrint('P9DIAG health ms=${sw.elapsedMilliseconds} point=${p.latitude},${p.longitude} left=${result.isLeft()} ${result.fold((f) => 'failure=${f.runtimeType} $f', (r) => 'centers=${r.length}')}');
+                if (result.isLeft()) missing.add(OfflinePart.emergencies);
+              },
+              onError: (Object e) {
+                debugPrint('P9DIAG health THROW ms=${sw.elapsedMilliseconds} point=${p.latitude},${p.longitude} type=${e.runtimeType} error=$e');
+                missing.add(OfflinePart.emergencies);
+              },""")
+rep("""    ]);
+    return OfflinePrefetchResult(missing: missing);""", """    ]);
+    debugPrint('P9DIAG done ms=${sw.elapsedMilliseconds} missing=$missing');
+    return OfflinePrefetchResult(missing: missing);""")
+open(p, "w", encoding="utf-8").write(s)
+print("patched")
