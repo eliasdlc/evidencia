@@ -1,0 +1,18 @@
+diff --git i/lib/features/navigation/data/offline/offline_download_controller.dart w/lib/features/navigation/data/offline/offline_download_controller.dart
+index beefe92f..c659e998 100644
+--- i/lib/features/navigation/data/offline/offline_download_controller.dart
++++ w/lib/features/navigation/data/offline/offline_download_controller.dart
+@@ -234,9 +234,10 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+       _sdk.beginTrip(regionId);
+       // Las fichas y el mapa bajan a la vez: con las fichas primero, la barra
+       // se quedaba en 0 % los segundos que tardan sus consultas.
+-      final prefetch = ref
+-          .read(offlineItineraryPrefetcherProvider)
+-          .prefetch(target);
++      final prefetch = Future<OfflinePrefetchResult>.delayed(
++        const Duration(seconds: 3),
++        () => throw TimeoutException('forced for the device diagnostic'),
++      );
+       final load = _sdk.track(
+         regionId,
+         _backend.download(
