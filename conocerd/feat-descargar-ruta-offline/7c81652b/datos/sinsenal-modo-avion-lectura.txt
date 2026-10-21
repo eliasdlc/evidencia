@@ -1,0 +1,22 @@
+# 2026-10-21T06:34:57Z pedido: airplane-mode enable
+lectura antes: airplane_mode_on=0
+wifi antes: Wi-Fi is disabled
+ping antes: PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data. 64 bytes from 8.8.8.8: icmp_seq=1 ttl=255 time=32.9 ms  --- 8.8.8.8 ping statistics --- 1 packets transmitted, 1 re
+$ adb shell cmd connectivity airplane-mode enable
+lectura tras cmd connectivity: airplane_mode_on=1
+ping despues (2 s): connect: Network is unreachable 
+wifi despues: Wi-Fi is disabled
+red por defecto: Active default network: none
+estado esperado alcanzado: 1
+
+# 2026-10-21T06:36:10Z pedido: airplane-mode disable
+lectura antes: airplane_mode_on=1
+wifi antes: Wi-Fi is disabled
+ping antes: connect: Network is unreachable 
+$ adb shell cmd connectivity airplane-mode disable
+lectura tras cmd connectivity: airplane_mode_on=0
+ping despues (2 s): PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data. 64 bytes from 8.8.8.8: icmp_seq=1 ttl=255 time=32.9 ms  --- 8.8.8.8 ping statistics --- 1 packets transmitted, 1 re
+wifi despues: Wi-Fi is disabled
+red por defecto: Active default network: 112
+estado esperado alcanzado: 1
+
