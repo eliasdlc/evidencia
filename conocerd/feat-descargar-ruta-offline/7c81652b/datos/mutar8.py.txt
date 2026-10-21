@@ -1,0 +1,51 @@
+import subprocess, os, re, sys
+os.chdir("/home/decruce/dev/wt/conocerd/feat/descargar-ruta-offline")
+D = "lib/features/navigation/data/offline/"
+C, K, ST, SS, PF, BK = (D + n for n in ("offline_download_controller.dart", "offline_sdk_coordinator.dart", "offline_download_state.dart", "offline_download_strings.dart", "offline_itinerary_prefetcher.dart", "offline_map_backend.dart"))
+OUT = "/tmp/p9r8/datos6"
+os.makedirs(OUT, exist_ok=True)
+M = [
+ ("S1_discard_ignores_other_loads", C, "final last = recorded.isEmpty && !sdk.anyLoadingBesides(regionId);", "final last = recorded.isEmpty;"),
+ ("S2_delete_ignores_other_loads", C, "final last = others.isEmpty && !_sdk.anyLoadingBesides(null);", "final last = others.isEmpty;"),
+ ("S3_delete_outside_the_chain", C, "await _sdk.exclusive<void>(() async {\n        await _backend.remove(record.regionId", "await Future<void>.sync(() async {\n        await _backend.remove(record.regionId"),
+ ("S4_download_does_not_wait_for_quiet", C, "await sdk.untilQuiet(signal.future);", ""),
+ ("S5_late_settle_ignores_other_trips", C, "if (recorded.isEmpty && !sdk.anyLoadingBesides(regionId)) {", "if (recorded.isEmpty) {"),
+ ("S6_loads_not_tracked", K, "_loading.add(regionId);", ""),
+ ("S7_exclusive_does_not_chain", K, "final run = previous == null\n        ? Future<T>.sync(body)\n        : previous.then<T>((_) => body());", "final run = Future<T>.sync(body);"),
+ ("S8_style_removal_outside_the_chain", C, "unawaited(\n      sdk.exclusive<void>(() async {", "unawaited(\n      Future<void>.sync(() async {"),
+ ("S9_discard_when_load_never_started", C, "if (loadStarted) {\n        // Este viaje", "if (true) {\n        // Este viaje"),
+ ("S10_timeout_classified_by_keyword", ST, "if (error is TimeoutException) return OfflineFailure.unknown;", ""),
+ ("S11_stop_pages_timeout_throws", PF, "} on TimeoutException {\n      missing.add(OfflinePart.stopPages);\n    }", "} on TimeoutException {\n      rethrow;\n    }"),
+ ("S12_stop_pages_share_side_timeout", PF, ".timeout(_stopPagesTimeout);", ".timeout(_timeout);"),
+ ("S13_stop_pages_default_20s", PF, "const Duration offlineStopPagesTimeout = Duration(seconds: 90);", "const Duration offlineStopPagesTimeout = Duration(seconds: 20);"),
+ ("S14_native_removal_without_timeout", BK, "await removeRegion().timeout(timeout);", "await removeRegion();"),
+ ("S15_available_ignores_missing_pages", SS, "final pages = !missing.contains(OfflinePart.stopPages);", "final pages = true;"),
+ ("S16_finished_loads_stay_tracked", K, "(_) => _loading.remove(regionId),\n        onError: (Object _) => _loading.remove(regionId),", "(_) {},\n        onError: (Object _) {},"),
+ ("T1_trip_not_tracked_after_tiles", K, "void beginTrip(String regionId) => _trips.add(regionId);", "void beginTrip(String regionId) {}"),
+ ("T2_trip_never_ends", K, "void endTrip(String regionId) => _trips.remove(regionId);", "void endTrip(String regionId) {}"),
+ ("T3_trips_ignored_by_the_decision", K, "      _trips.any((id) => id != regionId);", "      false;"),
+ ("T4_late_settle_does_not_remove_style", C, "unawaited(_removeLastAndEvict(regionId, sdk));", "unawaited(sdk.exclusive<void>(_backend.evictUnused));"),
+ ("T5_end_trip_never_called", C, "      if (loadStarted) sdk.endTrip(regionId);\n", ""),
+ ("T6_trip_begins_never", C, "      sdk.beginTrip(regionId);\n", ""),
+ ("U1_no_early_end_before_the_decision", C, "        sdk.endTrip(regionId);\n        await _discardUnrecorded(regionId);", "        await _discardUnrecorded(regionId);"),
+ ("U2_finally_reads_ref_after_dispose", C, "      if (loadStarted) sdk.endTrip(regionId);\n      if (!signal.isCompleted)", "      if (loadStarted) _sdk.endTrip(regionId);\n      if (!signal.isCompleted)"),
+ ("V1_side_stages_do_not_wait_for_tiles", PF, "    await afterTiles;\n", ""),
+ ("V2_controller_passes_no_afterTiles", C, "            afterTiles: load.then<void>((_) {}, onError: (Object _) {}),\n", ""),
+ ("V3_after_tiles_fails_with_the_load", C, "afterTiles: load.then<void>((_) {}, onError: (Object _) {}),", "afterTiles: load.then<void>((_) {}),"),
+ ("U3_decision_excludes_every_trip", C, "final last = recorded.isEmpty && !sdk.anyLoadingBesides(regionId);", "final last = recorded.isEmpty && !sdk.anyLoadingBesides(null);"),
+]
+only = set(sys.argv[1:])
+for name, f, old, new in M:
+    if only and name not in only: continue
+    src = open(f, encoding="utf-8").read()
+    if src.count(old) != 1:
+        print(f"{name}: PATTERN NOT FOUND ({src.count(old)})"); continue
+    open(f, "w", encoding="utf-8").write(src.replace(old, new))
+    open(f"{OUT}/{name}.patch", "w").write(f"--- {f}\n-{old}\n+{new}\n")
+    r = subprocess.run(["flutter", "test", "--no-pub", "test/features/navigation/data/offline"], capture_output=True, text=True)
+    open(f"{OUT}/{name}.log", "w").write(r.stdout + r.stderr)
+    open(f, "w", encoding="utf-8").write(src)
+    last = [l for l in r.stdout.splitlines() if re.match(r"^\d+:\d+ \+\d+( -\d+)?:", l)]
+    kills = sorted(set(re.findall(r"offline_[a-z_]+_test\.dart: (.*) \[E\]$", r.stdout, re.M)))
+    print(f"{name}: {last[-1][:30] if last else '?'} | killed by {len(kills)}: {kills[0][:90] if kills else '-'}")
+print(subprocess.run(["git", "status", "--short"], capture_output=True, text=True).stdout.replace("\n", " | "))
