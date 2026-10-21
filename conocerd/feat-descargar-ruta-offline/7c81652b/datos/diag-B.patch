@@ -1,0 +1,21 @@
+diff --git i/lib/features/navigation/data/offline/offline_download_controller.dart w/lib/features/navigation/data/offline/offline_download_controller.dart
+index 71517d04..1ac46fc1 100644
+--- i/lib/features/navigation/data/offline/offline_download_controller.dart
++++ w/lib/features/navigation/data/offline/offline_download_controller.dart
+@@ -267,12 +267,10 @@ class OfflineDownloadController extends Notifier<OfflineDownloadState> {
+       // Las fotos y los centros de salud esperan a que las teselas terminen (bien
+       // o mal): con el enlace lleno de teselas llegaban tarde y la ficha decía
+       // que faltaban.
+-      final prefetch = ref
+-          .read(offlineItineraryPrefetcherProvider)
+-          .prefetch(
+-            target,
+-            afterTiles: load.then<void>((_) {}, onError: (Object _) {}),
+-          );
++      final prefetch = Future<OfflinePrefetchResult>.delayed(
++        const Duration(seconds: 3),
++        () => throw TimeoutException('forced for the device diagnostic'),
++      );
+       // Si la carga abandonada termina después, su región se borra: nadie la
+       // va a registrar.
+       unawaited(
