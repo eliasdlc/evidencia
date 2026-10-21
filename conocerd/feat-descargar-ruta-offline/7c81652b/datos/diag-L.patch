@@ -1,0 +1,63 @@
+diff --git i/lib/features/navigation/data/offline/offline_itinerary_prefetcher.dart w/lib/features/navigation/data/offline/offline_itinerary_prefetcher.dart
+index bf635190..90359992 100644
+--- i/lib/features/navigation/data/offline/offline_itinerary_prefetcher.dart
++++ w/lib/features/navigation/data/offline/offline_itinerary_prefetcher.dart
+@@ -1,6 +1,7 @@
+ import 'dart:async';
+ 
+ import 'package:cloud_firestore/cloud_firestore.dart';
++import 'package:flutter/foundation.dart' show debugPrint;
+ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+ 
+ import 'package:conocerd/core/map/lat_lng.dart';
+@@ -89,6 +90,8 @@ class FirestoreItineraryPrefetcher implements OfflineItineraryPrefetcher {
+     // no hay red la descarga tiene que decirlo en vez de dar por buena una
+     // copia vieja.
+     final missing = <OfflinePart>{};
++    final sw = Stopwatch()..start();
++    debugPrint('P9DIAG start stops=${target.stopIds.length} photos=${target.coverImageUrls.length} health=${healthWarmPoints(target).length} timeouts side=${_timeout.inSeconds}s stopPages=${_stopPagesTimeout.inSeconds}s');
+     try {
+       await Future.wait([
+         for (final id in target.stopIds)
+@@ -97,7 +100,9 @@ class FirestoreItineraryPrefetcher implements OfflineItineraryPrefetcher {
+               .doc(id)
+               .get(const GetOptions(source: Source.server)),
+       ]).timeout(_stopPagesTimeout);
++      debugPrint('P9DIAG stopPages ok ms=${sw.elapsedMilliseconds}');
+     } on TimeoutException {
++      debugPrint('P9DIAG stopPages TIMEOUT ms=${sw.elapsedMilliseconds}');
+       missing.add(OfflinePart.stopPages);
+     }
+ 
+@@ -110,8 +115,11 @@ class FirestoreItineraryPrefetcher implements OfflineItineraryPrefetcher {
+             .downloadFile(url)
+             .timeout(_timeout)
+             .then(
+-              (_) {},
+-              onError: (_) {
++              (_) {
++                debugPrint('P9DIAG photo ok ms=${sw.elapsedMilliseconds} url=$url');
++              },
++              onError: (Object e) {
++                debugPrint('P9DIAG photo FAIL ms=${sw.elapsedMilliseconds} url=$url type=${e.runtimeType} error=$e');
+                 missing.add(OfflinePart.photos);
+               },
+             ),
+@@ -127,13 +135,16 @@ class FirestoreItineraryPrefetcher implements OfflineItineraryPrefetcher {
+               // La fuente de centros de salud no lanza: devuelve el fallo
+               // como `Left`, y ese es el aviso de que la zona no se bajó.
+               (result) {
++                debugPrint('P9DIAG health ms=${sw.elapsedMilliseconds} point=${p.latitude},${p.longitude} left=${result.isLeft()} ${result.fold((f) => 'failure=${f.runtimeType} $f', (r) => 'centers=${r.length}')}');
+                 if (result.isLeft()) missing.add(OfflinePart.emergencies);
+               },
+-              onError: (_) {
++              onError: (Object e) {
++                debugPrint('P9DIAG health THROW ms=${sw.elapsedMilliseconds} point=${p.latitude},${p.longitude} type=${e.runtimeType} error=$e');
+                 missing.add(OfflinePart.emergencies);
+               },
+             ),
+     ]);
++    debugPrint('P9DIAG done ms=${sw.elapsedMilliseconds} missing=$missing');
+     return OfflinePrefetchResult(missing: missing);
+   }
+ }
