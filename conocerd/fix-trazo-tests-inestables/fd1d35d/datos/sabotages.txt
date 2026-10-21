@@ -1,0 +1,90 @@
+# Exact sabotages, each a diff against head fd1d35d (git diff after python3 sab.py NAME; the tree was restored with git checkout afterwards)
+
+## no-isCancelled-wiring
+diff --git i/lib/features/dev/presentation/providers/trace_providers.dart w/lib/features/dev/presentation/providers/trace_providers.dart
+index 2cfb8d7a..509ac632 100644
+--- i/lib/features/dev/presentation/providers/trace_providers.dart
++++ w/lib/features/dev/presentation/providers/trace_providers.dart
+@@ -110,3 +110,3 @@ class TraceRecordingNotifier extends Notifier<TraceRecordingState>
+           .read(traceStoreProvider)
+-          .recoverInterrupted(isCancelled: () => _disposed);
++          .recoverInterrupted();
+     } on Object catch (error, stackTrace) {
+
+## close-before-drain
+diff --git i/lib/features/navigation/data/services/simulation/trace_store.dart w/lib/features/navigation/data/services/simulation/trace_store.dart
+index d5d011ee..6f2903c1 100644
+--- i/lib/features/navigation/data/services/simulation/trace_store.dart
++++ w/lib/features/navigation/data/services/simulation/trace_store.dart
+@@ -348,5 +348,5 @@ class TraceRecorder {
+     if (output == null || _stopFuture != null) return;
+-    _abandonClose = _writeChain
+-        .then<void>((_) => output.close())
+-        .catchError((Object _) {});
++    _abandonClose = Future<void>.sync(
++          () => output.close(),
++        ).catchError((Object _) {});
+   }
+
+## no-abandoned-flush-guard
+diff --git i/lib/features/navigation/data/services/simulation/trace_store.dart w/lib/features/navigation/data/services/simulation/trace_store.dart
+index d5d011ee..6703778a 100644
+--- i/lib/features/navigation/data/services/simulation/trace_store.dart
++++ w/lib/features/navigation/data/services/simulation/trace_store.dart
+@@ -469,3 +469,3 @@ class TraceRecorder {
+     final id = _id;
+-    if (output == null || id == null || _abandoned) return Future<void>.value();
++    if (output == null || id == null) return Future<void>.value();
+     return _serialize(() async {
+
+## no-abandoned-stop-branch
+diff --git i/lib/features/navigation/data/services/simulation/trace_store.dart w/lib/features/navigation/data/services/simulation/trace_store.dart
+index d5d011ee..420c577d 100644
+--- i/lib/features/navigation/data/services/simulation/trace_store.dart
++++ w/lib/features/navigation/data/services/simulation/trace_store.dart
+@@ -512,8 +512,2 @@ class TraceRecorder {
+     if (output == null || id == null) return null;
+-    if (_abandoned) {
+-      // [abandon] ya cerró el archivo: no hay nada que escribir ni cerrar, y la
+-      // metadata `active` se queda para que el próximo arranque la recupere.
+-      await _abandonClose;
+-      return id;
+-    }
+     _accepting = false;
+
+## recovery-error-swallowed
+diff --git i/lib/features/dev/presentation/providers/trace_providers.dart w/lib/features/dev/presentation/providers/trace_providers.dart
+index 2cfb8d7a..9f8ab936 100644
+--- i/lib/features/dev/presentation/providers/trace_providers.dart
++++ w/lib/features/dev/presentation/providers/trace_providers.dart
+@@ -112,10 +112,2 @@ class TraceRecordingNotifier extends Notifier<TraceRecordingState>
+     } on Object catch (error, stackTrace) {
+-      FlutterError.reportError(
+-        FlutterErrorDetails(
+-          exception: error,
+-          stack: stackTrace,
+-          library: 'trace recording',
+-          context: ErrorDescription('recovering interrupted GPS traces'),
+-        ),
+-      );
+       return;
+
+## no-store-cancel-check
+diff --git i/lib/features/navigation/data/services/simulation/trace_store.dart w/lib/features/navigation/data/services/simulation/trace_store.dart
+index d5d011ee..494e5a3a 100644
+--- i/lib/features/navigation/data/services/simulation/trace_store.dart
++++ w/lib/features/navigation/data/services/simulation/trace_store.dart
+@@ -242,3 +242,2 @@ class TraceStore {
+     await for (final entity in dir.list()) {
+-      if (isCancelled?.call() ?? false) break;
+       if (entity is! File || !entity.path.endsWith('.meta.json')) continue;
+
+## sibling-no-flush
+diff --git i/test/features/navigation/presentation/providers/active_trip_notifier_test.dart w/test/features/navigation/presentation/providers/active_trip_notifier_test.dart
+index 64f2f3e1..937a468e 100644
+--- i/test/features/navigation/presentation/providers/active_trip_notifier_test.dart
++++ w/test/features/navigation/presentation/providers/active_trip_notifier_test.dart
+@@ -5320,3 +5320,2 @@ void main() {
+       await notifier.confirmArrival();
+-      await flushTrace(container);
+       expect(container.read(activeTripProvider).status, TripStatus.completed);
