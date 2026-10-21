@@ -1,0 +1,30 @@
+# Exact round-3 sabotages: git diff against head 0aadf5d after applying each (tree restored afterwards)
+
+## saving-status
+diff --git i/lib/features/navigation/data/services/simulation/trace_store.dart w/lib/features/navigation/data/services/simulation/trace_store.dart
+index f96bed2d..886b1d03 100644
+--- i/lib/features/navigation/data/services/simulation/trace_store.dart
++++ w/lib/features/navigation/data/services/simulation/trace_store.dart
+@@ -492,3 +492,3 @@ class TraceRecorder {
+         id,
+-        status: _accepting || _abandoned ? 'active' : 'saving',
++        status: _accepting ? 'active' : 'saving',
+         persistedFixCount: _persistedFixCount,
+
+## start-ignores-abandon
+diff --git i/lib/features/navigation/data/services/simulation/trace_store.dart w/lib/features/navigation/data/services/simulation/trace_store.dart
+index f96bed2d..5095fe8d 100644
+--- i/lib/features/navigation/data/services/simulation/trace_store.dart
++++ w/lib/features/navigation/data/services/simulation/trace_store.dart
+@@ -411,11 +411,2 @@ class TraceRecorder {
+       );
+-      if (_abandoned) {
+-        // abandon() llegó mientras se abría: ni se aceptan eventos ni se
+-        // programa el timer, y el archivo se suelta con la metadata `active`
+-        // que acaba de escribirse.
+-        _abandonClose = _writeChain
+-            .then<void>((_) => sink.close())
+-            .catchError((Object _) {});
+-        return;
+-      }
+       _opened = true;
