@@ -1,0 +1,50 @@
+# configure-backups.mjs contra PocketBase local (8093), partiendo de los valores de fabrica (sin cron, 3 respaldos)
+
+## 1 dry-run: muestra el cambio, no escribe
+$ node pocketbase/configure-backups.mjs
+Servidor: http://127.0.0.1:8093   Modo: dry-run
+  cron: (vacío) -> "0 3 * * *"
+  cronMaxKeep: 3 -> 7
+
+Dry-run: no escribí nada. Repite con --apply para aplicar.
+exit=0
+
+## 2 --apply: escribe y vuelve a leer para comprobar
+$ node pocketbase/configure-backups.mjs --apply
+Servidor: http://127.0.0.1:8093   Modo: apply
+  cron: (vacío) -> "0 3 * * *"
+  cronMaxKeep: 3 -> 7
+
+Aplicado y verificado (relei /api/settings).
+exit=0
+
+## 3 --apply otra vez: idempotente
+$ node pocketbase/configure-backups.mjs --apply
+Servidor: http://127.0.0.1:8093   Modo: apply
+Sin cambios: el respaldo ya está configurado así.
+exit=0
+
+## 4 URL remota sin --allow-remote: se niega
+$ PB_URL=https://pocketbase.example.com node pocketbase/configure-backups.mjs --apply
+Me niego a correr contra https://pocketbase.example.com: no es localhost.
+Producción no se ha inspeccionado (reglas, volumen de datos, respaldos existentes, SMTP).
+Si alguien con acceso a Railway ya revisó pocketbase/README.md, repite con --allow-remote.
+exit=1
+
+## 5 cron invalido: se niega antes de conectar
+$ node pocketbase/configure-backups.mjs --cron '* *'
+Cron inválido "* *": debe tener 5 campos (minuto hora día mes día-semana).
+exit=1
+
+## 6 S3 en dry-run: la key sale enmascarada y el secreto no sale
+$ BACKUP_S3_ENDPOINT=... BACKUP_S3_BUCKET=sdo-demo BACKUP_S3_SECRET=*** node pocketbase/configure-backups.mjs
+Servidor: http://127.0.0.1:8093   Modo: dry-run
+  s3.enabled: false -> true
+  s3.endpoint: (vacío) -> "https://s3.example.test"
+  s3.bucket: (vacío) -> "sdo-demo"
+  s3.region: (vacío) -> "us-east-1"
+  s3.accessKey: (vacío) -> "AKIA…"
+  s3.secret: (se envía; PocketBase no permite leerlo, no se imprime)
+
+Dry-run: no escribí nada. Repite con --apply para aplicar.
+exit=0
