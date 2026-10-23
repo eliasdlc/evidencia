@@ -1,0 +1,79 @@
+# sha b7d0046
+$ npx vitest run tests/utils tests/composables
+ ✓ tests/utils/companyScope.spec.ts > companyScope > someCompanies > normalizes an empty list to none (the leak fix) 3ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > someCompanies > normalizes null and undefined to none 1ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > someCompanies > builds some from a non-empty list 1ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > someCompanies > drops empty-string ids and normalizes to none if nothing survives 1ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > someCompanies > defensively copies so the caller cannot alias live store state 1ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > buildCompanyFilter > returns null for all, so the caller omits the filter key 1ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > buildCompanyFilter > renders none to an impossible filter, never null and never empty 1ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > buildCompanyFilter > renders some as a parenthesized OR chain 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > buildCompanyFilter > parenthesizes even a single id 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > buildCompanyFilter > honors a custom field and operator (the employees multi-value case) 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > buildCompanyFilter > honors a custom field (the companies collection filters on its own id) 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > buildCompanyFilter > survives &&-composition without collapsing scope 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > narrowCompanyScope > returns the scope untouched when nothing was requested 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > narrowCompanyScope > treats the UI sentinels "" and "all" as no request 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > narrowCompanyScope > lets a CEO narrow to any company 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > narrowCompanyScope > lets a member narrow to one of their own companies 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > narrowCompanyScope > throws when the requested company is outside the scope 2ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > narrowCompanyScope > returns none without throwing when there is nothing to narrow to 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > isInScope > answers for each variant 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > scopeToIds > gives a CEO every loaded company 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > scopeToIds > gives an unscoped user nothing 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > scopeToIds > intersects with what is actually loaded 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > scopeKey > is stable across equal scopes so watchers do not loop 0ms
+ ✓ tests/utils/companyScope.spec.ts > companyScope > scopeKey > differs across different scopes 0ms
+ ✓ tests/utils/money.spec.ts > money > toAmount > acepta números 3ms
+ ✓ tests/utils/money.spec.ts > money > toAmount > castea strings del <input type=number> a número (el bug del banco) 1ms
+ ✓ tests/utils/money.spec.ts > money > toAmount > rechaza basura 2ms
+ ✓ tests/utils/money.spec.ts > money > toAmount > rechaza cero y negativos 1ms
+ ✓ tests/utils/money.spec.ts > money > tryToAmount devuelve null en vez de lanzar 0ms
+ ✓ tests/utils/money.spec.ts > money > roundMoney evita el 0.1 + 0.2 0ms
+ ✓ tests/utils/money.spec.ts > money > signedAmount: ingreso suma, gasto resta 0ms
+ ✓ tests/utils/obligations.spec.ts > obligations > monthPeriod formatea YYYY-MM 3ms
+ ✓ tests/utils/obligations.spec.ts > obligations > recorta el día de cobro al último día del mes (31 en febrero) 1ms
+ ✓ tests/utils/obligations.spec.ts > obligations > upcoming cuando falta más que reminderDays 1ms
+ ✓ tests/utils/obligations.spec.ts > obligations > due_soon dentro de la ventana de aviso, incluyendo el mismo día 0ms
+ ✓ tests/utils/obligations.spec.ts > obligations > overdue cuando ya pasó y no se ha pagado 1ms
+ ✓ tests/utils/obligations.spec.ts > obligations > pagado este mes: salta al mes siguiente y queda como paid/upcoming 1ms
+ ✓ tests/utils/obligations.spec.ts > obligations > pagado el mes pasado no cuenta como pagado este mes 0ms
+ ✓ tests/utils/obligations.spec.ts > obligations > inactivo no genera obligación 0ms
+ ✓ tests/utils/obligations.spec.ts > obligations > anuales > usa dueMonth y periodo YYYY 1ms
+ ✓ tests/utils/obligations.spec.ts > obligations > anuales > anual ya pagado este año salta al próximo 1ms
+ ✓ tests/utils/obligations.spec.ts > obligations > anuales > anual vencido este año sin pagar 0ms
+ ✓ tests/utils/obligations.spec.ts > obligations > computeObligations ordena por fecha y alertingObligations filtra 2ms
+ ✓ tests/utils/obligations.spec.ts > obligations > monthlyTotals suma por moneda y solo cuenta anuales de ese mes 1ms
+ ✓ tests/utils/accountingExport.spec.ts > accountingExport > parseLocalDate interpreta YYYY-MM-DD como fecha local, no UTC 4ms
+ ✓ tests/utils/accountingExport.spec.ts > accountingExport > incluye las entradas del último día del rango (antes se perdían) 2ms
+ ✓ tests/utils/accountingExport.spec.ts > accountingExport > filtra por categoría y destino (antes se ignoraban) 1ms
+ ✓ tests/utils/accountingExport.spec.ts > accountingExport > filtra por moneda y proyecto, "all" no filtra 2ms
+ ✓ tests/utils/accountingExport.spec.ts > accountingExport > buildExportRows deja el monto numérico para que Excel pueda sumar 27ms
+ ✓ tests/utils/accountingExport.spec.ts > accountingExport > csv > escapa comillas, comas y saltos de línea 1ms
+ ✓ tests/utils/accountingExport.spec.ts > accountingExport > csv > lleva BOM y CRLF para Excel 1ms
+ ✓ tests/utils/dataExport.spec.ts > dataExport > arma una hoja por colección, en el orden prometido 22ms
+ ✓ tests/utils/dataExport.spec.ts > dataExport > cada fila trae exactamente las columnas de su encabezado 2ms
+ ✓ tests/utils/dataExport.spec.ts > dataExport > el archivo conserva una fila por registro y los nombres de empresa, no los ids 43ms
+ ✓ tests/utils/dataExport.spec.ts > dataExport > incluye salario y cédula de los empleados, y sus equipos asignados 1ms
+ ✓ tests/utils/dataExport.spec.ts > dataExport > movimientos: destino por nombre de banco y fecha local sin corrimiento de zona 1ms
+ ✓ tests/utils/dataExport.spec.ts > dataExport > tareas muestran el nombre del proyecto y etiquetas en español 1ms
+ ✓ tests/utils/dataExport.spec.ts > dataExport > una colección vacía sigue teniendo su hoja con los encabezados 9ms
+ ✓ tests/utils/dataExport.spec.ts > dataExport > un id sin empresa cargada se muestra tal cual y uno vacío dice "Sin empresa" 1ms
+ ✓ tests/utils/dataExport.spec.ts > dataExport > nombre de archivo: empresa sin tildes ni espacios, o "todas" 1ms
+ ✓ tests/composables/useEmployeesExport.spec.ts > useEmployeesList.exportToExcel > CEO: recorre todas las páginas y genera el xlsx con todos los empleados 82ms
+ ✓ tests/composables/useEmployeesExport.spec.ts > useEmployeesList.exportToExcel > EMPLEADO: fuerza el filtro a su empresa 6ms
+ ✓ tests/composables/useEmployeesExport.spec.ts > useEmployeesList.exportToExcel > EMPLEADO multi-empresa: exporta TODAS sus empresas, no solo la primera 5ms
+ ✓ tests/composables/useEmployeesExport.spec.ts > useEmployeesList.exportToExcel > columnas personalizadas: solo exporta las elegidas, en el orden del catálogo 8ms
+ ✓ tests/composables/useEmployeesExport.spec.ts > useEmployeesList.exportToExcel > equipos asignados: agrupa los activos por empleado con el alcance del usuario 7ms
+ ✓ tests/composables/useEmployeesExport.spec.ts > useEmployeesList.exportToExcel > sin columnas de equipos: no consulta los activos 6ms
+ ✓ tests/composables/useEmployeesExport.spec.ts > useEmployeesList.exportToExcel > columnas personalizadas vacías: lanza error sin consultar ni descargar 8ms
+ ✓ tests/composables/useEmployeesExport.spec.ts > useEmployeesList.exportToExcel > sin resultados: lanza error y no descarga nada 2ms
+ Test Files  6 passed (6)
+      Tests  68 passed (68)
+   Duration  1.25s (transform 548ms, setup 621ms, import 926ms, tests 978ms, environment 2.24s)
+
+$ npm run build   (vue-tsc -b && vite build)
+> vue-tsc -b && vite build
+✓ 1033 modules transformed.
+✓ built in 7.82s
+exit=0
