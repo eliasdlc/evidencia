@@ -1,0 +1,109 @@
+# Respaldo real por la API de PocketBase local (8093), luego restauracion con verify-backup.mjs
+$ curl -X POST $PB_URL/api/backups -d '{"name":"sdo_local_demo.zip"}'
+HTTP 204
+275241 bytes  .pb-local/pb_data/backups/sdo_local_demo.zip
+
+## Paso 1: respaldo sano, debe pasar
+$ node pocketbase/verify-backup.mjs .pb-local/pb_data/backups/sdo_local_demo.zip --compare-source
+Respaldo: .pb-local/pb_data/backups/sdo_local_demo.zip
+PocketBase desechable arriba en http://127.0.0.1:42709 sobre la copia restaurada.
+
+colección              restaurado  origen
+_externalAuths                  0       0
+_mfas                           0       0
+_otps                           0       0
+_superusers                     1       1
+accounting                     25      25
+accounting_categories          26      26
+assets                          8       8
+banks                           3       3
+commitments                     8       8
+companies                       2       2
+counters                        2       2
+employees                       6       6
+inventory                       7       7
+inventory_categories           10      10
+permits                         5       5
+positions                       8       8
+projectCollaborators            5       5
+projects                        4       4
+tasks                           9       9
+users                           6       6
+
+OK: la base restaurada abre, 20 colecciones, 135 registros, y todos los conteos coinciden con el origen.
+exit=0
+
+## Paso 2: violacion fabricada (un registro creado en el origen despues del respaldo), debe fallar y nombrar la coleccion
+creado companies/xxd18m27t7jmlxt
+$ node pocketbase/verify-backup.mjs .pb-local/pb_data/backups/sdo_local_demo.zip --compare-source
+Respaldo: .pb-local/pb_data/backups/sdo_local_demo.zip
+PocketBase desechable arriba en http://127.0.0.1:40999 sobre la copia restaurada.
+
+colección              restaurado  origen
+_externalAuths                  0       0
+_mfas                           0       0
+_otps                           0       0
+_superusers                     1       1
+accounting                     25      25
+accounting_categories          26      26
+assets                          8       8
+banks                           3       3
+commitments                     8       8
+companies                       2       3   <-- NO COINCIDE
+counters                        2       2
+employees                       6       6
+inventory                       7       7
+inventory_categories           10      10
+permits                         5       5
+positions                       8       8
+projectCollaborators            5       5
+projects                        4       4
+tasks                           9       9
+users                           6       6
+
+FALLA: 1 colección(es) no coinciden con el origen:
+  companies: restaurado=2 origen=3
+exit=1
+
+## Paso 3: se borra el registro fabricado, vuelve a pasar
+DELETE companies/xxd18m27t7jmlxt: HTTP 204
+$ node pocketbase/verify-backup.mjs .pb-local/pb_data/backups/sdo_local_demo.zip --compare-source
+Respaldo: .pb-local/pb_data/backups/sdo_local_demo.zip
+PocketBase desechable arriba en http://127.0.0.1:36545 sobre la copia restaurada.
+
+colección              restaurado  origen
+_externalAuths                  0       0
+_mfas                           0       0
+_otps                           0       0
+_superusers                     1       1
+accounting                     25      25
+accounting_categories          26      26
+assets                          8       8
+banks                           3       3
+commitments                     8       8
+companies                       2       2
+counters                        2       2
+employees                       6       6
+inventory                       7       7
+inventory_categories           10      10
+permits                         5       5
+positions                       8       8
+projectCollaborators            5       5
+projects                        4       4
+tasks                           9       9
+users                           6       6
+
+OK: la base restaurada abre, 20 colecciones, 135 registros, y todos los conteos coinciden con el origen.
+exit=0
+
+## Zip danado
+$ node pocketbase/verify-backup.mjs /tmp/roto.zip
+Respaldo: /tmp/roto.zip
+No pude descomprimir el respaldo (¿zip dañado o falta `unzip`?): [/tmp/roto.zip]
+exit=1
+
+## Origen remoto sin --allow-remote
+$ PB_URL=https://pocketbase.example.com node pocketbase/verify-backup.mjs .pb-local/pb_data/backups/sdo_local_demo.zip --compare-source
+Me niego a leer https://pocketbase.example.com: no es localhost.
+Producción no se ha inspeccionado. Si alguien con acceso a Railway ya revisó pocketbase/README.md, repite con --allow-remote.
+exit=1
