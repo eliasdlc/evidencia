@@ -1,0 +1,13 @@
+# pares-guion.txt: python3 -I pares-guion.txt par-*.png  (rename to .py; compares the left half, before the kill, with the right half, after)
+
+from PIL import Image, ImageChops
+import sys
+for path in sys.argv[1:]:
+    im = Image.open(path).convert("RGB"); w, h = im.size; half = w // 2
+    a, b = im.crop((0, 0, half, h)), im.crop((half, 0, w, h))
+    def count(x, y):
+        r, g, b = ImageChops.difference(x, y).split()
+        any_channel = ImageChops.lighter(ImageChops.lighter(r, g), b)
+        return any_channel.point(lambda v: 255 if v else 0).histogram()[255]
+    print(path, "full", count(a, b), "below status bar", count(a.crop((0, 48, half, h)), b.crop((0, 48, half, h))))
+
