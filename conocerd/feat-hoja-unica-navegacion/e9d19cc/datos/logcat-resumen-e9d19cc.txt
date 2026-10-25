@@ -1,0 +1,10 @@
+Logcat summary, build e9d19cc4 install of 2026-10-25 11:22:09 (buffer cleared with logcat -c just before the first launch; window 11:22 to 11:36 local, emulator Pixel7_API35). Filtered by hand from the full log (not published: it holds an App Check debug token).
+lines in the full log: 30592
+'Failed to exchange debug token': 0
+FATAL EXCEPTION: 0
+Flutter error boxes (marked with the stop sign) in the app process, by time and cause:
+  11:23:05  Uncaught zone error: PlatformException channel-error ScaleBarSettingsInterface.updateSettings in onboarding globo_mapbox.dart:142 (the map of the first screen, before login; not a P6 file)
+  11:24:32, 11:24:55, 11:25:24  MapboxDirectionsService: sin ruta en el tramo 0 (route preview started before I set the emulator GPS fix; the emulator default location was in California; retried after adb emu geo fix and the preview then loaded)
+  11:27:56 (x2), 11:28:04  FlutterError: 'ListTile background color or ink splashes may be invisible' (debug-only assertion in the profile and /dev simulator screens, which use ListTile inside a decorated box; not a P6 file)
+No flutter error box and no native Mapbox error after 11:28:04, which covers the preview, the trip, the PiP round trip, the 150 % stamp run and the arrivals.
+Android-level E lines in the app process: ThemeUtils (Mapbox views, AppCompat theme), Surface freeAllBuffers (view recreation), GL error 0x501 in the emulator encoder: all present on every earlier session.
