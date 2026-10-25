@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+# Kill pairs: on every screen of the thread, capture, kill the process, reopen,
+# capture again. The pair is judged by pairpx.py on the published composite.
+#   EMULATOR_LOCK_HELD=1 hilo_pares.sh APK OUT visitor|local
+# Passwords live only in $SECRETOS (mode 600) and are never printed.
+set -uo pipefail
+APK=$1
+OUT=$2
+PERSONA=${3:-visitor}
+PKG=com.conocerd.app
+[ "${EMULATOR_LOCK_HELD:-}" = 1 ] || { echo "refused: take ~/.cache/conocerd-rework/emulator.lock first"; exit 2; }
+UI="python3 $(dirname "$0")/adb_ui.py"
+SECRETOS=$HOME/.config/secretos/conocerd-hilo.env
+T=${PERSONA:0:1}
+mkdir -p "$OUT"
+A="adb -s emulator-5554"
+
+nueva_cuenta() {
+  local correo="pruebas-hilo-$(date -u +%m%d%H%M%S)@conocerd.test"
+  local clave; clave=$(openssl rand -hex 10)
+  ( umask 077; printf '%s=%s\n' "$correo" "$clave" >> "$SECRETOS" )
+  echo "$correo"
+}
+clave_de() { grep "^$1=" "$SECRETOS" | cut -d= -f2; }
+abrir() { $A shell monkey -p $PKG -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1; }
+cap() { $A exec-out screencap -p > "$OUT/$1.png"; }
+escribir() { $UI field "$1"; sleep 0.5; $UI type "$2"; $A shell input keyevent 111; sleep 0.3; }
+
+$A shell settings put system font_scale 1.0
+$A uninstall $PKG >/dev/null 2>&1
+$A install -r "$APK" >/dev/null || { echo "install failed"; exit 1; }
+RUTA=$($A shell pm path $PKG | head -1 | cut -d: -f2 | tr -d '\r')
+$A pull "$RUTA" "$OUT/$T-instalado-base.apk" >/dev/null
+{
+  echo "session $T at $(date -u +%FT%TZ)"
+  echo "installed sha256 $(sha256sum < "$OUT/$T-instalado-base.apk" | cut -d' ' -f1)"
+  echo "built sha256     $(sha256sum < "$APK" | cut -d' ' -f1)"
+  [ "$(sha256sum < "$OUT/$T-instalado-base.apk")" = "$(sha256sum < "$APK")" ] && echo match=True || echo match=False
+  $A shell dumpsys package $PKG | grep -E 'lastUpdateTime|versionName|versionCode' | head -3 | tr -d '\r'
+} > "$OUT/$T-receipt.txt"
+rm -f "$OUT/$T-instalado-base.apk"
+$A logcat -c
+
+par() { # $1 number-name, $2 marker the reopened screen must show
+  sleep 2.5; cap "$T$1-antes"
+  $A shell am force-stop $PKG; sleep 1; abrir
+  if $UI wait "$2"; then sleep 2.5; cap "$T$1-despues"; echo "pair $1: reopened on '$2'"
+  else cap "$T$1-despues-FALLO"; echo "FAIL pair $1 ($2)"; fi
+}
+limites() { # bounds of the node with this label, and of the action bar's button
+  $UI dump | grep -F "$1" | head -1
+}
+
+abrir
+$UI wait "Conoce la isla a tu manera";   par 00-bienvenida "Conoce la isla a tu manera"
+$UI tap "Empezar"; $UI wait "Pregunta 1 de 4"
+if [ "$PERSONA" = local ]; then
+  $UI tap "Vivo en República Dominicana"
+else
+  $UI tap "Estoy de visita"
+fi
+par 01-persona "Pregunta 1 de 4"
+$UI tap "Continuar"
+if [ "$PERSONA" = local ]; then
+  $UI wait "Pregunta 2 de 4"
+  $UI tap "Elige tu provincia"; sleep 1.5; cap "$T""02-provincia-hoja"
+  $UI tap "Santiago"; sleep 1
+  par 02-provincia "Cerca de Santiago"
+  $UI tap "Continuar"
+else
+  $UI wait "Pregunta 2 de 4"
+  $UI tap "Ya estoy aquí"; sleep 0.4; $UI tap "3 a 5"; sleep 0.6
+  par 02-estadia "Estadía: 3 a 5 días"
+  $UI tap "Continuar"
+fi
+$UI wait "Pregunta 3 de 4"
+$UI tap "En pareja"; sleep 0.6
+echo "chosen option: $(limites 'En pareja')"
+echo "continue button: $(limites 'Continuar')"
+par 03-compania "Hasta 3 paradas por día"
+$UI tap "Continuar"; $UI wait "Pregunta 4 de 4"
+$UI tap "Playas"; $UI tap "Naturaleza"; $UI tap "Comida"; sleep 0.8
+par 04-intereses "Pregunta 4 de 4"
+$UI tap "Ver mi primera ruta"; $UI wait "Se sella al llegar"
+par 05-ruta "Se sella al llegar"
+$UI tap "Guardar mi ruta"; $UI wait "Guarda esta ruta en tu diario"
+par 06-cuenta "Guarda esta ruta en tu diario"
+CORREO=$(nueva_cuenta)
+$UI tap "Usar mi correo"; sleep 1
+escribir 0 "Pruebas"
+escribir 1 "$CORREO"
+escribir 2 "$(clave_de "$CORREO")"
+$UI tap "Crear cuenta"; $UI wait "Ponle cara a tu diario"
+par 07-foto "Ponle cara a tu diario"
+$UI tap "Omitir por ahora"; $UI wait "Entrar a la app"
+par 08-primeros-pasos "Entrar a la app"
+# After a cold start at the last step the listener sometimes needs more than the 10 s the finish waits
+# (the screen then says it is still confirming and the traveler taps again): so does the driver.
+$UI tap "Entrar a la app"
+sleep 13
+if $UI has "A dónde vamos"; then echo "first tap: Explorar"; else
+  echo "first tap: not confirmed within 10 s ($($A logcat -d -v time | grep -c 'CRD_PERFIL_SIN_CONFIRMAR') CRD_PERFIL_SIN_CONFIRMAR); tapping again"
+  cap "$T""09-app-seguimos-confirmando"
+  $UI tap "Entrar a la app"
+fi
+if $UI wait "A dónde vamos"; then sleep 2; cap "$T""09-app"; echo "ok   the thread ends in Explorar"; else cap "$T""09-app-FALLO"; echo "FAIL no Explorar"; fi
+$A logcat -d -v time > "$OUT/$T-logcat.raw"
+echo "logcat $T: lines=$(wc -l < "$OUT/$T-logcat.raw") token_fail=$(grep -c 'Failed to exchange debug token' "$OUT/$T-logcat.raw") err=$(grep -c -E 'E/flutter|FATAL EXCEPTION|Unhandled Exception' "$OUT/$T-logcat.raw")"
