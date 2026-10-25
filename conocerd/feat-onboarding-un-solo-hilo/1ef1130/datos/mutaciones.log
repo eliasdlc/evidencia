@@ -1,0 +1,274 @@
+## F1 second Done: hold ignores a second request AND Done gate removed
+   ['00:03 +1 -3: Some tests failed.']
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: a second request while the thread saves is ignored, and the hold stays up until the first one ends
+   FAIL features/onboarding/paso_cuenta_enviar_test.dart: Done while the thread already holds a save is refused by the form before it validates anything
+   FAIL features/onboarding/paso_cuenta_enviar_test.dart: a second keyboard Done during the save neither registers again nor drops the hold
+   FAIL features/onboarding/paso_cuenta_enviar_test.dart: keyboard Done with the consent box unticked does nothing
+    Expected: <1> | Actual: <2>
+    Expected: <1> | Actual: <2>
+    Expected: <0> | Actual: <1>
+## F4 Done with the box unticked: Done gate removed (hold guard kept)
+   ['00:03 +2 -2: Some tests failed.']
+   FAIL features/onboarding/paso_cuenta_enviar_test.dart: Done while the thread already holds a save is refused by the form before it validates anything
+   FAIL features/onboarding/paso_cuenta_enviar_test.dart: keyboard Done with the consent box unticked does nothing
+    Expected: <0> | Actual: <1>
+    Expected: no matching candidates | Actual: _TextWidgetFinder:<Found 1 widget with text "Mínimo 8 caracteres": [
+## F5a _puedeEnviar without the hold flag (controller guard kept)
+   ['00:03 +3 -1: Some tests failed.']
+   FAIL features/onboarding/paso_cuenta_enviar_test.dart: Done while the thread already holds a save is refused by the form before it validates anything
+    Expected: no matching candidates | Actual: _TextWidgetFinder:<Found 1 widget with text "Mínimo 8 caracteres": [
+## F2 deadline removed (the save is awaited without a bound)
+   ['00:03 +3 -1: Some tests failed.']
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: "Entrar a la app" while the first save is still unacknowledged lets go after the deadline instead of waiting for ever, and the retry completes once th
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: a write that never acknowledges lets go of the thread after the deadline, with the save still resumable
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: after the deadline the router sends the account on to the photo and not to the consent screen, and the pending receipt clears when it lands
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: the consent in the draft belongs to the person who gave it nor when A's own save outran its deadline: the spent draft keeps none of it, on the device 
+   FAIL features/onboarding/paso_cuenta_enviar_test.dart: a save that never acknowledges is reported on screen and releases the form
+    Expected: throws <Instance of 'GuardadoLento'> | Actual: <Instance of 'Future<void>'>
+    Expected: throws <Instance of 'GuardadoLento'> | Actual: <Instance of 'Future<void>'>
+    Expected: throws <Instance of 'GuardadoLento'> | Actual: <Instance of 'Future<void>'>
+## F2b after the deadline the thread does not tell the router the box accepted
+   ['00:02 +20 -1: Some tests failed.']
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: after the deadline the router sends the account on to the photo and not to the consent screen, and the pending receipt clears when it lands
+    Expected: empty | Actual: WhereIterable<String?>:['/consent', '/consent']
+## F3 receipt guard removed (the resumed save overwrites)
+   ['00:02 +20 -1: Some tests failed.']
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: with the real analytics provider an existing account that accepted analytics keeps it when it takes the Google create path
+    Expected: 'accepted' | Actual: 'refused'
+    Expected: accepted | Actual: refused
+## F3b existing account: receipt guard removed
+   ['00:00 +12 -1: Some tests failed.']
+   FAIL features/onboarding/guardar_hilo_test.dart: the consent box is the legal acceptance an existing account that accepted analytics keeps that choice through the thread
+    Expected: 'accepted' | Actual: 'refused'
+    Expected: accepted | Actual: refused
+## F5b receipt guard weakened: any receipt counts, not only this version
+   ['00:02 +20 -1: Some tests failed.']
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: the receipt for another policy version is replaced when an existing account takes the Google create path with the boxes it ticked
+    Expected: 'prueba-1' | Actual: 'vieja-0'
+    Expected: prueba-1 | Actual: vieja-0
+## M9 onboardingSaving out of == and hashCode
+   ['00:00 +46 -1: Some tests failed.']
+   FAIL core/bootstrap/start_destination_test.dart: StartState: cada campo cuenta en la igualdad onboardingSaving
+    Expected: not <Instance of 'StartState'> | Actual: <Instance of 'StartState'>
+## R6-1a Entrar a la app does not wait for the completed status
+   ['00:07 +4 -4: Some tests failed.']
+   FAIL features/profile/salida_del_hilo_test.dart: the listener never shows the completed status: the wait ends, the traveler stays on the last step with a message and can try again
+   FAIL features/profile/salida_del_hilo_test.dart: the listener only shows the completed status after the redirect has re-read the gate: the router still ends on Explorar
+   FAIL features/profile/salida_del_hilo_test.dart: the listener shows the completed status 300 ms after the tap: the router still ends on Explorar and the editor is never built
+   FAIL features/profile/salida_del_hilo_test.dart: with no connection the finish is not acknowledged: after the deadline the button says so and is live again, and the retry works once the connection is
+    Expected: '/explore' | Actual: '/profile-setup'
+    Expected: /explore | Actual: /profile-se ...
+    Expected: '/explore' | Actual: '/profile-setup'
+## R6-1b Guardar in the editor does not wait for the completed status
+   ['00:08 +6 -2: Some tests failed.']
+   FAIL features/profile/salida_del_hilo_test.dart: saving the answers from the editor waits for the listener too
+   FAIL features/profile/salida_del_hilo_test.dart: saving the answers when the listener never shows the finish says it is still confirming and leaves Guardar live
+    Expected: '/explore' | Actual: '/profile-setup'
+    Expected: /explore | Actual: /profile-se ...
+    Expected: exactly one matching candidate | Actual: _TextWidgetFinder:<Found 0 widgets with text "Seguimos confirmando tu perfil. Toca otra
+## R6-2 the thread is forgotten post-frame while the screen is mounted
+   ['00:09 +5 -3: Some tests failed.']
+   FAIL features/profile/salida_del_hilo_test.dart: the listener shows the completed status 300 ms after the tap: the router still ends on Explorar and the editor is never built
+   FAIL features/profile/salida_del_hilo_test.dart: the next start after a normal finish does not ask for the profile again
+   FAIL features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+    Expected: false | Actual: <true>
+    Expected: false | Actual: <true>
+    Expected: false | Actual: <true>
+## R6-4 terminar without a deadline
+   ['00:09 +7 -1: Some tests failed.']
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: "Entrar a la app" while the first save is still unacknowledged lets go after the deadline instead of waiting for ever, and the retry completes once th
+   FAIL features/profile/salida_del_hilo_test.dart: with no connection the finish is not acknowledged: after the deadline the button says so and is live again, and the retry works once the connection is
+    Expected: throws <Instance of 'GuardadoLento'> | Actual: <Instance of 'Future<void>'>
+    Expected: exactly one matching candidate | Actual: _TextWidgetFinder:<Found 0 widgets with text "No pudimos guardar tu cuenta. Revisa tu
+## R6-7a analytics box ignored when creating by email
+   ['00:07 +6 -1: Some tests failed.']
+   FAIL features/onboarding/paso_cuenta_analitica_test.dart: ticked, the receipt written for the new account says accepted and the product sends its app_open
+    Expected: 'accepted' | Actual: 'refused'
+    Expected: accepted | Actual: refused
+## R6-7b the receipt always records analytics refused
+   ['00:06 +5 -2: Some tests failed.']
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: the analytics box on the account step ticked, the receipt says accepted and the product opens with one app_open
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: the consent in the draft belongs to the person who gave it once a new account has its receipt the draft no longer carries the consent
+   FAIL features/onboarding/paso_cuenta_analitica_test.dart: the Google button with both boxes ticked the receipt for the account Google creates says accepted
+   FAIL features/onboarding/paso_cuenta_analitica_test.dart: ticked, the receipt written for the new account says accepted and the product sends its app_open
+    Expected: 'accepted' | Actual: 'refused'
+    Expected: accepted | Actual: refused
+    Expected: 'accepted' | Actual: 'refused'
+## R6-7c the draft drops the analytics choice
+   ['00:02 +19 -2: Some tests failed.']
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: the analytics box on the account step ticked, the receipt says accepted and the product opens with one app_open
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: the consent in the draft belongs to the person who gave it once a new account has its receipt the draft no longer carries the consent
+    Expected: 'accepted' | Actual: 'refused'
+    Expected: accepted | Actual: refused
+    Expected: 'accepted' | Actual: 'refused'
+## R7-1c the spent draft stays after the deadline on an existing account
+   ['00:03 +28 -2: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 4: every way a save ends spends the consent in memory the deadline on an existing account
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: what the earlier rounds closed stays closed and off the device at once when the deadline fires
+    Expected: null | Actual: 'prueba-1'
+    Expected: null | Actual: '{"version":1,"paso":"cuenta","modoCuenta":"crear","respuestas":{"persona":"visitor","arrival":"here","stay":"3-5","firstHoursGuide":true,"companions":"couple","interests":["p
+## R7-2a Google button drops the analytics box
+   ['00:06 +6 -1: Some tests failed.']
+   FAIL features/onboarding/paso_cuenta_analitica_test.dart: the Google button with both boxes ticked the receipt for the account Google creates says accepted
+    Expected: 'accepted' | Actual: 'refused'
+    Expected: accepted | Actual: refused
+## R7-2b Google button drops both boxes
+   ['00:06 +5 -2: Some tests failed.']
+   FAIL features/onboarding/paso_cuenta_analitica_test.dart: the Google button with both boxes ticked the receipt for the account Google creates says accepted
+   FAIL features/onboarding/paso_cuenta_analitica_test.dart: the Google button with only the policy box ticked it says refused
+    Expected: 'prueba-1' | Actual: <null>
+    Expected: 'prueba-1' | Actual: <null>
+## R7-4 the usage data box without the reviewed sentence
+   ['00:05 +6 -1: Some tests failed.']
+   FAIL features/onboarding/paso_cuenta_analitica_test.dart: the usage data box carries the reviewed consent screen's own sentence
+    Expected: exactly one matching candidate | Actual: _TextWidgetFinder:<Found 0 widgets with text "Opcional. Compartir uso agregado, sin
+## R8-1 a draft that belongs to another account is resumed and written (both drops removed)
+   ['00:03 +27 -3: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 3: every write path refuses a draft that belongs to another account asegurarGuardado
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 3: every write path refuses a draft that belongs to another account retomarTrasCuenta
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the claim of a draft with no owner, the router and the save in flight (round 8 mutations S5, S6, S7, S12) a save in flight for A is not joined once it
+## R8-2 the draft is not marked with its account before the save
+   ['00:04 +23 -7: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 1: a sign out or another account purges the thread draft another account's session purges it without a sign out in between
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 1: a sign out or another account purges the thread draft the thread's own account, going from no session to one, keeps its draft
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 2: consent is never on the device A ticks both boxes and the app dies before the receipt: the draft on the device holds A's answers and owner, an
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 3: every write path refuses a draft that belongs to another account asegurarGuardado
+    Expected: 'ana' | Actual: <null>
+    Expected: 'ana' | Actual: <null>
+    Expected: 'ana' | Actual: <null>
+## R8-3 a late acknowledgement clears another account's pending mark
+   ['00:03 +29 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: what the earlier rounds closed stays closed the consent mark is per account: A's late acknowledgement does not clear B's
+    Expected: ({String uid, String version}):<(uid: ana, version: prueba-1)> | Actual: <null>
+## R8-4 the spent draft is not deleted from the device
+   ['00:03 +28 -2: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: what the earlier rounds closed stays closed and off the device at once when the deadline fires
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: what the earlier rounds closed stays closed the spent draft of an existing account is off the device and its consent out of memory once its receipt is
+    Expected: null | Actual: '{"version":1,"paso":"cuenta","modoCuenta":"crear","respuestas":{"persona":"visitor","arrival":"here","stay":"3-5","firstHoursGuide":true,"companions":"couple","interests":["p
+    Expected: null | Actual: '{"version":1,"paso":"cuenta","modoCuenta":"crear","respuestas":{"persona":"visitor","arrival":"here","stay":"3-5","firstHoursGuide":true,"companions":"couple","interests":["p
+## R8-5 the happy path deletes the draft from the device but leaves its consent in memory
+   ['00:04 +29 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: what the earlier rounds closed stays closed the spent draft of an existing account is off the device and its consent out of memory once its receipt is
+    Expected: null | Actual: 'prueba-1'
+## R8-6 the deadline path deletes the draft from the device but leaves its consent in memory
+   ['00:03 +28 -2: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 4: every way a save ends spends the consent in memory the deadline on an existing account
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: what the earlier rounds closed stays closed and off the device at once when the deadline fires
+    Expected: null | Actual: 'prueba-1'
+    Expected: null | Actual: 'prueba-1'
+## R8-7 a leftover draft of another account is not dropped when a person signs in
+   ['00:04 +29 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 3: every write path refuses a draft that belongs to another account the sign in of an existing account over a draft that is not its own
+## R9-1 a consent is written for an account it was not given for
+   ['00:00 +12 -1: Some tests failed.']
+   FAIL features/onboarding/guardar_hilo_test.dart: the consent box is the legal acceptance a consent given for another account, or for none, is never written
+    Expected: false | Actual: <true>
+## R9-2 an ordinary error on an existing account leaves its consent in memory
+   ['00:04 +28 -2: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 4: every way a save ends spends the consent in memory an ordinary error on an existing account
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the reviewer's U variants U3: no kill: the receipt write of an existing account fails with an ordinary error, the draft stays on the device, A signs o
+    Expected: null | Actual: 'prueba-1'
+    Expected: null | Actual: 'prueba-1'
+## R9-3 an ordinary error on a new account leaves its consent in memory
+   ['00:04 +28 -2: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 4: every way a save ends spends the consent in memory an ordinary error on a new account
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 4: every way a save ends spends the consent in memory the deadline on a new account
+    Expected: null | Actual: 'prueba-1'
+    Expected: null | Actual: 'prueba-1'
+## R9-4 a sign out or another account does not purge the thread's draft
+   ['00:17 +0 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 1: a sign out or another account purges the thread draft a sign out takes the draft off the device and out of memory, and the consent mark with i
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 1: a sign out or another account purges the thread draft another account's session purges it without a sign out in between
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the reviewer's U variants U3: no kill: the receipt write of an existing account fails with an ordinary error, the draft stays on the device, A signs o
+   FAIL features/onboarding/consentimiento_secuencias_test.dart: B never gets A's consent, nor A's answers marked completed, in any sequence of two people on one phone
+    Expected: null | Actual: '{"version":1,"paso":"cuenta","modoCuenta":"crear","respuestas":{"persona":"visitor","arrival":"here","stay":"3-5","firstHoursGuide":true,"companions":"couple","interests":["p
+    Expected: null | Actual: '{"version":1,"paso":"foto","modoCuenta":"crear","respuestas":{"persona":"visitor","arrival":"here","stay":"3-5","firstHoursGuide":true,"companions":"couple","interests":["pla
+    Expected: null | Actual: '{"version":1,"paso":"foto","modoCuenta":"crear","respuestas":{"persona":"visitor","arrival":"here","stay":"3-5","firstHoursGuide":true,"companions":"couple","interests":["pla
+## R9-5 another account's session does not run the one purge
+   ['00:04 +29 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 1: a sign out or another account purges the thread draft another account's session purges it without a sign out in between
+    Expected: <1> | Actual: <0>
+## R9-6 terminar completes the answers of a draft that is not the account's
+   ['00:16 +0 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 3: every write path refuses a draft that belongs to another account terminar
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the reviewer's U variants U4: terminar for B on a draft that belongs to A writes none of A's answers as completed, and drops the draft
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the reviewer's U variants terminar for an account on a draft that belongs to nobody is refused too
+   FAIL features/onboarding/consentimiento_secuencias_test.dart: B never gets A's consent, nor A's answers marked completed, in any sequence of two people on one phone
+    Expected: not 'completed' | Actual: 'completed'
+    Expected: empty | Actual: [
+## R9-7 GuardarHilo writes a draft that belongs to another account
+   ['00:00 +12 -1: Some tests failed.']
+   FAIL features/onboarding/guardar_hilo_test.dart: the consent box is the legal acceptance a draft that belongs to another account is refused by every write
+    Expected: throws <Instance of 'StateError'> | Actual: <Instance of 'Future<void>'>
+## R9-8 the consent is not bound to the account the request signed in
+   ['00:02 +15 -15: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 1: a sign out or another account purges the thread draft a sign out takes the draft off the device and out of memory, and the consent mark with i
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 2: consent is never on the device a consent in memory is bound to the account its own request signed in: an account that resumes the same session
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 4: every way a save ends spends the consent in memory an ordinary error on a new account
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 4: every way a save ends spends the consent in memory an ordinary error on an existing account
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: "Entrar a la app" while the first save is still unacknowledged lets go after the deadline instead of waiting for ever, and the retry completes once th
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: a second request while the thread saves is ignored, and the hold stays up until the first one ends
+    Expected: empty | Actual: WhereIterable<String?>:['/splash', '/consent', '/consent']
+    Expected: <1> | Actual: <2>
+    Expected: throws <Instance of 'GuardadoLento'> | Actual: <Instance of 'Future<void>'>
+## R9-9 consent reaches the device
+   ['00:00 +3 -2: Some tests failed.']
+   FAIL features/onboarding/borrador_hilo_test.dart: a killed process comes back on the same screen with the same answers and the same route
+   FAIL features/onboarding/borrador_hilo_test.dart: the consent boxes default to unticked and never reach the device
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 2: consent is never on the device A ticks both boxes and the app dies before the receipt: the draft on the device holds A's answers and owner, an
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the reviewer's U variants U3: no kill: the receipt write of an existing account fails with an ordinary error, the draft stays on the device, A signs o
+    Expected: not contains 'politicaAceptada' | Actual: '{"version":1,"paso":"foto","modoCuenta":"crear","respuestas":{"persona":"visitor","arrival":"here","stay":"3-5","firstHoursGuide":true,"companions"
+    Expected: not contains 'politicaAceptada' | Actual: '{"version":1,"paso":"cuenta","modoCuenta":"crear","respuestas":{"persona":"visitor","arrival":"here","stay":"3-5","firstHoursGuide":true,"companion
+    Expected: { | 'version': 1,
+## R9-10 the sign out purge forgets the thread's draft
+   ['00:00 +14 -2: Some tests failed.']
+   FAIL features/auth/local_data_purge_test.dart: LocalDataPurge el borrador del hilo de onboarding no sobrevive al cierre de sesión
+   FAIL features/auth/local_data_purge_test.dart: LocalDataPurge la clave del borrador del hilo es la que el hilo escribe
+    Expected: contains 'onboarding_hilo' | Actual: [
+    Expected: null | Actual: '{"version":1,"paso":"foto","cuentaDelBorrador":"A"}'
+## R9-11 the sign out purge forgets the offline downloads
+   ['00:00 +12 -1: Some tests failed.']
+   FAIL features/auth/account_service_test.dart: cerrar sesión manda a borrar los mapas descargados, antes de cerrar la sesión
+   FAIL features/auth/local_data_purge_test.dart: LocalDataPurge manda a borrar las regiones y el estilo de los mapas descargados
+    Expected: <1> | Actual: <0>
+    Expected: <1> | Actual: <0>
+## R9-12 signing out does not run the purge
+   ['00:00 +12 -1: Some tests failed.']
+   FAIL features/auth/account_service_test.dart: cerrar sesión manda a borrar los mapas descargados, antes de cerrar la sesión
+    Expected: <1> | Actual: <0>
+## R9-13 retomarTrasCuenta resumes a draft that is not in the thread
+   ['00:04 +29 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: rule 3: every write path refuses a draft that belongs to another account a draft that is not in the thread any more is not resumed
+    Expected: not contains 'profilePreferences' | Actual: {
+## R9-14 (S5) retomarTrasCuenta does not claim an unowned draft
+   ['00:04 +29 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the claim of a draft with no owner, the router and the save in flight (round 8 mutations S5, S6, S7, S12) a draft with no owner at the photo step is c
+    Expected: 'bea' | Actual: <null>
+## R9-15 (S6) the claim never records the owner
+   ['00:04 +28 -2: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the claim of a draft with no owner, the router and the save in flight (round 8 mutations S5, S6, S7, S12) a draft with no owner at the photo step is c
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the claim of a draft with no owner, the router and the save in flight (round 8 mutations S5, S6, S7, S12) so is one at the account step, and the owner
+    Expected: 'bea' | Actual: <null>
+    Expected: 'bea' | Actual: <null>
+## R9-16 (S7) dropping a foreign draft leaves the save in flight
+   ['00:04 +29 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the claim of a draft with no owner, the router and the save in flight (round 8 mutations S5, S6, S7, S12) a save in flight for A is not joined once it
+## R9-17 (S8) dropping a foreign draft leaves it on the device
+   ['00:04 +29 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the reviewer's U variants U4: terminar for B on a draft that belongs to A writes none of A's answers as completed, and drops the draft
+    Expected: null | Actual: '{"version":1,"paso":"foto","modoCuenta":"crear","respuestas":{"persona":"visitor","arrival":"here","stay":"3-5","firstHoursGuide":true,"companions":"couple","interests":["pla
+## R9-18 (S11) the pending mark is cleared whoever owns it
+   ['00:03 +29 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: what the earlier rounds closed stays closed the consent mark is per account: A's late acknowledgement does not clear B's
+    Expected: ({String uid, String version}):<(uid: ana, version: prueba-1)> | Actual: <null>
+## R9-19 (S12) the router honors a pending mark of another account
+   ['00:03 +29 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: the claim of a draft with no owner, the router and the save in flight (round 8 mutations S5, S6, S7, S12) the router does not take A's pending mark as
+    Expected: true | Actual: <false>
+## R9-20 (S13) the pending mark names another account
+   ['00:02 +20 -1: Some tests failed.']
+   FAIL features/onboarding/consentimiento_ajeno_test.dart: what the earlier rounds closed stays closed the consent mark is per account: A's late acknowledgement does not clear B's
+   FAIL features/onboarding/hilo_retiene_onboarding_test.dart: after the deadline the router sends the account on to the photo and not to the consent screen, and the pending receipt clears when it lands
+    Expected: 'ana' | Actual: 'otro'
+    Expected: ana | Actual: otro
+    Expected: empty | Actual: WhereIterable<String?>:['/consent', '/consent']
