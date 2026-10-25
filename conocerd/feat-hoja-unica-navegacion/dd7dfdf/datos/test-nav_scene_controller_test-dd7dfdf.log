@@ -1,0 +1,77 @@
+00:00 +0: loading test/features/navigation/domain/nav_scene_controller_test.dart
+00:00 +0: tick antes del primer fix no produce frame ni avanza throttles
+00:00 +1: siembra con el primer fix la pose de conducción existe antes del primer tick y el primer tick empuja flecha y cámara
+00:00 +2: arranque parado fuera de la ruta a 60 m apunta a la entrada desde el primer encuadre
+00:00 +3: arranque parado fuera de la ruta sobre la ruta conserva el rumbo del tramo
+00:00 +4: velocidad derivada del desplazamiento fixes con speed 0 separados 40 m en 3 s abren el zoom, y el tilt se queda en el techo
+00:00 +5: velocidad derivada del desplazamiento el baile de un GPS parado (5 m en 1 s) no mueve tilt ni zoom
+00:00 +6: interpolación de posición corrige hacia el fix nuevo en 180 ms, no durante todo el segundo
+00:00 +7: interpolación de posición detenido, pasado el intervalo, la flecha se queda en el objetivo
+00:00 +8: interpolación de posición en movimiento, la predicción termina aun si no llega otro fix
+00:00 +9: rumbo del arrow (filtro 1€ + convergencia) converge hacia el rumbo de viaje suavizado
+00:00 +10: rumbo del arrow (filtro 1€ + convergencia) detenido no actualiza el rumbo (el mapa no gira con ruido GPS)
+00:00 +11: empuje de la chase-cam en chase+follow empuja una pose
+00:00 +12: empuje de la chase-cam sin follow no empuja cámara
+00:00 +13: empuje de la chase-cam durante un pinch no empuja cámara
+00:00 +14: empuje de la chase-cam respeta el throttle: dos empujes seguidos, el segundo se suprime
+00:00 +15: empuje de la chase-cam con look-ahead el target va por delante de la flecha
+00:00 +16: empuje de la chase-cam sin look-ahead (adapter Mapbox) el target ES la flecha
+00:00 +17: empuje de la chase-cam onViewportChanged invalida el dedup: re-empuja la misma pose
+00:00 +18: throttle/dedup del marcador marca dirty al cambiar y no vuelve a marcar si nada cambió
+00:00 +19: cámara de llegada con histéresis lejos de la parada sigue en chase (sin comando)
+00:00 +20: cámara de llegada con histéresis bajo 320 m entra a overview con una transición
+00:00 +21: cámara de llegada con histéresis histéresis: entre 320 y 400 no vuelve a chase, y sin moverse no re-encuadra
+00:00 +22: cámara de llegada con histéresis bajo 45 m hace closeUp sobre la parada, una sola vez
+00:00 +23: cámara de llegada con histéresis sin follow no emite comando de cámara de llegada
+00:00 +24: rumbo contrario al desplazamiento tres fixes con rumbo invertido no invierten la predicción
+00:00 +25: rumbo contrario al desplazamiento precisión 30.0 no permite sustituir el rumbo
+00:00 +26: rumbo contrario al desplazamiento precisión Infinity no permite sustituir el rumbo
+00:00 +27: rumbo contrario al desplazamiento precisión NaN no permite sustituir el rumbo
+00:00 +28: rumbo contrario al desplazamiento precisión -1.0 no permite sustituir el rumbo
+00:00 +29: rumbo contrario al desplazamiento una pausa descarta la trayectoria anterior
+00:00 +30: rumbo contrario al desplazamiento una media vuelta real conserva el rumbo nuevo del GPS
+00:00 +31: continuidad al separarse de la ruta salir y volver al corredor no teletransporta a 60 Hz
+00:00 +32: continuidad al separarse de la ruta salir y volver al corredor no teletransporta a 120 Hz
+00:00 +33: continuidad al separarse de la ruta recalcular o retirar la ruta no cambia la posición en el acto
+00:00 +34: snap a la ruta y polyline restante engancha la posición y recorta el leg desde el punto enganchado
+00:00 +35: snap a la ruta y polyline restante sin snap todavía conserva la geometría completa
+00:00 +36: pose de vuelta al encuadre de conducción (la paridad de animaciones §2) antes del primer fix no hay pose que volar
+00:00 +37: pose de vuelta al encuadre de conducción (la paridad de animaciones §2) sin dedup: la devuelve aunque el ticker ya la haya empujado
+00:00 +38: pose de vuelta al encuadre de conducción (la paridad de animaciones §2) aheadMs adelanta el objetivo lo que se avanza durante el vuelo
+00:00 +39: pose de vuelta al encuadre de conducción (la paridad de animaciones §2) detenido no adelanta nada (el objetivo es donde estás)
+00:00 +40: validez compartida de progreso un candidato lejano no recorta ni atrae pose o cámara
+00:00 +41: validez compartida de progreso un cambio de ruta invalida el recorte antes del siguiente tick
+00:00 +42: validez compartida de progreso al perder señal no publica progreso vigente indefinidamente
+00:00 +43: hold de la pose de dos dedos alejarse con los dedos aplana el mapa, y el tilt llega sin salto
+00:00 +44: hold de la pose de dos dedos mientras los dedos están puestos, la escena adopta la inclinación que el mapa va enseñando
+00:00 +45: hold de la pose de dos dedos la inclinación puesta con dos dedos sobrevive el mismo hold
+00:00 +46: hold de la pose de dos dedos vencido el hold, el tilt vuelve a salir del zoom
+00:00 +47: fixes fuera de orden un fix fechado antes del último aplicado se ignora
+00:00 +48: fixes fuera de orden un fix más nuevo sí mueve la flecha
+00:00 +49: ancla de la flecha en recta se queda en el 78% del área visible
+00:00 +50: ancla de la flecha sube hacia el 70% al acercarse a la maniobra, sin dar el salto
+00:00 +51: ancla de la flecha vuelve al ancla de recta al pasar el giro
+00:00 +52: ancla de la flecha sin distancia conocida el ancla es la de recta
+00:00 +53: congelado del rumbo a baja velocidad a paso de peatón el mapa no gira
+00:00 +54: congelado del rumbo a baja velocidad en marcha el rumbo nuevo sí entra
+00:00 +55: cadencia de empuje de la chase emite sesenta poses por segundo con fixes de un segundo
+00:00 +56: continuidad y límites de la predicción la velocidad no cae a cero al final del segundo entre fixes
+00:00 +57: continuidad y límites de la predicción una señal perdida frena y queda quieta dentro del horizonte
+00:00 +58: continuidad y límites de la predicción la proximidad al destino no gira el mapa mientras quedan maniobras
+00:00 +59: continuidad y límites de la predicción a 120 Hz no duplica el presupuesto de envío
+00:00 +60: tangente de ruta con confianza ruido GNSS compatible se alinea con la recta local
+00:00 +61: tangente de ruta con confianza vía paralela y precisión pobre liberan la tangente
+00:00 +62: tangente de ruta con confianza desvío y media vuelta no quedan sujetos a la ruta
+00:00 +63: tangente de ruta con confianza parar congela el rumbo fiable aunque se sustituya la geometría
+00:00 +64: tangente de ruta con confianza en una esquina de 90 grados la punta va tangente a 5.5 m/s
+00:00 +65: tangente de ruta con confianza en una esquina de 90 grados la punta va tangente a 11.0 m/s
+00:00 +66: tangente de ruta con confianza sin rumbo GNSS finito la pose no se contamina con NaN
+00:00 +67: rumbo parado parado, la flecha se alinea con el tramo de ruta
+00:00 +68: rumbo parado sin ruta todavía, el rumbo del fix es lo único que hay
+00:00 +69: rumbo parado en marcha manda el GPS, no la ruta
+00:00 +70: a pie la cámara es cenital y de peatón, sin bandas por velocidad
+00:00 +71: a pie en carro, la misma escena sigue inclinada y en su banda
+00:00 +72: a pie parado, la flecha sigue la brújula
+00:00 +73: a pie sin brújula el rumbo se queda donde estaba, como antes
+00:00 +74: a pie en carro la brújula no se lee
+00:00 +75: All tests passed!
