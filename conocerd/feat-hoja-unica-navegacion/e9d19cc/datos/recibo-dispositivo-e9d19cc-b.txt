@@ -1,0 +1,20 @@
+Device receipt, PR 221 round 3 retake, head e9d19cc4 (taken 2026-10-25, local time of the emulator 11:22 to 11:36)
+
+Build: debug APK of e9d19cc4, built 2026-10-21T09:52Z (build exit 0), sha256 645e85a4cad796dbaa5e4aa866a6c3780f04ac00a4e28b979eb2aba8616d81d4 (checked against build record before installing; the worktree HEAD is e9d19cc4 and equals origin).
+Install: install_matching.sh re-signed it with the machine debug key (signer SHA-256 8c666b02...9c824) and ran adb install -r -d (data kept). Installed APK read back with adb pull of the installed base.apk: sha256 0241811a3427f06389fd9701f44ba8224be2b385554476e68a5639df121b9112 (same as the re-signed file).
+dumpsys package com.conocerd.app (before and after the session, identical): versionCode=1, versionName=0.0.0, lastUpdateTime=2026-10-25 11:22:09.
+Emulator: Pixel7_API35, -no-window -no-audio -no-boot-anim -gpu host -memory 2048, wm size 430x748, density 160, font_scale 1.0 except the 150 % rows (settings put system font_scale 1.5, back to 1.0 afterwards).
+Lock: emulator.lock held by hold-lock.sh (open descriptor, file not recreated) from 15:20:40Z for the whole session.
+Account: pruebas-nav@conocerd.test (logged in by hand; the install kept the data of an earlier session but the app was logged out).
+GPS: the app's own simulator (Perfil > Simulador de GPS > Encendido; every frame shows the "GPS SIMULADO" badge in the trip). The route quote of the preview needs an origin: adb emu geo fix -70.6993 19.4517 (Santiago) for the quote only; the trip itself runs on the simulator's start point. Route: Olas y Ojos de Origen, 3 stops. The first quote attempt failed ("sin ruta en el tramo 0") because the emulator was still at its default location in California; it loaded after the geo fix.
+Simulator jumps: "A la parada" (labelled where used). Distances after a jump are the simulator's, not a road's.
+
+Captures (file, what, clock on the status bar):
+  p6-previa-puntos-corredor-e9d19cc.png  preview with corridor dots and download row, 11:28
+  p6-viaje-sos-y-puntos-e9d19cc.png      trip at 109 km/h, SOS on the rail and corridor dots, 11:29
+  p6-regreso-pip-e9d19cc.mp4/.gif + p6-regreso-pip-fotogramas-e9d19cc.png + datos/dumpsys-activities-en-pip-e9d19cc.txt + datos/dumpsys-activities-tras-regreso-e9d19cc.txt   PiP round trip, recorded 28 s at 11:30 to 11:31; the published clip is its first 14 s (8 fps, 200 px wide, so the GIF fits the 5 MB limit), the frame sheet is cut from the full-resolution recording at the same seconds
+  p6-sello-150-e9d19cc.mp4/.gif + p6-sello-150-fotogramas-e9d19cc.png   stamp at 150 %, recorded 30 s at 11:34; the published clip is the 8 s from second 8 to second 16 of the recording (10 fps, 216 px wide) and its frame sheet counts seconds in that clip, so clip second 2.0 is recording second 10.0. The full recordings stay in the scratch folder of the run
+  p6-letra-150-cabecera-y-llegada-e9d19cc.png   left: trip header strip at 150 % (11:32); right: arrived sheet at 150 % (11:34)
+  p6-t558-antes-y-despues-e9d19cc.png    left: BEFORE, kept from the earlier session (APK app-antes-t558.apk sha256 c9ad27fd3bca729b46fea2c6958a9c91b3d97173950c25f3bd8de4391bbf2439, 5:35, night tone); right: AFTER, this install, 11:36, day tone, 100 %
+
+Logcat: see datos/logcat-resumen-e9d19cc.txt (the full log is not published).
