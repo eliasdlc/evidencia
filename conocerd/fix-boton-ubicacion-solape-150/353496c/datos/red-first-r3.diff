@@ -1,0 +1,151 @@
+published copy: home paths removed, 1 em dashes or middle dots in context lines replaced by a hyphen
+diff --git a/lib/features/home/presentation/screens/home_screen.dart b/lib/features/home/presentation/screens/home_screen.dart
+index c896794e..1c663077 100644
+--- a/lib/features/home/presentation/screens/home_screen.dart
++++ b/lib/features/home/presentation/screens/home_screen.dart
+@@ -120,8 +120,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
+ 
+   /// Lo que hay tapado del canto inferior del mapa: el dock, y la card del pin
+   /// cuando está puesta. De aquí salen el margen del logo de Mapbox y el ancla
+-  /// de los botones flotantes, salvo con la card de un punto puesta: ahí la
+-  /// columna sigue a la card por [_dotCardLink] y el inset solo llega al mapa.
++  /// de los botones flotantes.
+   ///
+   /// El alto del dock se lee del `MediaQuery` del shell y no de un 96 escrito a
+   /// mano: el número fijo se quedaba corto y la card del pin acababa por debajo
+@@ -142,19 +141,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
+   /// fórmula acaba desfasada de la card. Lo avisa el [SizeReporter] que la
+   /// envuelve cada vez que su layout cambia el alto, sea por el punto, la
+   /// letra o el ancho, y no solo cuando esta pantalla se reconstruye.
+-  ///
+-  /// Solo alimenta el margen del mapa (logo y adornos de Mapbox), donde un
+-  /// frame de retraso no se ve. La columna flotante no lo usa mientras la card
+-  /// está puesta: la sigue por [_dotCardLink].
+   double _dotCardHeight = 0;
+ 
+-  /// Une la card del punto (líder) con la columna flotante (seguidora).
+-  final _dotCardLink = LayerLink();
+-  static const _floatingControlsKey = ValueKey('home-floating-controls');
+-
+-  /// Aire entre el borde superior de la card del punto y la columna flotante.
+-  static const double _dotCardAir = 24;
+-
+   void _onDotCardSize(double height) {
+     if (!mounted || (height - _dotCardHeight).abs() < 0.5) return;
+     setState(() => _dotCardHeight = height);
+@@ -892,6 +880,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
+               ),
+             ),
+           ),
++          // Right FABs. El anclaje sale de la propia hoja del mapa: con un 0.38
++          // escrito a mano aquí, mover el reposo de la hoja dejaba el FAB
++          // flotando encima o debajo de ella.
++          Positioned(
++            right: mapChromeMargin,
++            bottom: mapBottomInset + 12,
++            child: Column(
++              children: [
++                EmergencyButton.map(
++                  onGo: (c) => context.push('/destination/${c.id}'),
++                ),
++                const SizedBox(height: 12),
++                // Sin permiso el glifo dice la verdad (ubicación apagada) y
++                // tocarlo reintenta; con él, centra.
++                _MapFab(
++                  icon: _locationDenied && _userLocation == null
++                      ? Icons.location_disabled_rounded
++                      : Icons.my_location_rounded,
++                  muted:
++                      _cameraIntent.locating ||
++                      (_locationDenied && _userLocation == null),
++                  selected: _cameraIntent.mode == HomeCameraMode.user,
++                  semanticsLabel: context.l(
++                    _locationDenied && _userLocation == null
++                        ? S.recenterMapNoPermission
++                        : _cameraIntent.mode == HomeCameraMode.user
++                        ? S.planScopeCountry
++                        : S.recenterMap,
++                  ),
++                  onTap: _cameraIntent.locating ? null : _recenter,
++                ),
++              ],
++            ),
++          ),
+           // Cuántos puntos del tipo elegido hay en pantalla, sobre el dock y
+           // por encima del logo de Mapbox, que no se puede tapar (sube con el
+           // mismo margen que le da el mapa).
+@@ -920,68 +942,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
+               bottom: bottomNavClearance(context) + _pinCardGap,
+               child: SizeReporter(
+                 onSize: _onDotCardSize,
+-                child: CompositedTransformTarget(
+-                  link: _dotCardLink,
+-                  child: MapPointCard(
+-                    data: dotCard,
+-                    onDirections: _resolvingDot
+-                        ? null
+-                        : () => unawaited(_directionsTo(selectedDot)),
+-                    onDismiss: () => setState(() => _selectedDot = null),
+-                  ),
++                child: MapPointCard(
++                  data: dotCard,
++                  onDirections: _resolvingDot
++                      ? null
++                      : () => unawaited(_directionsTo(selectedDot)),
++                  onDismiss: () => setState(() => _selectedDot = null),
+                 ),
+               ),
+             ),
+-          // Right FABs. Sin card de punto, el anclaje sale de la propia hoja del
+-          // mapa: con un 0.38 escrito a mano aquí, mover el reposo de la hoja
+-          // dejaba el FAB flotando encima o debajo de ella. Con la card de un
+-          // punto puesta, la columna se cuelga de su borde superior con un
+-          // [CompositedTransformFollower]: se coloca al componer el mismo frame
+-          // en que la card se maqueta, sin esperar a que el [SizeReporter] avise
+-          // y la pantalla se reconstruya (esa espera era un frame con la
+-          // columna encima de la card). Va después de la card porque el
+-          // seguidor tiene que pintarse tras su líder, y lleva clave para que el
+-          // SOS y el botón de ubicación conserven su estado al cambiar de sitio
+-          // en la lista.
+-          Positioned(
+-            key: _floatingControlsKey,
+-            right: mapChromeMargin,
+-            bottom: mapBottomInset + 12,
+-            child: CompositedTransformFollower(
+-              link: _dotCardLink,
+-              showWhenUnlinked: true,
+-              targetAnchor: Alignment.topRight,
+-              followerAnchor: Alignment.bottomRight,
+-              offset: const Offset(0, -_dotCardAir),
+-              child: Column(
+-                children: [
+-                  EmergencyButton.map(
+-                    onGo: (c) => context.push('/destination/${c.id}'),
+-                  ),
+-                  const SizedBox(height: 12),
+-                  // Sin permiso el glifo dice la verdad (ubicación apagada) y
+-                  // tocarlo reintenta; con él, centra.
+-                  _MapFab(
+-                    icon: _locationDenied && _userLocation == null
+-                        ? Icons.location_disabled_rounded
+-                        : Icons.my_location_rounded,
+-                    muted:
+-                        _cameraIntent.locating ||
+-                        (_locationDenied && _userLocation == null),
+-                    selected: _cameraIntent.mode == HomeCameraMode.user,
+-                    semanticsLabel: context.l(
+-                      _locationDenied && _userLocation == null
+-                          ? S.recenterMapNoPermission
+-                          : _cameraIntent.mode == HomeCameraMode.user
+-                          ? S.planScopeCountry
+-                          : S.recenterMap,
+-                    ),
+-                    onTap: _cameraIntent.locating ? null : _recenter,
+-                  ),
+-                ],
+-              ),
+-            ),
+-          ),
+           // Pin tap card - floating preview at the bottom (3R). Slides up over
+           // the persistent sheet; swiping it browses nearby pins.
+           if (_selectedDestination != null)
