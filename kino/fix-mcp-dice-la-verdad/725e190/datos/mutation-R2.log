@@ -1,0 +1,32 @@
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agent-connections
+
+(node:572864) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ |node| src/features/mcp/auth.test.ts (17 tests | 1 failed) 39ms
+     × una máquina de pruebas firma con su propio kid, y su mitad pública lo lleva 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |node| src/features/mcp/auth.test.ts > mintConvexToken · el token que Convex valida > una máquina de pruebas firma con su propio kid, y su mitad pública lo lleva
+AssertionError: expected 'kino-mcp' to be 'kino-mcp-agentbox' // Object.is equality
+
+Expected: "kino-mcp-agentbox"
+Received: "kino-mcp"
+
+ ❯ src/features/mcp/auth.test.ts:115:48
+    113|     try {
+    114|       const token = await mintConvexToken({ clerkId: "user_123", scope…
+    115|       expect(decodeProtectedHeader(token).kid).toBe("kino-mcp-agentbox…
+       |                                                ^
+    116|       expect(publicJwks({ kty: "EC", crv: "P-256", x: "x", y: "y" }).k…
+    117|     } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  19:23:13
+   Duration  793ms (transform 166ms, setup 0ms, import 598ms, tests 39ms, environment 0ms)
+
