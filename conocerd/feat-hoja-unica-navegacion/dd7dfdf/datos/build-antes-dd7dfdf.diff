@@ -1,0 +1,72 @@
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index ad3be7ad..1c7166c2 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -2127,22 +2127,14 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+     await _pushManeuverArrow();
+   }
+ 
+-  /// Escribe la ruta que falta en la capa de los legs futuros. Con la llegada
+-  /// confirmada el leg cumplido no se dibuja: ver [futureRoutePoints].
+   Future<void> _pushFutureLegs(List<LatLng> allPoints) async {
+     final map = _map;
+-    if (map == null || !_sceneReady || !mounted) return;
+-    final trip = ref.read(activeTripProvider);
+-    final points = futureRoutePoints(
+-      allPoints,
+-      currentLeg: trip.currentLegPolylinePoints,
+-      arrived: _arrived(trip.status),
+-    );
++    if (map == null || !_sceneReady) return;
+     try {
+       await map.style.setStyleSourceProperty(
+         _futureSrcId,
+         'data',
+-        _lineFc(points),
++        _lineFc(allPoints),
+       );
+     } catch (_) {}
+   }
+@@ -3012,16 +3004,6 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+         unawaited(_pushCurrentLeg());
+         unawaited(_pushManeuverArrow());
+       }
+-      // La capa de legs futuros lleva la ruta entera: el leg cumplido sale de
+-      // ella al confirmar la llegada y vuelve si el viaje retoma ese leg. Al
+-      // pasar a `loading` (seguir hacia la parada siguiente) se deja como
+-      // está: el leg viejo no reaparece mientras llega la ruta nueva.
+-      if (_arrived(prev ?? next) != _arrived(next) &&
+-          next != TripStatus.loading) {
+-        unawaited(
+-          _pushFutureLegs(ref.read(activeTripProvider).routePolylinePoints),
+-        );
+-      }
+     });
+     ref.listen(activeTripProvider.select((s) => s.activeStepIndex), (
+       prev,
+@@ -3139,25 +3121,6 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+   }
+ }
+ 
+-/// Lo que dibuja la capa de legs futuros. [route] es la ruta que falta desde
+-/// la parada actual, con el leg en curso al principio ([currentLeg]). Con la
+-/// llegada confirmada ([arrived]) ese leg ya se cumplió y no se dibuja: quedan
+-/// los legs que le siguen (nada, si era el último). Sin llegada, o si [route]
+-/// no empieza por [currentLeg], es la ruta entera.
+-List<LatLng> futureRoutePoints(
+-  List<LatLng> route, {
+-  required List<LatLng> currentLeg,
+-  required bool arrived,
+-}) {
+-  final n = currentLeg.length;
+-  if (!arrived || n == 0 || route.length < n) return route;
+-  if (route.first != currentLeg.first || route[n - 1] != currentLeg.last) {
+-    return route;
+-  }
+-  final rest = route.sublist(n);
+-  return rest.length < 2 ? const [] : rest;
+-}
+-
+ /// El aro de un punto del corredor: blanco sobre el suelo claro, el propio
+ /// suelo de noche (un aro blanco brillaba más que el punto).
+ Color corridorDotStroke(bool night) =>
