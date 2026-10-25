@@ -1,0 +1,17 @@
+Cold start at the last step of the thread, then "Entrar a la app" (kill with `am force-stop` at the first steps screen, relaunch, tap).
+A run is "stalled" when the account listener did not show the finished profile within the 10 s the finish waits
+(`CRD_PERFIL_SIN_CONFIRMAR 10002 ms`; the screen then says it is still confirming and the traveler taps again).
+Driver: tools/hilo_pares.sh visitor path (diag copies under arranque-frio/ in the evidence folder), emulator-5554, 430x748.
+
+build                                              attempts  stalled  notes
+ed6c92b (round 8)                                  8         2        one of them in the A/B alternation (ok, stalled, ok)
+6805200e (round 9 before the integration merge)    2         0
+24e18467 (merge of #225 into the branch)           2         1
+2a58fc6 (this round's APK, lib identical to head)  9         6        in the A/B alternation: ok, ok (third pair not run)
+2a58fc6 lib plus two debug prints                  3         2
+
+In the stalled runs the draft was on the device with its owner, `terminar` was not refused (the debug build logged
+`terminar owner==uid true`), the write went through (a cold relaunch landed on Explorar) and the second tap confirmed
+(`CRD_PERFIL_CONFIRMADO` after `CRD_PERFIL_SIN_CONFIRMAR`, in every run where the driver tapped again).
+The round 8 build stalls too, so the stall predates round 9; the sample does not separate the rates between builds.
+Cause not found: the doc listener does not deliver the transaction's `completed` within 10 s on some cold starts.
