@@ -1,0 +1,48 @@
+# Round 4 sabotage diffs, each applied alone to head 8e4d93a (trace_store.dart), then reverted
+
+## x_stop_no_start_wait
+diff --git i/lib/features/navigation/data/services/simulation/trace_store.dart w/lib/features/navigation/data/services/simulation/trace_store.dart
+index 03f2b414..372dca09 100644
+--- i/lib/features/navigation/data/services/simulation/trace_store.dart
++++ w/lib/features/navigation/data/services/simulation/trace_store.dart
+@@ -530,7 +530,2 @@ class TraceRecorder {
+     if (_startFuture != null) {
+-      try {
+-        await _startFuture;
+-      } on Object {
+-        // El fallo de la apertura ya lo registró [start].
+-      }
+     }
+
+## x_stop_no_abandonclose_wait
+diff --git i/lib/features/navigation/data/services/simulation/trace_store.dart w/lib/features/navigation/data/services/simulation/trace_store.dart
+index 03f2b414..1deeadf2 100644
+--- i/lib/features/navigation/data/services/simulation/trace_store.dart
++++ w/lib/features/navigation/data/services/simulation/trace_store.dart
+@@ -547,3 +547,2 @@ class TraceRecorder {
+           .catchError((Object _) {});
+-      await _abandonClose;
+       return id;
+
+## x_no_opened_guard
+diff --git i/lib/features/navigation/data/services/simulation/trace_store.dart w/lib/features/navigation/data/services/simulation/trace_store.dart
+index 03f2b414..f2be889f 100644
+--- i/lib/features/navigation/data/services/simulation/trace_store.dart
++++ w/lib/features/navigation/data/services/simulation/trace_store.dart
+@@ -353,3 +353,3 @@ class TraceRecorder {
+     final output = _output;
+-    if (output == null || !_opened || _stopFuture != null) return;
++    if (output == null || _stopFuture != null) return;
+     _abandonClose = _writeChain
+
+## x_stop_no_late_abandon_close
+diff --git i/lib/features/navigation/data/services/simulation/trace_store.dart w/lib/features/navigation/data/services/simulation/trace_store.dart
+index 03f2b414..291ab4c5 100644
+--- i/lib/features/navigation/data/services/simulation/trace_store.dart
++++ w/lib/features/navigation/data/services/simulation/trace_store.dart
+@@ -544,5 +544,2 @@ class TraceRecorder {
+       // que este stop() empezara, abandon() no cerró nada y se cierra aquí.
+-      _abandonClose ??= _writeChain
+-          .then<void>((_) => output.close())
+-          .catchError((Object _) {});
+       await _abandonClose;
