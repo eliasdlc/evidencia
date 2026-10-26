@@ -1,0 +1,26 @@
+Sanitized: 0 U+2014 and 0 U+00B7 replaced by a hyphen, 3 fixture UUIDs masked
+...F...F.....................
+======================================================================
+FAIL: test_cli_out_file_has_no_token_and_nothing_is_printed (test_app_check_defines.ReleaseDefinesTests.test_cli_out_file_has_no_token_and_nothing_is_printed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/.cache/conocerd-rework/app-check/pr-r2/copy/scripts/tests/test_app_check_defines.py", line 87, in test_cli_out_file_has_no_token_and_nothing_is_printed
+    self.assertNotIn(EMULATOR, out.read_text())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '<fixture-uuid>' unexpectedly found in '{\n  "MAPBOX_ACCESS_TOKEN": "pk.x",\n  "CONOCERD_API_URL": "https://api",\n  "APP_CHECK_DEBUG_TOKEN": "<fixture-uuid>"\n}\n'
+
+======================================================================
+FAIL: test_release_defines_drop_the_emulator_token_and_keep_the_rest (test_app_check_defines.ReleaseDefinesTests.test_release_defines_drop_the_emulator_token_and_keep_the_rest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/.cache/conocerd-rework/app-check/pr-r2/copy/scripts/tests/test_app_check_defines.py", line 74, in test_release_defines_drop_the_emulator_token_and_keep_the_rest
+    self.assertNotIn('APP_CHECK_DEBUG_TOKEN', result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'APP_CHECK_DEBUG_TOKEN' unexpectedly found in {'MAPBOX_ACCESS_TOKEN': 'pk.x', 'CONOCERD_API_URL': 'https://api', 'APP_CHECK_DEBUG_TOKEN': '<fixture-uuid>'}
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.023s
+
+FAILED (failures=2)
+https://console.firebase.google.com/project/x/appdistribution/app/android:x/releases/abc
+exit=1
