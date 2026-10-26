@@ -1,0 +1,45 @@
+# mutation R3-espera: src/features/settings/AgentsSection.tsx
+# '.filter((c) => c.kind === cliente.id)' -> ".filter((c) => c.kind === 'claude')"
+# pnpm vitest run src/features/settings/AgentsSection.test.tsx
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agentes-conectados
+
+ ❯ |dom| src/features/settings/AgentsSection.test.tsx (11 tests | 1 failed) 796ms
+     × con un Claude Code conectado su pestaña deja de esperar y las demás siguen esperando 29ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  02:07:44
+   Duration  2.27s (transform 249ms, setup 159ms, import 542ms, tests 796ms, environment 618ms)
+
+(node:941123) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:941151) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/features/settings/AgentsSection.test.tsx > AgentsSection > con un Claude Code conectado su pestaña deja de esperar y las demás siguen esperando
+AssertionError: expected <p …(2)></p> to be null
+
+- Expected:
+null
+
++ Received:
+<p
+  aria-live="polite"
+  class="text-sm text-muted-foreground"
+>
+  Esperando la primera llamada de Claude Code. Esta línea cambia sola cuando llegue.
+</p>
+
+ ❯ src/features/settings/AgentsSection.test.tsx:172:58
+    170|     renderWithProviders(<AgentsSection />, { convex: conLista() });
+    171|
+    172|     expect(screen.queryByText(esperando("Claude Code"))).toBeNull();
+       |                                                          ^
+    173|     expect(
+    174|       screen.getByText("Última llamada de Claude Code hace 4 minutos. …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
