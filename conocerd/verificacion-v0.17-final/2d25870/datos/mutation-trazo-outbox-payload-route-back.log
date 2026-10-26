@@ -1,0 +1,50 @@
+# mutation-trazo-outbox-payload-route-back at 2d25870f, Flutter 3.47.7 local; U+2014 and U+00B7 replaced by a hyphen: 0
+# applied:
+# diff --git i/lib/features/diary/data/repositories/firestore_diary_repository.dart w/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# index ad63e3cb..d0026289 100644
+# --- i/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# +++ w/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# @@ -306,6 +306,7 @@ class FirestoreDiaryRepository implements DiaryRepository {
+#          'stickers': [for (final sticker in entry.stickers) sticker.toMap()],
+#          'visitDate': entry.visitDate.millisecondsSinceEpoch,
+#          'createdAt': entry.createdAt.millisecondsSinceEpoch,
+# +        if (entry.route.isNotEmpty) 'route': [for (final p in entry.route) ...[p.latitude, p.longitude]],
+#        },
+#      };
+#      if (!await outbox!.enqueue(entry.userId, 'POST', '/diarys', body)) {
+# flutter test --no-pub test/features/diary/visit_route_local_test.dart
+
+00:00 +0: loading test/features/diary/visit_route_local_test.dart
+00:00 +0: the route never leaves the phone the Firestore document has no route, on create and on edit
+00:00 +1: the route never leaves the phone the outbox payload has no route, on create and on edit
+00:00 +1 -1: the route never leaves the phone the outbox payload has no route, on create and on edit [E]
+  Expected: not contains 'route'
+    Actual: {
+              'destinationId': 'macao',
+              'destinationName': 'Playa Macao',
+              'title': 'Playa Macao',
+              'content': 'Llegaste',
+              'rating': 0,
+              'photoUrls': [],
+              'stickers': [],
+              'visitDate': 1792334520000,
+              'createdAt': 1792334580000,
+              'route': [19.4489, -70.695, 19.4498, -70.6949, 19.4507, -70.6947]
+            }
+  
+  package:matcher                                       expect
+  package:flutter_test/src/widget_tester.dart 473:18    expect
+  test/features/diary/visit_route_local_test.dart 96:9  main.<fn>.<fn>
+  
+00:00 +1 -1: the diary shows the route saved on this phone an entry reads back its route from the local store
+00:00 +2 -1: the diary shows the route saved on this phone a queued entry reads back its route too
+00:00 +3 -1: the diary shows the route saved on this phone another device or a fresh install shows the entry without a route, without errors
+00:00 +4 -1: the diary shows the route saved on this phone an unreadable route file reads as no route
+00:00 +5 -1: the diary shows the route saved on this phone an edit that does not know the route keeps the local one and uploads nothing
+00:00 +6 -1: deleting an entry deletes its route the local file goes with the entry
+00:00 +7 -1: VisitRouteStore keeps what it is given at the stored precision and clears it
+00:00 +8 -1: VisitRouteStore a route too short to draw is not stored and keeps the old one
+00:00 +9 -1: Some tests failed.
+
+Failing tests:
+  test/features/diary/visit_route_local_test.dart: the route never leaves the phone the outbox payload has no route, on create and on edit
