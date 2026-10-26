@@ -1,0 +1,21 @@
+# T663-glue-W4 at 2d25870f, Flutter 3.47.7 local; U+2014 and U+00B7 replaced by a hyphen: 0
+# lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+# - '    await _futureLegs.routeChanged(future, futureChanged: futureChanged);'
+# + '    if (futureChanged && !currentChanged) return;\n    await _futureLegs.routeChanged(future, futureChanged: futureChanged);'
+# flutter test --no-pub test/features/navigation/presentation/widgets/future_legs_layer_test.dart
+
+00:00 +0: loading test/features/navigation/presentation/widgets/future_legs_layer_test.dart
+00:00 +0: antes de que el estilo cargue no se escribe nada
+00:00 +1: al cargar el estilo se siembra con la ruta del estado
+00:00 +2: el estilo que carga con la llegada ya confirmada nace sin el leg cumplido
+00:00 +3: confirmar la llegada reescribe la capa sin el leg cumplido
+00:00 +4: en el último leg la llegada deja la capa vacía
+00:00 +5: volver de la llegada devuelve el leg a la capa
+00:00 +6: seguir hacia la parada siguiente deja la capa como está
+00:00 +7: un cambio de estado que no cruza la llegada no escribe
+00:00 +8: una ruta nueva que solo cambia los legs futuros se escribe
+00:00 +9: una ruta nueva con la llegada confirmada tampoco pinta el leg cumplido
+00:00 +10: si los legs futuros no cambiaron no se reescriben
+00:00 +11: desmontada la capa no escribe, ni por el estado ni por la ruta
+00:00 +12: una escritura que falla no se propaga y la siguiente reintenta
+00:00 +13: All tests passed!
