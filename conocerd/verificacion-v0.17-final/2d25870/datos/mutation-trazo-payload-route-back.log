@@ -1,0 +1,186 @@
+# mutation-trazo-payload-route-back at 2d25870f, Flutter 3.47.7 local; U+2014 and U+00B7 replaced by a hyphen: 0
+# applied:
+# diff --git i/lib/features/diary/data/models/diary_model.dart w/lib/features/diary/data/models/diary_model.dart
+# index a53cafcb..1f12dce2 100644
+# --- i/lib/features/diary/data/models/diary_model.dart
+# +++ w/lib/features/diary/data/models/diary_model.dart
+# @@ -14,6 +14,7 @@ class DiaryModel extends Diary {
+#      super.stickers = const [],
+#      required super.visitDate,
+#      required super.createdAt,
+# +    super.route = const [],
+#    });
+#  
+#    factory DiaryModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+# @@ -51,5 +52,6 @@ class DiaryModel extends Diary {
+#          'stickers': stickers.map((s) => s.toMap()).toList(),
+#          'visitDate': Timestamp.fromDate(visitDate),
+#          'createdAt': Timestamp.fromDate(createdAt),
+# +        if (route.isNotEmpty) 'route': [for (final p in route) ...[p.latitude, p.longitude]],
+#        };
+#  }
+# diff --git i/lib/features/diary/data/repositories/firestore_diary_repository.dart w/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# index ad63e3cb..357ad015 100644
+# --- i/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# +++ w/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# @@ -143,6 +143,7 @@ class FirestoreDiaryRepository implements DiaryRepository {
+#          stickers: entry.stickers,
+#          visitDate: entry.visitDate,
+#          createdAt: entry.createdAt,
+# +        route: entry.route,
+#        );
+#        await visitRoutes?.write(entry.id, entry.route);
+#        await _firestore
+# @@ -177,6 +178,7 @@ class FirestoreDiaryRepository implements DiaryRepository {
+#          stickers: entry.stickers,
+#          visitDate: entry.visitDate,
+#          createdAt: entry.createdAt,
+# +        route: entry.route,
+#        );
+#        await visitRoutes?.write(entry.id, entry.route);
+#        await _firestore
+# flutter test --no-pub test/features/diary/diary_composer_route_test.dart test/features/diary/visit_route_local_test.dart test/features/navigation/presentation/widgets/arrival/arrival_route_local_test.dart
+
+00:00 +0: loading test/features/diary/diary_composer_route_test.dart
+00:00 +0: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +0 -1: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +0 -1: test/features/diary/visit_route_local_test.dart: the route never leaves the phone the Firestore document has no route, on create and on edit [E]
+  Expected: not contains 'route'
+    Actual: {
+              'userId': 'u1',
+              'destinationId': 'macao',
+              'destinationName': 'Playa Macao',
+              'title': 'Playa Macao',
+              'content': 'Llegaste',
+              'rating': 0,
+              'photoUrls': [],
+              'stickers': [],
+              'visitDate': Timestamp:Timestamp(seconds=1792334520, nanoseconds=0),
+              'createdAt': Timestamp:Timestamp(seconds=1792334580, nanoseconds=0),
+              'route': [19.4489, -70.695, 19.4498, -70.6949, 19.4507, -70.6947]
+            }
+  
+  package:matcher                                       expect
+  package:flutter_test/src/widget_tester.dart 473:18    expect
+  test/features/diary/visit_route_local_test.dart 68:9  main.<fn>.<fn>
+  
+00:00 +1 -1: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +2 -1: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +3 -1: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +4 -1: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +5 -1: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +5 -2: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +5 -2: test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an edit that does not know the route keeps the local one and uploads nothing [E]
+  Expected: not contains 'route'
+    Actual: {
+              'userId': 'u1',
+              'destinationId': 'macao',
+              'destinationName': 'Playa Macao',
+              'title': 'Playa Macao',
+              'content': 'Editada sin recorrido',
+              'rating': 0,
+              'photoUrls': [],
+              'stickers': [],
+              'visitDate': Timestamp:Timestamp(seconds=1792334520, nanoseconds=0),
+              'createdAt': Timestamp:Timestamp(seconds=1792334580, nanoseconds=0),
+              'route': [19.4489, -70.695, 19.4498, -70.6949, 19.4507, -70.6947]
+            }
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/diary/visit_route_local_test.dart 152:7  main.<fn>.<fn>
+  
+00:00 +6 -2: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +7 -2: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +8 -2: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+│ #0   showAddDiaryEntry.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:conocerd/features/diary/presentation/widgets/diary_entry_composer.dart:482:52)
+│ #1   _InkResponseState.handleTap (package:flutter/src/material/ink_well.dart:1224:21)
+├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+│ 💡 Diary save: tap. authenticated=true isEdit=true
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+│ #0   showAddDiaryEntry.<anonymous closure>.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:conocerd/features/diary/presentation/widgets/diary_entry_composer.dart:662:56)
+│ #1   <asynchronous suspension>
+├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+│ 💡 Diary save OK: id=visit-1 dest=Monumento a los Héroes
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: not contains 'route'
+  Actual: {
+            'userId': 'alice',
+            'destinationId': 'monumento',
+            'destinationName': 'Monumento a los Héroes',
+            'title': 'Monumento',
+            'content': 'Fuimos al atardecer',
+            'rating': 0,
+            'photoUrls': [],
+            'stickers': [],
+            'visitDate': Timestamp:Timestamp(seconds=1793049000, nanoseconds=0),
+            'createdAt': Timestamp:Timestamp(seconds=1793049000, nanoseconds=0),
+            'route': [19.4489, -70.695, 19.4498, -70.6949, 19.4507, -70.6947]
+          }
+
+When the exception was thrown, this was the stack:
+#4      main.expectEditKeptTheRouteOnThePhoneOnly (file://test/features/diary/diary_composer_route_test.dart:155:5)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file://test/features/diary/diary_composer_route_test.dart:169:5)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file://test/features/diary/diary_composer_route_test.dart line 155
+The test description was:
+  editing a visit keeps its route on the phone, not in the draft or the document
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +8 -3: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document [E]
+  Test failed. See exception logs above.
+  The test description was: editing a visit keeps its route on the phone, not in the draft or the document
+  
+00:01 +8 -3: test/features/diary/diary_composer_route_test.dart: an edit restored from its draft keeps the route on the phone
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+│ #0   showAddDiaryEntry.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:conocerd/features/diary/presentation/widgets/diary_entry_composer.dart:482:52)
+│ #1   _InkResponseState.handleTap (package:flutter/src/material/ink_well.dart:1224:21)
+├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+│ 💡 Diary save: tap. authenticated=true isEdit=true
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+│ #0   showAddDiaryEntry.<anonymous closure>.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:conocerd/features/diary/presentation/widgets/diary_entry_composer.dart:662:56)
+│ #1   <asynchronous suspension>
+├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+│ 💡 Diary save OK: id=visit-1 dest=Monumento a los Héroes
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+00:02 +9 -3: test/features/navigation/presentation/widgets/arrival/arrival_route_local_test.dart: saving the visit keeps the route on the phone and out of Firestore, and the diary reads it back
+00:02 +9 -4: test/features/navigation/presentation/widgets/arrival/arrival_route_local_test.dart: saving the visit keeps the route on the phone and out of Firestore, and the diary reads it back [E]
+  Expected: not contains 'route'
+    Actual: {
+              'userId': 'u1',
+              'destinationId': 'macao',
+              'destinationName': 'Playa Macao',
+              'title': 'Playa Macao',
+              'content': 'Llegaste a las 10:42 a. m.',
+              'rating': 0,
+              'photoUrls': [],
+              'stickers': [],
+              'visitDate': Timestamp:Timestamp(seconds=1792334520, nanoseconds=0),
+              'createdAt': Timestamp:Timestamp(seconds=1792334580, nanoseconds=0),
+              'route': [18.4835, -69.8905, 18.484, -69.89, 18.485, -69.889]
+            }
+  
+  package:matcher                                                                           expect
+  package:flutter_test/src/widget_tester.dart 473:18                                        expect
+  test/features/navigation/presentation/widgets/arrival/arrival_route_local_test.dart 74:5  main.<fn>
+  
+00:02 +9 -4: Some tests failed.
+
+Failing tests:
+  test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+  test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an edit that does not know the route keeps the local one and uploads nothing
+  test/features/diary/visit_route_local_test.dart: the route never leaves the phone the Firestore document has no route, on create and on edit
+  test/features/navigation/presentation/widgets/arrival/arrival_route_local_test.dart: saving the visit keeps the route on the phone and out of Firestore, and the diary reads it back
