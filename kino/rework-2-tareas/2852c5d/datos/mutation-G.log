@@ -1,0 +1,67 @@
+# mutation-G.log: each G item run on the head with its product line mutated, then restored
+=============== G1 soltar (S1, S2): src/features/tasks/useTachar.ts
+mutation: if (filas.get(taskId)?.gesto === gesto) escribir((m) => m.delete(taskId));  ->  void taskId;
+     × S1: cuando Deshacer termina, la fila del Backlog sigue el estado real otra vez 49ms
+     × S2: si el estado guardado no se escribe, la fila también sigue el estado real 42ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |dom| src/features/tasks/TaskBacklogView.test.tsx > TaskBacklogView > S1: cuando Deshacer termina, la fila del Backlog sigue el estado real otra vez
+AssertionError: expected [ 'Leer el capítulo dos', …(1) ] to deeply equal [ 'Pedir la beca' ]
+ FAIL  |dom| src/features/tasks/TaskBacklogView.test.tsx > TaskBacklogView > S2: si el estado guardado no se escribe, la fila también sigue el estado real
+AssertionError: expected [ 'Leer el capítulo dos', …(1) ] to deeply equal [ 'Pedir la beca' ]
+ Test Files  1 failed (1)
+      Tests  2 failed | 3 passed (5)
+restored: 0 diff lines on src/features/tasks/useTachar.ts
+=============== G2 gesto identity in pasar: src/features/tasks/useTachar.ts
+mutation: if (fila?.gesto !== gesto || fila.fase !== de) return false;  ->  if (!fila || fila.fase !== de) return false;
+     × G2: el Deshacer tardío de un gesto viejo no deshace la tachadura nueva 53ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |dom| src/features/tasks/useTachar.test.tsx > useListaTachable > G2: el Deshacer tardío de un gesto viejo no deshace la tachadura nueva
+AssertionError: expected [ { kind: 'mutation', …(2) }, …(2) ] to have a length of 2 but got 3
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+restored: 0 diff lines on src/features/tasks/useTachar.ts
+=============== G3 retachar: src/features/tasks/useTachar.ts
+mutation: void pasar(taskId, gesto, 'deshaciendo', 'tachada')  ->  void taskId
+     × G3: si reabrir falla, la fila vuelve a quedar tachada y su círculo ofrece Deshacer otra vez 27ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |dom| src/features/tasks/useTachar.test.tsx > useListaTachable > G3: si reabrir falla, la fila vuelve a quedar tachada y su círculo ofrece Deshacer otra vez
+AssertionError: expected null not to be null
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+restored: 0 diff lines on src/features/tasks/useTachar.ts
+=============== G4 antes kept on re-strike: src/features/tasks/useTachar.ts
+mutation: const antes = previa?.antes ?? {  ->  const antes = {
+     × G4: tachar otra vez mientras Deshacer escribe conserva el sitio de antes 33ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |dom| src/features/tasks/useTachar.test.tsx > useListaTachable > G4: tachar otra vez mientras Deshacer escribe conserva el sitio de antes
+AssertionError: expected [ 'tasks:update', 'tasks:toggle' ] to deeply equal [ 'tasks:toggle', 'tasks:update' ]
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+restored: 0 diff lines on src/features/tasks/useTachar.ts
+=============== G5a AcademicTaskViews unwrapped from conVisita: src/features/academic/AcademicTaskViews.tsx
+mutation: conVisita(function AcademicTaskViews(  ->  (function AcademicTaskViews(
+     × O1: completar desde la hoja deja la fila de la semana tachada en su sitio 232ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |dom| src/features/academic/AcademicTaskViews.completar.test.tsx > AcademicTaskViews > O1: completar desde la hoja deja la fila de la semana tachada en su sitio
+AssertionError: expected [ 'Estudiar' ] to include 'Entregar el informe'
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+restored: 0 diff lines on src/features/academic/AcademicTaskViews.tsx
+=============== G5b SystemProjectView unwrapped from conVisita: src/features/systems/views/SystemProjectView.tsx
+mutation: conVisita(function SystemProjectView(  ->  (function SystemProjectView(
+     × O3: completar desde la hoja en Planificación deja la fila tachada en su sitio 282ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |dom| src/features/systems/views/SystemProjectView.completar.test.tsx > SystemProjectView > O3: completar desde la hoja en Planificación deja la fila tachada en su sitio
+AssertionError: expected [ 'Estudiar' ] to include 'Entregar el informe'
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+restored: 0 diff lines on src/features/systems/views/SystemProjectView.tsx
+=============== G7 circle undo no longer dismisses the toast: src/features/tasks/useTachar.ts
+mutation: if (previa.gesto.aviso !== undefined) toast.dismiss(previa.gesto.aviso);  ->  void 0;
+     × deshacer con el círculo cierra el aviso y el Deshacer del aviso ya no hace nada 9ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |dom| src/features/tasks/useTachar.test.tsx > useListaTachable > deshacer con el círculo cierra el aviso y el Deshacer del aviso ya no hace nada
+AssertionError: expected "vi.fn()" to be called with arguments: [ 'aviso' ]
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+restored: 0 diff lines on src/features/tasks/useTachar.ts
