@@ -1,0 +1,696 @@
+FF.FFFFFFFFFF.FF                                [100%]
+=================================== FAILURES ===================================
+___ CoverageTests.test_a_declared_covers_path_must_be_a_file_the_pr_changed ____
+
+self = <test_proof.CoverageTests testMethod=test_a_declared_covers_path_must_be_a_file_the_pr_changed>
+
+    def test_a_declared_covers_path_must_be_a_file_the_pr_changed(self):
+        calls = []
+    
+        def pr_files(sha):
+            calls.append(sha)
+            return PR_FILES
+        src = deep_sources(pr_files)
+        self.assertEqual(by_row(ROWS, src=src).failures, [])
+>       self.assertEqual(calls, [HEAD[:7]])
+E       AssertionError: Lists differ: [] != ['f00ba12']
+E       
+E       Second list contains 1 additional elements.
+E       First extra element 0:
+E       'f00ba12'
+E       
+E       - []
+E       + ['f00ba12']
+
+tests/test_proof.py:1082: AssertionError
+________ CoverageTests.test_a_fix_two_imports_away_makes_the_row_stale _________
+
+self = <test_proof.CoverageTests testMethod=test_a_fix_two_imports_away_makes_the_row_stale>
+
+    def test_a_fix_two_imports_away_makes_the_row_stale(self):
+        self.assertEqual(by_row(ROWS, since_old("lib/other.dart"), deep_sources()).failures, [])
+        found = by_row(ROWS, since_old("lib/deep.dart"), deep_sources()).failures
+>       self.assertTrue(any("R2: suite.log at a1b2c3d is stale" in f for f in found), found)
+E       AssertionError: False is not true : []
+
+tests/test_proof.py:1040: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='requirements.txt') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='requirements-dev.txt') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='pyproject.toml') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='setup.cfg') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='Pipfile') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='Pipfile.lock') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='package.json') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='pnpm-lock.yaml') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='package-lock.json') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='yarn.lock') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='pubspec.yaml') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='pubspec.lock') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='go.mod') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='go.sum') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='Cargo.toml') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='Cargo.lock') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='Gemfile') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='Gemfile.lock') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='build.gradle') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='app/android/app/build.gradle.kts') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='android/gradle.properties') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+_ CoverageTests.test_a_manifest_or_a_lockfile_makes_every_row_stale (name='app/pubspec.lock') _
+
+self = <test_proof.CoverageTests testMethod=test_a_manifest_or_a_lockfile_makes_every_row_stale>
+
+    def test_a_manifest_or_a_lockfile_makes_every_row_stale(self):
+        names = ("requirements.txt", "requirements-dev.txt", "pyproject.toml", "setup.cfg", "Pipfile", "Pipfile.lock",
+                 "package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "pubspec.yaml", "pubspec.lock",
+                 "go.mod", "go.sum", "Cargo.toml", "Cargo.lock", "Gemfile", "Gemfile.lock", "build.gradle",
+                 "app/android/app/build.gradle.kts", "android/gradle.properties", "app/pubspec.lock")
+        for name in names:
+            with self.subTest(name=name):
+                found = by_row(ROWS, since_old(name), deep_sources()).failures
+                for req in ("R1", "R2"):
+>                   self.assertTrue(any(f"{req}:" in f and "is stale" in f for f in found), (req, found))
+E                   AssertionError: False is not true : ('R1', [])
+
+tests/test_proof.py:1057: AssertionError
+__________ CoverageTests.test_a_pr_that_cannot_be_listed_fails_closed __________
+
+self = <test_proof.CoverageTests testMethod=test_a_pr_that_cannot_be_listed_fails_closed>
+
+    def test_a_pr_that_cannot_be_listed_fails_closed(self):
+        def broken(sha):
+            raise RuntimeError("the tree of dev is truncated")
+        found = by_row(ROWS, src=deep_sources(broken)).failures
+>       self.assertTrue(any("truncated" in f for f in found), found)
+E       AssertionError: False is not true : []
+
+tests/test_proof.py:1097: AssertionError
+____________ CoverageTests.test_imports_are_followed_through_cycles ____________
+
+self = <test_proof.CoverageTests testMethod=test_imports_are_followed_through_cycles>
+
+    def test_imports_are_followed_through_cycles(self):
+        tree = {"a.py", "b.py", "c.py"}
+        texts = {"a.py": "import b\n", "b.py": "import c\nimport a\n", "c.py": "import b\n"}
+>       self.assertEqual(proof.closure({"a.py"}, tree, lambda path: texts.get(path)), tree)
+                         ^^^^^^^^^^^^^
+E       AttributeError: module 'proof' has no attribute 'closure'
+
+tests/test_proof.py:1046: AttributeError
+_______ CoverageTests.test_only_words_that_look_like_paths_are_declared ________
+
+self = <test_proof.CoverageTests testMethod=test_only_words_that_look_like_paths_are_declared>
+
+    def test_only_words_that_look_like_paths_are_declared(self):
+        tree = {"lib/ui/settings.dart", "Makefile", "lib/a.dart"}
+>       self.assertEqual(proof.declared_paths("the settings screen, see notes", tree), set())
+                         ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'proof' has no attribute 'declared_paths'
+
+tests/test_proof.py:1069: AttributeError
+_ CoverageTests.test_the_phrase_the_generator_writes_means_every_product_file __
+
+self = <test_proof.CoverageTests testMethod=test_the_phrase_the_generator_writes_means_every_product_file>
+
+    def test_the_phrase_the_generator_writes_means_every_product_file(self):
+>       for cell in (proof.ALL_PRODUCT, f"`{proof.ALL_PRODUCT}`", proof.ALL_PRODUCT.capitalize() + "."):
+                     ^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'proof' has no attribute 'ALL_PRODUCT'
+
+tests/test_proof.py:1060: AttributeError
+_ SinceTheProofTests.test_a_merge_of_the_base_after_the_proof_changes_nothing __
+
+self = <test_proof.SinceTheProofTests testMethod=test_a_merge_of_the_base_after_the_proof_changes_nothing>
+
+    def test_a_merge_of_the_base_after_the_proof_changes_nothing(self):
+>       changed = proof.local_changed_since("dev")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'proof' has no attribute 'local_changed_since'
+
+tests/test_proof.py:1134: AttributeError
+_ SinceTheProofTests.test_a_proof_that_is_not_in_the_history_is_not_an_ancestor _
+
+self = <test_proof.SinceTheProofTests testMethod=test_a_proof_that_is_not_in_the_history_is_not_an_ancestor>
+
+    def test_a_proof_that_is_not_in_the_history_is_not_an_ancestor(self):
+>       self.assertIsNone(proof.local_changed_since("dev")(self.head, self.proof))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'proof' has no attribute 'local_changed_since'
+
+tests/test_proof.py:1143: AttributeError
+_____ SinceTheProofTests.test_the_old_and_new_dates_pick_their_own_listing _____
+
+self = <test_proof.SinceTheProofTests testMethod=test_the_old_and_new_dates_pick_their_own_listing>
+
+    def test_the_old_and_new_dates_pick_their_own_listing(self):
+        git_in(self.top, "mv", "lib/old.py", "tests_new.py")
+        git_in(self.top, "commit", "-qm", "move")
+        head = git_in(self.top, "rev-parse", "HEAD")
+        # origin/dev listed a moved file under its new name only
+>       self.assertEqual(proof.local_changed_for(None, LEGACY)(self.proof, head), ["from_dev.py", "tests_new.py"])
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'proof' has no attribute 'local_changed_for'. Did you mean: 'local_changed'?
+
+tests/test_proof.py:1156: AttributeError
+_ SinceTheProofTests.test_the_pr_files_are_what_the_branch_changed_since_the_fork _
+
+self = <test_proof.SinceTheProofTests testMethod=test_the_pr_files_are_what_the_branch_changed_since_the_fork>
+
+    def test_the_pr_files_are_what_the_branch_changed_since_the_fork(self):
+>       src = proof.local_sources("dev")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: local_sources() takes 0 positional arguments but 1 was given
+
+tests/test_proof.py:1146: TypeError
+_ RemoteSinceTheProofTests.test_a_file_moved_since_the_proof_counts_under_both_names _
+
+self = <test_proof.RemoteSinceTheProofTests testMethod=test_a_file_moved_since_the_proof_counts_under_both_names>
+
+    def test_a_file_moved_since_the_proof_counts_under_both_names(self):
+        trees = {self.P: {"lib/old.py": "s1"}, self.H: {"tests/new.py": "s1"}, "dev": {"lib/old.py": "s1"}}
+>       found = self.run_with(fake_trees(trees), lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_proof.py:1201: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_proof.py:1184: in run_with
+    return call()
+           ^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   found = self.run_with(fake_trees(trees), lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'proof' has no attribute 'remote_changed_since'. Did you mean: 'remote_changed'?
+
+tests/test_proof.py:1201: AttributeError
+_ RemoteSinceTheProofTests.test_a_proof_that_is_not_behind_the_head_is_not_an_ancestor _
+
+self = <test_proof.RemoteSinceTheProofTests testMethod=test_a_proof_that_is_not_behind_the_head_is_not_an_ancestor>
+
+    def test_a_proof_that_is_not_behind_the_head_is_not_an_ancestor(self):
+        trees = {self.P: {}, self.H: {}, "dev": {}}
+>       found = self.run_with(fake_trees(trees, status="diverged"),
+                              lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+
+tests/test_proof.py:1214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_proof.py:1184: in run_with
+    return call()
+           ^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'proof' has no attribute 'remote_changed_since'. Did you mean: 'remote_changed'?
+
+tests/test_proof.py:1215: AttributeError
+_ RemoteSinceTheProofTests.test_a_tree_cut_by_github_fails_closed (cut='1111111111111111111111111111111111111111') _
+
+self = <test_proof.RemoteSinceTheProofTests testMethod=test_a_tree_cut_by_github_fails_closed>
+
+    def test_a_tree_cut_by_github_fails_closed(self):
+        for cut in (self.P, self.H, "dev"):
+            with self.subTest(cut=cut):
+                trees = {self.P: {"a.py": "s1"}, self.H: {"a.py": "s1"}, "dev": {"a.py": "s1"}, cut: "truncated"}
+                with self.assertRaises(RuntimeError) as caught:
+>                   self.run_with(fake_trees(trees), lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+
+tests/test_proof.py:1209: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_proof.py:1184: in run_with
+    return call()
+           ^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   self.run_with(fake_trees(trees), lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'proof' has no attribute 'remote_changed_since'. Did you mean: 'remote_changed'?
+
+tests/test_proof.py:1209: AttributeError
+_ RemoteSinceTheProofTests.test_a_tree_cut_by_github_fails_closed (cut='2222222222222222222222222222222222222222') _
+
+self = <test_proof.RemoteSinceTheProofTests testMethod=test_a_tree_cut_by_github_fails_closed>
+
+    def test_a_tree_cut_by_github_fails_closed(self):
+        for cut in (self.P, self.H, "dev"):
+            with self.subTest(cut=cut):
+                trees = {self.P: {"a.py": "s1"}, self.H: {"a.py": "s1"}, "dev": {"a.py": "s1"}, cut: "truncated"}
+                with self.assertRaises(RuntimeError) as caught:
+>                   self.run_with(fake_trees(trees), lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+
+tests/test_proof.py:1209: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_proof.py:1184: in run_with
+    return call()
+           ^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   self.run_with(fake_trees(trees), lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'proof' has no attribute 'remote_changed_since'. Did you mean: 'remote_changed'?
+
+tests/test_proof.py:1209: AttributeError
+_ RemoteSinceTheProofTests.test_a_tree_cut_by_github_fails_closed (cut='dev') __
+
+self = <test_proof.RemoteSinceTheProofTests testMethod=test_a_tree_cut_by_github_fails_closed>
+
+    def test_a_tree_cut_by_github_fails_closed(self):
+        for cut in (self.P, self.H, "dev"):
+            with self.subTest(cut=cut):
+                trees = {self.P: {"a.py": "s1"}, self.H: {"a.py": "s1"}, "dev": {"a.py": "s1"}, cut: "truncated"}
+                with self.assertRaises(RuntimeError) as caught:
+>                   self.run_with(fake_trees(trees), lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+
+tests/test_proof.py:1209: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_proof.py:1184: in run_with
+    return call()
+           ^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   self.run_with(fake_trees(trees), lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'proof' has no attribute 'remote_changed_since'. Did you mean: 'remote_changed'?
+
+tests/test_proof.py:1209: AttributeError
+__ RemoteSinceTheProofTests.test_blobs_decide_what_changed_and_nothing_is_cut __
+
+self = <test_proof.RemoteSinceTheProofTests testMethod=test_blobs_decide_what_changed_and_nothing_is_cut>
+
+    def test_blobs_decide_what_changed_and_nothing_is_cut(self):
+        base = {"a.py": "s1", "from_dev.py": "s2", **{f"docs/f{n}.md": f"d{n}" for n in range(400)}}
+        trees = {self.P: {"a.py": "s1"}, self.H: dict(base), "dev": dict(base)}
+        changed = lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H)
+>       self.assertEqual(self.run_with(fake_trees(trees), changed), [])
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_proof.py:1192: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_proof.py:1184: in run_with
+    return call()
+           ^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   changed = lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'proof' has no attribute 'remote_changed_since'. Did you mean: 'remote_changed'?
+
+tests/test_proof.py:1191: AttributeError
+__ RemoteSinceTheProofTests.test_the_pr_files_come_from_the_trees_at_the_fork __
+
+self = <test_proof.RemoteSinceTheProofTests testMethod=test_the_pr_files_come_from_the_trees_at_the_fork>
+
+    def test_the_pr_files_come_from_the_trees_at_the_fork(self):
+        trees = {self.H: {"a.py": "s1", "fix.py": "s2"}, "1" * 40: {"a.py": "s1"}}
+        src = proof.remote_sources("o/r", "dev")
+>       self.assertEqual(self.run_with(fake_trees(trees), lambda: src.pr_files(self.H[:7])), {"fix.py"})
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_proof.py:1221: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_proof.py:1184: in run_with
+    return call()
+           ^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   self.assertEqual(self.run_with(fake_trees(trees), lambda: src.pr_files(self.H[:7])), {"fix.py"})
+                                                              ^^^^^^^^^^^^
+E   AttributeError: 'Sources' object has no attribute 'pr_files'
+
+tests/test_proof.py:1221: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_proof.py::CoverageTests::test_a_declared_covers_path_must_be_a_file_the_pr_changed
+FAILED tests/test_proof.py::CoverageTests::test_a_fix_two_imports_away_makes_the_row_stale
+SUBFAILED(name='requirements.txt') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='requirements-dev.txt') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='pyproject.toml') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='setup.cfg') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='Pipfile') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='Pipfile.lock') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='package.json') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='pnpm-lock.yaml') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='package-lock.json') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='yarn.lock') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='pubspec.yaml') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='pubspec.lock') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='go.mod') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='go.sum') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='Cargo.toml') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='Cargo.lock') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='Gemfile') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='Gemfile.lock') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='build.gradle') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='app/android/app/build.gradle.kts') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='android/gradle.properties') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+SUBFAILED(name='app/pubspec.lock') tests/test_proof.py::CoverageTests::test_a_manifest_or_a_lockfile_makes_every_row_stale
+FAILED tests/test_proof.py::CoverageTests::test_a_pr_that_cannot_be_listed_fails_closed
+FAILED tests/test_proof.py::CoverageTests::test_imports_are_followed_through_cycles
+FAILED tests/test_proof.py::CoverageTests::test_only_words_that_look_like_paths_are_declared
+FAILED tests/test_proof.py::CoverageTests::test_the_phrase_the_generator_writes_means_every_product_file
+FAILED tests/test_proof.py::SinceTheProofTests::test_a_merge_of_the_base_after_the_proof_changes_nothing
+FAILED tests/test_proof.py::SinceTheProofTests::test_a_proof_that_is_not_in_the_history_is_not_an_ancestor
+FAILED tests/test_proof.py::SinceTheProofTests::test_the_old_and_new_dates_pick_their_own_listing
+FAILED tests/test_proof.py::SinceTheProofTests::test_the_pr_files_are_what_the_branch_changed_since_the_fork
+FAILED tests/test_proof.py::RemoteSinceTheProofTests::test_a_file_moved_since_the_proof_counts_under_both_names
+FAILED tests/test_proof.py::RemoteSinceTheProofTests::test_a_proof_that_is_not_behind_the_head_is_not_an_ancestor
+SUBFAILED(cut='1111111111111111111111111111111111111111') tests/test_proof.py::RemoteSinceTheProofTests::test_a_tree_cut_by_github_fails_closed
+SUBFAILED(cut='2222222222222222222222222222222222222222') tests/test_proof.py::RemoteSinceTheProofTests::test_a_tree_cut_by_github_fails_closed
+SUBFAILED(cut='dev') tests/test_proof.py::RemoteSinceTheProofTests::test_a_tree_cut_by_github_fails_closed
+FAILED tests/test_proof.py::RemoteSinceTheProofTests::test_blobs_decide_what_changed_and_nothing_is_cut
+FAILED tests/test_proof.py::RemoteSinceTheProofTests::test_the_pr_files_come_from_the_trees_at_the_fork
+39 failed, 2 passed, 62 deselected in 1.72s
