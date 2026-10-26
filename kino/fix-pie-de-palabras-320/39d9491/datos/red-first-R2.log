@@ -1,0 +1,47 @@
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/fix-pie-320
+
+(node:2797123) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:2797188) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ |dom| src/components/BottomNav.test.tsx (10 tests | 2 failed) 530ms
+     × a 320 px las cinco palabras se reparten el ancho con un objetivo mínimo de 2.85rem y la del orbe queda reservada 35ms
+     × a 320 px las palabras no se tocan, Buscar queda aparte del orbe y el orbe conserva su margen derecho, contando el rem de 17 px 24ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/components/BottomNav.test.tsx > BottomNav > a 320 px las cinco palabras se reparten el ancho con un objetivo mínimo de 2.85rem y la del orbe queda reservada
+AssertionError: expected 'grid h-[3.3rem] grid-cols-[repeat(5,m…' to contain 'justify-between'
+
+Expected: "justify-between"
+Received: "grid h-[3.3rem] grid-cols-[repeat(5,minmax(0,1fr))] tracking-tight min-[360px]:tracking-normal"
+
+ ❯ src/components/BottomNav.test.tsx:49:32
+     47|     expect(nav.className).toContain("grid-cols-[minmax(0,1fr)_2.85rem]…
+     48|     const palabras = nav.firstElementChild!;
+     49|     expect(palabras.className).toContain("justify-between");
+       |                                ^
+     50|     expect(palabras.className).toContain("min-[360px]:grid-cols-[repea…
+     51|     for (const palabra of palabras.children) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |dom| src/components/BottomNav.test.tsx > BottomNav > a 320 px las palabras no se tocan, Buscar queda aparte del orbe y el orbe conserva su margen derecho, contando el rem de 17 px
+AssertionError: expected 0 to be greater than or equal to 8
+ ❯ src/components/BottomNav.test.tsx:101:27
+     99|     expect(Math.min(...huecos)).toBeGreaterThanOrEqual(4);
+    100|     expect(buscarAlOrbe).toBeGreaterThanOrEqual(4);
+    101|     expect(margenDerecho).toBeGreaterThanOrEqual(8);
+       |                           ^
+    102|     expect(Math.min(...objetivos)).toBeGreaterThanOrEqual(2.85 * rem);
+    103|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 8 passed (10)
+   Start at  04:18:04
+   Duration  2.81s (transform 274ms, setup 173ms, import 682ms, tests 530ms, environment 1.15s)
+
