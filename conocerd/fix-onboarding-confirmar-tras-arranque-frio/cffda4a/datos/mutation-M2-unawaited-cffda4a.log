@@ -1,0 +1,48 @@
+mutation M2 at cffda4a: the plain write of save is not awaited, Flutter 3.47.7 local; U+2014 and U+00B7 replaced by a hyphen: 0
+$ # M2: in lib/features/profile/data/profile_preferences_repository.dart, 'await ref.update(data);' -> 'unawaited(ref.update(data));' and 'await ref.set(data);' -> 'unawaited(ref.set(data));'
+@@ -75,9 +75,9 @@ class ProfilePreferencesRepository {
+     // the watch stream, which after a cold start can hold them back for
+     // longer than "Entrar a la app" waits.
+     if (snapshot.exists) {
+-      await ref.update(data);
++      unawaited(ref.update(data));
+     } else {
+-      await ref.set(data);
++      unawaited(ref.set(data));
+     }
+     // A pending save keeps the device marker: the onboarding writes the
+     // answers as soon as the account exists and finishes later, and a process
+$ flutter test --no-pub test/features/profile/profile_preferences_repository_test.dart   # Flutter 3.47.7 local
+00:00 +0: loading test/features/profile/profile_preferences_repository_test.dart
+00:00 +0: only the registering account gets a pending questionnaire
+00:00 +1: saves account answers without replacing other user fields
+00:00 +2: an answer cleared since the last save does not survive the next one: the answers replace the stored ones, they are not merged
+00:00 +2 -1: an answer cleared since the last save does not survive the next one: the answers replace the stored ones, they are not merged [E]
+  Expected: 'local'
+    Actual: 'visitor'
+     Which: is different.
+            Expected: local
+              Actual: visitor
+                      ^
+             Differ at offset 0
+  
+  package:matcher                                                      expect
+  package:flutter_test/src/widget_tester.dart 473:18                   expect
+  test/features/profile/profile_preferences_repository_test.dart 88:5  main.<fn>
+  
+00:00 +2 -1: a save returns only once the server took it, and the device shows it before that
+00:00 +2 -2: a save returns only once the server took it, and the device shows it before that [E]
+  Expected: false
+    Actual: <true>
+  save returned before the server acknowledged the write
+  
+  package:matcher                                                       expect
+  package:flutter_test/src/widget_tester.dart 473:18                    expect
+  test/features/profile/profile_preferences_repository_test.dart 113:5  main.<fn>
+  
+00:00 +2 -2: skip records no invented province or travel answers
+00:00 +3 -2: Some tests failed.
+
+Failing tests:
+  test/features/profile/profile_preferences_repository_test.dart: a save returns only once the server took it, and the device shows it before that
+  test/features/profile/profile_preferences_repository_test.dart: an answer cleared since the last save does not survive the next one: the answers replace the stored ones, they are not merged
