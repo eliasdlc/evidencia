@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+"""Drive the app on emulator-5554 by accessibility text, headless.
+
+Usage from a shell script:
+  python3 adb_ui.py tap "Empezar"          # tap the first node whose text or
+                                            # content-desc contains the label
+  python3 adb_ui.py wait "Pregunta 1 de 4"  # wait up to 25 s for a label
+  python3 adb_ui.py has "Se sella al llegar"  # exit 0 if present
+  python3 adb_ui.py type "texto"            # type into the focused field
+  python3 adb_ui.py dump                    # print every label on screen
+"""
+import re
+import shlex
+import subprocess
+import sys
+import time
+import xml.etree.ElementTree as ET
+
+SERIAL = "emulator-5554"
+
+
+def adb(*args, check=True):
+    return subprocess.run(
+        ["adb", "-s", SERIAL, *args], capture_output=True, text=True, check=check
+    ).stdout
+
+
+def nodes():
+    for _ in range(3):
+        # A failed dump leaves the previous file behind: never read a stale one.
+        adb("shell", "rm", "-f", "/sdcard/ui.xml", check=False)
+        adb("shell", "uiautomator", "dump", "/sdcard/ui.xml", check=False)
+        xml = adb("exec-out", "cat", "/sdcard/ui.xml", check=False)
+        if xml.strip().startswith("<?xml"):
+            break
+        time.sleep(0.5)
+    else:
+        return []
+    root = ET.fromstring(xml)
+    out = []
+    for n in root.iter("node"):
+        label = "|".join(n.get(k) or "" for k in ("text", "content-desc", "hint"))
+        m = re.match(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", n.get("bounds", ""))
+        if not m:
+            continue
+        x1, y1, x2, y2 = map(int, m.groups())
+        out.append((label, (x1 + x2) // 2, (y1 + y2) // 2, n))
+    return out
+
+
+def find(label):
+    for text, x, y, n in nodes():
+        if label in text:
+            return x, y
+    return None
+
+
+def main():
+    cmd, arg = sys.argv[1], (sys.argv[2] if len(sys.argv) > 2 else "")
+    if cmd == "dump":
+        for text, x, y, _ in nodes():
+            if text.strip("|"):
+                print(f"{x:4d},{y:4d}  {text}")
+        return 0
+    if cmd == "field":
+        # The Nth text field on screen (0-based), scrolling to reveal it.
+        for _ in range(5):
+            campos = [(x, y) for _, x, y, n in nodes()
+                      if n.get("class") == "android.widget.EditText"]
+            if len(campos) > int(arg) and campos[int(arg)][1] < 560:
+                x, y = campos[int(arg)]
+                adb("shell", "input", "tap", str(x), str(y))
+                return 0
+            adb("shell", "input", "swipe", "215", "500", "215", "330", "250")
+            time.sleep(0.6)
+        print(f"no field {arg}", file=sys.stderr)
+        return 1
+    if cmd == "type":
+        # Single quotes: the device shell must not read a symbol in a password.
+        adb("shell", "input", "text", shlex.quote(arg.replace(" ", "%s")))
+        return 0
+    if cmd in ("tap", "wait", "has"):
+        deadline = time.time() + (25 if cmd != "has" else 0)
+        while True:
+            pos = find(arg)
+            if not pos and cmd == "tap":
+                # Below the fold: scroll the content up and look again.
+                for _ in range(4):
+                    adb("shell", "input", "swipe", "215", "520", "215", "300", "250")
+                    time.sleep(0.6)
+                    pos = find(arg)
+                    if pos:
+                        break
+            if pos:
+                if cmd == "tap":
+                    adb("shell", "input", "tap", str(pos[0]), str(pos[1]))
+                return 0
+            if time.time() >= deadline:
+                print(f"not found: {arg}", file=sys.stderr)
+                return 1
+            time.sleep(0.7)
+    print(__doc__)
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())
