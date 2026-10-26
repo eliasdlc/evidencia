@@ -1,0 +1,517 @@
+F                                                    [100%]
+=================================== FAILURES ===================================
+_ DeliveryTests.test_standing_authorization_covers_exactly_two_things (refused='BY=standing firebase appdistribution:distribute a.apk --groups users', cwd='/tmp/tmpuredfxr7/conocerd') _
+
+self = <test_shell_hooks.DeliveryTests testMethod=test_standing_authorization_covers_exactly_two_things>
+
+    def test_standing_authorization_covers_exactly_two_things(self):
+        def repo(root: Path, name: str, branch: str = "main") -> str:
+            root.mkdir()
+            git(root, "init", "-q")
+            git(root, "symbolic-ref", "HEAD", f"refs/heads/{branch}")
+            git(root, "remote", "add", "origin", f"https://github.com/eliasdlc/{name}.git")
+            (root / "AGENTS.md").write_text("## Facts\nproduction: https://example.test\n")
+            return str(root)
+    
+        with tempfile.TemporaryDirectory() as tmp:
+            home = str(Path(tmp) / "home")
+            kino = repo(Path(tmp) / "kino", "kino")
+            kino_task = repo(Path(tmp) / "kino-task", "kino", "feat/x")
+            crd = repo(Path(tmp) / "conocerd", "conocerd")
+            web = repo(Path(tmp) / "conocerd-web", "conocerd-web")
+    
+            def run(command: str, cwd: str):
+                return hook("delivery.sh", bash_payload(command), cwd=cwd, env={"HOME": home})
+    
+            covered = [("BY=standing gh pr merge 5 --merge", kino),
+                       ("BY=standing npx vercel --prod", kino),
+                       ("BY=standing gh pr edit 9 --add-label distribute", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups review", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups=review", crd),
+                       ("BY=standing gh pr merge 5 -R eliasdlc/kino", web)]
+            for command, cwd in covered:
+                with self.subTest(covered=command):
+                    self.assertEqual(run(command, cwd).returncode, 0)
+    
+            dist = "BY=standing firebase appdistribution:distribute a.apk"
+            refused = [("BY=standing scripts/distribute.sh --prod", crd, "'release-train' in eliasdlc/conocerd"),
+                       (dist, crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review,users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups=users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       ("BY=standing gh pr edit 9 --add-label distribute-review", crd, "'review-build-label' in eliasdlc/conocerd"),
+                       ("BY=standing npx vercel --prod", web, "'production-deploy' in eliasdlc/conocerd-web"),
+                       ("BY=standing npx vercel --prod", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino, "vercel promote"),
+                       ("BY=standing git push origin --tags", kino, "'git-tag-push' in eliasdlc/kino"),
+                       ("BY=standing gh pr merge 5 --merge", crd, "'pr-merge' in eliasdlc/conocerd")]
+            for command, cwd, why in refused:
+                with self.subTest(refused=command, cwd=cwd):
+                    blocked = run(command, cwd)
+>                   self.assertEqual(blocked.returncode, 2)
+E                   AssertionError: 0 != 2
+
+tests/test_shell_hooks.py:111: AssertionError
+_ DeliveryTests.test_standing_authorization_covers_exactly_two_things (refused='BY=standing firebase appdistribution:distribute a.apk --groups review,users', cwd='/tmp/tmpuredfxr7/conocerd') _
+
+self = <test_shell_hooks.DeliveryTests testMethod=test_standing_authorization_covers_exactly_two_things>
+
+    def test_standing_authorization_covers_exactly_two_things(self):
+        def repo(root: Path, name: str, branch: str = "main") -> str:
+            root.mkdir()
+            git(root, "init", "-q")
+            git(root, "symbolic-ref", "HEAD", f"refs/heads/{branch}")
+            git(root, "remote", "add", "origin", f"https://github.com/eliasdlc/{name}.git")
+            (root / "AGENTS.md").write_text("## Facts\nproduction: https://example.test\n")
+            return str(root)
+    
+        with tempfile.TemporaryDirectory() as tmp:
+            home = str(Path(tmp) / "home")
+            kino = repo(Path(tmp) / "kino", "kino")
+            kino_task = repo(Path(tmp) / "kino-task", "kino", "feat/x")
+            crd = repo(Path(tmp) / "conocerd", "conocerd")
+            web = repo(Path(tmp) / "conocerd-web", "conocerd-web")
+    
+            def run(command: str, cwd: str):
+                return hook("delivery.sh", bash_payload(command), cwd=cwd, env={"HOME": home})
+    
+            covered = [("BY=standing gh pr merge 5 --merge", kino),
+                       ("BY=standing npx vercel --prod", kino),
+                       ("BY=standing gh pr edit 9 --add-label distribute", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups review", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups=review", crd),
+                       ("BY=standing gh pr merge 5 -R eliasdlc/kino", web)]
+            for command, cwd in covered:
+                with self.subTest(covered=command):
+                    self.assertEqual(run(command, cwd).returncode, 0)
+    
+            dist = "BY=standing firebase appdistribution:distribute a.apk"
+            refused = [("BY=standing scripts/distribute.sh --prod", crd, "'release-train' in eliasdlc/conocerd"),
+                       (dist, crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review,users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups=users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       ("BY=standing gh pr edit 9 --add-label distribute-review", crd, "'review-build-label' in eliasdlc/conocerd"),
+                       ("BY=standing npx vercel --prod", web, "'production-deploy' in eliasdlc/conocerd-web"),
+                       ("BY=standing npx vercel --prod", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino, "vercel promote"),
+                       ("BY=standing git push origin --tags", kino, "'git-tag-push' in eliasdlc/kino"),
+                       ("BY=standing gh pr merge 5 --merge", crd, "'pr-merge' in eliasdlc/conocerd")]
+            for command, cwd, why in refused:
+                with self.subTest(refused=command, cwd=cwd):
+                    blocked = run(command, cwd)
+>                   self.assertEqual(blocked.returncode, 2)
+E                   AssertionError: 0 != 2
+
+tests/test_shell_hooks.py:111: AssertionError
+_ DeliveryTests.test_standing_authorization_covers_exactly_two_things (refused='BY=standing firebase appdistribution:distribute a.apk --groups=users', cwd='/tmp/tmpuredfxr7/conocerd') _
+
+self = <test_shell_hooks.DeliveryTests testMethod=test_standing_authorization_covers_exactly_two_things>
+
+    def test_standing_authorization_covers_exactly_two_things(self):
+        def repo(root: Path, name: str, branch: str = "main") -> str:
+            root.mkdir()
+            git(root, "init", "-q")
+            git(root, "symbolic-ref", "HEAD", f"refs/heads/{branch}")
+            git(root, "remote", "add", "origin", f"https://github.com/eliasdlc/{name}.git")
+            (root / "AGENTS.md").write_text("## Facts\nproduction: https://example.test\n")
+            return str(root)
+    
+        with tempfile.TemporaryDirectory() as tmp:
+            home = str(Path(tmp) / "home")
+            kino = repo(Path(tmp) / "kino", "kino")
+            kino_task = repo(Path(tmp) / "kino-task", "kino", "feat/x")
+            crd = repo(Path(tmp) / "conocerd", "conocerd")
+            web = repo(Path(tmp) / "conocerd-web", "conocerd-web")
+    
+            def run(command: str, cwd: str):
+                return hook("delivery.sh", bash_payload(command), cwd=cwd, env={"HOME": home})
+    
+            covered = [("BY=standing gh pr merge 5 --merge", kino),
+                       ("BY=standing npx vercel --prod", kino),
+                       ("BY=standing gh pr edit 9 --add-label distribute", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups review", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups=review", crd),
+                       ("BY=standing gh pr merge 5 -R eliasdlc/kino", web)]
+            for command, cwd in covered:
+                with self.subTest(covered=command):
+                    self.assertEqual(run(command, cwd).returncode, 0)
+    
+            dist = "BY=standing firebase appdistribution:distribute a.apk"
+            refused = [("BY=standing scripts/distribute.sh --prod", crd, "'release-train' in eliasdlc/conocerd"),
+                       (dist, crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review,users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups=users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       ("BY=standing gh pr edit 9 --add-label distribute-review", crd, "'review-build-label' in eliasdlc/conocerd"),
+                       ("BY=standing npx vercel --prod", web, "'production-deploy' in eliasdlc/conocerd-web"),
+                       ("BY=standing npx vercel --prod", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino, "vercel promote"),
+                       ("BY=standing git push origin --tags", kino, "'git-tag-push' in eliasdlc/kino"),
+                       ("BY=standing gh pr merge 5 --merge", crd, "'pr-merge' in eliasdlc/conocerd")]
+            for command, cwd, why in refused:
+                with self.subTest(refused=command, cwd=cwd):
+                    blocked = run(command, cwd)
+>                   self.assertEqual(blocked.returncode, 2)
+E                   AssertionError: 0 != 2
+
+tests/test_shell_hooks.py:111: AssertionError
+_ DeliveryTests.test_standing_authorization_covers_exactly_two_things (refused='BY=standing firebase appdistribution:distribute a.apk --groups review --testers a@b.test', cwd='/tmp/tmpuredfxr7/conocerd') _
+
+self = <test_shell_hooks.DeliveryTests testMethod=test_standing_authorization_covers_exactly_two_things>
+
+    def test_standing_authorization_covers_exactly_two_things(self):
+        def repo(root: Path, name: str, branch: str = "main") -> str:
+            root.mkdir()
+            git(root, "init", "-q")
+            git(root, "symbolic-ref", "HEAD", f"refs/heads/{branch}")
+            git(root, "remote", "add", "origin", f"https://github.com/eliasdlc/{name}.git")
+            (root / "AGENTS.md").write_text("## Facts\nproduction: https://example.test\n")
+            return str(root)
+    
+        with tempfile.TemporaryDirectory() as tmp:
+            home = str(Path(tmp) / "home")
+            kino = repo(Path(tmp) / "kino", "kino")
+            kino_task = repo(Path(tmp) / "kino-task", "kino", "feat/x")
+            crd = repo(Path(tmp) / "conocerd", "conocerd")
+            web = repo(Path(tmp) / "conocerd-web", "conocerd-web")
+    
+            def run(command: str, cwd: str):
+                return hook("delivery.sh", bash_payload(command), cwd=cwd, env={"HOME": home})
+    
+            covered = [("BY=standing gh pr merge 5 --merge", kino),
+                       ("BY=standing npx vercel --prod", kino),
+                       ("BY=standing gh pr edit 9 --add-label distribute", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups review", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups=review", crd),
+                       ("BY=standing gh pr merge 5 -R eliasdlc/kino", web)]
+            for command, cwd in covered:
+                with self.subTest(covered=command):
+                    self.assertEqual(run(command, cwd).returncode, 0)
+    
+            dist = "BY=standing firebase appdistribution:distribute a.apk"
+            refused = [("BY=standing scripts/distribute.sh --prod", crd, "'release-train' in eliasdlc/conocerd"),
+                       (dist, crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review,users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups=users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       ("BY=standing gh pr edit 9 --add-label distribute-review", crd, "'review-build-label' in eliasdlc/conocerd"),
+                       ("BY=standing npx vercel --prod", web, "'production-deploy' in eliasdlc/conocerd-web"),
+                       ("BY=standing npx vercel --prod", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino, "vercel promote"),
+                       ("BY=standing git push origin --tags", kino, "'git-tag-push' in eliasdlc/kino"),
+                       ("BY=standing gh pr merge 5 --merge", crd, "'pr-merge' in eliasdlc/conocerd")]
+            for command, cwd, why in refused:
+                with self.subTest(refused=command, cwd=cwd):
+                    blocked = run(command, cwd)
+>                   self.assertEqual(blocked.returncode, 2)
+E                   AssertionError: 0 != 2
+
+tests/test_shell_hooks.py:111: AssertionError
+_ DeliveryTests.test_standing_authorization_covers_exactly_two_things (refused='BY=standing gh pr edit 9 --add-label distribute-review', cwd='/tmp/tmpuredfxr7/conocerd') _
+
+self = <test_shell_hooks.DeliveryTests testMethod=test_standing_authorization_covers_exactly_two_things>
+
+    def test_standing_authorization_covers_exactly_two_things(self):
+        def repo(root: Path, name: str, branch: str = "main") -> str:
+            root.mkdir()
+            git(root, "init", "-q")
+            git(root, "symbolic-ref", "HEAD", f"refs/heads/{branch}")
+            git(root, "remote", "add", "origin", f"https://github.com/eliasdlc/{name}.git")
+            (root / "AGENTS.md").write_text("## Facts\nproduction: https://example.test\n")
+            return str(root)
+    
+        with tempfile.TemporaryDirectory() as tmp:
+            home = str(Path(tmp) / "home")
+            kino = repo(Path(tmp) / "kino", "kino")
+            kino_task = repo(Path(tmp) / "kino-task", "kino", "feat/x")
+            crd = repo(Path(tmp) / "conocerd", "conocerd")
+            web = repo(Path(tmp) / "conocerd-web", "conocerd-web")
+    
+            def run(command: str, cwd: str):
+                return hook("delivery.sh", bash_payload(command), cwd=cwd, env={"HOME": home})
+    
+            covered = [("BY=standing gh pr merge 5 --merge", kino),
+                       ("BY=standing npx vercel --prod", kino),
+                       ("BY=standing gh pr edit 9 --add-label distribute", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups review", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups=review", crd),
+                       ("BY=standing gh pr merge 5 -R eliasdlc/kino", web)]
+            for command, cwd in covered:
+                with self.subTest(covered=command):
+                    self.assertEqual(run(command, cwd).returncode, 0)
+    
+            dist = "BY=standing firebase appdistribution:distribute a.apk"
+            refused = [("BY=standing scripts/distribute.sh --prod", crd, "'release-train' in eliasdlc/conocerd"),
+                       (dist, crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review,users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups=users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       ("BY=standing gh pr edit 9 --add-label distribute-review", crd, "'review-build-label' in eliasdlc/conocerd"),
+                       ("BY=standing npx vercel --prod", web, "'production-deploy' in eliasdlc/conocerd-web"),
+                       ("BY=standing npx vercel --prod", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino, "vercel promote"),
+                       ("BY=standing git push origin --tags", kino, "'git-tag-push' in eliasdlc/kino"),
+                       ("BY=standing gh pr merge 5 --merge", crd, "'pr-merge' in eliasdlc/conocerd")]
+            for command, cwd, why in refused:
+                with self.subTest(refused=command, cwd=cwd):
+                    blocked = run(command, cwd)
+>                   self.assertEqual(blocked.returncode, 2)
+E                   AssertionError: 0 != 2
+
+tests/test_shell_hooks.py:111: AssertionError
+_ DeliveryTests.test_standing_authorization_covers_exactly_two_things (refused='BY=standing npx vercel --prod', cwd='/tmp/tmpuredfxr7/kino-task') _
+
+self = <test_shell_hooks.DeliveryTests testMethod=test_standing_authorization_covers_exactly_two_things>
+
+    def test_standing_authorization_covers_exactly_two_things(self):
+        def repo(root: Path, name: str, branch: str = "main") -> str:
+            root.mkdir()
+            git(root, "init", "-q")
+            git(root, "symbolic-ref", "HEAD", f"refs/heads/{branch}")
+            git(root, "remote", "add", "origin", f"https://github.com/eliasdlc/{name}.git")
+            (root / "AGENTS.md").write_text("## Facts\nproduction: https://example.test\n")
+            return str(root)
+    
+        with tempfile.TemporaryDirectory() as tmp:
+            home = str(Path(tmp) / "home")
+            kino = repo(Path(tmp) / "kino", "kino")
+            kino_task = repo(Path(tmp) / "kino-task", "kino", "feat/x")
+            crd = repo(Path(tmp) / "conocerd", "conocerd")
+            web = repo(Path(tmp) / "conocerd-web", "conocerd-web")
+    
+            def run(command: str, cwd: str):
+                return hook("delivery.sh", bash_payload(command), cwd=cwd, env={"HOME": home})
+    
+            covered = [("BY=standing gh pr merge 5 --merge", kino),
+                       ("BY=standing npx vercel --prod", kino),
+                       ("BY=standing gh pr edit 9 --add-label distribute", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups review", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups=review", crd),
+                       ("BY=standing gh pr merge 5 -R eliasdlc/kino", web)]
+            for command, cwd in covered:
+                with self.subTest(covered=command):
+                    self.assertEqual(run(command, cwd).returncode, 0)
+    
+            dist = "BY=standing firebase appdistribution:distribute a.apk"
+            refused = [("BY=standing scripts/distribute.sh --prod", crd, "'release-train' in eliasdlc/conocerd"),
+                       (dist, crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review,users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups=users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       ("BY=standing gh pr edit 9 --add-label distribute-review", crd, "'review-build-label' in eliasdlc/conocerd"),
+                       ("BY=standing npx vercel --prod", web, "'production-deploy' in eliasdlc/conocerd-web"),
+                       ("BY=standing npx vercel --prod", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino, "vercel promote"),
+                       ("BY=standing git push origin --tags", kino, "'git-tag-push' in eliasdlc/kino"),
+                       ("BY=standing gh pr merge 5 --merge", crd, "'pr-merge' in eliasdlc/conocerd")]
+            for command, cwd, why in refused:
+                with self.subTest(refused=command, cwd=cwd):
+                    blocked = run(command, cwd)
+>                   self.assertEqual(blocked.returncode, 2)
+E                   AssertionError: 0 != 2
+
+tests/test_shell_hooks.py:111: AssertionError
+_ DeliveryTests.test_standing_authorization_covers_exactly_two_things (refused='BY=standing vercel promote dpl_1', cwd='/tmp/tmpuredfxr7/kino-task') _
+
+self = <test_shell_hooks.DeliveryTests testMethod=test_standing_authorization_covers_exactly_two_things>
+
+    def test_standing_authorization_covers_exactly_two_things(self):
+        def repo(root: Path, name: str, branch: str = "main") -> str:
+            root.mkdir()
+            git(root, "init", "-q")
+            git(root, "symbolic-ref", "HEAD", f"refs/heads/{branch}")
+            git(root, "remote", "add", "origin", f"https://github.com/eliasdlc/{name}.git")
+            (root / "AGENTS.md").write_text("## Facts\nproduction: https://example.test\n")
+            return str(root)
+    
+        with tempfile.TemporaryDirectory() as tmp:
+            home = str(Path(tmp) / "home")
+            kino = repo(Path(tmp) / "kino", "kino")
+            kino_task = repo(Path(tmp) / "kino-task", "kino", "feat/x")
+            crd = repo(Path(tmp) / "conocerd", "conocerd")
+            web = repo(Path(tmp) / "conocerd-web", "conocerd-web")
+    
+            def run(command: str, cwd: str):
+                return hook("delivery.sh", bash_payload(command), cwd=cwd, env={"HOME": home})
+    
+            covered = [("BY=standing gh pr merge 5 --merge", kino),
+                       ("BY=standing npx vercel --prod", kino),
+                       ("BY=standing gh pr edit 9 --add-label distribute", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups review", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups=review", crd),
+                       ("BY=standing gh pr merge 5 -R eliasdlc/kino", web)]
+            for command, cwd in covered:
+                with self.subTest(covered=command):
+                    self.assertEqual(run(command, cwd).returncode, 0)
+    
+            dist = "BY=standing firebase appdistribution:distribute a.apk"
+            refused = [("BY=standing scripts/distribute.sh --prod", crd, "'release-train' in eliasdlc/conocerd"),
+                       (dist, crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review,users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups=users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       ("BY=standing gh pr edit 9 --add-label distribute-review", crd, "'review-build-label' in eliasdlc/conocerd"),
+                       ("BY=standing npx vercel --prod", web, "'production-deploy' in eliasdlc/conocerd-web"),
+                       ("BY=standing npx vercel --prod", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino, "vercel promote"),
+                       ("BY=standing git push origin --tags", kino, "'git-tag-push' in eliasdlc/kino"),
+                       ("BY=standing gh pr merge 5 --merge", crd, "'pr-merge' in eliasdlc/conocerd")]
+            for command, cwd, why in refused:
+                with self.subTest(refused=command, cwd=cwd):
+                    blocked = run(command, cwd)
+>                   self.assertEqual(blocked.returncode, 2)
+E                   AssertionError: 0 != 2
+
+tests/test_shell_hooks.py:111: AssertionError
+_ DeliveryTests.test_standing_authorization_covers_exactly_two_things (refused='BY=standing vercel promote dpl_1', cwd='/tmp/tmpuredfxr7/kino') _
+
+self = <test_shell_hooks.DeliveryTests testMethod=test_standing_authorization_covers_exactly_two_things>
+
+    def test_standing_authorization_covers_exactly_two_things(self):
+        def repo(root: Path, name: str, branch: str = "main") -> str:
+            root.mkdir()
+            git(root, "init", "-q")
+            git(root, "symbolic-ref", "HEAD", f"refs/heads/{branch}")
+            git(root, "remote", "add", "origin", f"https://github.com/eliasdlc/{name}.git")
+            (root / "AGENTS.md").write_text("## Facts\nproduction: https://example.test\n")
+            return str(root)
+    
+        with tempfile.TemporaryDirectory() as tmp:
+            home = str(Path(tmp) / "home")
+            kino = repo(Path(tmp) / "kino", "kino")
+            kino_task = repo(Path(tmp) / "kino-task", "kino", "feat/x")
+            crd = repo(Path(tmp) / "conocerd", "conocerd")
+            web = repo(Path(tmp) / "conocerd-web", "conocerd-web")
+    
+            def run(command: str, cwd: str):
+                return hook("delivery.sh", bash_payload(command), cwd=cwd, env={"HOME": home})
+    
+            covered = [("BY=standing gh pr merge 5 --merge", kino),
+                       ("BY=standing npx vercel --prod", kino),
+                       ("BY=standing gh pr edit 9 --add-label distribute", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups review", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups=review", crd),
+                       ("BY=standing gh pr merge 5 -R eliasdlc/kino", web)]
+            for command, cwd in covered:
+                with self.subTest(covered=command):
+                    self.assertEqual(run(command, cwd).returncode, 0)
+    
+            dist = "BY=standing firebase appdistribution:distribute a.apk"
+            refused = [("BY=standing scripts/distribute.sh --prod", crd, "'release-train' in eliasdlc/conocerd"),
+                       (dist, crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review,users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups=users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       ("BY=standing gh pr edit 9 --add-label distribute-review", crd, "'review-build-label' in eliasdlc/conocerd"),
+                       ("BY=standing npx vercel --prod", web, "'production-deploy' in eliasdlc/conocerd-web"),
+                       ("BY=standing npx vercel --prod", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino, "vercel promote"),
+                       ("BY=standing git push origin --tags", kino, "'git-tag-push' in eliasdlc/kino"),
+                       ("BY=standing gh pr merge 5 --merge", crd, "'pr-merge' in eliasdlc/conocerd")]
+            for command, cwd, why in refused:
+                with self.subTest(refused=command, cwd=cwd):
+                    blocked = run(command, cwd)
+>                   self.assertEqual(blocked.returncode, 2)
+E                   AssertionError: 0 != 2
+
+tests/test_shell_hooks.py:111: AssertionError
+_____ DeliveryTests.test_standing_authorization_covers_exactly_two_things ______
+
+self = <test_shell_hooks.DeliveryTests testMethod=test_standing_authorization_covers_exactly_two_things>
+
+    def test_standing_authorization_covers_exactly_two_things(self):
+        def repo(root: Path, name: str, branch: str = "main") -> str:
+            root.mkdir()
+            git(root, "init", "-q")
+            git(root, "symbolic-ref", "HEAD", f"refs/heads/{branch}")
+            git(root, "remote", "add", "origin", f"https://github.com/eliasdlc/{name}.git")
+            (root / "AGENTS.md").write_text("## Facts\nproduction: https://example.test\n")
+            return str(root)
+    
+        with tempfile.TemporaryDirectory() as tmp:
+            home = str(Path(tmp) / "home")
+            kino = repo(Path(tmp) / "kino", "kino")
+            kino_task = repo(Path(tmp) / "kino-task", "kino", "feat/x")
+            crd = repo(Path(tmp) / "conocerd", "conocerd")
+            web = repo(Path(tmp) / "conocerd-web", "conocerd-web")
+    
+            def run(command: str, cwd: str):
+                return hook("delivery.sh", bash_payload(command), cwd=cwd, env={"HOME": home})
+    
+            covered = [("BY=standing gh pr merge 5 --merge", kino),
+                       ("BY=standing npx vercel --prod", kino),
+                       ("BY=standing gh pr edit 9 --add-label distribute", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups review", crd),
+                       ("BY=standing firebase appdistribution:distribute a.apk --groups=review", crd),
+                       ("BY=standing gh pr merge 5 -R eliasdlc/kino", web)]
+            for command, cwd in covered:
+                with self.subTest(covered=command):
+                    self.assertEqual(run(command, cwd).returncode, 0)
+    
+            dist = "BY=standing firebase appdistribution:distribute a.apk"
+            refused = [("BY=standing scripts/distribute.sh --prod", crd, "'release-train' in eliasdlc/conocerd"),
+                       (dist, crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review,users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups=users", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --groups review --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       (f"{dist} --testers a@b.test", crd, "'app-distribution' in eliasdlc/conocerd"),
+                       ("BY=standing gh pr edit 9 --add-label distribute-review", crd, "'review-build-label' in eliasdlc/conocerd"),
+                       ("BY=standing npx vercel --prod", web, "'production-deploy' in eliasdlc/conocerd-web"),
+                       ("BY=standing npx vercel --prod", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino_task, "not main"),
+                       ("BY=standing vercel promote dpl_1", kino, "vercel promote"),
+                       ("BY=standing git push origin --tags", kino, "'git-tag-push' in eliasdlc/kino"),
+                       ("BY=standing gh pr merge 5 --merge", crd, "'pr-merge' in eliasdlc/conocerd")]
+            for command, cwd, why in refused:
+                with self.subTest(refused=command, cwd=cwd):
+                    blocked = run(command, cwd)
+                    self.assertEqual(blocked.returncode, 2)
+                    self.assertIn("BY=standing covers only", blocked.stderr)
+                    self.assertIn(why, blocked.stderr)
+    
+            # With his words quoted, the same distribution is not a standing matter.
+            self.assertEqual(run('BY="distribuye a todos" scripts/distribute.sh --prod', crd).returncode, 0)
+            log = (Path(home) / ".claude/deliveries.log").read_text().splitlines()
+>           self.assertEqual(len([l for l in log if "\tstanding\t" in l]), len(covered))
+E           AssertionError: 14 != 6
+
+tests/test_shell_hooks.py:118: AssertionError
+----------------------------- Captured stdout call -----------------------------
+uuuuuuuuuuuuuuuuuuuu
+=========================== short test summary info ============================
+SUBFAILED(refused='BY=standing firebase appdistribution:distribute a.apk --groups users', cwd='/tmp/tmpuredfxr7/conocerd') tests/test_shell_hooks.py::DeliveryTests::test_standing_authorization_covers_exactly_two_things
+SUBFAILED(refused='BY=standing firebase appdistribution:distribute a.apk --groups review,users', cwd='/tmp/tmpuredfxr7/conocerd') tests/test_shell_hooks.py::DeliveryTests::test_standing_authorization_covers_exactly_two_things
+SUBFAILED(refused='BY=standing firebase appdistribution:distribute a.apk --groups=users', cwd='/tmp/tmpuredfxr7/conocerd') tests/test_shell_hooks.py::DeliveryTests::test_standing_authorization_covers_exactly_two_things
+SUBFAILED(refused='BY=standing firebase appdistribution:distribute a.apk --groups review --testers a@b.test', cwd='/tmp/tmpuredfxr7/conocerd') tests/test_shell_hooks.py::DeliveryTests::test_standing_authorization_covers_exactly_two_things
+SUBFAILED(refused='BY=standing gh pr edit 9 --add-label distribute-review', cwd='/tmp/tmpuredfxr7/conocerd') tests/test_shell_hooks.py::DeliveryTests::test_standing_authorization_covers_exactly_two_things
+SUBFAILED(refused='BY=standing npx vercel --prod', cwd='/tmp/tmpuredfxr7/kino-task') tests/test_shell_hooks.py::DeliveryTests::test_standing_authorization_covers_exactly_two_things
+SUBFAILED(refused='BY=standing vercel promote dpl_1', cwd='/tmp/tmpuredfxr7/kino-task') tests/test_shell_hooks.py::DeliveryTests::test_standing_authorization_covers_exactly_two_things
+SUBFAILED(refused='BY=standing vercel promote dpl_1', cwd='/tmp/tmpuredfxr7/kino') tests/test_shell_hooks.py::DeliveryTests::test_standing_authorization_covers_exactly_two_things
+FAILED tests/test_shell_hooks.py::DeliveryTests::test_standing_authorization_covers_exactly_two_things
+9 failed, 18 deselected, 12 subtests passed in 3.54s
