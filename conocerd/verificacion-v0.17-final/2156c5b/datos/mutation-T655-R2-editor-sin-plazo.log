@@ -1,0 +1,64 @@
+# mutation-T655-R2-editor-sin-plazo at f0490833, Flutter 3.47.7 local  [U+2014 and U+00B7 replaced by a hyphen: 0]
+# lib/features/profile/presentation/screens/profile_setup_screen.dart
+# - '      await esperarAcotado(() async {'
+# + '      await (() async {'
+# lib/features/profile/presentation/screens/profile_setup_screen.dart
+# - '      }(), ref.read(hiloTiempoGuardadoProvider));'
+# + '      }());'
+# flutter test --no-pub test/features/profile/salida_del_hilo_test.dart
+
+00:00 +0: loading test/features/profile/salida_del_hilo_test.dart
+00:00 +0: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+CRD_PERFIL_CONFIRMADO 0 ms
+00:01 +1: the next start after a normal finish does not ask for the profile again
+CRD_PERFIL_CONFIRMADO 0 ms
+00:02 +2: the listener only shows the completed status after the redirect has re-read the gate: the router still ends on Explorar
+CRD_PERFIL_CONFIRMADO 206 ms
+00:02 +3: the listener shows the completed status 300 ms after the tap: the router still ends on Explorar and the editor is never built
+CRD_PERFIL_CONFIRMADO 101 ms
+00:03 +4: the listener never shows the completed status: the wait ends, the traveler stays on the last step with a message and can try again
+CRD_PERFIL_SIN_CONFIRMAR 70 ms
+CRD_PERFIL_CONFIRMADO 0 ms
+00:04 +5: after a cold start the watch stream does not deliver the finish: the first tap on "Entrar a la app" still opens Explorar
+CRD_PERFIL_CONFIRMADO 0 ms
+00:05 +6: with no connection the finish is not acknowledged: after the deadline the button says so and is live again, and the retry works once the connection is back
+CRD_PERFIL_CONFIRMADO 0 ms
+00:06 +7: a finish with no connection fails at the welcome stamp, and killed after that the next start is still on the first steps; online, the retry grants the stamp, completes the answers and drops the draft
+CRD_PERFIL_CONFIRMADO 0 ms
+00:07 +8: saving the answers from the editor waits for the listener too
+CRD_PERFIL_CONFIRMADO 98 ms
+00:08 +9: saving the answers when the listener never shows the finish says it is still confirming and leaves Guardar live
+CRD_PERFIL_SIN_CONFIRMAR 73 ms
+00:08 +10: saving the answers from the editor with no connection: after the deadline it says so, Guardar is live again, the queued write stays queued and the retry works once the connection is back
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "No pudimos guardar tu perfil. Revisa tu
+conexión e inténtalo de nuevo.": []>
+   Which: means none were found but one was expected
+the editor kept waiting for a write nobody acknowledges
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file://test/features/profile/salida_del_hilo_test.dart:585:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file://test/features/profile/salida_del_hilo_test.dart line 585
+The test description was:
+  saving the answers from the editor with no connection: after the deadline it says so, Guardar is
+  live again, the queued write stays queued and the retry works once the connection is back
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:09 +10 -1: saving the answers from the editor with no connection: after the deadline it says so, Guardar is live again, the queued write stays queued and the retry works once the connection is back [E]
+  Test failed. See exception logs above.
+  The test description was: saving the answers from the editor with no connection: after the deadline it says so, Guardar is live again, the queued write stays queued and the retry works once the connection is back
+  
+00:09 +10 -1: Some tests failed.
+
+Failing tests:
+  test/features/profile/salida_del_hilo_test.dart: saving the answers from the editor with no connection: after the deadline it says so, Guardar is live again, the queued write stays queued and the retry works once the connection is back
