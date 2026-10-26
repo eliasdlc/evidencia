@@ -1,0 +1,83 @@
+Probes of CO1-T655, temporary [DEBUG-c7a2] prints on c66971c (probe-c7a2.patch, not committed; grep -rn 'DEBUG-' lib test is empty at a2435b7)
+
+Probes, CO1-T655 (tag [DEBUG-c7a2])
+
+Base c66971c2. Probe build = base + probe-c7a2.patch (prints in userDocumentProvider build/snap/error/cancel/resume/dispose,
+profilePreferencesProvider build/cancel/resume, profileSetupNeeded flow, _esperarCompletado events, terminar start/done).
+
+H1 listener errors after cold start; Riverpod 3 automatic retry (200 ms doubling to 6.4 s) resubscribes late.
+   Predicts: `userDoc ERROR` and repeated `userDoc build` in stalled attempts, none in confirmed.
+H2 userDocumentProvider paused (no active listener) around the tap; events held.
+   Predicts: `userDoc onCancel` with no `onResume` before the tap in stalled attempts.
+H3 listener alive, subscribed to the right uid, but the server snapshot of the transaction arrives > 10 s late (watch stream backoff after cold start).
+   Predicts: no ERROR/rebuild, `snap cache=false status=completed` > 10 s after `terminar done`, W/Firestore stream lines.
+H4 listener on a stale or null uid after cold start.
+   Predicts: last `userDoc build uid=false` before the tap.
+
+Results:
+Run probe1 (probe APK 570f18de, emulator-5554, 4 cold attempts, 22:11Z): 3 confirmed, 1 stalled (a2).
+ a2: userDoc built once after relaunch (uid=true), cache snap pending 34.357, server snap pending 35.145; tap 41.181, terminar done 41.645;
+     no ERROR, no rebuild, no onCancel during the wait; per-second ticks: subscription paused=false, provider value status=pending, not loading, no error.
+     The completed snapshot arrives 01.347 (19.7 s after the first transaction, 2.5 s after the second tap's transaction).
+ a1: completed snapshot 441 ms after terminar start (before terminar done).
+ => H1 refuted (no error, no retry), H2 refuted (not paused, provider itself holds pending), H4 refuted (uid true, single build).
+ => H3 stands: the native listener does not receive the server's change for ~20 s. No W/E Firestore lines at default log level.
+Next probe: FirebaseFirestore.setLoggingEnabled(true) to see the watch stream around the tap.
+Runs probe2 + probe3 (probe2 APK 33067aea = probe + FirebaseFirestore.setLoggingEnabled(true)): 13 cold attempts that reached the tap (probe2 6, probe3 7; probe3 attempt 8 failed before first steps when another run took the emulator), 0 stalled.
+ Native logging changes the timing enough to hide it (heisenbug). Confirmed attempts: the completed snapshot reaches the listener
+ 241 to 702 ms after `terminar start` (all 16 confirmed attempts of probe1 to probe3), the stalled one 20166 ms.
+ The watch timeline of a confirmed cold start (probe2 a1): targets re-added with resume tokens, CURRENT 1.7 s after relaunch,
+ the transaction's change reaches the listener only as a watch DOC_CHANGE on target 6. Nothing writes it to the local cache.
+ Conclusion: the finish is written in a Firestore transaction, which the SDK does not apply to the local cache, so the
+ account listener can only learn it from the watch stream; after a cold start that delivery is sometimes withheld (19.7 s
+ in a2, ended by the next write's change). Why the watch withholds it is inside the SDK/backend and not established here.
+H5 (fix prediction): if the dependence on the watch is the cause, writing the answers with a plain update/set (latency
+ compensated, applied to the local cache at once and again with the commit version on acknowledgement) makes every first
+ tap confirm, stall or not. Measured by the fix build, 24 cold attempts.
+NOTE base attempt 1 overlapped probe3 attempt 8 (22:46:02-22:47:40Z); excluded
+
+probe1: c66971c plus Dart probes (sha256 570f18de)
+  session frio visitor at 2026-10-25T22:11:14Z
+  installed sha256 570f18de956ddfd3618a16f4315b7b8455bcd24c2a15694e146056c5022b09f4
+  built sha256     570f18de956ddfd3618a16f4315b7b8455bcd24c2a15694e146056c5022b09f4
+  match=True
+  versionCode=1 minSdk=24 targetSdk=36
+  versionName=0.0.0
+  lastUpdateTime=2026-10-25 18:11:12
+  attempt 1: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 2: first tap STALLED   CRD_PERFIL_SIN_CONFIRMAR 10002 ms then CRD_PERFIL_CONFIRMADO 2473 ms
+  attempt 3: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 4: first tap Explorar  CRD_PERFIL_CONFIRMADO 6 ms
+  first taps: 4, stalled: 1
+probe2: probe1 plus FirebaseFirestore.setLoggingEnabled(true) (sha256 33067aea)
+  session frio visitor at 2026-10-25T22:20:45Z
+  installed sha256 33067aeaedf094e3b959d421585f2b5ef96be53f3bf5bdadf46ee7175056d512
+  built sha256     33067aeaedf094e3b959d421585f2b5ef96be53f3bf5bdadf46ee7175056d512
+  match=True
+  versionCode=1 minSdk=24 targetSdk=36
+  versionName=0.0.0
+  lastUpdateTime=2026-10-25 18:20:43
+  attempt 1: first tap Explorar  CRD_PERFIL_CONFIRMADO 3 ms
+  attempt 2: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 3: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 4: first tap Explorar  CRD_PERFIL_CONFIRMADO 3 ms
+  attempt 5: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 6: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  first taps: 6, stalled: 0
+probe3: same build as probe2
+  session frio visitor at 2026-10-25T22:32:03Z
+  installed sha256 33067aeaedf094e3b959d421585f2b5ef96be53f3bf5bdadf46ee7175056d512
+  built sha256     33067aeaedf094e3b959d421585f2b5ef96be53f3bf5bdadf46ee7175056d512
+  match=True
+  versionCode=1 minSdk=24 targetSdk=36
+  versionName=0.0.0
+  lastUpdateTime=2026-10-25 18:32:01
+  attempt 1: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 2: first tap Explorar  CRD_PERFIL_CONFIRMADO 3 ms
+  attempt 3: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 4: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 5: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 6: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 7: first tap Explorar  CRD_PERFIL_CONFIRMADO 5 ms
+  note: attempt 8: FAIL before first steps
+  first taps: 7, stalled: 0
