@@ -1,0 +1,48 @@
+# mutation R1-cadencia: convex/mcpClients.ts
+# 'ahora - fila.lastSeenAt >= REGISTRAR_CADA_MS ||' -> 'true ||'
+# pnpm vitest run convex/mcpClients.test.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agentes-conectados
+
+ ❯ |convex| convex/mcpClients.test.ts (20 tests | 1 failed) 622ms
+     × la primera llamada inserta, otra dentro de cinco minutos no escribe, y una pasados cinco minutos parchea lastSeenAt 261ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  02:07:36
+   Duration  1.09s (transform 359ms, setup 0ms, import 253ms, tests 622ms, environment 74ms)
+
+(node:940924) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/mcpClients.test.ts > mcpClients.registrar > la primera llamada inserta, otra dentro de cinco minutos no escribe, y una pasados cinco minutos parchea lastSeenAt
+AssertionError: expected [ { …(9) } ] to deeply equal [ { …(9) } ]
+
+- Expected
++ Received
+
+@@ -4,10 +4,10 @@
+      "_id": "0000000000000000010002mcpClients",
+      "clientId": "c1",
+      "firstSeenAt": 1793016000000,
+      "kind": "claude-code",
+      "label": "Claude Code",
+-     "lastSeenAt": 1793016000000,
++     "lastSeenAt": 1793016299999,
+      "scope": "write",
+      "userId": "000000000000000000000010000users",
+    },
+  ]
+
+ ❯ convex/mcpClients.test.ts:106:27
+    104|     vi.setSystemTime(T0 + REGISTRAR_CADA_MS - 1);
+    105|     expect(await registrar('c1', { clientName: 'claude-code' })).toEqu…
+    106|     expect(await filas()).toEqual([primera]);
+       |                           ^
+    107|
+    108|     vi.setSystemTime(T0 + REGISTRAR_CADA_MS);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
