@@ -1,0 +1,64 @@
+## evidence --replace (fake gh on PATH, nothing leaves this machine)
+--- step 1: passes, text log replaced, scrub noted
+  ~   run.log: agents evidence scrubbed U+2014 x1 as "-", U+00B7 x1 as "."
+  ~   web/feat-x/8862a49/run.log replaced
+  +   web/feat-x/8862a49/run.log
+  =   originals kept at /home/decruce/.cache/agents/fix-herramientas-auditoria/cer/keep
+
+[run.log](https://raw.githubusercontent.com/eliasdlc/evidencia/main/web/feat-x/8862a49/run.log)
+exit=0
+PUT body:
+sha = blobsha123 | message = replace: web/feat-x/8862a49/run.log
+step one  [agents evidence scrubbed U+2014 x1 as "-", U+00B7 x1 as "."]
+step - two . three
+end
+
+--- step 2a: fails, existing path without --replace
+  ~   run.log: agents evidence scrubbed U+2014 x1 as "-", U+00B7 x1 as "."
+  x   web/feat-x/8862a49/run.log already exists. It is not rewritten: the PR would still show the cached image. Change the sha or the name, or pass --replace for a text file.
+puts after: 0
+--- step 2b: fails, --replace with an image
+  x   shot.png: --replace is for text files. GitHub's image proxy caches an image by URL, so a replaced image would keep showing the old one in the PR: change the sha or the name.
+--- step 3: passes again
+  +   web/feat-x/8862a49/run.log
+  =   originals kept at /home/decruce/.cache/agents/fix-herramientas-auditoria/cer/keep
+
+[run.log](https://raw.githubusercontent.com/eliasdlc/evidencia/main/web/feat-x/8862a49/run.log)
+puts after: 1
+
+## launch-in-t3 (real hooks/launch-in-t3.sh, PreToolUse JSON on stdin)
+--- step 1: passes, bounded -p run with its own config dir
+$ CLAUDE_CONFIG_DIR=/tmp/kino-mcp/c timeout 120 claude -p 'list the kino tools'
+exit=0
+--- step 2a: fails, same run without timeout
+Agents run in T3 Code (model-delegation skill): this command runs an agent in the background, out of Elias's sight. A bounded task is a subagent (the Agent tool, or delegate_task for another provider). Work that runs on its own is a T3 thread: t3_thread_launch on this machine, or `agents t3-launch --host agentbox|laptop` for the other one, so it appears in his sidebar. Never hand him the launch to do himself. Only his own later words choose another launcher; then put BY="<his literal words>" in front of the command.
+exit=2
+--- step 2b: fails, real config dir
+Agents run in T3 Code (model-delegation skill): this command runs an agent in the background, out of Elias's sight. A bounded task is a subagent (the Agent tool, or delegate_task for another provider). Work that runs on its own is a T3 thread: t3_thread_launch on this machine, or `agents t3-launch --host agentbox|laptop` for the other one, so it appears in his sidebar. Never hand him the launch to do himself. Only his own later words choose another launcher; then put BY="<his literal words>" in front of the command.
+exit=2
+--- step 2c: fails, interactive mode
+Agents run in T3 Code (model-delegation skill): this command runs an agent in the background, out of Elias's sight. A bounded task is a subagent (the Agent tool, or delegate_task for another provider). Work that runs on its own is a T3 thread: t3_thread_launch on this machine, or `agents t3-launch --host agentbox|laptop` for the other one, so it appears in his sidebar. Never hand him the launch to do himself. Only his own later words choose another launcher; then put BY="<his literal words>" in front of the command.
+exit=2
+--- step 3: passes again
+exit=0
+
+## design-identity (real hooks/design-identity.sh on a Bash payload)
+--- step 1: passes, Dart heredoc with design-grammar loaded
+exit=0
+--- step 1b: passes, reading the same file
+exit=0
+--- step 2a: fails, same heredoc, skills not loaded
+Blocked by design-identity (this Bash command writes a UI file):
+- home_screen.dart is a design surface and this session has not loaded design-grammar. Load each one with the Skill tool before writing it.
+exit=2
+--- step 2b: fails, redirection to a web file naming Geist and slate
+Blocked by design-identity (this Bash command writes a UI file):
+- layout.tsx loads the font `Geist` and DESIGN.md names it under neither Display face nor Body face. A typeface is the identity; it is chosen, written down, then loaded.
+- layout.tsx uses `bg-slate-900`: Tailwind slate is the stock neutral every scaffold ships, and it is why three demos looked like one. The product's neutrals are its own tokens from the Neutrals line of DESIGN.md. If stock slate is a deliberate choice, say so on that line and it passes.
+exit=2
+--- step 2c: fails, python writing the Dart path
+Blocked by design-identity (this Bash command writes a UI file):
+- a_screen.dart is a design surface and this session has not loaded design-grammar. Load each one with the Skill tool before writing it.
+exit=2
+--- step 3: passes again
+exit=0
