@@ -1,0 +1,28 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ RowTests.test_a_row_goes_stale_only_when_a_file_it_covers_changed _______
+
+self = <test_proof.RowTests testMethod=test_a_row_goes_stale_only_when_a_file_it_covers_changed>
+
+    def test_a_row_goes_stale_only_when_a_file_it_covers_changed(self):
+        self.assertEqual(by_row(ROWS).failures, [])
+>       self.assertEqual(by_row(ROWS, since_old("lib/other.dart", "README.md")).failures, [])
+E       AssertionError: Lists differ: ['R1: its capture at a1b2c3d is stale: a p[382 chars]ure"] != []
+E       
+E       First list contains 3 additional elements.
+E       First extra element 0:
+E       'R1: its capture at a1b2c3d is stale: a product file the row covers changed after it (lib/other.dart)'
+E       
+E       + []
+E       - ['R1: its capture at a1b2c3d is stale: a product file the row covers changed '
+E       -  'after it (lib/other.dart)',
+E       -  'body line 12: R2: suite.log at a1b2c3d is stale: a product file the row '
+E       -  'covers changed after it (lib/other.dart)',
+E       -  'body line 11: R1: no self-check report that names it still holds for it (a '
+E       -  "product file it covers changed after it, or its sha is not in the head's "
+E       -  'history): run the self-check again on its current capture']
+
+tests/test_proof.py:620: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_proof.py::RowTests::test_a_row_goes_stale_only_when_a_file_it_covers_changed
+1 failed, 55 deselected in 0.08s
