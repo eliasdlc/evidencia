@@ -1,0 +1,41 @@
+Sanitized: 0 U+2014 and 0 U+00B7 replaced by a hyphen, 0 fixture UUIDs masked
+00:00 +0: loading ~/.cache/conocerd-rework/app-check/pr-r2/copy/test/core/bootstrap/app_check_provider_test.dart
+00:00 +0: androidAttestation debug usa siempre el proveedor de depuración, con o sin token
+00:00 +1: androidAttestation el tren de release usa Play Integrity aunque lleve el token del emulador en dart_define.json
+00:00 +1 -1: androidAttestation el tren de release usa Play Integrity aunque lleve el token del emulador en dart_define.json [E]
+  Expected: AndroidAttestation:<AndroidAttestation.playIntegrity>
+    Actual: AndroidAttestation:<AndroidAttestation.debug>
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/core/bootstrap/app_check_provider_test.dart 25:7  main.<fn>.<fn>
+  
+00:00 +1 -1: androidAttestation el build de revisión con su token usa el proveedor de depuración
+00:00 +2 -1: androidAttestation solo el valor exacto "debug" pide el proveedor de depuración: ni otra palabra que lo contenga, ni otras mayúsculas, ni espacios
+00:00 +2 -2: androidAttestation solo el valor exacto "debug" pide el proveedor de depuración: ni otra palabra que lo contenga, ni otras mayúsculas, ni espacios [E]
+  Expected: AndroidAttestation:<AndroidAttestation.playIntegrity>
+    Actual: AndroidAttestation:<AndroidAttestation.debug>
+  "debugger" no es "debug"
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/core/bootstrap/app_check_provider_test.dart 56:9  main.<fn>.<fn>
+  
+00:00 +2 -2: androidAttestation la bandera sin token no cambia nada: un token inventado por instalación tampoco atestiguaría
+00:00 +3 -2: androidAttestation un valor que no es "debug" deja Play Integrity
+00:00 +3 -3: androidAttestation un valor que no es "debug" deja Play Integrity [E]
+  Expected: AndroidAttestation:<AndroidAttestation.playIntegrity>
+    Actual: AndroidAttestation:<AndroidAttestation.debug>
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/core/bootstrap/app_check_provider_test.dart 81:7  main.<fn>.<fn>
+  
+00:00 +3 -3: appCheckDebugTokenForBuild en un build que no es release el token se puede leer, y sin definirlo no hay token
+00:00 +4 -3: Some tests failed.
+
+Failing tests:
+  ~/.cache/conocerd-rework/app-check/pr-r2/copy/test/core/bootstrap/app_check_provider_test.dart: androidAttestation el tren de release usa Play Integrity aunque lleve el token del emulador en dart_define.json
+  ~/.cache/conocerd-rework/app-check/pr-r2/copy/test/core/bootstrap/app_check_provider_test.dart: androidAttestation solo el valor exacto "debug" pide el proveedor de depuración: ni otra palabra que lo contenga, ni otras mayúsculas, ni espacios
+  ~/.cache/conocerd-rework/app-check/pr-r2/copy/test/core/bootstrap/app_check_provider_test.dart: androidAttestation un valor que no es "debug" deja Play Integrity
+exit=1
