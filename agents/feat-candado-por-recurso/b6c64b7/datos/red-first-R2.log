@@ -1,0 +1,142 @@
+F..FFFFFFF.FFFFFFF
+======================================================================
+FAIL: test_a_long_command_is_judged_in_linear_time (test_wait_loop.WaitLoopTests.test_a_long_command_is_judged_in_linear_time) (name='a quoted body')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 119, in test_a_long_command_is_judged_in_linear_time
+    self.assertEqual(result.returncode, code)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0
+
+======================================================================
+FAIL: test_foreground_waits_are_blocked (test_wait_loop.WaitLoopTests.test_foreground_waits_are_blocked) (command='for pid in $PIDS; do while kill -0 $pid 2>/dev/null; do sleep 2; done; done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 90, in test_foreground_waits_are_blocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : for pid in $PIDS; do while kill -0 $pid 2>/dev/null; do sleep 2; done; done
+
+======================================================================
+FAIL: test_foreground_waits_are_blocked (test_wait_loop.WaitLoopTests.test_foreground_waits_are_blocked) (command='for i in 1 2; do until [ -f x$i ]; do sleep 1; done; done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 90, in test_foreground_waits_are_blocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : for i in 1 2; do until [ -f x$i ]; do sleep 1; done; done
+
+======================================================================
+FAIL: test_foreground_waits_are_blocked (test_wait_loop.WaitLoopTests.test_foreground_waits_are_blocked) (command='while true; do if [ -f x ]; then break; fi; sleep 2; done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 90, in test_foreground_waits_are_blocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : while true; do if [ -f x ]; then break; fi; sleep 2; done
+
+======================================================================
+FAIL: test_foreground_waits_are_blocked (test_wait_loop.WaitLoopTests.test_foreground_waits_are_blocked) (command='while sleep 5; kill -0 $PID; do :; done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 90, in test_foreground_waits_are_blocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : while sleep 5; kill -0 $PID; do :; done
+
+======================================================================
+FAIL: test_foreground_waits_are_blocked (test_wait_loop.WaitLoopTests.test_foreground_waits_are_blocked) (command='for i in $(seq 1000); do gh run view 1 | grep -q completed && break; sleep 5; done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 90, in test_foreground_waits_are_blocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : for i in $(seq 1000); do gh run view 1 | grep -q completed && break; sleep 5; done
+
+======================================================================
+FAIL: test_foreground_waits_are_blocked (test_wait_loop.WaitLoopTests.test_foreground_waits_are_blocked) (command="bash <<'EOF'\nuntil [ -f x ]; do sleep 1; done\nEOF")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 90, in test_foreground_waits_are_blocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : bash <<'EOF'
+until [ -f x ]; do sleep 1; done
+EOF
+
+======================================================================
+FAIL: test_foreground_waits_are_blocked (test_wait_loop.WaitLoopTests.test_foreground_waits_are_blocked) (command='while ! [ -f x ]; do for i in 1 2; do sleep 1; done; done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 90, in test_foreground_waits_are_blocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : while ! [ -f x ]; do for i in 1 2; do sleep 1; done; done
+
+======================================================================
+FAIL: test_work_retries_and_text_pass (test_wait_loop.WaitLoopTests.test_work_retries_and_text_pass) (command='git commit -m "block tail and inotifywait loops"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 95, in test_work_retries_and_text_pass
+    self.assertEqual(run(command).returncode, 0, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : git commit -m "block tail and inotifywait loops"
+
+======================================================================
+FAIL: test_work_retries_and_text_pass (test_wait_loop.WaitLoopTests.test_work_retries_and_text_pass) (command='grep -rn inotifywait skills/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 95, in test_work_retries_and_text_pass
+    self.assertEqual(run(command).returncode, 0, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : grep -rn inotifywait skills/
+
+======================================================================
+FAIL: test_work_retries_and_text_pass (test_wait_loop.WaitLoopTests.test_work_retries_and_text_pass) (command='command -v inotifywait')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 95, in test_work_retries_and_text_pass
+    self.assertEqual(run(command).returncode, 0, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : command -v inotifywait
+
+======================================================================
+FAIL: test_work_retries_and_text_pass (test_wait_loop.WaitLoopTests.test_work_retries_and_text_pass) (command='grep -rn "while true; do sleep 1; done" docs/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 95, in test_work_retries_and_text_pass
+    self.assertEqual(run(command).returncode, 0, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : grep -rn "while true; do sleep 1; done" docs/
+
+======================================================================
+FAIL: test_work_retries_and_text_pass (test_wait_loop.WaitLoopTests.test_work_retries_and_text_pass) (command="echo 'until [ -f x ]; do sleep 1; done'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 95, in test_work_retries_and_text_pass
+    self.assertEqual(run(command).returncode, 0, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : echo 'until [ -f x ]; do sleep 1; done'
+
+======================================================================
+FAIL: test_work_retries_and_text_pass (test_wait_loop.WaitLoopTests.test_work_retries_and_text_pass) (command='gh pr comment 3 --body "the hook blocks tail --pid and \'until x; do sleep 1; done\'"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 95, in test_work_retries_and_text_pass
+    self.assertEqual(run(command).returncode, 0, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : gh pr comment 3 --body "the hook blocks tail --pid and 'until x; do sleep 1; done'"
+
+======================================================================
+FAIL: test_work_retries_and_text_pass (test_wait_loop.WaitLoopTests.test_work_retries_and_text_pass) (command='for f in a b c; do echo $f; sleep 1; done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-candado-por-recurso/tests/test_wait_loop.py", line 95, in test_work_retries_and_text_pass
+    self.assertEqual(run(command).returncode, 0, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : for f in a b c; do echo $f; sleep 1; done
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.751s
+
+FAILED (failures=15)
