@@ -1,0 +1,129 @@
+## evidence --replace (fake gh on PATH, nothing leaves this machine)
+--- step 1: passes, text log replaced, scrub noted
+  ~   run.log: agents evidence scrubbed U+2014 x1 as "-", U+00B7 x1 as "."
+  ~   web/feat-x/8862a49/run.log replaced
+  +   web/feat-x/8862a49/run.log
+  =   originals kept at /home/decruce/.cache/agents/fix-herramientas-auditoria/cer/keep
+
+[run.log](https://raw.githubusercontent.com/eliasdlc/evidencia/main/web/feat-x/8862a49/run.log)
+exit=0
+PUT body:
+sha = blobsha123 | message = replace: web/feat-x/8862a49/run.log
+step one  [agents evidence scrubbed U+2014 x1 as "-", U+00B7 x1 as "."]
+step - two . three
+end
+
+--- step 2a: fails, existing path without --replace
+  ~   run.log: agents evidence scrubbed U+2014 x1 as "-", U+00B7 x1 as "."
+  x   web/feat-x/8862a49/run.log already exists. It is not rewritten: the PR would still show the cached image. Change the sha or the name, or pass --replace for a text file.
+puts after: 0
+--- step 2b: fails, --replace with an image
+  x   shot.png: --replace is for text files. GitHub's image proxy caches an image by URL, so a replaced image would keep showing the old one in the PR: change the sha or the name.
+--- step 3: passes again
+  +   web/feat-x/8862a49/run.log
+  =   originals kept at /home/decruce/.cache/agents/fix-herramientas-auditoria/cer/keep
+
+[run.log](https://raw.githubusercontent.com/eliasdlc/evidencia/main/web/feat-x/8862a49/run.log)
+puts after: 1
+
+## launch-in-t3 (real hooks/launch-in-t3.sh, PreToolUse JSON on stdin)
+--- step 1: passes, bounded -p run with its own config dir
+$ CLAUDE_CONFIG_DIR=/tmp/kino-mcp/c timeout 120 claude -p 'list the kino tools'
+exit=0
+--- step 2a: fails, same run without timeout
+Agents run in T3 Code (model-delegation skill): this command runs an agent in the background, out of Elias's sight. A bounded task is a subagent (the Agent tool, or delegate_task for another provider). Work that runs on its own is a T3 thread: t3_thread_launch on this machine, or `agents t3-launch --host agentbox|laptop` for the other one, so it appears in his sidebar. Never hand him the launch to do himself. Only his own later words choose another launcher; then put BY="<his literal words>" in front of the command.
+exit=2
+--- step 2b: fails, real config dir
+Agents run in T3 Code (model-delegation skill): this command runs an agent in the background, out of Elias's sight. A bounded task is a subagent (the Agent tool, or delegate_task for another provider). Work that runs on its own is a T3 thread: t3_thread_launch on this machine, or `agents t3-launch --host agentbox|laptop` for the other one, so it appears in his sidebar. Never hand him the launch to do himself. Only his own later words choose another launcher; then put BY="<his literal words>" in front of the command.
+exit=2
+--- step 2c: fails, interactive mode
+Agents run in T3 Code (model-delegation skill): this command runs an agent in the background, out of Elias's sight. A bounded task is a subagent (the Agent tool, or delegate_task for another provider). Work that runs on its own is a T3 thread: t3_thread_launch on this machine, or `agents t3-launch --host agentbox|laptop` for the other one, so it appears in his sidebar. Never hand him the launch to do himself. Only his own later words choose another launcher; then put BY="<his literal words>" in front of the command.
+exit=2
+--- step 3: passes again
+exit=0
+
+## design-identity (real hooks/design-identity.sh on a Bash payload)
+--- step 1: passes, Dart heredoc with design-grammar loaded
+exit=0
+--- step 1b: passes, reading the same file
+exit=0
+--- step 2a: fails, same heredoc, skills not loaded
+Blocked by design-identity (this Bash command writes a UI file):
+- home_screen.dart is a design surface and this session has not loaded design-grammar. Load each one with the Skill tool before writing it.
+exit=2
+--- step 2b: fails, redirection to a web file naming Geist and slate
+Blocked by design-identity (this Bash command writes a UI file):
+- layout.tsx loads the font `Geist` and DESIGN.md names it under neither Display face nor Body face. A typeface is the identity; it is chosen, written down, then loaded.
+- layout.tsx uses `bg-slate-900`: Tailwind slate is the stock neutral every scaffold ships, and it is why three demos looked like one. The product's neutrals are its own tokens from the Neutrals line of DESIGN.md. If stock slate is a deliberate choice, say so on that line and it passes.
+exit=2
+--- step 2c: fails, python writing the Dart path
+Blocked by design-identity (this Bash command writes a UI file):
+- a_screen.dart is a design surface and this session has not loaded design-grammar. Load each one with the Skill tool before writing it.
+exit=2
+--- step 3: passes again
+exit=0
+
+## round 2 ceremony (head c9c3592)
+## launch-in-t3 (real hooks/launch-in-t3.py, PreToolUse JSON)
+--- step 1 passes
+$ env CLAUDE_CONFIG_DIR=/tmp/x timeout 120 claude -p q &
+0 
+--- step 1b passes
+$ CODEX_HOME=/tmp/x timeout 120 codex -c k=v exec q &
+0 
+--- step 2a fails, timeout ceiling
+$ CLAUDE_CONFIG_DIR=/tmp/x timeout 99999 claude -p q &
+2 Agents run in T3 Code (model-delegation skill): this command runs an agent in th
+--- step 2b fails, $TMPDIR path
+$ TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &
+2 Agents run in T3 Code (model-delegation skill): this command runs an agent in th
+--- step 2c fails, -p as option value
+$ CLAUDE_CONFIG_DIR=/tmp/x timeout 9 claude --model -p q &
+2 Agents run in T3 Code (model-delegation skill): this command runs an agent in th
+--- step 2d fails, skip-permissions
+$ CLAUDE_CONFIG_DIR=/tmp/x timeout 9 claude -p --dangerously-skip-permissions q &
+2 Agents run in T3 Code (model-delegation skill): this command runs an agent in th
+--- step 2e fails, wrapped by tmux
+$ tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/x timeout 9 claude -p q'
+2 Agents run in T3 Code (model-delegation skill): this command starts an agent ins
+--- step 2f fails, over ssh
+$ ssh ab 'CLAUDE_CONFIG_DIR=/tmp/x timeout 9 claude -p q'
+2 Agents run in T3 Code (model-delegation skill): this command starts an agent on 
+--- step 3 passes again
+$ CLAUDE_CONFIG_DIR=/tmp/x timeout 9 claude -p q &
+0 
+## design-identity (real hooks/design-identity.py, cwd a fabricated web repo)
+--- step 1 passes, only reads the UI file
+$ python3 -c "s=open('src/a.css').read(); open('/tmp/o.txt','w').write(s)"
+exit=0 
+--- step 1b passes, mv away
+$ mv lib/features/home/presentation/home_screen.dart /tmp/old.dart
+exit=0 
+--- step 2a fails, two-step cat then mv
+$ mv /tmp/stage.dart lib/features/home/presentation/home_screen.dart
+exit=2 - home_screen.dart is a design surface and this session has not loaded design-grammar. Load each one with the 
+--- step 2b fails, &>
+$ echo x &> lib/features/home/presentation/home_screen.dart
+exit=2 - home_screen.dart is a design surface and this session has not loaded design-grammar. Load each one with the 
+--- step 2c fails, $HOME path
+$ echo x > $HOME/p/lib/presentation/a_screen.dart
+exit=2 - a_screen.dart is a design surface and this session has not loaded design-grammar. Load each one with the Ski
+--- step 2d fails, sed -i
+$ sed -i 's/a/b/' lib/features/home/presentation/home_screen.dart
+exit=2 - home_screen.dart is a design surface and this session has not loaded design-grammar. Load each one with the 
+--- step 2e fails, python open w
+$ python3 -c "open('src/a.css','w').write('x')"
+exit=2 - a.css is a design surface and this session has not loaded design-grammar, frontend-design. Load each one wit
+--- step 3 passes again
+$ python3 -c "s=open('src/a.css').read(); open('/tmp/o.txt','w').write(s)"
+exit=0 
+## evidence scrub_text (log with one invalid byte and an em dash)
+--- step 1 passes, fixed code
+note='[agents evidence scrubbed U+2014 x1 as "-"]'
+em dash gone=True, \xff kept=True
+--- step 2 fails, code of 44ab783 (em dash published unscrubbed)
+note=''
+em dash gone=False, \xff kept=True
+--- step 3 passes again
+note='[agents evidence scrubbed U+2014 x1 as "-"]'
+em dash gone=True, \xff kept=True
