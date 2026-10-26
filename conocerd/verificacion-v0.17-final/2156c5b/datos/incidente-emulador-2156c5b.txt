@@ -1,0 +1,9 @@
+Emulator incident, 26 Oct 2026, emulator-5554 (Pixel7_API35, -gpu host), build 2156c5b installed once at 06:09:54Z  [U+2014 and U+00B7 replaced by a hyphen: 0]
+The guest's system_server was restarted by its own watchdog: the GNSS HAL blocked in GnssNative.native_stop for 66 s. The app's ANR at 03:39:28 local (input dispatching timed out) fell inside that window. Lines from adb logcat -b all, filtered to the watchdog:
+10-26 03:43:18.604   560   587 I watchdog: Blocked in handler on foreground thread (android.fg) for 66s
+After the restart (03:43:26 local) the gps provider took fixes again (dumpsys location, last location gps 19.436498,-70.703500) and every later scene ran on the same install.
+Read earlier in the same session from the same buffer (rotated out since), verbatim:
+10-26 03:43:24.378   560   587 W Watchdog: *** WATCHDOG KILLING SYSTEM PROCESS: Blocked in handler on foreground thread (android.fg) for 66s
+10-26 03:43:24.379   560   587 W Watchdog:     at com.android.server.location.gnss.hal.GnssNative.native_stop(Native Method)
+10-26 03:43:24.379   560   587 W Watchdog:     at com.android.server.location.gnss.GnssLocationProvider.stopNavigating(GnssLocationProvider.java:1303)
+10-26 03:43:24.379   560   587 W Watchdog:     at com.android.server.location.gnss.GnssLocationProvider.onSetRequest(GnssLocationProvider.java:1019)
