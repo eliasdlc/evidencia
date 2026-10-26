@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+"""Per attempt table of a frio.sh run: the first tap's verdict and the
+CRD_PERFIL_* markers the screen printed, from the driver log and a*-marcas.txt.
+  tabla.py RUN_DIR DRIVER_LOG LABEL
+"""
+import pathlib
+import re
+import sys
+
+run, log, label = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3]
+lines = log.read_text().splitlines()
+receipt = (run / "receipt.txt").read_text().strip().splitlines()
+print(f"{label}")
+for r in receipt:
+    print(f"  {r.strip()}")
+rows, stalled, total = [], 0, 0
+for line in lines:
+    m = re.match(r"attempt (\d+): first tap (\w+)", line)
+    if not m:
+        continue
+    n, verdict = m.group(1), m.group(2)
+    marks = run / f"a{n}-marcas.txt"
+    crd = re.findall(r"CRD_PERFIL_\w+ \d+ ms", marks.read_text()) if marks.exists() else []
+    total += 1
+    if verdict == "STALLED":
+        stalled += 1
+    rows.append(f"  attempt {n}: first tap {verdict:9s} {' then '.join(crd)}")
+for line in lines:
+    if "FAIL" in line or "aborted" in line or "stopped" in line:
+        rows.append(f"  note: {line}")
+print("\n".join(rows))
+print(f"  first taps: {total}, stalled: {stalled}")
