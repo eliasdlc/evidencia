@@ -1,0 +1,16 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______________ ReleaseTests.test_a_release_owes_every_batch_row _______________
+
+self = <test_proof.ReleaseTests testMethod=test_a_release_owes_every_batch_row>
+
+    def test_a_release_owes_every_batch_row(self):
+        self.assertEqual(release(CHECKLIST).failures, [])
+        found = release(CHECKLIST.split("## Release checklist")[0]).failures
+>       self.assertTrue(any("#41 R3 (native) is Pending: batch in its task PR and has no row" in f for f in found), found)
+E       AssertionError: False is not true : []
+
+tests/test_proof.py:753: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_proof.py::ReleaseTests::test_a_release_owes_every_batch_row
+1 failed, 55 deselected in 0.07s
