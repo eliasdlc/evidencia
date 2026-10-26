@@ -1,0 +1,111 @@
+Driver copy used in this round: sin-red.sh; U+2014 and U+00B7 replaced by a hyphen: 0
+#!/usr/bin/env bash
+# C1 on the device: the finish without a connection, killed past the deadline.
+#   EMULATOR_LOCK_HELD=1 ANDROID_SERIAL=emulator-5554 sin-red.sh APK OUT NAME
+# A new throwaway account through the thread to the first steps; airplane
+# mode; tap "Entrar a la app"; wait past the 15 s deadline; am force-stop;
+# relaunch still offline and read which screen opens and whether the thread's
+# draft is still on disk; airplane mode off; read users/{uid} on the server
+# (cuenta.py prints only the status, the stamp and createdAt); then, if the
+# first steps are back, tap "Entrar a la app" again and read it all once more.
+set -uo pipefail
+APK=$1; OUT=$2; NAME=$3
+PKG=com.conocerd.app
+[ "${EMULATOR_LOCK_HELD:-}" = 1 ] || { echo "refused: take ~/.cache/conocerd-rework/emulator.lock first"; exit 2; }
+SERIAL=${ANDROID_SERIAL:?set ANDROID_SERIAL}
+D=$(dirname "$0")
+UI="python3 $D/adb_ui.py"
+SECRETOS=$HOME/.config/secretos/conocerd-hilo.env
+A="adb -s $SERIAL"
+mkdir -p "$OUT"
+t() { date -u +%T.%3NZ; }
+abrir() { $A shell monkey -p $PKG -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1; }
+cap() { $A exec-out screencap -p > "$OUT/$NAME-$1.png"; echo "$(t) capture $NAME-$1.png"; }
+escribir() { $UI field "$1"; sleep 0.5; $UI type "$2"; $A shell input keyevent 111; sleep 0.3; }
+borrador() { $A shell run-as $PKG cat shared_prefs/FlutterSharedPreferences.xml 2>/dev/null | grep -c 'name="flutter.onboarding_hilo"'; }
+red() { echo "airplane_mode_on=$($A shell settings get global airplane_mode_on | tr -d '\r') $($A shell dumpsys connectivity | grep -m1 'Active default network' | tr -d '\r') ping=$($A shell ping -c1 -W2 8.8.8.8 >/dev/null 2>&1 && echo ok || echo fails)"; }
+# Airplane mode alone leaves this emulator's network up (measured: ping ok and
+# the writes reached the server), so the radios are switched off too.
+sin_red() { $A shell cmd connectivity airplane-mode enable; $A shell svc wifi disable; $A shell svc data disable; }
+con_red() { $A shell cmd connectivity airplane-mode disable; $A shell svc wifi enable; $A shell svc data enable; }
+cuenta() { echo "$(t) server: $(timeout 60 python3 -I $D/cuenta.py "$CORREO")"; }
+
+con_red >/dev/null 2>&1
+$A shell settings put system font_scale 1.0
+$A uninstall $PKG >/dev/null 2>&1
+$A install -r "$APK" >/dev/null || { echo "install failed"; exit 1; }
+RUTA=$($A shell pm path $PKG | head -1 | cut -d: -f2 | tr -d '\r')
+$A pull "$RUTA" "$OUT/instalado.apk" >/dev/null 2>&1
+echo "session $NAME on $SERIAL at $(date -u +%FT%TZ)"
+echo "installed sha256 $(sha256sum < "$OUT/instalado.apk" | cut -d' ' -f1)"
+echo "built sha256     $(sha256sum < "$APK" | cut -d' ' -f1)"
+$A shell dumpsys package $PKG | grep -E 'lastUpdateTime|versionName|versionCode' | head -3 | tr -d '\r'
+rm -f "$OUT/instalado.apk"
+$A shell pm clear $PKG >/dev/null
+$A logcat -c
+
+CORREO="pruebas-hilo-$(date -u +%m%d%H%M%S)@conocerd.test"
+( umask 077; printf '%s=%s\n' "$CORREO" "$(openssl rand -hex 10)" >> "$SECRETOS" )
+CLAVE=$(grep "^$CORREO=" "$SECRETOS" | cut -d= -f2)
+echo "$(t) account ${CORREO%@*}"
+abrir
+$UI wait "Conoce la isla a tu manera" || { echo FAIL; exit 1; }
+$UI tap "Empezar"; $UI wait "Pregunta 1 de 4" || exit 1
+$UI tap "Estoy de visita"; sleep 0.5; $UI tap "Continuar"; $UI wait "Pregunta 2 de 4" || exit 1
+$UI tap "Ya estoy aquí"; sleep 0.4; $UI tap "3 a 5"; sleep 0.6; $UI tap "Continuar"
+$UI wait "Pregunta 3 de 4" || exit 1
+$UI tap "En pareja"; sleep 0.6; $UI tap "Continuar"; $UI wait "Pregunta 4 de 4" || exit 1
+$UI tap "Playas"; $UI tap "Naturaleza"; $UI tap "Comida"; sleep 0.8
+$UI tap "Ver mi primera ruta"; $UI wait "Se sella al llegar" || exit 1
+$UI tap "Guardar mi ruta"; $UI wait "Guarda esta ruta en tu diario" || exit 1
+$UI tap "Usar mi correo"; sleep 1
+escribir 0 "Pruebas"; escribir 1 "$CORREO"; escribir 2 "$CLAVE"
+$UI tap "Crear cuenta"; $UI wait "Ponle cara a tu diario" || exit 1
+$UI tap "Omitir por ahora"; $UI wait "Entrar a la app" || exit 1
+sleep 4
+echo "$(t) first steps on screen; draft on disk: $(borrador)"
+cuenta
+
+sin_red; sleep 5
+ESTADO=$(red); echo "$(t) offline: $ESTADO"
+case "$ESTADO" in *ping=ok*) echo "$(t) NOT OFFLINE: aborted"; con_red; exit 3;; esac
+echo "$(t) tap Entrar a la app (offline)"
+TAP=$(date +%s)
+$UI tap "Entrar a la app"
+visto=0
+for _ in $(seq 1 30); do
+  if $UI has "No pudimos guardar"; then echo "$(t) toast 'No pudimos guardar tu cuenta' after $(( $(date +%s) - TAP )) s"; cap 1-sin-red-aviso; visto=1; break; fi
+  if $UI has "A dónde vamos"; then echo "$(t) Explorar opened offline"; cap 1-sin-red-explorar; break; fi
+  sleep 1
+done
+[ $visto = 1 ] || echo "$(t) no toast seen"
+while [ $(( $(date +%s) - TAP )) -lt 20 ]; do sleep 1; done
+echo "$(t) $(( $(date +%s) - TAP )) s after the tap: am force-stop"
+$A shell am force-stop $PKG; sleep 1.5
+echo "$(t) relaunch offline: $(red)"
+abrir
+pantalla=ninguna
+for _ in $(seq 1 25); do
+  if $UI has "A dónde vamos"; then pantalla=explorar; break; fi
+  if $UI has "Entrar a la app"; then pantalla=primeros-pasos; break; fi
+  sleep 1
+done
+sleep 2
+echo "$(t) next start offline opens: $pantalla; draft on disk: $(borrador)"
+cap 2-relanzar-sin-red-$pantalla
+cuenta
+
+con_red; sleep 15
+echo "$(t) online again: $(red)"
+cuenta
+if [ "$pantalla" = primeros-pasos ]; then
+  $A logcat -c
+  echo "$(t) tap Entrar a la app (online)"
+  $UI tap "Entrar a la app"
+  if $UI wait "A dónde vamos"; then echo "$(t) Explorar"; else echo "$(t) no Explorar"; fi
+  sleep 3; cap 3-en-linea-explorar
+  $A logcat -d -v time | grep -E 'CRD_PERFIL_' | sed -E 's/^[0-9-]+ //' | sed 's/^/  marker: /'
+fi
+sleep 3
+echo "$(t) end; draft on disk: $(borrador)"
+cuenta
