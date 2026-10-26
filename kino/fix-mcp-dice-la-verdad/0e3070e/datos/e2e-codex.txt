@@ -1,0 +1,21 @@
+=== head 181237b, server with the agentbox key, Clerk Development, user prueba@usekino.dev, fresh CODEX_HOME, 2026-10-25T23:57:24Z
+=== unfiltered output, except: the authorize URL query in the add output is redacted inline, the login keeps only its status lines (its authorize URL line is omitted), and the tool call prints its first 1500 characters
+$ codex --version: codex-cli 0.164.0
+$ codex mcp add kino-dev --url http://localhost:3010/api/mcp   (stopped after 20 s; it waits on OAuth)
+Added global MCP server 'kino-dev'.
+Detected OAuth support. Starting OAuth flow…
+Authorize `kino-dev` by opening this URL in your browser:
+https://causal-flamingo-8590.clerk.accounts.dev/oauth/authorize?<query redacted: client_id, state, code_challenge>
+
+exit 124
+$ codex mcp login kino-dev --no-browser   (consent approved headless as the seeded user)
+Authorize the MCP server by opening this URL in your browser:
+Successfully logged in to MCP server 'kino-dev'.
+$ codex mcp list
+Name      Url                            Bearer Token Env Var  Status   Auth 
+kino-dev  http://localhost:3010/api/mcp  -                     enabled  OAuth
+$ python3 -I toolcall.py codex-home2/.credentials.json get_today_plan
+client FqPdWWavUjZmwa3Y token expires in 86398 s; granted: ['documents:propose', 'documents:write', 'offline_access', 'openid', 'email', 'profile', 'documents:read']
+initialize 200 {'name': 'kino', 'version': '3.0.0'}
+tools/call 200 isError: None
+{"content": [{"type": "text", "text": "{\n  \"checkin\": null,\n  \"checkins\": [],\n  \"chronotype\": \"intermediate\",\n  \"clock\": {\n    \"date\": \"2026-10-25\",\n    \"hour\": 19,\n    \"timezone\": \"America/Santo_Domingo\"\n  },\n  \"energyPlan\": null,\n  \"hasCheckin\": false,\n  \"learnedCurve\": [\n    10,\n    5,\n    5,\n    5,\n    5,\n    10,\n    25,\n    45,\n    65,\n    80,\n    90,\n    90.3,\n    85,\n    75,\n    70,\n    75,\n    62.3,\n    55,\n    45,\n    35,\n    25,\n    15,\n    10,\n    10\n  ],\n  \"learningAlpha\": 0.05,\n  \"noProfile\": false,\n  \"predictions\": [],\n  \"projectedCurve\": [\n    8,\n    4,\n    4,\n    4,\n    4,\n    8,\n    20,\n    36,\n    52,\n    64,\n    72,\n    72,\n    68,\n    60,\n    56,\n    60,\n    50,\n    44,\n    36,\n    28,\n    20,\n    12,\n    8,\n    8\n  ]\n}"}]}
