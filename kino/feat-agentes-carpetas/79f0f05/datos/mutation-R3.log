@@ -1,0 +1,649 @@
+mutation R3: convex/lib/agentRoute.ts
+- if (workdir.path || workdir.repo) {
++ if (false as boolean) {
+
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/feat-agentes-carpetas
+
+ ❯ |convex| convex/workdirRules.test.ts (34 tests | 17 failed) 1260ms
+     × la tarea cae en el sistema de la carpeta sin nombrarlo 788ms
+     × las subcarpetas heredan, y la regla más profunda gana 17ms
+     × compara por segmentos: /a/Uni no cubre /a/Universidad 21ms
+     × la barra final no cambia la carpeta, ni al guardar ni al buscar 25ms
+     × el repo manda sobre la carpeta y vale en cualquier clon 18ms
+     × no crea nada y devuelve la carpeta normalizada para preguntar 10ms
+     × la regla de un sistema archivado no cuenta 8ms
+     × con regla de carpeta, la tarea cae en el sistema de la carpeta 6ms
+     × sin regla, pide el sistema sin el remoto y no escribe nada 5ms
+     × con regla, todas las tareas caen en el sistema de la carpeta 9ms
+     × una carpeta sin regla no crea ninguna y devuelve lo que hay que preguntar 7ms
+     × la regla de Beto para la misma carpeta nunca decide por Ana 9ms
+     × si Ana y Beto tienen regla para la misma carpeta, a cada uno le decide la suya 9ms
+     × bulkCreate: cada subtarea va con su madre; la tarea propia sigue mandando 15ms
+     × con regla, la página cae en el sistema de la carpeta 93ms
+     × el repo manda sobre la carpeta y el systemId sobre los dos 19ms
+     × una carpeta sin regla no crea nada y devuelve lo que hay que preguntar 4ms
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  17 failed | 24 passed (41)
+   Start at  00:34:43
+   Duration  2.10s (transform 1.17s, setup 0ms, import 877ms, tests 1.27s, environment 192ms)
+
+(node:870470) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta con regla > la tarea cae en el sistema de la carpeta sin nombrarlo
+AssertionError: expected { routedBy: 'inbox', …(2) } to match object { status: 'created', …(2) }
+(41 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "rule",
+-   "rule": {
+-     "key": "/home/ana/Documents/Universidad",
+-     "kind": "path",
+-     "systemName": "Universidad",
+-   },
++   "routedBy": "inbox",
+    "status": "created",
+  }
+
+ ❯ convex/workdirRules.test.ts:51:17
+     49|     const res = await agente.mutation(api.tasks.createFromAgent, { tit…
+     50|
+     51|     expect(res).toMatchObject({ status: 'created', routedBy: 'rule', r…
+       |                 ^
+     52|     expect(res.status === 'created' && res.task.systemId).toBe(ids.Uni…
+     53|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta con regla > las subcarpetas heredan, y la regla más profunda gana
+AssertionError: expected '0000000000000000000010001systems' to be '0000000000000000000010002systems' // Object.is equality
+
+Expected: "0000000000000000000010002systems"
+Received: "0000000000000000000010001systems"
+
+ ❯ convex/workdirRules.test.ts:66:78
+     64|     };
+     65|
+     66|     expect(await sistemaDe('/home/ana/Documents/Universidad/Calculo/te…
+       |                                                                              ^
+     67|     expect(await sistemaDe('/home/ana/Documents/Universidad/Tesis/capi…
+     68|     expect(await sistemaDe('/home/ana/Documents/Universidad/Tesis')).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta con regla > compara por segmentos: /a/Uni no cubre /a/Universidad
+AssertionError: expected { routedBy: 'inbox', …(2) } to deeply equal { status: 'needs_system', …(2) }
+
+- Expected
++ Received
+
+  {
+-   "gitRemote": null,
+-   "status": "needs_system",
+-   "workingDirectory": "/a/Universidad",
++   "routedBy": "inbox",
++   "status": "created",
++   "task": {
++     "boardStatus": null,
++     "boardStatusChangedAt": null,
++     "clientRequestId": null,
++     "completedAt": null,
++     "completedBy": null,
++     "completedVia": null,
++     "contextTagId": null,
++     "createdAt": "2026-10-26T04:34:45.089Z",
++     "deletedAt": null,
++     "description": null,
++     "dueDate": null,
++     "effectivePriority": "high",
++     "energyLevel": "medium",
++     "estimatedTime": null,
++     "externalId": null,
++     "externalSource": null,
++     "folderId": null,
++     "id": "000000000000000000000010005tasks",
++     "inTodayPlan": false,
++     "lastRemindedAt": null,
++     "metadata": null,
++     "nextReminderAt": null,
++     "notifiedBeforeDay": false,
++     "notifiedDueDay": false,
++     "parentTaskId": null,
++     "priority": "high",
++     "priorityRaised": false,
++     "recurrenceParentId": null,
++     "recurrenceRule": null,
++     "reminderCount": 0,
++     "reminderIntensity": null,
++     "sortIndex": 0,
++     "sprintId": null,
++     "startDate": null,
++     "status": "backlog",
++     "systemId": "0000000000000000000010001systems",
++     "taskType": null,
++     "title": "x",
++     "updatedAt": "2026-10-26T04:34:45.089Z",
++     "userId": "000000000000000000000010000users",
++   },
+  }
+
+ ❯ convex/workdirRules.test.ts:78:17
+     76|     const res = await agente.mutation(api.tasks.createFromAgent, { tit…
+     77|
+     78|     expect(res).toEqual({ status: 'needs_system', workingDirectory: '/…
+       |                 ^
+     79|   });
+     80|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta con regla > la barra final no cambia la carpeta, ni al guardar ni al buscar
+AssertionError: expected '0000000000000000000010001systems' to be '0000000000000000000010002systems' // Object.is equality
+
+Expected: "0000000000000000000010002systems"
+Received: "0000000000000000000010001systems"
+
+ ❯ convex/workdirRules.test.ts:89:59
+     87|
+     88|     expect(guardada.key).toBe('/home/ana/Universidad');
+     89|     expect(res.status === 'created' && res.task.systemId).toBe(ids.Uni…
+       |                                                           ^
+     90|   });
+     91|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta con regla > el repo manda sobre la carpeta y vale en cualquier clon
+AssertionError: expected { routedBy: 'inbox', …(2) } to match object { status: 'created', …(2) }
+(41 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "rule",
+-   "rule": {
+-     "key": "github.com/eliasdlc/kino",
+-     "kind": "repo",
+-   },
++   "routedBy": "inbox",
+    "status": "created",
+  }
+
+ ❯ convex/workdirRules.test.ts:104:17
+    102|     });
+    103|
+    104|     expect(res).toMatchObject({ status: 'created', routedBy: 'rule', r…
+       |                 ^
+    105|     expect(res.status === 'created' && res.task.systemId).toBe(ids.Kin…
+    106|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta sin regla > no crea nada y devuelve la carpeta normalizada para preguntar
+AssertionError: expected { routedBy: 'inbox', …(2) } to deeply equal { status: 'needs_system', …(2) }
+
+- Expected
++ Received
+
+  {
+-   "gitRemote": "github.com/ana/nueva",
+-   "status": "needs_system",
+-   "workingDirectory": "/home/ana/nueva",
++   "routedBy": "inbox",
++   "status": "created",
++   "task": {
++     "boardStatus": null,
++     "boardStatusChangedAt": null,
++     "clientRequestId": null,
++     "completedAt": null,
++     "completedBy": null,
++     "completedVia": null,
++     "contextTagId": null,
++     "createdAt": "2026-10-26T04:34:45.171Z",
++     "deletedAt": null,
++     "description": null,
++     "dueDate": null,
++     "effectivePriority": "high",
++     "energyLevel": "medium",
++     "estimatedTime": null,
++     "externalId": null,
++     "externalSource": null,
++     "folderId": null,
++     "id": "000000000000000000000010004tasks",
++     "inTodayPlan": false,
++     "lastRemindedAt": null,
++     "metadata": null,
++     "nextReminderAt": null,
++     "notifiedBeforeDay": false,
++     "notifiedDueDay": false,
++     "parentTaskId": null,
++     "priority": "high",
++     "priorityRaised": false,
++     "recurrenceParentId": null,
++     "recurrenceRule": null,
++     "reminderCount": 0,
++     "reminderIntensity": null,
++     "sortIndex": 0,
++     "sprintId": null,
++     "startDate": null,
++     "status": "backlog",
++     "systemId": "0000000000000000000010001systems",
++     "taskType": null,
++     "title": "x",
++     "updatedAt": "2026-10-26T04:34:45.171Z",
++     "userId": "000000000000000000000010000users",
++   },
+  }
+
+ ❯ convex/workdirRules.test.ts:137:17
+    135|     const res = await agente.mutation(api.tasks.createFromAgent, { tit…
+    136|
+    137|     expect(res).toEqual({ status: 'needs_system', workingDirectory: '/…
+       |                 ^
+    138|     expect(await t.run((ctx) => ctx.db.query('tasks').collect())).toHa…
+    139|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta sin regla > la regla de un sistema archivado no cuenta
+AssertionError: expected 'created' to be 'needs_system' // Object.is equality
+
+Expected: "needs_system"
+Received: "created"
+
+ ❯ convex/workdirRules.test.ts:168:24
+    166|     const res = await agente.mutation(api.tasks.createFromAgent, { tit…
+    167|
+    168|     expect(res.status).toBe('needs_system');
+       |                        ^
+    169|   });
+    170| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > un remoto que Kino no sabe leer se ignora y decide la carpeta > con regla de carpeta, la tarea cae en el sistema de la carpeta
+AssertionError: git@github-work:ana/kino.git: expected { routedBy: 'inbox', …(2) } to match object { status: 'created', …(2) }
+(41 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "rule",
+-   "rule": {
+-     "key": "/home/ana/dev/kino",
+-     "kind": "path",
+-     "systemName": "Kino",
+-   },
++   "routedBy": "inbox",
+    "status": "created",
+  }
+
+ ❯ convex/workdirRules.test.ts:182:30
+    180|     for (const gitRemote of remotos) {
+    181|       const res = await agente.mutation(api.tasks.createFromAgent, { t…
+    182|       expect(res, gitRemote).toMatchObject({ status: 'created', routed…
+       |                              ^
+    183|       expect(res.status === 'created' && res.task.systemId, gitRemote)…
+    184|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > un remoto que Kino no sabe leer se ignora y decide la carpeta > sin regla, pide el sistema sin el remoto y no escribe nada
+AssertionError: git@github-work:ana/kino.git: expected { routedBy: 'inbox', …(2) } to deeply equal { status: 'needs_system', …(2) }
+
+- Expected
++ Received
+
+  {
+-   "gitRemote": null,
+-   "status": "needs_system",
+-   "workingDirectory": "/home/ana/dev/kino",
++   "routedBy": "inbox",
++   "status": "created",
++   "task": {
++     "boardStatus": null,
++     "boardStatusChangedAt": null,
++     "clientRequestId": null,
++     "completedAt": null,
++     "completedBy": null,
++     "completedVia": null,
++     "contextTagId": null,
++     "createdAt": "2026-10-26T04:34:45.213Z",
++     "deletedAt": null,
++     "description": null,
++     "dueDate": null,
++     "effectivePriority": "high",
++     "energyLevel": "medium",
++     "estimatedTime": null,
++     "externalId": null,
++     "externalSource": null,
++     "folderId": null,
++     "id": "000000000000000000000010004tasks",
++     "inTodayPlan": false,
++     "lastRemindedAt": null,
++     "metadata": null,
++     "nextReminderAt": null,
++     "notifiedBeforeDay": false,
++     "notifiedDueDay": false,
++     "parentTaskId": null,
++     "priority": "high",
++     "priorityRaised": false,
++     "recurrenceParentId": null,
++     "recurrenceRule": null,
++     "reminderCount": 0,
++     "reminderIntensity": null,
++     "sortIndex": 0,
++     "sprintId": null,
++     "startDate": null,
++     "status": "backlog",
++     "systemId": "0000000000000000000010001systems",
++     "taskType": null,
++     "title": "x",
++     "updatedAt": "2026-10-26T04:34:45.213Z",
++     "userId": "000000000000000000000010000users",
++   },
+  }
+
+ ❯ convex/workdirRules.test.ts:193:30
+    191|     for (const gitRemote of remotos) {
+    192|       const res = await agente.mutation(api.tasks.createFromAgent, { t…
+    193|       expect(res, gitRemote).toEqual({ status: 'needs_system', working…
+       |                              ^
+    194|     }
+    195|     expect(await t.run((ctx) => ctx.db.query('tasks').collect())).toHa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > bulkCreate sigue la misma regla que createFromAgent > con regla, todas las tareas caen en el sistema de la carpeta
+AssertionError: expected { routedBy: 'inbox', …(2) } to match object { status: 'created', …(2) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "rule",
+-   "rule": {
+-     "key": "/home/ana/Universidad",
+-     "kind": "path",
+-     "systemName": "Universidad",
+-   },
++   "routedBy": "inbox",
+    "status": "created",
+  }
+
+ ❯ convex/workdirRules.test.ts:218:17
+    216|     const res = await agente.mutation(api.tasks.bulkCreate, { tasks: t…
+    217|
+    218|     expect(res).toMatchObject({ status: 'created', routedBy: 'rule', r…
+       |                 ^
+    219|     expect(res.status === 'created' && res.tasks.map((task) => task.sy…
+    220|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > bulkCreate sigue la misma regla que createFromAgent > una carpeta sin regla no crea ninguna y devuelve lo que hay que preguntar
+AssertionError: expected { routedBy: 'inbox', …(2) } to deeply equal { status: 'needs_system', …(2) }
+
+- Expected
++ Received
+
+  {
+-   "gitRemote": "github.com/ana/nueva",
+-   "status": "needs_system",
+-   "workingDirectory": "/home/ana/nueva",
++   "routedBy": "inbox",
++   "status": "created",
++   "tasks": [
++     {
++       "boardStatus": null,
++       "boardStatusChangedAt": null,
++       "clientRequestId": null,
++       "completedAt": null,
++       "completedBy": null,
++       "completedVia": null,
++       "contextTagId": null,
++       "createdAt": "2026-10-26T04:34:45.245Z",
++       "deletedAt": null,
++       "description": null,
++       "dueDate": null,
++       "effectivePriority": "high",
++       "energyLevel": "medium",
++       "estimatedTime": null,
++       "externalId": null,
++       "externalSource": null,
++       "folderId": null,
++       "id": "000000000000000000000010004tasks",
++       "inTodayPlan": false,
++       "lastRemindedAt": null,
++       "metadata": null,
++       "nextReminderAt": null,
++       "notifiedBeforeDay": false,
++       "notifiedDueDay": false,
++       "parentTaskId": null,
++       "priority": "high",
++       "priorityRaised": false,
++       "recurrenceParentId": null,
++       "recurrenceRule": null,
++       "reminderCount": 0,
++       "reminderIntensity": null,
++       "sortIndex": 0,
++       "sprintId": null,
++       "startDate": null,
++       "status": "backlog",
++       "systemId": "0000000000000000000010002systems",
++       "taskType": null,
++       "title": "Propia",
++       "updatedAt": "2026-10-26T04:34:45.245Z",
++       "userId": "000000000000000000000010000users",
++     },
++     {
++       "boardStatus": null,
++       "boardStatusChangedAt": null,
++       "clientRequestId": null,
++       "completedAt": null,
++       "completedBy": null,
++       "completedVia": null,
++       "contextTagId": null,
++       "createdAt": "2026-10-26T04:34:45.245Z",
++       "deletedAt": null,
++       "description": null,
++       "dueDate": null,
++       "effectivePriority": "high",
++       "energyLevel": "medium",
++       "estimatedTime": null,
++       "externalId": null,
++       "externalSource": null,
++       "folderId": null,
++       "id": "000000000000000000000010006tasks",
++       "inTodayPlan": false,
++       "lastRemindedAt": null,
++       "metadata": null,
++       "nextReminderAt": null,
++       "notifiedBeforeDay": false,
++       "notifiedDueDay": false,
++       "parentTaskId": null,
++       "priority": "high",
++       "priorityRaised": false,
++       "recurrenceParentId": null,
++       "recurrenceRule": null,
++       "reminderCount": 0,
++       "reminderIntensity": null,
++       "sortIndex": 0,
++       "sprintId": null,
++       "startDate": null,
++       "status": "backlog",
++       "systemId": "0000000000000000000010001systems",
++       "taskType": null,
++       "title": "Sin sistema",
++       "updatedAt": "2026-10-26T04:34:45.245Z",
++       "userId": "000000000000000000000010000users",
++     },
++   ],
+  }
+
+ ❯ convex/workdirRules.test.ts:248:17
+    246|     });
+    247|
+    248|     expect(res).toEqual({ status: 'needs_system', workingDirectory: '/…
+       |                 ^
+    249|     expect(await t.run((ctx) => ctx.db.query('tasks').collect())).toHa…
+    250|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > cada persona, sus reglas > la regla de Beto para la misma carpeta nunca decide por Ana
+AssertionError: expected 'created' to be 'needs_system' // Object.is equality
+
+Expected: "needs_system"
+Received: "created"
+
+ ❯ convex/workdirRules.test.ts:273:24
+    271|     const res = await deAna.agente.mutation(api.tasks.createFromAgent,…
+    272|
+    273|     expect(res.status).toBe('needs_system');
+       |                        ^
+    274|   });
+    275|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > cada persona, sus reglas > si Ana y Beto tienen regla para la misma carpeta, a cada uno le decide la suya
+AssertionError: expected { routedBy: 'inbox', …(1) } to deeply equal { routedBy: 'rule', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "rule",
+-   "systemId": "0000000000000000000010002systems",
++   "routedBy": "inbox",
++   "systemId": "0000000000000000000010001systems",
+  }
+
+ ❯ convex/workdirRules.test.ts:289:45
+    287|     };
+    288|
+    289|     expect(await deLaTareaDe(deAna.agente)).toEqual({ routedBy: 'rule'…
+       |                                             ^
+    290|     expect(await deLaTareaDe(deBeto.agente)).toEqual({ routedBy: 'rule…
+    291|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una subtarea se queda con el sistema de su madre > bulkCreate: cada subtarea va con su madre; la tarea propia sigue mandando
+AssertionError: expected [ …(3) ] to deeply equal [ …(3) ]
+
+- Expected
++ Received
+
+  [
+    "0000000000000000000010004systems",
+-   "0000000000000000000010002systems",
++   "0000000000000000000010001systems",
+    "0000000000000000000010006systems",
+  ]
+
+ ❯ convex/workdirRules.test.ts:386:88
+    384|     const soloHijas = await agente.mutation(api.tasks.bulkCreate, { ta…
+    385|
+    386|     expect(heredan.status === 'created' && heredan.tasks.map((task) =>…
+       |                                                                                        ^
+    387|     expect(soloHijas).toMatchObject({ status: 'created', routedBy: 'pa…
+    388|     expect(soloHijas.status === 'created' && soloHijas.tasks[0]?.syste…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > pages.createFromAgent sigue la misma regla > con regla, la página cae en el sistema de la carpeta
+AssertionError: expected { page: { …(15) }, …(2) } to match object { status: 'created', …(2) }
+(16 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "rule",
+-   "rule": {
+-     "kind": "path",
+-     "systemName": "Universidad",
+-   },
++   "routedBy": "inbox",
+    "status": "created",
+  }
+
+ ❯ convex/workdirRules.test.ts:427:17
+    425|     const res = await agente.mutation(api.pages.createFromAgent, { tit…
+    426|
+    427|     expect(res).toMatchObject({ status: 'created', routedBy: 'rule', r…
+       |                 ^
+    428|     expect(res.status === 'created' && res.page.systemId).toBe(ids.Uni…
+    429|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > pages.createFromAgent sigue la misma regla > el repo manda sobre la carpeta y el systemId sobre los dos
+AssertionError: expected '0000000000000000000010001systems' to be '0000000000000000000010004systems' // Object.is equality
+
+Expected: "0000000000000000000010004systems"
+Received: "0000000000000000000010001systems"
+
+ ❯ convex/workdirRules.test.ts:440:67
+    438|     const nombrado = await agente.mutation(api.pages.createFromAgent, …
+    439|
+    440|     expect(porRepo.status === 'created' && porRepo.page.systemId).toBe…
+       |                                                                   ^
+    441|     expect(nombrado).toMatchObject({ status: 'created', routedBy: 'sys…
+    442|     expect(nombrado.status === 'created' && nombrado.page.systemId).to…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/17]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > pages.createFromAgent sigue la misma regla > una carpeta sin regla no crea nada y devuelve lo que hay que preguntar
+AssertionError: expected { page: { …(15) }, …(2) } to deeply equal { status: 'needs_system', …(2) }
+
+- Expected
++ Received
+
+  {
+-   "gitRemote": null,
+-   "status": "needs_system",
+-   "workingDirectory": "/home/ana/nueva",
++   "page": {
++     "agentEditPolicy": "direct",
++     "completedAt": null,
++     "contentPreview": null,
++     "createdAt": "2026-10-26T04:34:45.515Z",
++     "createdVia": "oauth",
++     "folderId": null,
++     "id": "000000000000000000000010004pages",
++     "isPinned": false,
++     "parentPageId": null,
++     "subPageCount": 0,
++     "systemId": "0000000000000000000010001systems",
++     "tags": [],
++     "title": "Nada",
++     "updatedAt": "2026-10-26T04:34:45.515Z",
++     "wordCount": 0,
++   },
++   "routedBy": "inbox",
++   "status": "created",
+  }
+
+ ❯ convex/workdirRules.test.ts:451:17
+    449|     const res = await agente.mutation(api.pages.createFromAgent, { tit…
+    450|
+    451|     expect(res).toEqual({ status: 'needs_system', workingDirectory: '/…
+       |                 ^
+    452|     expect(await t.run((ctx) => ctx.db.query('pages').collect())).toHa…
+    453|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/17]⎯
+
