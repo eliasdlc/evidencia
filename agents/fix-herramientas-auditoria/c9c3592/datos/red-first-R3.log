@@ -1,0 +1,579 @@
+...............                                                                     [100%]
+=================================== FAILURES ===================================
+_ BashWritesTests.test_commands_that_do_not_write_a_ui_file_pass (command='python3 -c "s=open(\'src/a.css\').read(); open(\'/tmp/o.txt\',\'w\').write(s)"') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_commands_that_do_not_write_a_ui_file_pass>
+
+    def test_commands_that_do_not_write_a_ui_file_pass(self):
+        for command in [
+            f"cat {self.DART}", f"grep -n build {self.DART} | head", f"cat {self.DART} > /tmp/copy.txt",
+            f"flutter analyze {self.DART} 2>&1 | tail -5", "echo done > notes.md",
+            "cat > lib/core/barcode_service.dart <<'EOF'\nx\nEOF",
+            "cat > app/page.test.tsx <<'EOF'\nx\nEOF",
+            f"cat > notes.txt <<'EOF'\nfinal f = (x) => 'home_screen.dart';\n  -> {self.DART}\nEOF",
+            f"cat > notes.txt <<'EOF'\nrun: echo hi > {self.DART}\nEOF",
+            f"python3 -c \"print(open('{self.DART}').read())\"",
+            f"python3 -c \"print('{self.DART}')\"",
+            "python3 -c \"s=open('src/a.css').read(); open('/tmp/o.txt','w').write(s)\"",
+            f"mv {self.DART} /tmp/old.dart", f"cp {self.DART} /tmp/copy.dart", f"sed -n 1,5p {self.DART}",
+            f"sed -i 's/a/b/' /tmp/notes.txt", f"curl -o /tmp/x.html http://localhost/x",
+            "ls", "",
+        ]:
+            with self.subTest(command=command.splitlines()[0] if command else "empty"):
+>               self.assertEqual(self.bash(command, loaded=False), (0, ""))
+E               AssertionError: Tuples differ: (2, 'Blocked by design-identity (this Bash[173 chars].\n') != (0, '')
+E               
+E               First differing element 0:
+E               2
+E               0
+E               
+E               + (0, '')
+E               - (2,
+E               -  'Blocked by design-identity (this Bash command writes a UI file):\n'
+E               -  '- a.css is a design surface and this session has not loaded design-grammar, '
+E               -  'frontend-design. Load each one with the Skill tool before writing it.\n')
+
+tests/test_design_identity.py:291: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='echo x &> lib/features/home/presentation/home_screen.dart') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='echo x >& lib/features/home/presentation/home_screen.dart') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='echo x >| lib/features/home/presentation/home_screen.dart') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='echo x > "lib/my dir/presentation/home_screen.dart"') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='mv /tmp/stage.dart lib/features/home/presentation/home_screen.dart') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='cp -f /tmp/stage.dart lib/features/home/presentation/home_screen.dart') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='install -m 644 /tmp/stage.dart lib/features/home/presentation/home_screen.dart') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='rsync -a /tmp/stage.dart lib/features/home/presentation/home_screen.dart') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='mv /tmp/stage.dart lib/features/home/presentation/') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='curl -sS -o lib/features/home/presentation/home_screen.dart http://localhost/x') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='wget -O lib/features/home/presentation/home_screen.dart http://localhost/x') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='dd if=/tmp/x of=lib/features/home/presentation/home_screen.dart') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command="sed -i 's/a/b/' lib/features/home/presentation/home_screen.dart") _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command="sed -i -e 's/a/b/' lib/features/home/presentation/home_screen.dart") _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command="perl -pi -e 's/a/b/' lib/features/home/presentation/home_screen.dart") _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:251: AssertionError
+=========================== short test summary info ============================
+SUBFAILED(command='python3 -c "s=open(\'src/a.css\').read(); open(\'/tmp/o.txt\',\'w\').write(s)"') tests/test_design_identity.py::BashWritesTests::test_commands_that_do_not_write_a_ui_file_pass
+SUBFAILED(command='echo x &> lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='echo x >& lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='echo x >| lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='echo x > "lib/my dir/presentation/home_screen.dart"') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='mv /tmp/stage.dart lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='cp -f /tmp/stage.dart lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='install -m 644 /tmp/stage.dart lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='rsync -a /tmp/stage.dart lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='mv /tmp/stage.dart lib/features/home/presentation/') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='curl -sS -o lib/features/home/presentation/home_screen.dart http://localhost/x') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='wget -O lib/features/home/presentation/home_screen.dart http://localhost/x') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='dd if=/tmp/x of=lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command="sed -i 's/a/b/' lib/features/home/presentation/home_screen.dart") tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command="sed -i -e 's/a/b/' lib/features/home/presentation/home_screen.dart") tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command="perl -pi -e 's/a/b/' lib/features/home/presentation/home_screen.dart") tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+16 failed, 15 passed, 45 subtests passed in 3.07s
