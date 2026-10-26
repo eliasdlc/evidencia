@@ -1,0 +1,28 @@
+=== headless login harness: two attempts at this head reached Codex's callback page but the CLI timed out without saving a token. The login only talks to Clerk; the successful run is e2e-codex.txt at 181237b.
+=== head 8919b7f, server with the agentbox key, Clerk Development, user prueba@usekino.dev, fresh CODEX_HOME, 2026-10-26T00:24:10Z
+=== output of each command, unfiltered except: the authorize URL query in the add output is redacted, and the login keeps its status lines only (its URL is omitted)
+$ codex --version: codex-cli 0.164.0
+$ codex mcp add kino-dev --url http://localhost:3010/api/mcp   (stopped after 20 s; it waits on OAuth)
+Added global MCP server 'kino-dev'.
+Detected OAuth support. Starting OAuth flow…
+Authorize `kino-dev` by opening this URL in your browser:
+https://causal-flamingo-8590.clerk.accounts.dev/oauth/authorize?<query redacted: client_id, state, code_challenge>
+
+exit 124
+$ codex mcp login kino-dev --no-browser   (consent approved headless as the seeded user)
+Authorize the MCP server by opening this URL in your browser:
+=== the first login reached Codex's callback page ("Authentication complete") but the CLI timed out (exit 124) without saving a token; retried once below
+$ codex mcp list
+Name      Url                            Bearer Token Env Var  Status   Auth         
+kino-dev  http://localhost:3010/api/mcp  -                     enabled  Not logged in
+$ codex mcp login kino-dev --no-browser   (retry; consent approved headless as the seeded user)
+Authorize the MCP server by opening this URL in your browser:
+$ codex mcp list
+Name      Url                            Bearer Token Env Var  Status   Auth         
+kino-dev  http://localhost:3010/api/mcp  -                     enabled  Not logged in
+$ python3 -I toolcall.py codex-home3/.credentials.json get_today_plan
+Traceback (most recent call last):
+  File "/home/decruce/.cache/kino/feat-agent-connections/toolcall.py", line 13, in <module>
+    stored = json.load(open(creds))
+                       ~~~~^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/decruce/.cache/kino/feat-agent-connections/repro/codex-home3/.credentials.json'
