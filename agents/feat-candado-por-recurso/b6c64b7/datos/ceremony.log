@@ -1,0 +1,53 @@
+== wait-loop hook, three steps ==
+-- 1 passes: a loop that does work
+exit 0
+-- 2 fails: foreground wait loop
+Blocked: a foreground 'until' loop that only sleeps and polls holds this agent's slot while it waits. Start the job with run_in_background (or watch it with Monitor, an until-loop that exits when the condition holds), do the independent work meanwhile, and end the turn: the harness wakes you when the job finishes.
+exit 2
+-- 3 passes again: same command with run_in_background
+exit 0
+== heavy.sh per-resource locks, three steps ==
+-- 1 passes: an emulator and a build on different resources run concurrently
+build exit 0 after 3s while the emulator holds its own lock
+-- 2 fails: two jobs on the same resource serialize (second refused), --status shows holder and waiter
+agents heavy: another emulator job is running (sleep 4 (pid 84795, since 23:12:53Z), held for 1s). One at a time per kind on this machine; rerun with --wait to queue.
+second emulator exit 75
+agents heavy: waiting for sleep 4 (pid 84795, since 23:12:53Z), held for 1s
+agents heavy [build]: free
+agents heavy [emulator]: held by sleep 4 (pid 84795, since 23:12:53Z) for 2s
+  waiting [emulator]: echo queued-emulator (pid 84921) for 1s
+agents heavy: memory 24.0 GiB available, 1.0 GiB reserved
+queued-emulator
+-- 3 passes again: free, then a job runs
+agents heavy [build]: free
+agents heavy [emulator]: free
+agents heavy: memory 24.0 GiB available, 1.0 GiB reserved
+exit 0
+== round 2, 2026-10-26T23:39:00Z, head b6c64b7 ==
+== wait-loop hook, scanner, three steps ==
+-- 1 passes: quoted text and a loop that does work
+exit 0
+exit 0
+-- 2 fails: nested loop and while-sleep-in-condition
+Blocked: a foreground 'while' loop that sleeps while it waits holds this agent's slot while it waits. Start th
+exit 2
+Blocked: a foreground 'while' loop that sleeps while it waits holds this agent's slot while it waits. Start th
+exit 2
+-- 3 passes again: bash -c of a bounded retry
+exit 0
+== heavy.sh, three steps ==
+-- 1 passes: a background child does not keep the lock
+bg
+exit 0
+agents heavy [build]: free
+agents heavy [emulator]: free
+-- 2 fails: a build holds the lock; flutter test --plain-name a/b is a full suite and is refused, a file is not
+agents heavy: another build job is running (sleep 3 (pid 200642, since 23:39:00Z), held for 1s). One at a time per kind on this machine; rerun with --wait to queue.
+exit 75
+ran flutter test test/a_test.dart
+exit 0
+-- 3 passes again: free, then --mem 10% runs
+agents heavy [build]: free
+agents heavy [emulator]: free
+ran flutter test --plain-name a/b
+exit 0
