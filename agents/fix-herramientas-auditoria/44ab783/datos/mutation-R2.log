@@ -1,0 +1,34 @@
+# mutation log R2: tests/test_launch_in_t3.py -k TestClientTests at 44ab783
+=== mutation: timeout not required
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked="tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'") tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+2 failed, 2 passed, 6 deselected, 24 subtests passed in 1.72s
+=== mutation: any config dir accepted
+SUBFAILED(blocked='timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k/.claude timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CODEX_HOME=/tmp/k timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+9 failed, 2 passed, 6 deselected, 17 subtests passed in 1.65s
+=== mutation: claude mode not required
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked="ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'") tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+2 failed, 2 passed, 6 deselected, 24 subtests passed in 1.55s
+=== mutation: codex mode not required
+SUBFAILED(blocked='CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+1 failed, 2 passed, 6 deselected, 25 subtests passed in 1.51s
+=== mutation: zero timeout accepted
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+1 failed, 2 passed, 6 deselected, 25 subtests passed in 1.53s
+=== mutation: parent dir escape accepted
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+1 failed, 2 passed, 6 deselected, 25 subtests passed in 1.51s
+=== mutation: real config dir accepted
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k/.claude timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+1 failed, 2 passed, 6 deselected, 25 subtests passed in 1.51s
+=== restored (no mutation)
+2 passed, 6 deselected, 26 subtests passed in 1.47s
