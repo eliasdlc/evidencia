@@ -1,0 +1,244 @@
+=== head 17f50e2 (mutations were run at 181237b; 17f50e2 only changes a comment in connect.ts and one line of DocsContent.tsx)
+=== mutation: withServerFaults rethrows, the old behavior
+=== head: 181237b, file: src/features/mcp/auth.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agent-connections
+
+(node:595475) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+stderr | src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo
+El conector MCP falló al autorizar una petición: Error: Falta KINO_MCP_SIGNING_JWK: el conector MCP no puede firmar tokens para Convex.
+    at signingJwk (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:78:19)
+    at mintConvexToken (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:91:28)
+    at verify (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/app/api/mcp/route.ts:49:29)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:127:14
+
+stderr | src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo
+Unexpected error authenticating bearer token: Error: Falta KINO_MCP_SIGNING_JWK: el conector MCP no puede firmar tokens para Convex.
+    at signingJwk (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:78:19)
+    at mintConvexToken (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:91:28)
+    at verify (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/app/api/mcp/route.ts:49:29)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:127:14
+
+ ❯ |node| src/app/api/mcp/route.test.ts (3 tests | 1 failed) 22ms
+     × con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo 17ms
+stderr | src/features/mcp/auth.test.ts > withServerFaults · un fallo de Kino no se disfraza de login caducado > si la verificación lanza, responde 503 con el motivo y no corre ninguna tool
+El conector MCP falló al autorizar una petición: Error: Falta KINO_MCP_SIGNING_JWK: el conector MCP no puede firmar tokens para Convex.
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.test.ts:137:13
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:127:20
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/index.mjs:899:24
+    at Generator.next (<anonymous>)
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/chunk-FF57VHLH.mjs:53:61
+    at new Promise (<anonymous>)
+    at __async (file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/chunk-FF57VHLH.mjs:37:10)
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/index.mjs:891:19
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.test.ts:138:7
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+
+stderr | src/features/mcp/auth.test.ts > withServerFaults · un fallo de Kino no se disfraza de login caducado > si la verificación lanza, responde 503 con el motivo y no corre ninguna tool
+Unexpected error authenticating bearer token: Error: Falta KINO_MCP_SIGNING_JWK: el conector MCP no puede firmar tokens para Convex.
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.test.ts:137:13
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:127:20
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/index.mjs:899:24
+    at Generator.next (<anonymous>)
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/chunk-FF57VHLH.mjs:53:61
+    at new Promise (<anonymous>)
+    at __async (file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/chunk-FF57VHLH.mjs:37:10)
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/index.mjs:891:19
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.test.ts:138:7
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+
+ ❯ |node| src/features/mcp/auth.test.ts (17 tests | 1 failed) 45ms
+     × si la verificación lanza, responde 503 con el motivo y no corre ninguna tool 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |node| src/features/mcp/auth.test.ts > withServerFaults · un fallo de Kino no se disfraza de login caducado > si la verificación lanza, responde 503 con el motivo y no corre ninguna tool
+AssertionError: expected 401 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 401
+
+ ❯ src/features/mcp/auth.test.ts:140:24
+    138|     })(post());
+    139|
+    140|     expect(res.status).toBe(503);
+       |                        ^
+    141|     expect(res.headers.get("WWW-Authenticate")).toBeNull();
+    142|     const body = (await res.json()) as { error: { message: string } };
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |node| src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo
+AssertionError: expected 401 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 401
+
+ ❯ src/app/api/mcp/route.test.ts:38:24
+     36|     const res = await post("oat_1");
+     37|
+     38|     expect(res.status).toBe(503);
+       |                        ^
+     39|     expect(res.headers.get("WWW-Authenticate")).toBeNull();
+     40|     const body = (await res.json()) as { error: { message: string } };
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 18 passed (20)
+   Start at  19:51:56
+   Duration  851ms (transform 277ms, setup 0ms, import 1.27s, tests 67ms, environment 0ms)
+
+=== exit: 1
+=== mutation: route passes verify unwrapped
+=== head: 181237b, file: src/app/api/mcp/route.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agent-connections
+
+(node:595554) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+stderr | src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo
+Unexpected error authenticating bearer token: Error: Falta KINO_MCP_SIGNING_JWK: el conector MCP no puede firmar tokens para Convex.
+    at signingJwk (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:78:19)
+    at mintConvexToken (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:91:28)
+    at verify (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/app/api/mcp/route.ts:49:29)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+ ❯ |node| src/app/api/mcp/route.test.ts (3 tests | 1 failed) 22ms
+     × con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |node| src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo
+AssertionError: expected 401 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 401
+
+ ❯ src/app/api/mcp/route.test.ts:38:24
+     36|     const res = await post("oat_1");
+     37|
+     38|     expect(res.status).toBe(503);
+       |                        ^
+     39|     expect(res.headers.get("WWW-Authenticate")).toBeNull();
+     40|     const body = (await res.json()) as { error: { message: string } };
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 19 passed (20)
+   Start at  19:51:58
+   Duration  934ms (transform 279ms, setup 0ms, import 1.32s, tests 94ms, environment 0ms)
+
+=== exit: 1
+=== mutation: route ignores the fault
+=== head: 181237b, file: src/app/api/mcp/route.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agent-connections
+
+(node:595627) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+stderr | src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo
+El conector MCP falló al autorizar una petición: Error: Falta KINO_MCP_SIGNING_JWK: el conector MCP no puede firmar tokens para Convex.
+    at signingJwk (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:78:19)
+    at mintConvexToken (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:91:28)
+    at verify (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/app/api/mcp/route.ts:49:29)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:127:14
+
+ ❯ |node| src/app/api/mcp/route.test.ts (3 tests | 1 failed) 23ms
+     × con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo 18ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |node| src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo
+AssertionError: expected 401 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 401
+
+ ❯ src/app/api/mcp/route.test.ts:38:24
+     36|     const res = await post("oat_1");
+     37|
+     38|     expect(res.status).toBe(503);
+       |                        ^
+     39|     expect(res.headers.get("WWW-Authenticate")).toBeNull();
+     40|     const body = (await res.json()) as { error: { message: string } };
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 19 passed (20)
+   Start at  19:52:00
+   Duration  876ms (transform 293ms, setup 0ms, import 1.30s, tests 70ms, environment 0ms)
+
+=== exit: 1
+=== mutation: a fault without a token is reported as a 503
+=== head: 181237b, file: src/features/mcp/auth.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agent-connections
+
+(node:595701) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+stderr | src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > sin token, aunque Clerk falle, 401: no hay conexión que decir que sigue válida
+El conector MCP falló al autorizar una petición: Error: clerkMiddleware no detectado
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/app/api/mcp/route.test.ts:54:34
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64
+
+ ❯ |node| src/app/api/mcp/route.test.ts (3 tests | 1 failed) 22ms
+     × sin token, aunque Clerk falle, 401: no hay conexión que decir que sigue válida 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |node| src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > sin token, aunque Clerk falle, 401: no hay conexión que decir que sigue válida
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ src/app/api/mcp/route.test.ts:58:24
+     56|     const res = await post();
+     57|
+     58|     expect(res.status).toBe(401);
+       |                        ^
+     59|     expect(res.headers.get("WWW-Authenticate")).toContain("oauth-prote…
+     60|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 19 passed (20)
+   Start at  19:52:02
+   Duration  850ms (transform 266ms, setup 0ms, import 1.27s, tests 62ms, environment 0ms)
+
+=== exit: 1
