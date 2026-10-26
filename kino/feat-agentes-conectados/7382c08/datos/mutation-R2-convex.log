@@ -1,0 +1,58 @@
+# mutation R2-convex: convex/lib/fn.ts
+# 'await cortarSiRevocado(ctx.db, user, identity);' -> ''
+# pnpm vitest run convex/mcpClients.test.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agentes-conectados
+
+ ❯ |convex| convex/mcpClients.test.ts (20 tests | 2 failed) 460ms
+     × una query llamada con su token falla REVOKED, aunque el token sea anterior; con otro cliente o desde el navegador pasa 244ms
+     × una mutación y una acción con su token también fallan REVOKED 3ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 18 passed (20)
+   Start at  02:07:40
+   Duration  904ms (transform 333ms, setup 0ms, import 233ms, tests 460ms, environment 57ms)
+
+(node:941022) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/mcpClients.test.ts > un cliente desconectado > una query llamada con su token falla REVOKED, aunque el token sea anterior; con otro cliente o desde el navegador pasa
+AssertionError: expected undefined to be 'REVOKED' // Object.is equality
+
+- Expected:
+"REVOKED"
+
++ Received:
+undefined
+
+ ❯ convex/mcpClients.test.ts:218:69
+    216|     await desconectado();
+    217|
+    218|     expect(await codeOf(conTokenViejo.query(api.systems.list, {}))).to…
+       |                                                                     ^
+    219|     expect(await t.withIdentity(conector('c2')).query(api.systems.list…
+    220|     expect(await t.withIdentity(ana).query(api.systems.list, {})).toEq…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |convex| convex/mcpClients.test.ts > un cliente desconectado > una mutación y una acción con su token también fallan REVOKED
+AssertionError: expected undefined to be 'REVOKED' // Object.is equality
+
+- Expected:
+"REVOKED"
+
++ Received:
+undefined
+
+ ❯ convex/mcpClients.test.ts:227:74
+    225|     const conToken = t.withIdentity(conector('c1'));
+    226|
+    227|     expect(await codeOf(conToken.mutation(api.lib.fnFixture.write, {})…
+       |                                                                          ^
+    228|     expect(await codeOf(conToken.action(api.lib.fnFixture.act, {}))).t…
+    229|     // Otro cliente de la misma persona sigue entrando por las dos pue…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
