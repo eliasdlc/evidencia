@@ -1,0 +1,127 @@
+Driver copy used in this round: frio2.sh; U+2014 and U+00B7 replaced by a hyphen: 0
+#!/usr/bin/env bash
+# Cold start at the last step of the onboarding thread, one attempt per letter
+# of SECUENCIA, the modes interleaved in one session:
+#   P  kill and relaunch on every earlier screen too, then at the first steps
+#      (the mode that reproduces the stall most often on the base);
+#   F  kill and relaunch at the first steps only (the ticket's own mode);
+#   S  no kill at all (R2: the thread that already confirmed).
+#   EMULATOR_LOCK_HELD=1 ANDROID_SERIAL=emulator-5554 frio2.sh APK OUT SECUENCIA
+# Each attempt: pm clear, the whole thread with a new throwaway account up to
+# the first steps screen; the kill of its mode; then tap "Entrar a la app"
+# once and judge the first tap by the screen 13 s later and by the
+# CRD_PERFIL_* markers the screen prints. A stalled first tap is followed by a
+# second one, like a traveler. Passwords live only in $SECRETOS (mode 600)
+# and are never printed.
+set -uo pipefail
+APK=$1
+OUT=$2
+SECUENCIA=$3
+PKG=com.conocerd.app
+[ "${EMULATOR_LOCK_HELD:-}" = 1 ] || { echo "refused: take ~/.cache/conocerd-rework/emulator.lock first"; exit 2; }
+SERIAL=${ANDROID_SERIAL:?set ANDROID_SERIAL}
+UI="python3 $(dirname "$0")/adb_ui.py"
+SECRETOS=$HOME/.config/secretos/conocerd-hilo.env
+mkdir -p "$OUT"
+A="adb -s $SERIAL"
+
+nueva_cuenta() {
+  local correo="pruebas-hilo-$(date -u +%m%d%H%M%S)@conocerd.test"
+  local clave; clave=$(openssl rand -hex 10)
+  ( umask 077; printf '%s=%s\n' "$correo" "$clave" >> "$SECRETOS" )
+  echo "$correo"
+}
+clave_de() { grep "^$1=" "$SECRETOS" | cut -d= -f2; }
+abrir() { $A shell monkey -p $PKG -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1; }
+cap() { $A exec-out screencap -p > "$OUT/$1.png"; }
+escribir() { $UI field "$1"; sleep 0.5; $UI type "$2"; $A shell input keyevent 111; sleep 0.3; }
+marcas() { $A logcat -d -v time | grep -c "$1"; }
+
+$A shell settings put system font_scale 1.0
+$A uninstall $PKG >/dev/null 2>&1
+$A install -r "$APK" >/dev/null || { echo "install failed"; exit 1; }
+RUTA=$($A shell pm path $PKG | head -1 | cut -d: -f2 | tr -d '\r')
+$A pull "$RUTA" "$OUT/instalado-base.apk" >/dev/null 2>&1
+{
+  echo "session $SECUENCIA on $SERIAL at $(date -u +%FT%TZ)"
+  echo "installed sha256 $(sha256sum < "$OUT/instalado-base.apk" | cut -d' ' -f1)"
+  echo "built sha256     $(sha256sum < "$APK" | cut -d' ' -f1)"
+  [ "$(sha256sum < "$OUT/instalado-base.apk")" = "$(sha256sum < "$APK")" ] && echo match=True || echo match=False
+  $A shell dumpsys package $PKG | grep -E 'lastUpdateTime|versionName|versionCode' | head -3 | tr -d '\r'
+} > "$OUT/receipt.txt"
+rm -f "$OUT/instalado-base.apk"
+cat "$OUT/receipt.txt"
+
+MODO=P
+par() {
+  [ "$MODO" = P ] || return 0
+  sleep 2.5; $A shell am force-stop $PKG; sleep 1; abrir
+  $UI wait "$1" || return 1
+  sleep 2.5
+}
+
+hasta_primeros_pasos() {
+  abrir
+  $UI wait "Conoce la isla a tu manera" || return 1
+  par "Conoce la isla a tu manera" || return 1
+  $UI tap "Empezar"; $UI wait "Pregunta 1 de 4" || return 1
+  $UI tap "Estoy de visita"; par "Pregunta 1 de 4" || return 1
+  $UI tap "Continuar"; $UI wait "Pregunta 2 de 4" || return 1
+  $UI tap "Ya estoy aquí"; sleep 0.4; $UI tap "3 a 5"; sleep 0.6; par "Estadía: 3 a 5 días" || return 1
+  $UI tap "Continuar"
+  $UI wait "Pregunta 3 de 4" || return 1
+  $UI tap "En pareja"; sleep 0.6; par "Hasta 3 paradas por día" || return 1
+  $UI tap "Continuar"; $UI wait "Pregunta 4 de 4" || return 1
+  $UI tap "Playas"; $UI tap "Naturaleza"; $UI tap "Comida"; sleep 0.8; par "Pregunta 4 de 4" || return 1
+  $UI tap "Ver mi primera ruta"; $UI wait "Se sella al llegar" || return 1
+  par "Se sella al llegar" || return 1
+  $UI tap "Guardar mi ruta"; $UI wait "Guarda esta ruta en tu diario" || return 1
+  par "Guarda esta ruta en tu diario" || return 1
+  local correo; correo=$(nueva_cuenta)
+  echo "$correo" > "$OUT/a$i-$MODO-cuenta.txt"
+  $UI tap "Usar mi correo"; sleep 1
+  escribir 0 "Pruebas"
+  escribir 1 "$correo"
+  escribir 2 "$(clave_de "$correo")"
+  $UI tap "Crear cuenta"; $UI wait "Ponle cara a tu diario" || return 1
+  par "Ponle cara a tu diario" || return 1
+  $UI tap "Omitir por ahora"; $UI wait "Entrar a la app" || return 1
+}
+
+N=${#SECUENCIA}
+for n in $(seq 1 "$N"); do
+  i=$(printf '%02d' "$n")
+  MODO=${SECUENCIA:$((n-1)):1}
+  $A shell am force-stop $PKG
+  $A shell pm clear $PKG >/dev/null
+  $A logcat -c
+  echo "attempt $i mode $MODO start $(date -u +%FT%TZ)"
+  if ! hasta_primeros_pasos; then cap "a$i-$MODO-FALLO-hilo"; echo "attempt $i mode $MODO: FAIL before first steps"; continue; fi
+  sleep 2.5
+  if [ "$MODO" != S ]; then
+    $A shell am force-stop $PKG; sleep 1; abrir
+    if ! $UI wait "Entrar a la app"; then cap "a$i-$MODO-FALLO-relanzar"; echo "attempt $i mode $MODO: FAIL relaunch"; continue; fi
+    sleep 2.5
+  fi
+  if [ "$n" = 1 ] && [ -n "${GRABAR:-}" ]; then
+    $A shell screenrecord --bit-rate 8000000 --time-limit 25 /sdcard/intento.mp4 & REC=$!
+    sleep 1
+  fi
+  echo "attempt $i mode $MODO tap $(date -u +%FT%T.%3NZ)"
+  $UI tap "Entrar a la app"
+  sleep 13
+  conf=$(marcas CRD_PERFIL_CONFIRMADO); sin=$(marcas CRD_PERFIL_SIN_CONFIRMAR)
+  if $UI has "A dónde vamos"; then
+    cap "a$i-$MODO-explorar-primer-toque"
+    echo "attempt $i mode $MODO: first tap Explorar (CONFIRMADO=$conf SIN_CONFIRMAR=$sin)"
+  else
+    cap "a$i-$MODO-seguimos-confirmando"
+    echo "attempt $i mode $MODO: first tap STALLED (CONFIRMADO=$conf SIN_CONFIRMAR=$sin); tapping again"
+    $UI tap "Entrar a la app"
+    if $UI wait "A dónde vamos"; then echo "attempt $i mode $MODO: second tap Explorar"; else cap "a$i-$MODO-FALLO-explorar"; echo "attempt $i mode $MODO: FAIL no Explorar"; fi
+  fi
+  if [ -n "${REC:-}" ]; then wait "$REC"; $A pull /sdcard/intento.mp4 "$OUT/a$i-$MODO-intento.mp4" >/dev/null 2>&1; $A shell rm /sdcard/intento.mp4; REC=; fi
+  $A logcat -d -v time > "$OUT/a$i-$MODO-logcat.raw"
+  grep -E 'CRD_PERFIL_|Firestore' "$OUT/a$i-$MODO-logcat.raw" | sed -E 's/^[0-9-]+ //' > "$OUT/a$i-$MODO-marcas.txt"
+done
+echo "done $(date -u +%FT%TZ)"
