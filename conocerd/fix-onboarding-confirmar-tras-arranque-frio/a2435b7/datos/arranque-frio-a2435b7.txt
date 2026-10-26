@@ -1,0 +1,92 @@
+Cold start at the last step of the onboarding thread, emulator-5554 (Pixel7_API35, 430x748, -gpu host), 25 to 26 Oct 2026.
+Driver: frio.sh (published as frio.sh.txt). Each attempt: pm clear, the thread by email with a new throwaway account up to the first steps
+screen, am force-stop there, relaunch, wait for 'Entrar a la app' plus 2.5 s, one tap, judge 13 s later. 'kill at every step' (PARES=1) also
+kills and relaunches on every earlier screen, as tools/hilo_pares.sh did in #223. A stalled first tap is CRD_PERFIL_SIN_CONFIRMAR after 10 s.
+
+Summary
+  build                                   mode                   first taps  stalled
+  base c66971c (debug, sha256 de5a38af)   kill at first steps     12          1   (attempt 01 overlapped another run on the emulator, see note)
+  base c66971c (debug, sha256 de5a38af)   kill at every step      12          5
+  fix  a2435b7 (debug, sha256 561e40c6)   kill at every step      24          0
+  #223 table (ed6c92b to 2a58fc6)         hilo_pares.sh           24         11
+
+base c66971c, kill at first steps only
+  session frio visitor at 2026-10-25T22:46:02Z
+  installed sha256 de5a38af956212f3d559a78008f46dc2bb441c0e7732cc308a49664a955d890e
+  built sha256     de5a38af956212f3d559a78008f46dc2bb441c0e7732cc308a49664a955d890e
+  match=True
+  versionCode=1 minSdk=24 targetSdk=36
+  versionName=0.0.0
+  lastUpdateTime=2026-10-25 18:45:50
+  attempt 01: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 02: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 03: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 04: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 05: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 06: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 07: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 08: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 09: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 10: first tap STALLED   CRD_PERFIL_SIN_CONFIRMAR 10013 ms then CRD_PERFIL_CONFIRMADO 719 ms
+  attempt 11: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 12: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  note: attempt 13: FAIL before first steps
+  note: base frio run stopped after attempt 12 (attempt 13 aborted at start)
+  first taps: 12, stalled: 1
+  note: base attempt 01 ran while the last attempt of a probe run (probe3 attempt 8) was still driving the emulator (22:46:02 to 22:47:40Z); it confirmed, counted as is
+
+base c66971c, kill at every step
+  session frio visitor at 2026-10-25T23:10:30Z
+  installed sha256 de5a38af956212f3d559a78008f46dc2bb441c0e7732cc308a49664a955d890e
+  built sha256     de5a38af956212f3d559a78008f46dc2bb441c0e7732cc308a49664a955d890e
+  match=True
+  versionCode=1 minSdk=24 targetSdk=36
+  versionName=0.0.0
+  lastUpdateTime=2026-10-25 19:10:28
+  attempt 01: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 02: first tap STALLED   CRD_PERFIL_SIN_CONFIRMAR 10002 ms then CRD_PERFIL_CONFIRMADO 3529 ms
+  attempt 03: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 04: first tap STALLED   CRD_PERFIL_SIN_CONFIRMAR 10002 ms then CRD_PERFIL_CONFIRMADO 4400 ms
+  attempt 05: first tap STALLED   CRD_PERFIL_SIN_CONFIRMAR 10002 ms then CRD_PERFIL_CONFIRMADO 0 ms
+  attempt 06: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 07: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 08: first tap STALLED   CRD_PERFIL_SIN_CONFIRMAR 10003 ms then CRD_PERFIL_CONFIRMADO 0 ms
+  attempt 09: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 10: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 11: first tap STALLED   CRD_PERFIL_SIN_CONFIRMAR 10001 ms then CRD_PERFIL_CONFIRMADO 0 ms
+  attempt 12: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  first taps: 12, stalled: 5
+
+fix a2435b7, kill at every step
+  session frio visitor at 2026-10-25T23:53:05Z
+  installed sha256 561e40c65fe281972d2de7ce2c8d42503bb83ebdf47433699ee8e74ff6259a37
+  built sha256     561e40c65fe281972d2de7ce2c8d42503bb83ebdf47433699ee8e74ff6259a37
+  match=True
+  versionCode=1 minSdk=24 targetSdk=36
+  versionName=0.0.0
+  lastUpdateTime=2026-10-25 19:53:04
+  attempt 01: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 02: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 03: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 04: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 05: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 06: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 07: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 08: first tap Explorar  CRD_PERFIL_CONFIRMADO 4 ms
+  attempt 09: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 10: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 11: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 12: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 13: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 14: first tap Explorar  CRD_PERFIL_CONFIRMADO 0 ms
+  attempt 15: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 16: first tap Explorar  CRD_PERFIL_CONFIRMADO 2 ms
+  attempt 17: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 18: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 19: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 20: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 21: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 22: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 23: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  attempt 24: first tap Explorar  CRD_PERFIL_CONFIRMADO 1 ms
+  first taps: 24, stalled: 0
