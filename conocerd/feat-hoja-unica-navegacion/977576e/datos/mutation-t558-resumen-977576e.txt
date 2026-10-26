@@ -1,0 +1,233 @@
+[scrubbed: 0 characters (U+2014 or U+00B7) replaced by hyphens]
+Mutations of the CO1-T558 layer code at 977576e, one at a time in the worktree, restored after each (Flutter 3.47.7 local).
+A1-arrived-false-inside: 00:00 +21 -2: Some tests failed. | 00:00 +21 -2
+A2-call-site-bypass: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+A3-call-site-old-formula: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+B1-status-listener-block-deleted: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+B2-status-listener-if-false: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+B3-status-listener-old-condition: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+B4-listener-repush-wrong-source: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+C1-loading-guard-dropped: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+C2-needpush-prev-ignored: 00:00 +21 -2: Some tests failed. | 00:00 +21 -2
+D1-no-junction-prepend: 00:00 +18 -5: Some tests failed. | 00:00 +18 -5
+D2-always-prepend: 00:00 +20 -3: Some tests failed. | 00:00 +20 -3
+D3-short-rest-clause-dropped: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+D4-end-check-dropped: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+D5-start-check-dropped: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+D6-arrived-gate-dropped: 00:00 +21 -2: Some tests failed. | 00:00 +21 -2
+D7-completed-not-arrived: 00:00 +20 -3: Some tests failed. | 00:00 +20 -3
+E1-seed-deleted: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+E2-geometry-push-deleted: 00:00 +22 -1: Some tests failed. | 00:00 +22 -1
+D8-last-stop-guard-dropped: 00:00 +21 -2: Some tests failed. | 00:00 +21 -2
+
+=== A1-arrived-false-inside
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..5abfa164 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3174,3 +3174,3 @@ List<LatLng> futureLayerPoints(ActiveTripState trip, List<LatLng> route) =>
+       currentLeg: trip.currentLegPolylinePoints,
+-      arrived: stopArrivalConfirmed(trip.status),
++      arrived: false,
+     );
+
+=== A2-call-site-bypass
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..12768d4a 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -2135,3 +2135,3 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+     final trip = ref.read(activeTripProvider);
+-    final points = futureLayerPoints(trip, allPoints);
++    final points = allPoints;
+     try {
+
+=== A3-call-site-old-formula
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..a2ea2e13 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -2135,3 +2135,3 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+     final trip = ref.read(activeTripProvider);
+-    final points = futureLayerPoints(trip, allPoints);
++    final points = futureRoutePoints(allPoints, currentLeg: trip.currentLegPolylinePoints, arrived: _arrived(trip.status));
+     try {
+
+=== B1-status-listener-block-deleted
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..a943b4a7 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3013,7 +3013,2 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+       // está: el leg viejo no reaparece mientras llega la ruta nueva.
+-      if (futureLegsNeedPush(prev, next)) {
+-        unawaited(
+-          _pushFutureLegs(ref.read(activeTripProvider).routePolylinePoints),
+-        );
+-      }
+     });
+
+=== B2-status-listener-if-false
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..857f4a4e 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3013,3 +3013,3 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+       // está: el leg viejo no reaparece mientras llega la ruta nueva.
+-      if (futureLegsNeedPush(prev, next)) {
++      if (false) {
+         unawaited(
+
+=== B3-status-listener-old-condition
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..2f3c39c3 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3013,3 +3013,3 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+       // está: el leg viejo no reaparece mientras llega la ruta nueva.
+-      if (futureLegsNeedPush(prev, next)) {
++      if (_arrived(prev ?? next) != _arrived(next)) {
+         unawaited(
+
+=== B4-listener-repush-wrong-source
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..af3233fc 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3015,3 +3015,3 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+         unawaited(
+-          _pushFutureLegs(ref.read(activeTripProvider).routePolylinePoints),
++          _pushFutureLegs(const []),
+         );
+
+=== C1-loading-guard-dropped
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..fea0fcf2 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3182,4 +3182,3 @@ List<LatLng> futureLayerPoints(ActiveTripState trip, List<LatLng> route) =>
+ bool futureLegsNeedPush(TripStatus? prev, TripStatus next) =>
+-    stopArrivalConfirmed(prev ?? next) != stopArrivalConfirmed(next) &&
+-    next != TripStatus.loading;
++    stopArrivalConfirmed(prev ?? next) != stopArrivalConfirmed(next);
+ 
+
+=== C2-needpush-prev-ignored
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..c974e4b0 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3182,3 +3182,3 @@ List<LatLng> futureLayerPoints(ActiveTripState trip, List<LatLng> route) =>
+ bool futureLegsNeedPush(TripStatus? prev, TripStatus next) =>
+-    stopArrivalConfirmed(prev ?? next) != stopArrivalConfirmed(next) &&
++    stopArrivalConfirmed(next) &&
+     next != TripStatus.loading;
+
+=== D1-no-junction-prepend
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..310eca59 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3159,3 +3159,3 @@ List<LatLng> futureRoutePoints(
+   final stop = currentLeg.last;
+-  final rest = tail.first == stop ? tail : [stop, ...tail];
++  final rest = tail;
+   return rest.length < 2 ? const [] : rest;
+
+=== D2-always-prepend
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..097d8a3b 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3159,3 +3159,3 @@ List<LatLng> futureRoutePoints(
+   final stop = currentLeg.last;
+-  final rest = tail.first == stop ? tail : [stop, ...tail];
++  final rest = [stop, ...tail];
+   return rest.length < 2 ? const [] : rest;
+
+=== D3-short-rest-clause-dropped
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..07f36e46 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3160,3 +3160,3 @@ List<LatLng> futureRoutePoints(
+   final rest = tail.first == stop ? tail : [stop, ...tail];
+-  return rest.length < 2 ? const [] : rest;
++  return rest;
+ }
+
+=== D4-end-check-dropped
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..84ce32d3 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3153,3 +3153,3 @@ List<LatLng> futureRoutePoints(
+   if (!arrived || n == 0 || route.length < n) return route;
+-  if (route.first != currentLeg.first || route[n - 1] != currentLeg.last) {
++  if (route.first != currentLeg.first) {
+     return route;
+
+=== D5-start-check-dropped
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..fb8da72a 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3153,3 +3153,3 @@ List<LatLng> futureRoutePoints(
+   if (!arrived || n == 0 || route.length < n) return route;
+-  if (route.first != currentLeg.first || route[n - 1] != currentLeg.last) {
++  if (route[n - 1] != currentLeg.last) {
+     return route;
+
+=== D6-arrived-gate-dropped
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..ebce7931 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3152,3 +3152,3 @@ List<LatLng> futureRoutePoints(
+   final n = currentLeg.length;
+-  if (!arrived || n == 0 || route.length < n) return route;
++  if (n == 0 || route.length < n) return route;
+   if (route.first != currentLeg.first || route[n - 1] != currentLeg.last) {
+
+=== D7-completed-not-arrived
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..e0eda514 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3165,3 +3165,3 @@ List<LatLng> futureRoutePoints(
+ bool stopArrivalConfirmed(TripStatus status) =>
+-    status == TripStatus.atStopConfirmed || status == TripStatus.completed;
++    status == TripStatus.atStopConfirmed;
+ 
+
+=== D8-last-stop-guard-dropped
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..d30c5a40 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -3157,3 +3157,2 @@ List<LatLng> futureRoutePoints(
+   final tail = route.sublist(n);
+-  if (tail.isEmpty) return const [];
+   final stop = currentLeg.last;
+
+=== E1-seed-deleted
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..92225eeb 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -935,3 +935,3 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+     _scene.setApproachEntry(trip.approach?.entry);
+-    unawaited(_pushFutureLegs(trip.routePolylinePoints));
++
+     unawaited(_pushApproachConnector());
+
+=== E2-geometry-push-deleted
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..ee27d4fa 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -2118,3 +2118,3 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+   }) async {
+-    if (futureChanged) await _pushFutureLegs(future);
++
+     if (!currentChanged) return;
