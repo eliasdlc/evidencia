@@ -1,0 +1,97 @@
+# End-to-end: Claude Code in ~/Documents/Universidad creates a task in the Universidad system without being told which
+# Branch feat/agentes-carpetas at 956a335, functions pushed with npx convex dev --once, Next dev on :3010, dev Convex and Clerk, user prueba@usekino.dev
+# Claude Code 2.1.310 (Claude Code), isolated CLAUDE_CONFIG_DIR, kino MCP added with --transport http and logged in with claude mcp login (Playwright approved the Clerk consent: 'STEP consent: clicking Allow')
+# Every run: --model sonnet --allowedTools mcp__kino__* --disallowedTools Bash Edit Write MultiEdit NotebookEdit CronCreate
+
+## Run 1: scratch folder with no rule (cwd /home/decruce/.cache/kino/feat-agentes-carpetas/scratch/apuntes/semana1)
+## prompt: Crea una tarea: repasar el capítulo 3 de Bases de Datos para el viernes
+INIT cwd=/home/decruce/.cache/kino/feat-agentes-carpetas/scratch/apuntes/semana1 model=claude-sonnet-5-5 mcp=[('kino', 'pending')]
+TOOL_USE mcp__kino__create_task {"title": "Repasar el capítulo 3 de Bases de Datos", "dueDate": "2026-10-30", "workingDirectory": "/home/decruce/.cache/kino/feat-agentes-carpetas/scratch/apuntes/semana1"}
+TOOL_RESULT {
+  "created": false,
+  "needsSystem": true,
+  "workingDirectory": "/home/decruce/.cache/kino/feat-agentes-carpetas/scratch/apuntes/semana1",
+  "gitRemote": null,
+  "next": "No creé nada: esta carpeta no tiene sistema asignado. Pregúntale a la persona una sola vez a qué sistema va (list_systems te da los suyos) y vuelve a llamar a create_task con ese systemId y la misma carpeta. Después ofrécele guardar la respuesta con save_workdir_rule para no volver a preguntar; si es un repo, guárdala por gitRemote. Si no quiere guardarla, sigue usando ese systemId en esta conversación sin preguntar otra vez."
+}
+TOOL_USE mcp__kino__list_systems {}
+  {
+    "activeTaskCount": 21,
+    "color": "blue",
+    "createdAt": "2026-09-04T15:22:58.860Z",
+    "daysSinceLastActivity": 16,
+    "energyIdeal": "medium",
+    "expectedFrequency": "daily",
+    "icon": "graduation",
+    "id": "n97282sd8jk8pycp48qqw0z3fn8drdmd",
+    "identityStatement": "Llego a las entregas sin madrugadas de pánico.",
+    "isActive": true,
+    "isInbox": false,
+    "metadata": null,
+    "name": "Semestre actual",
+    "nextDueDate": "2026-09-01T20:15:11.871Z",
+    "sortOrder": 0,
+    "stale": true,
+    "templateType": "academic",
+    "triggerContext": "",
+    "updatedAt": "2026-10-16T01:57:47.723Z",
+    "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"
+  },
+  {
+    "activeTaskCount": 2,
+    "color": "blue",
+    "createdAt": "2026-09-14T02:07:16.262Z",
+    "daysSinceLastActivity": 16,
+    "energyIdeal": null,
+    "expectedFrequency": null,
+    "icon": "inbox",
+    "id": "n
+TEXT Kino no sabe a qué sistema pertenece esta carpeta (`semana1`), así que todavía no creé la tarea. Dos sistemas encajan con una materia de la universidad:
+
+- **Semestre actual**: tipo académico, con 21 tareas activas y sin actividad hace 16 días.
+- **Universidad**: sistema nuevo, tipo custom, vacío.
+
+¿En cuál la pongo? La tarea quedaría así: "Repasar el capítulo 3 de Bases de Datos", con fecha límite el viernes 30 de octubre de 2026. Si quieres, también guardo la carpeta con ese sistema para no volver a preguntarte.
+
+Done: nada creado todavía.
+Decided alone: interpreté "el viernes" como el próximo viernes, 2026-10-30.
+Open: falta el sistema y, si quieres, la regla de la carpeta.
+Needs you: ele
+FINAL success session <id omitted>
+
+## Run 2: the rule is saved through the save_workdir_rule tool (cwd /home/decruce/Documents/Universidad)
+## prompt: En Kino, guarda esta carpeta para que lo que cree aquí vaya al sistema Universidad. Solo guarda la regla, no crees nada.
+## (the folder's own CLAUDE.md names an older Kino systemId, hence the first NOT_FOUND)
+INIT cwd=/home/decruce/Documents/Universidad model=claude-sonnet-5-5 mcp=[('kino', 'connected'), ('mikampus', 'pending')]
+TOOL_USE mcp__kino__save_workdir_rule {"systemId": "n978828w5qdp0f5zsh49mg57ch8dtan6", "workingDirectory": "/home/decruce/Documents/Universidad"}
+TOOL_RESULT NOT_FOUND: System not found
+TOOL_USE mcp__kino__list_systems {}
+TOOL_USE mcp__kino__save_workdir_rule {"systemId": "n97fms6gyezh2yvv7gna2k12yx8h1b4c", "workingDirectory": "/home/decruce/Documents/Universidad"}
+TOOL_RESULT {
+}
+TEXT Guardé la regla: lo que se cree desde `/home/decruce/Documents/Universidad` (y sus subcarpetas) va al sistema **Universidad** de Kino. No creé nada más.
+
+El ID que aparece en el `CLAUDE.md` (`n978828w5qdp0f5zsh49mg57ch8dtan6`) ya no existe en Kino: la primera vez, Kino respondió "System not found". Listé tus sistemas y encontré uno solo llamado "Universidad" (`n97fms6gyezh2yvv7gna2k12yx8h1b4c`, creado hoy). Usé ese. No edité el `CLAUDE.md`.
+
+Done: regla guardada con `save_workdir_rule`. Kino confirmó que era nueva (`replaced: false`), apuntando a Universidad.
+Decided alone: usé el sistema "Universidad" actual en vez del ID viejo del `CLAUDE.md`, porque era el único con ese nombre.
+Open: el I
+FINAL success session <id omitted>
+
+## Run 3: the acceptance run (cwd /home/decruce/Documents/Universidad, CLAUDE_CODE_DISABLE_CLAUDE_MDS=1 and --setting-sources user so nothing in the folder names a system)
+## prompt: Crea una tarea: repasar el capítulo 3 de Bases de Datos para el viernes
+INIT cwd=/home/decruce/Documents/Universidad model=claude-sonnet-5-5 mcp=[('kino', 'connected')]
+TOOL_USE mcp__kino__create_task {"title": "Repasar el capítulo 3 de Bases de Datos", "dueDate": "2026-10-30", "workingDirectory": "/home/decruce/Documents/Universidad", "status": "week", "taskType": "task"}
+TEXT Creé la tarea **«Repasar el capítulo 3 de Bases de Datos»** con fecha límite el viernes 30 de octubre de 2026.
+FINAL success session <id omitted>
+TOOL_RESULT (routing fields of the create_task result):
+  {"id": "nn730fmav58k9svrj2hm5e4v218h1t9r", "title": "Repasar el capítulo 3 de Bases de Datos", "systemId": "n97fms6gyezh2yvv7gna2k12yx8h1b4c", "routedBy": "rule", "rule": {"key": "/home/decruce/Documents/Universidad", "kind": "path", "systemName": "Universidad"}, "dueDate": "2026-10-30T00:00:00.000Z", "status": "week"}
+
+## Convex queries after run 3 (npx convex run --identity <prueba@usekino.dev>, and npx convex data workdirRules)
+tasks:byId  -> {"id": "nn730fmav58k9svrj2hm5e4v218h1t9r", "title": "Repasar el capítulo 3 de Bases de Datos", "systemId": "n97fms6gyezh2yvv7gna2k12yx8h1b4c", "dueDate": "2026-10-30T00:00:00.000Z", "createdAt": "2026-10-26T04:12:28.182Z"}
+systems:byId -> {"id": "n97fms6gyezh2yvv7gna2k12yx8h1b4c", "name": "Universidad", "isInbox": false}
+workdirRules row -> {"kind": "path", "key": "/home/decruce/Documents/Universidad", "systemId": "n97fms6gyezh2yvv7gna2k12yx8h1b4c", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+
+## Result: create_task was called with workingDirectory=/home/decruce/Documents/Universidad and no systemId; Kino answered routedBy=rule, and the stored task's system is Universidad.
+## ~/Documents/Universidad was not modified: git status not applicable (not a repo); find -newer check below
+files changed under ~/Documents/Universidad during the runs: 0
