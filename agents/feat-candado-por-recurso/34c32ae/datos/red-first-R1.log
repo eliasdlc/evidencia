@@ -1,0 +1,148 @@
+..FF.FF.FF                                                         [100%]
+=================================== FAILURES ===================================
+_ ResourceTests.test_a_build_does_not_block_targeted_tests_or_analyze (command=('flutter', 'analyze')) _
+
+self = <test_heavy.ResourceTests testMethod=test_a_build_does_not_block_targeted_tests_or_analyze>
+
+    def test_a_build_does_not_block_targeted_tests_or_analyze(self):
+        self.hold("--", "sleep", "4")
+        for command in (("flutter", "analyze"), ("dart", "analyze", "lib"), ("flutter", "test", "test/a_test.dart"),
+                        ("flutter", "test", "test/diary/")):
+            with self.subTest(command=command):
+                ran = self.run_heavy("--", *command)
+>               self.assertEqual(ran.returncode, 0, ran.stderr)
+E               AssertionError: 75 != 0 : agents heavy: another heavy job is running (sleep 4 (pid 60920, since 23:08:19Z), held for 1s). One at a time on this machine; rerun with --wait to queue.
+
+tests/test_heavy.py:210: AssertionError
+_ ResourceTests.test_a_build_does_not_block_targeted_tests_or_analyze (command=('dart', 'analyze', 'lib')) _
+
+self = <test_heavy.ResourceTests testMethod=test_a_build_does_not_block_targeted_tests_or_analyze>
+
+    def test_a_build_does_not_block_targeted_tests_or_analyze(self):
+        self.hold("--", "sleep", "4")
+        for command in (("flutter", "analyze"), ("dart", "analyze", "lib"), ("flutter", "test", "test/a_test.dart"),
+                        ("flutter", "test", "test/diary/")):
+            with self.subTest(command=command):
+                ran = self.run_heavy("--", *command)
+>               self.assertEqual(ran.returncode, 0, ran.stderr)
+E               AssertionError: 75 != 0 : agents heavy: another heavy job is running (sleep 4 (pid 60920, since 23:08:19Z), held for 1s). One at a time on this machine; rerun with --wait to queue.
+
+tests/test_heavy.py:210: AssertionError
+_ ResourceTests.test_a_build_does_not_block_targeted_tests_or_analyze (command=('flutter', 'test', 'test/a_test.dart')) _
+
+self = <test_heavy.ResourceTests testMethod=test_a_build_does_not_block_targeted_tests_or_analyze>
+
+    def test_a_build_does_not_block_targeted_tests_or_analyze(self):
+        self.hold("--", "sleep", "4")
+        for command in (("flutter", "analyze"), ("dart", "analyze", "lib"), ("flutter", "test", "test/a_test.dart"),
+                        ("flutter", "test", "test/diary/")):
+            with self.subTest(command=command):
+                ran = self.run_heavy("--", *command)
+>               self.assertEqual(ran.returncode, 0, ran.stderr)
+E               AssertionError: 75 != 0 : agents heavy: another heavy job is running (sleep 4 (pid 60920, since 23:08:19Z), held for 1s). One at a time on this machine; rerun with --wait to queue.
+
+tests/test_heavy.py:210: AssertionError
+_ ResourceTests.test_a_build_does_not_block_targeted_tests_or_analyze (command=('flutter', 'test', 'test/diary/')) _
+
+self = <test_heavy.ResourceTests testMethod=test_a_build_does_not_block_targeted_tests_or_analyze>
+
+    def test_a_build_does_not_block_targeted_tests_or_analyze(self):
+        self.hold("--", "sleep", "4")
+        for command in (("flutter", "analyze"), ("dart", "analyze", "lib"), ("flutter", "test", "test/a_test.dart"),
+                        ("flutter", "test", "test/diary/")):
+            with self.subTest(command=command):
+                ran = self.run_heavy("--", *command)
+>               self.assertEqual(ran.returncode, 0, ran.stderr)
+E               AssertionError: 75 != 0 : agents heavy: another heavy job is running (sleep 4 (pid 60920, since 23:08:19Z), held for 1s). One at a time on this machine; rerun with --wait to queue.
+
+tests/test_heavy.py:210: AssertionError
+_____ ResourceTests.test_a_job_larger_than_the_machine_is_refused_for_good _____
+
+self = <test_heavy.ResourceTests testMethod=test_a_job_larger_than_the_machine_is_refused_for_good>
+
+    def test_a_job_larger_than_the_machine_is_refused_for_good(self):
+        self.env["AGENTS_MEMINFO"] = fake_meminfo(self.dir, total_gib=4, available_gib=4)
+        refused = self.run_heavy("--", "true")
+>       self.assertEqual(refused.returncode, 64)
+E       AssertionError: 0 != 64
+
+tests/test_heavy.py:241: AssertionError
+_ ResourceTests.test_a_job_that_does_not_fit_the_free_memory_is_refused_with_the_numbers _
+
+self = <test_heavy.ResourceTests testMethod=test_a_job_that_does_not_fit_the_free_memory_is_refused_with_the_numbers>
+
+    def test_a_job_that_does_not_fit_the_free_memory_is_refused_with_the_numbers(self):
+        self.env["AGENTS_MEMINFO"] = fake_meminfo(self.dir, total_gib=32, available_gib=3)
+        refused = self.run_heavy("--", "true")
+>       self.assertEqual(refused.returncode, 75)
+E       AssertionError: 0 != 75
+
+tests/test_heavy.py:235: AssertionError
+_________ ResourceTests.test_a_waiting_job_starts_when_memory_frees_up _________
+
+self = <test_heavy.ResourceTests testMethod=test_a_waiting_job_starts_when_memory_frees_up>
+
+    def test_a_waiting_job_starts_when_memory_frees_up(self):
+        self.env["AGENTS_MEMINFO"] = fake_meminfo(self.dir, total_gib=32, available_gib=3)
+        waiter = subprocess.Popen(["bash", str(HEAVY), "--wait", "--", "echo", "admitted"], env=self.env,
+                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        time.sleep(1)
+>       self.assertIsNone(waiter.poll())
+E       AssertionError: 0 is not None
+
+tests/test_heavy.py:249: AssertionError
+_________ ResourceTests.test_status_names_each_holder_and_each_waiter __________
+
+self = <test_heavy.ResourceTests testMethod=test_status_names_each_holder_and_each_waiter>
+
+    def test_status_names_each_holder_and_each_waiter(self):
+        self.hold("--", "sleep", "5")
+        self.hold("--kind", "emulator", "--", "sleep", "5")
+        waiter = subprocess.Popen(["bash", str(HEAVY), "--wait", "--kind", "emulator", "--", "echo", "next-emulator"],
+                                  env=self.env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        time.sleep(1)
+        status = self.run_heavy("--status").stdout
+>       self.assertRegex(status, r"\[build\]: held by sleep 5")
+E       AssertionError: Regex didn't match: '\\[build\\]: held by sleep 5' not found in 'agents heavy: held by sleep 5 (pid 61462, since 23:08:28Z) for 3s\n  waiting: --kind emulator -- echo next-emulator (pid 61571) for 1s\n'
+
+tests/test_heavy.py:225: AssertionError
+----------------------------- Captured stderr call -----------------------------
+agents heavy: another heavy job is running (sleep 5 (pid 61462, since 23:08:28Z), held for 1s). One at a time on this machine; rerun with --wait to queue.
+________ ResourceTests.test_the_emulator_is_recognized_from_the_command ________
+
+self = <test_heavy.ResourceTests testMethod=test_the_emulator_is_recognized_from_the_command>
+
+    def test_the_emulator_is_recognized_from_the_command(self):
+        self.hold("--kind", "emulator", "--", "sleep", "4")
+        refused = self.run_heavy("--", "emulator", "-avd", "crd34")
+>       self.assertEqual(refused.returncode, 75)
+E       AssertionError: 0 != 75
+
+tests/test_heavy.py:201: AssertionError
+----------------------------- Captured stderr call -----------------------------
+/home/decruce/.cache/agents/feat-candado-por-recurso/heavy-old.sh: line 111: --kind: command not found
+__________________ ResourceTests.test_two_emulators_serialize __________________
+
+self = <test_heavy.ResourceTests testMethod=test_two_emulators_serialize>
+
+    def test_two_emulators_serialize(self):
+        self.hold("--kind", "emulator", "--", "sleep", "4")
+        refused = self.run_heavy("--kind", "emulator", "--", "true")
+>       self.assertEqual(refused.returncode, 75)
+E       AssertionError: 127 != 75
+
+tests/test_heavy.py:195: AssertionError
+----------------------------- Captured stderr call -----------------------------
+/home/decruce/.cache/agents/feat-candado-por-recurso/heavy-old.sh: line 111: --kind: command not found
+=========================== short test summary info ============================
+SUBFAILED(command=('flutter', 'analyze')) tests/test_heavy.py::ResourceTests::test_a_build_does_not_block_targeted_tests_or_analyze
+SUBFAILED(command=('dart', 'analyze', 'lib')) tests/test_heavy.py::ResourceTests::test_a_build_does_not_block_targeted_tests_or_analyze
+SUBFAILED(command=('flutter', 'test', 'test/a_test.dart')) tests/test_heavy.py::ResourceTests::test_a_build_does_not_block_targeted_tests_or_analyze
+SUBFAILED(command=('flutter', 'test', 'test/diary/')) tests/test_heavy.py::ResourceTests::test_a_build_does_not_block_targeted_tests_or_analyze
+FAILED tests/test_heavy.py::ResourceTests::test_a_job_larger_than_the_machine_is_refused_for_good
+FAILED tests/test_heavy.py::ResourceTests::test_a_job_that_does_not_fit_the_free_memory_is_refused_with_the_numbers
+FAILED tests/test_heavy.py::ResourceTests::test_a_waiting_job_starts_when_memory_frees_up
+FAILED tests/test_heavy.py::ResourceTests::test_status_names_each_holder_and_each_waiter
+FAILED tests/test_heavy.py::ResourceTests::test_the_emulator_is_recognized_from_the_command
+FAILED tests/test_heavy.py::ResourceTests::test_two_emulators_serialize - Ass...
+10 failed, 4 passed, 12 deselected, 2 subtests passed in 17.26s
