@@ -1,0 +1,61 @@
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/rework-2-escritura
+
+ ❯ |dom| src/features/writing/PlotSceneList.test.tsx (18 tests | 2 failed | 16 skipped) 253ms
+     × al salir del tablero retira el aviso, y su Deshacer ya no actúa sobre la rejilla que se dejó 195ms
+     × si el servidor confirma tras salir del tablero, no deja un aviso que deshaga a ciegas 56ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/features/writing/PlotSceneList.test.tsx > PlotSceneList, lo que se ve al mover > al salir del tablero retira el aviso, y su Deshacer ya no actúa sobre la rejilla que se dejó
+AssertionError: expected "vi.fn()" to be called with arguments: [ 'aviso-1' ]
+
+Number of calls: 0
+
+ ❯ src/features/writing/PlotSceneList.test.tsx:294:38
+    292|
+    293|     unmount();
+    294|     expect(vi.mocked(toast.dismiss)).toHaveBeenCalledWith("aviso-1");
+       |                                      ^
+    295|     // Aunque el aviso siguiera a la vista: la escena nunca está en el…
+    296|     accion.onClick();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |dom| src/features/writing/PlotSceneList.test.tsx > PlotSceneList, lo que se ve al mover > si el servidor confirma tras salir del tablero, no deja un aviso que deshaga a ciegas
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      "Escena movida a La carta",
+      Object {
+        "action": Object {
+          "label": "Deshacer",
+          "onClick": [Function onClick],
+        },
+        "duration": 6000,
+      },
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/features/writing/PlotSceneList.test.tsx:308:23
+    306|     const llamada = onApply.mock.calls.at(-1)!;
+    307|     void llamada[1]?.onSuccess?.(GRID as never, llamada[0]!);
+    308|     expect(toast).not.toHaveBeenCalled();
+       |                       ^
+    309|   });
+    310|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 16 skipped (18)
+   Start at  04:06:29
+   Duration  1.51s (transform 232ms, setup 119ms, import 511ms, tests 253ms, environment 449ms)
+
