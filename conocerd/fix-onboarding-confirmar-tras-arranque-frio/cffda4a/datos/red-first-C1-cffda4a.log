@@ -1,0 +1,59 @@
+red-first C1 at cffda4a with the fix reverted: lib/features/onboarding/data/guardar_hilo.dart restored from a2435b7 (save(completed) before stamp.grant), Flutter 3.47.7 local; U+2014 and U+00B7 replaced by a hyphen: 0
+$ git show a2435b7:lib/features/onboarding/data/guardar_hilo.dart > lib/features/onboarding/data/guardar_hilo.dart   # round 1 order: save(completed), then stamp.grant
+$ flutter test --no-pub test/features/profile/salida_del_hilo_test.dart   # Flutter 3.47.7 local
+00:00 +0: loading test/features/profile/salida_del_hilo_test.dart
+00:00 +0: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+CRD_PERFIL_CONFIRMADO 0 ms
+00:01 +1: the next start after a normal finish does not ask for the profile again
+CRD_PERFIL_CONFIRMADO 0 ms
+00:02 +2: the listener only shows the completed status after the redirect has re-read the gate: the router still ends on Explorar
+CRD_PERFIL_CONFIRMADO 235 ms
+00:03 +3: the listener shows the completed status 300 ms after the tap: the router still ends on Explorar and the editor is never built
+CRD_PERFIL_CONFIRMADO 118 ms
+00:04 +4: the listener never shows the completed status: the wait ends, the traveler stays on the last step with a message and can try again
+CRD_PERFIL_SIN_CONFIRMAR 81 ms
+CRD_PERFIL_CONFIRMADO 0 ms
+00:05 +5: after a cold start the watch stream does not deliver the finish: the first tap on "Entrar a la app" still opens Explorar
+CRD_PERFIL_CONFIRMADO 0 ms
+00:05 +6: with no connection the finish is not acknowledged: after the deadline the button says so and is live again, and the retry works once the connection is back
+CRD_PERFIL_CONFIRMADO 0 ms
+00:06 +7: killed offline after the deadline, the next start is still on the first steps; online, the retry grants the welcome stamp, completes the answers and drops the draft
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: 'pending'
+  Actual: 'completed'
+   Which: is different.
+          Expected: pending
+            Actual: completed
+                    ^
+           Differ at offset 0
+the device shows the account finished before its stamp exists
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file://test/features/profile/salida_del_hilo_test.dart:511:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file://test/features/profile/salida_del_hilo_test.dart line 511
+The test description was:
+  killed offline after the deadline, the next start is still on the first steps; online, the retry
+  grants the welcome stamp, completes the answers and drops the draft
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:07 +7 -1: killed offline after the deadline, the next start is still on the first steps; online, the retry grants the welcome stamp, completes the answers and drops the draft [E]
+  Test failed. See exception logs above.
+  The test description was: killed offline after the deadline, the next start is still on the first steps; online, the retry grants the welcome stamp, completes the answers and drops the draft
+  
+00:07 +7 -1: saving the answers from the editor waits for the listener too
+CRD_PERFIL_CONFIRMADO 121 ms
+00:08 +8 -1: saving the answers when the listener never shows the finish says it is still confirming and leaves Guardar live
+CRD_PERFIL_SIN_CONFIRMAR 94 ms
+00:09 +9 -1: Some tests failed.
+
+Failing tests:
+  test/features/profile/salida_del_hilo_test.dart: killed offline after the deadline, the next start is still on the first steps; online, the retry grants the welcome stamp, completes the answers and drops the draft
