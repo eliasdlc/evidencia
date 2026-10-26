@@ -1,0 +1,124 @@
+.FF                                                                    [100%]
+=================================== FAILURES ===================================
+_ DraftTests.test_a_published_capture_is_reused_only_when_its_content_matches (name='r1.png') _
+
+self = <test_proof.DraftTests testMethod=test_a_published_capture_is_reused_only_when_its_content_matches>
+
+    def test_a_published_capture_is_reused_only_when_its_content_matches(self):
+        import hashlib
+        digest = lambda data: hashlib.sha256(data).hexdigest()
+        target = "app/feat-x/f00ba12"
+        for name, data in (("r1.png", b"png-one"), ("test-r1.log", b"one\n")):
+            with self.subTest(name=name):
+                local = Path(self.tmp.name) / name
+                local.write_bytes(data)
+                publish = self.draft.publisher(target, True)
+                saved = {k: getattr(self.draft, k, None) for k in ("exists", "remote_digest")}
+                self.draft.exists = lambda url: True
+                try:
+                    self.draft.remote_digest = lambda url: digest(b"other")
+>                   with self.assertRaises(self.draft.Problem) as caught:
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                   AssertionError: Problem not raised
+
+tests/test_proof.py:1000: AssertionError
+_ DraftTests.test_a_published_capture_is_reused_only_when_its_content_matches (name='test-r1.log') _
+
+self = <test_proof.DraftTests testMethod=test_a_published_capture_is_reused_only_when_its_content_matches>
+
+    def test_a_published_capture_is_reused_only_when_its_content_matches(self):
+        import hashlib
+        digest = lambda data: hashlib.sha256(data).hexdigest()
+        target = "app/feat-x/f00ba12"
+        for name, data in (("r1.png", b"png-one"), ("test-r1.log", b"one\n")):
+            with self.subTest(name=name):
+                local = Path(self.tmp.name) / name
+                local.write_bytes(data)
+                publish = self.draft.publisher(target, True)
+                saved = {k: getattr(self.draft, k, None) for k in ("exists", "remote_digest")}
+                self.draft.exists = lambda url: True
+                try:
+                    self.draft.remote_digest = lambda url: digest(b"other")
+                    with self.assertRaises(self.draft.Problem) as caught:
+>                       publish([local])
+
+tests/test_proof.py:1001: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+bin/proof_draft.py:193: in publish
+    if f.suffix.lower() not in IMAGES and gate.fetch(url) != f.read_text(errors="replace"):
+                                          ^^^^^^^^^^^^^^^
+bin/proof.py:1054: in fetch
+    with urllib.request.urlopen(url, timeout=FETCH_TIMEOUT) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.14/urllib/request.py:187: in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.14/urllib/request.py:493: in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.14/urllib/request.py:602: in http_response
+    response = self.parent.error(
+/usr/lib/python3.14/urllib/request.py:531: in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.14/urllib/request.py:464: in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def http_error_default(self, req, fp, code, msg, hdrs):
+>       raise HTTPError(req.full_url, code, msg, hdrs, fp)
+E       urllib.error.HTTPError: HTTP Error 404: Not Found
+
+/usr/lib/python3.14/urllib/request.py:611: HTTPError
+_____________ DraftTests.test_a_red_run_that_timed_out_is_refused ______________
+
+self = <test_proof.DraftTests testMethod=test_a_red_run_that_timed_out_is_refused>
+
+    def test_a_red_run_that_timed_out_is_refused(self):
+        saved = self.draft.TIMEOUT
+        self.draft.TIMEOUT = 3
+        try:
+            # The green run is quick; the run without the fix fails, then hangs until it is stopped.
+            body = self.body.replace("`python3 -m unittest tests.test_calc`",
+                                     "`python3 -m unittest tests.test_calc; if grep -q 'x + 1' calc.py; then sleep 30; fi`")
+>           with self.assertRaises(self.draft.Problem) as caught:
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: Problem not raised
+
+tests/test_proof.py:955: AssertionError
+________ DraftTests.test_signals_during_the_restore_cannot_interrupt_it ________
+
+self = <test_proof.DraftTests testMethod=test_signals_during_the_restore_cannot_interrupt_it>
+
+    def test_signals_during_the_restore_cannot_interrupt_it(self):
+        import signal
+        real = self.draft.git
+        fork = real("merge-base", "dev", "HEAD", cwd=self.top)
+        signals = (signal.SIGINT, signal.SIGTERM, signal.SIGHUP)
+    
+        def noisy(*args, **kw):
+            if args[:2] == ("checkout", "HEAD"):
+                for sig in signals:
+                    os.kill(os.getpid(), sig)
+            return real(*args, **kw)
+        before = {sig: signal.getsignal(sig) for sig in signals}
+        raised = None
+        self.draft.git = noisy
+        try:
+            with self.draft.without_fix(self.top, fork, ["calc.py"]):
+                self.assertIn("x + 1", (self.top / "calc.py").read_text())
+        except (SystemExit, KeyboardInterrupt) as e:
+            raised = e
+        finally:
+            self.draft.git = real
+>       self.assertIsNone(raised)
+E       AssertionError: KeyboardInterrupt() is not None
+
+tests/test_proof.py:983: AssertionError
+=========================== short test summary info ============================
+SUBFAILED(name='r1.png') tests/test_proof.py::DraftTests::test_a_published_capture_is_reused_only_when_its_content_matches
+SUBFAILED(name='test-r1.log') tests/test_proof.py::DraftTests::test_a_published_capture_is_reused_only_when_its_content_matches
+FAILED tests/test_proof.py::DraftTests::test_a_red_run_that_timed_out_is_refused
+FAILED tests/test_proof.py::DraftTests::test_signals_during_the_restore_cannot_interrupt_it
+4 failed, 1 passed, 75 deselected in 4.13s
