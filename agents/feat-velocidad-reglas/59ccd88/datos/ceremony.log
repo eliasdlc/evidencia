@@ -1,0 +1,11 @@
+== step 1: passes (covered by the standing authorization)
+exit=0 <- [kino] BY=standing gh pr merge 5 --merge
+exit=0 <- [conocerd] BY=standing gh pr edit 9 --add-label distribute-review
+== step 2: fails against fabricated violations, naming the rule
+BY=standing covers only a Kino merge and production deploy, and a ConoceRD review build to the tester group (the distribute label, or appdistribution:distribute with --groups). 'release-train' in eliasdlc/conocerd is not one of them: quote Elias's words as BY="<his message>".
+exit=2 <- [conocerd] BY=standing scripts/distribute.sh --prod
+BY=standing covers only a Kino merge and production deploy, and a ConoceRD review build to the tester group (the distribute label, or appdistribution:distribute with --groups). 'production-deploy' in eliasdlc/conocerd-web is not one of them: quote Elias's words as BY="<his message>".
+exit=2 <- [conocerd-web] BY=standing npx vercel --prod
+== step 3: passes again (his quoted words, and a covered Kino deploy)
+exit=0 <- [conocerd] BY="distribuye a todos, dale" scripts/distribute.sh --prod
+exit=0 <- [kino] BY=standing npx vercel --prod
