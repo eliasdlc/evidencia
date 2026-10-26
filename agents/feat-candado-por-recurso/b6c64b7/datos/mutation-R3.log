@@ -1,0 +1,32 @@
+F.......................................F.....                     [100%]
+=================================== FAILURES ===================================
+__ DelegationTests.test_a_child_is_admitted_by_free_memory_after_the_reserve ___
+
+self = <test_delegation.DelegationTests testMethod=test_a_child_is_admitted_by_free_memory_after_the_reserve>
+
+    def test_a_child_is_admitted_by_free_memory_after_the_reserve(self):
+        self.set_available_gib(2.0)
+>       self.reject(r'BUDGET_MEMORY: 1\.0 GiB free after the 1\.0 GiB reserve, and an agent needs 1\.5 GiB')
+
+tests/test_delegation.py:365: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_delegation.py:52: in reject
+    with self.assertRaisesRegex(d.Blocked, rule):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Blocked not raised
+__ LauncherTests.test_a_launch_is_refused_when_the_machine_lacks_free_memory ___
+
+self = <test_launch_in_t3.LauncherTests testMethod=test_a_launch_is_refused_when_the_machine_lacks_free_memory>
+
+    def test_a_launch_is_refused_when_the_machine_lacks_free_memory(self):
+        code, err, posted = self.launch_with_headroom(0.4)
+>       self.assertEqual(code, 1)
+E       AssertionError: 0 != 1
+
+tests/test_launch_in_t3.py:248: AssertionError
+----------------------------- Captured stdout call -----------------------------
+launched mcp:x "t" on agentbox
+=========================== short test summary info ============================
+FAILED tests/test_delegation.py::DelegationTests::test_a_child_is_admitted_by_free_memory_after_the_reserve
+FAILED tests/test_launch_in_t3.py::LauncherTests::test_a_launch_is_refused_when_the_machine_lacks_free_memory
+2 failed, 44 passed, 78 subtests passed in 10.83s
