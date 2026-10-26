@@ -1,0 +1,109 @@
+# red-first-T655-R3-orden at f0490833, Flutter 3.47.7 local  [U+2014 and U+00B7 replaced by a hyphen: 0]
+# lib/features/onboarding/data/guardar_hilo.dart restored from a2435b7d (the code before the fix)
+# flutter test --no-pub test/features/onboarding/guardar_hilo_test.dart test/features/profile/salida_del_hilo_test.dart
+
+00:00 +0: loading test/features/onboarding/guardar_hilo_test.dart
+00:00 +0: test/features/onboarding/guardar_hilo_test.dart: a new account receives the answers, the visitor state, the route and an open guide
+00:00 +1: test/features/onboarding/guardar_hilo_test.dart: running it twice after a restart ends in the same documents
+00:00 +2: test/features/onboarding/guardar_hilo_test.dart: the pending answers keep the device marker for a restart
+00:00 +3: test/features/onboarding/guardar_hilo_test.dart: an existing account only receives the route
+00:00 +4: test/features/onboarding/guardar_hilo_test.dart: finishing completes the answers and grants the welcome stamp once
+00:00 +5: test/features/onboarding/guardar_hilo_test.dart: without a connection the stamp fails first and the answers stay pending, on the account and on the device
+00:00 +5 -1: test/features/onboarding/guardar_hilo_test.dart: without a connection the stamp fails first and the answers stay pending, on the account and on the device [E]
+  Expected: 'pending'
+    Actual: 'completed'
+     Which: is different.
+            Expected: pending
+              Actual: completed
+                      ^
+             Differ at offset 0
+  the answers were completed before the stamp could be granted
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/onboarding/guardar_hilo_test.dart 237:5  main.<fn>
+  
+00:00 +5 -1: test/features/onboarding/guardar_hilo_test.dart: the connection drops between the stamp and the answers: the stamp is on the server, the answers wait in the device queue, and the device no longer marks the account as new
+00:00 +5 -2: test/features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+00:00 +5 -2: test/features/onboarding/guardar_hilo_test.dart: the connection drops between the stamp and the answers: the stamp is on the server, the answers wait in the device queue, and the device no longer marks the account as new [E]
+  Expected: false
+    Actual: <true>
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/onboarding/guardar_hilo_test.dart 271:5  main.<fn>
+  
+00:00 +5 -3: test/features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+00:00 +5 -3: test/features/onboarding/guardar_hilo_test.dart: the stamp lands and the answers are refused: the next try keeps the first stamp and completes the answers [E]
+  Expected: DateTime:<2026-10-18 09:00:00.000>
+    Actual: DateTime:<2026-10-21 09:00:00.000>
+  the retry granted a second stamp
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/onboarding/guardar_hilo_test.dart 312:5  main.<fn>
+  
+00:00 +6 -3: test/features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+00:00 +7 -3: test/features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+00:00 +8 -3: test/features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+00:00 +9 -3: test/features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+00:00 +10 -3: test/features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+00:00 +11 -3: test/features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+00:00 +12 -3: test/features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+00:00 +13 -3: test/features/profile/salida_del_hilo_test.dart: with the account listener in step, finishing opens Explorar, never builds the profile editor and leaves no profile draft
+CRD_PERFIL_CONFIRMADO 0 ms
+00:01 +14 -3: test/features/profile/salida_del_hilo_test.dart: the next start after a normal finish does not ask for the profile again
+CRD_PERFIL_CONFIRMADO 0 ms
+00:02 +15 -3: test/features/profile/salida_del_hilo_test.dart: the listener only shows the completed status after the redirect has re-read the gate: the router still ends on Explorar
+CRD_PERFIL_CONFIRMADO 206 ms
+00:02 +16 -3: test/features/profile/salida_del_hilo_test.dart: the listener shows the completed status 300 ms after the tap: the router still ends on Explorar and the editor is never built
+CRD_PERFIL_CONFIRMADO 316 ms
+00:04 +17 -3: test/features/profile/salida_del_hilo_test.dart: the listener never shows the completed status: the wait ends, the traveler stays on the last step with a message and can try again
+CRD_PERFIL_SIN_CONFIRMAR 69 ms
+CRD_PERFIL_CONFIRMADO 0 ms
+00:05 +18 -3: test/features/profile/salida_del_hilo_test.dart: after a cold start the watch stream does not deliver the finish: the first tap on "Entrar a la app" still opens Explorar
+CRD_PERFIL_CONFIRMADO 0 ms
+00:05 +19 -3: test/features/profile/salida_del_hilo_test.dart: with no connection the finish is not acknowledged: after the deadline the button says so and is live again, and the retry works once the connection is back
+CRD_PERFIL_CONFIRMADO 0 ms
+00:06 +20 -3: test/features/profile/salida_del_hilo_test.dart: a finish with no connection fails at the welcome stamp, and killed after that the next start is still on the first steps; online, the retry grants the stamp, completes the answers and drops the draft
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "No pudimos guardar tu cuenta. Revisa tu
+conexión e inténtalo de nuevo.": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file://test/features/profile/salida_del_hilo_test.dart:495:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file://test/features/profile/salida_del_hilo_test.dart line 495
+The test description was:
+  a finish with no connection fails at the welcome stamp, and killed after that the next start is
+  still on the first steps; online, the retry grants the stamp, completes the answers and drops the
+  draft
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:07 +20 -4: test/features/profile/salida_del_hilo_test.dart: a finish with no connection fails at the welcome stamp, and killed after that the next start is still on the first steps; online, the retry grants the stamp, completes the answers and drops the draft [E]
+  Test failed. See exception logs above.
+  The test description was: a finish with no connection fails at the welcome stamp, and killed after that the next start is still on the first steps; online, the retry grants the stamp, completes the answers and drops the draft
+  
+00:07 +20 -4: test/features/profile/salida_del_hilo_test.dart: saving the answers from the editor waits for the listener too
+CRD_PERFIL_CONFIRMADO 105 ms
+00:08 +21 -4: test/features/profile/salida_del_hilo_test.dart: saving the answers when the listener never shows the finish says it is still confirming and leaves Guardar live
+CRD_PERFIL_SIN_CONFIRMAR 63 ms
+00:08 +22 -4: test/features/profile/salida_del_hilo_test.dart: saving the answers from the editor with no connection: after the deadline it says so, Guardar is live again, the queued write stays queued and the retry works once the connection is back
+CRD_PERFIL_CONFIRMADO 0 ms
+00:09 +23 -4: Some tests failed.
+
+Failing tests:
+  test/features/onboarding/guardar_hilo_test.dart: the connection drops between the stamp and the answers: the stamp is on the server, the answers wait in the device queue, and the device no longer marks the account as new
+  test/features/onboarding/guardar_hilo_test.dart: the stamp lands and the answers are refused: the next try keeps the first stamp and completes the answers
+  test/features/onboarding/guardar_hilo_test.dart: without a connection the stamp fails first and the answers stay pending, on the account and on the device
+  test/features/profile/salida_del_hilo_test.dart: a finish with no connection fails at the welcome stamp, and killed after that the next start is still on the first steps; online, the retry grants the stamp, completes the answers and drops the draft
