@@ -1,0 +1,88 @@
+# mutation-trazo-add-not-saved-locally at 2d25870f, Flutter 3.47.7 local; U+2014 and U+00B7 replaced by a hyphen: 0
+# applied:
+# diff --git i/lib/features/diary/data/repositories/firestore_diary_repository.dart w/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# index ad63e3cb..c60909b9 100644
+# --- i/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# +++ w/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# @@ -144,7 +144,6 @@ class FirestoreDiaryRepository implements DiaryRepository {
+#          visitDate: entry.visitDate,
+#          createdAt: entry.createdAt,
+#        );
+# -      await visitRoutes?.write(entry.id, entry.route);
+#        await _firestore
+#            .collection(_collection)
+#            .doc(entry.id)
+# flutter test --no-pub test/features/diary/visit_route_local_test.dart test/features/navigation/presentation/widgets/arrival/arrival_route_local_test.dart
+
+00:00 +0: loading test/features/diary/visit_route_local_test.dart
+00:00 +0: test/features/diary/visit_route_local_test.dart: the route never leaves the phone the Firestore document has no route, on create and on edit
+00:00 +1: test/features/diary/visit_route_local_test.dart: the route never leaves the phone the outbox payload has no route, on create and on edit
+00:00 +2: test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an entry reads back its route from the local store
+00:00 +2 -1: test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an entry reads back its route from the local store [E]
+  Expected: [
+              LatLng:LatLng(19.4489, -70.695),
+              LatLng:LatLng(19.4498, -70.6949),
+              LatLng:LatLng(19.4507, -70.6947)
+            ]
+    Actual: []
+     Which: at location [0] is [] which shorter than expected
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/diary/visit_route_local_test.dart 106:7  main.<fn>.<fn>
+  
+00:00 +2 -1: test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone a queued entry reads back its route too
+00:00 +3 -1: test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone another device or a fresh install shows the entry without a route, without errors
+00:00 +4 -1: test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an unreadable route file reads as no route
+00:00 +4 -2: test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an unreadable route file reads as no route [E]
+  PathNotFoundException: Directory listing failed, path = '/tmp/visit-route-test-SFYBUZ/visit_routes/' (OS Error: No such file or directory, errno = 2)
+  dart:io                                                 _Directory.listSync
+  test/features/diary/visit_route_local_test.dart 140:58  main.<fn>.<fn>
+  
+00:00 +4 -2: test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an edit that does not know the route keeps the local one and uploads nothing
+00:00 +4 -3: test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an edit that does not know the route keeps the local one and uploads nothing [E]
+  Expected: [
+              LatLng:LatLng(19.4489, -70.695),
+              LatLng:LatLng(19.4498, -70.6949),
+              LatLng:LatLng(19.4507, -70.6947)
+            ]
+    Actual: []
+     Which: at location [0] is [] which shorter than expected
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/diary/visit_route_local_test.dart 155:7  main.<fn>.<fn>
+  
+00:00 +4 -3: test/features/diary/visit_route_local_test.dart: deleting an entry deletes its route the local file goes with the entry
+00:00 +4 -4: test/features/diary/visit_route_local_test.dart: deleting an entry deletes its route the local file goes with the entry [E]
+  Expected: non-empty
+    Actual: {}
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/diary/visit_route_local_test.dart 163:7  main.<fn>.<fn>
+  
+00:00 +4 -4: test/features/diary/visit_route_local_test.dart: VisitRouteStore keeps what it is given at the stored precision and clears it
+00:00 +5 -4: test/features/diary/visit_route_local_test.dart: VisitRouteStore a route too short to draw is not stored and keeps the old one
+00:00 +6 -4: test/features/navigation/presentation/widgets/arrival/arrival_route_local_test.dart: saving the visit keeps the route on the phone and out of Firestore, and the diary reads it back
+00:00 +6 -5: test/features/navigation/presentation/widgets/arrival/arrival_route_local_test.dart: saving the visit keeps the route on the phone and out of Firestore, and the diary reads it back [E]
+  Expected: [
+              LatLng:LatLng(18.4835, -69.8905),
+              LatLng:LatLng(18.484, -69.89),
+              LatLng:LatLng(18.485, -69.889)
+            ]
+    Actual: <null>
+     Which: is not Iterable
+  
+  package:matcher                                                                           expect
+  package:flutter_test/src/widget_tester.dart 473:18                                        expect
+  test/features/navigation/presentation/widgets/arrival/arrival_route_local_test.dart 75:5  main.<fn>
+  
+00:00 +6 -5: Some tests failed.
+
+Failing tests:
+  test/features/diary/visit_route_local_test.dart: deleting an entry deletes its route the local file goes with the entry
+  test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an edit that does not know the route keeps the local one and uploads nothing
+  test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an entry reads back its route from the local store
+  test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an unreadable route file reads as no route
+  test/features/navigation/presentation/widgets/arrival/arrival_route_local_test.dart: saving the visit keeps the route on the phone and out of Firestore, and the diary reads it back
