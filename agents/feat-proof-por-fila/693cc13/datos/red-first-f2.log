@@ -1,0 +1,52 @@
+F.FF                                                                     [100%]
+=================================== FAILURES ===================================
+_____ CoversProseTests.test_a_file_the_pr_deleted_or_the_proof_had_is_kept _____
+
+self = <test_proof.CoversProseTests testMethod=test_a_file_the_pr_deleted_or_the_proof_had_is_kept>
+
+    def test_a_file_the_pr_deleted_or_the_proof_had_is_kept(self):
+        tree = {"lib/a.dart"}
+>       self.assertEqual(proof.declared_paths("lib/gone.dart v3.0", tree, {"lib/gone.dart"}), {"lib/gone.dart"})
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: declared_paths() takes 2 positional arguments but 3 were given
+
+tests/test_proof.py:1283: TypeError
+_____________ CoversProseTests.test_prose_around_a_path_is_ignored _____________
+
+self = <test_proof.CoversProseTests testMethod=test_prose_around_a_path_is_ignored>
+
+    def test_prose_around_a_path_is_ignored(self):
+        tree = {"lib/ui/settings.dart", "lib/a.dart"}
+        cell = "e.g. lib/a.dart, i.e. n/a and/or v3.0 or 2.5"
+>       self.assertEqual(proof.declared_paths(cell, tree), {"lib/a.dart"})
+E       AssertionError: Items in the first set but not the second:
+E       'e.g'
+E       '2.5'
+E       'i.e'
+E       'n/a'
+E       'v3.0'
+E       'and/or'
+
+tests/test_proof.py:1278: AssertionError
+_ CoversProseTests.test_the_gate_does_not_fail_a_row_for_the_prose_in_its_covers_cell _
+
+self = <test_proof.CoversProseTests testMethod=test_the_gate_does_not_fail_a_row_for_the_prose_in_its_covers_cell>
+
+    def test_the_gate_does_not_fail_a_row_for_the_prose_in_its_covers_cell(self):
+        src = deep_sources(lambda sha: PR_FILES)
+        body = ROWS.replace("`lib/ui/*`", "`lib/ui/*` (e.g. the screen, i.e. n/a, and/or v3.0, 2.5)")
+>       self.assertEqual(by_row(body, src=src).failures, [])
+E       AssertionError: Lists differ: ['R1: Covers names 2.5, a file this PR did[995 chars]ile'] != []
+E       
+E       First list contains 6 additional elements.
+E       First extra element 0:
+E       'R1: Covers names 2.5, a file this PR did not change and that nothing it changed leads to; name a file the PR changed, or leave the cell empty to cover every product file'
+E       
+E       Diff is 1137 characters long. Set self.maxDiff to None to see it.
+
+tests/test_proof.py:1288: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_proof.py::CoversProseTests::test_a_file_the_pr_deleted_or_the_proof_had_is_kept
+FAILED tests/test_proof.py::CoversProseTests::test_prose_around_a_path_is_ignored
+FAILED tests/test_proof.py::CoversProseTests::test_the_gate_does_not_fail_a_row_for_the_prose_in_its_covers_cell
+3 failed, 1 passed, 94 deselected in 0.15s
