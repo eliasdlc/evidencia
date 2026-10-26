@@ -1,0 +1,176 @@
+.............F.....F.FF.....                     [100%]
+=================================== FAILURES ===================================
+______________ ResourceTests.test_a_dead_holder_pid_reads_as_free ______________
+
+self = <test_heavy.ResourceTests testMethod=test_a_dead_holder_pid_reads_as_free>
+
+    def test_a_dead_holder_pid_reads_as_free(self):
+        Path(f"{self.dir}/lock").touch()
+        keeper = subprocess.Popen(["flock", f"{self.dir}/lock", "sleep", "3"])
+        self.addCleanup(keeper.wait)
+        time.sleep(0.5)
+        Path(f"{self.dir}/lock.pid").write_text("999999\n")
+        Path(f"{self.dir}/lock.who").write_text("ghost (pid 999999, since 00:00:00Z)\n")
+>       self.assertIn("[build]: free", self.run_heavy("--status").stdout)
+E       AssertionError: '[build]: free' not found in 'agents heavy [build]: held by ghost (pid 999999, since 00:00:00Z)\nagents heavy [emulator]: free\nagents heavy: memory 24.0 GiB available, 1.0 GiB reserved\n'
+
+tests/test_heavy.py:260: AssertionError
+_ ResourceTests.test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light (command=('flutter', 'test', '--plain-name', 'a/b')) _
+
+self = <test_heavy.ResourceTests testMethod=test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light>
+
+    def test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light(self):
+        self.hold("--", "sleep", "4")
+        for command in (("flutter", "test", "--plain-name", "a/b"),
+                        ("flutter", "test", "--coverage-path", "coverage/lcov.info"),
+                        ("flutter", "test", "--dart-define-from-file", "env/x.json"),
+                        ("flutter", "test", "--dart-define-from-file=env/x.json"),
+                        ("flutter", "test", "-n", "a/b"),
+                        ("flutter", "test", "--reporter", "expanded/x"),
+                        ("flutter", "test", "test/"), ("flutter", "test", "lib/a_test.dart")):
+            with self.subTest(command=command):
+>               self.assertEqual(self.run_heavy("--", *command).returncode, 75)
+E               AssertionError: 0 != 75
+
+tests/test_heavy.py:228: AssertionError
+_ ResourceTests.test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light (command=('flutter', 'test', '--coverage-path', 'coverage/lcov.info')) _
+
+self = <test_heavy.ResourceTests testMethod=test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light>
+
+    def test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light(self):
+        self.hold("--", "sleep", "4")
+        for command in (("flutter", "test", "--plain-name", "a/b"),
+                        ("flutter", "test", "--coverage-path", "coverage/lcov.info"),
+                        ("flutter", "test", "--dart-define-from-file", "env/x.json"),
+                        ("flutter", "test", "--dart-define-from-file=env/x.json"),
+                        ("flutter", "test", "-n", "a/b"),
+                        ("flutter", "test", "--reporter", "expanded/x"),
+                        ("flutter", "test", "test/"), ("flutter", "test", "lib/a_test.dart")):
+            with self.subTest(command=command):
+>               self.assertEqual(self.run_heavy("--", *command).returncode, 75)
+E               AssertionError: 0 != 75
+
+tests/test_heavy.py:228: AssertionError
+_ ResourceTests.test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light (command=('flutter', 'test', '--dart-define-from-file', 'env/x.json')) _
+
+self = <test_heavy.ResourceTests testMethod=test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light>
+
+    def test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light(self):
+        self.hold("--", "sleep", "4")
+        for command in (("flutter", "test", "--plain-name", "a/b"),
+                        ("flutter", "test", "--coverage-path", "coverage/lcov.info"),
+                        ("flutter", "test", "--dart-define-from-file", "env/x.json"),
+                        ("flutter", "test", "--dart-define-from-file=env/x.json"),
+                        ("flutter", "test", "-n", "a/b"),
+                        ("flutter", "test", "--reporter", "expanded/x"),
+                        ("flutter", "test", "test/"), ("flutter", "test", "lib/a_test.dart")):
+            with self.subTest(command=command):
+>               self.assertEqual(self.run_heavy("--", *command).returncode, 75)
+E               AssertionError: 0 != 75
+
+tests/test_heavy.py:228: AssertionError
+_ ResourceTests.test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light (command=('flutter', 'test', '-n', 'a/b')) _
+
+self = <test_heavy.ResourceTests testMethod=test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light>
+
+    def test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light(self):
+        self.hold("--", "sleep", "4")
+        for command in (("flutter", "test", "--plain-name", "a/b"),
+                        ("flutter", "test", "--coverage-path", "coverage/lcov.info"),
+                        ("flutter", "test", "--dart-define-from-file", "env/x.json"),
+                        ("flutter", "test", "--dart-define-from-file=env/x.json"),
+                        ("flutter", "test", "-n", "a/b"),
+                        ("flutter", "test", "--reporter", "expanded/x"),
+                        ("flutter", "test", "test/"), ("flutter", "test", "lib/a_test.dart")):
+            with self.subTest(command=command):
+>               self.assertEqual(self.run_heavy("--", *command).returncode, 75)
+E               AssertionError: 0 != 75
+
+tests/test_heavy.py:228: AssertionError
+_ ResourceTests.test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light (command=('flutter', 'test', '--reporter', 'expanded/x')) _
+
+self = <test_heavy.ResourceTests testMethod=test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light>
+
+    def test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light(self):
+        self.hold("--", "sleep", "4")
+        for command in (("flutter", "test", "--plain-name", "a/b"),
+                        ("flutter", "test", "--coverage-path", "coverage/lcov.info"),
+                        ("flutter", "test", "--dart-define-from-file", "env/x.json"),
+                        ("flutter", "test", "--dart-define-from-file=env/x.json"),
+                        ("flutter", "test", "-n", "a/b"),
+                        ("flutter", "test", "--reporter", "expanded/x"),
+                        ("flutter", "test", "test/"), ("flutter", "test", "lib/a_test.dart")):
+            with self.subTest(command=command):
+>               self.assertEqual(self.run_heavy("--", *command).returncode, 75)
+E               AssertionError: 0 != 75
+
+tests/test_heavy.py:228: AssertionError
+_ ResourceTests.test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light (command=('flutter', 'test', 'lib/a_test.dart')) _
+
+self = <test_heavy.ResourceTests testMethod=test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light>
+
+    def test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light(self):
+        self.hold("--", "sleep", "4")
+        for command in (("flutter", "test", "--plain-name", "a/b"),
+                        ("flutter", "test", "--coverage-path", "coverage/lcov.info"),
+                        ("flutter", "test", "--dart-define-from-file", "env/x.json"),
+                        ("flutter", "test", "--dart-define-from-file=env/x.json"),
+                        ("flutter", "test", "-n", "a/b"),
+                        ("flutter", "test", "--reporter", "expanded/x"),
+                        ("flutter", "test", "test/"), ("flutter", "test", "lib/a_test.dart")):
+            with self.subTest(command=command):
+>               self.assertEqual(self.run_heavy("--", *command).returncode, 75)
+E               AssertionError: 0 != 75
+
+tests/test_heavy.py:228: AssertionError
+____ ResourceTests.test_a_percentage_cap_is_accepted_and_reaches_the_scope _____
+
+self = <test_heavy.ResourceTests testMethod=test_a_percentage_cap_is_accepted_and_reaches_the_scope>
+
+    def test_a_percentage_cap_is_accepted_and_reaches_the_scope(self):
+        log = Path(self.dir) / "scope.log"
+        scope = Path(self.bin) / "systemd-run"
+        scope.write_text(f'#!/bin/sh\necho "$@" >> {log}\nwhile [ "$1" != -- ]; do shift; done\nshift\nexec "$@"\n')
+        scope.chmod(0o755)
+        self.env["AGENTS_HEAVY_NO_SCOPE"] = "0"
+        ran = self.run_heavy("--mem", "10%", "--", "true")
+>       self.assertEqual(ran.returncode, 0, ran.stderr)
+E       AssertionError: 64 != 0 : agents heavy: --mem takes a size like 512M or 5G, not '10%'. Usage: agents heavy [--kind build|emulator|light] [--mem 5G] [--wait | --wait-max SECONDS] -- <command>, or agents heavy --status
+
+tests/test_heavy.py:269: AssertionError
+___ ResourceTests.test_children_left_in_the_background_do_not_keep_the_lock ____
+
+self = <test_heavy.ResourceTests testMethod=test_children_left_in_the_background_do_not_keep_the_lock>
+
+    def test_children_left_in_the_background_do_not_keep_the_lock(self):
+        ran = self.run_heavy("--", "bash", "-c", "sleep 6 >/dev/null 2>&1 & echo bg")
+        self.assertEqual(ran.returncode, 0, ran.stderr)
+>       self.assertIn("[build]: free", self.run_heavy("--status").stdout)
+E       AssertionError: '[build]: free' not found in 'agents heavy [build]: held by unknown\nagents heavy [emulator]: free\nagents heavy: memory 24.0 GiB available, 1.0 GiB reserved\n'
+
+tests/test_heavy.py:250: AssertionError
+_________ ResourceTests.test_integration_tests_take_the_emulator_lock __________
+
+self = <test_heavy.ResourceTests testMethod=test_integration_tests_take_the_emulator_lock>
+
+    def test_integration_tests_take_the_emulator_lock(self):
+        self.hold("--", "sleep", "4")
+        self.assertEqual(self.run_heavy("--", "flutter", "test", "integration_test/app_test.dart").returncode, 0)
+        self.hold("--kind", "emulator", "--", "sleep", "4")
+        refused = self.run_heavy("--", "flutter", "test", "integration_test/app_test.dart")
+>       self.assertEqual(refused.returncode, 75)
+E       AssertionError: 0 != 75
+
+tests/test_heavy.py:244: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_heavy.py::ResourceTests::test_a_dead_holder_pid_reads_as_free
+SUBFAILED(command=('flutter', 'test', '--plain-name', 'a/b')) tests/test_heavy.py::ResourceTests::test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light
+SUBFAILED(command=('flutter', 'test', '--coverage-path', 'coverage/lcov.info')) tests/test_heavy.py::ResourceTests::test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light
+SUBFAILED(command=('flutter', 'test', '--dart-define-from-file', 'env/x.json')) tests/test_heavy.py::ResourceTests::test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light
+SUBFAILED(command=('flutter', 'test', '-n', 'a/b')) tests/test_heavy.py::ResourceTests::test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light
+SUBFAILED(command=('flutter', 'test', '--reporter', 'expanded/x')) tests/test_heavy.py::ResourceTests::test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light
+SUBFAILED(command=('flutter', 'test', 'lib/a_test.dart')) tests/test_heavy.py::ResourceTests::test_a_flag_value_with_a_slash_does_not_make_a_full_suite_light
+FAILED tests/test_heavy.py::ResourceTests::test_a_percentage_cap_is_accepted_and_reaches_the_scope
+FAILED tests/test_heavy.py::ResourceTests::test_children_left_in_the_background_do_not_keep_the_lock
+FAILED tests/test_heavy.py::ResourceTests::test_integration_tests_take_the_emulator_lock
+10 failed, 24 passed, 18 subtests passed in 77.69s (0:01:17)
