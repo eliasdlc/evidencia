@@ -1,0 +1,109 @@
+.FF.F.F.F....                                                         [100%]
+=================================== FAILURES ===================================
+_ ChangedSinceRuleTests.test_a_file_added_and_removed_after_the_proof_is_a_change _
+
+self = <test_proof.ChangedSinceRuleTests testMethod=test_a_file_added_and_removed_after_the_proof_is_a_change>
+
+    def test_a_file_added_and_removed_after_the_proof_is_a_change(self):
+        proven = self.commit("new.py", "x = 1\n", "adds new.py")
+        git_in(self.top, "rm", "-q", "new.py")
+        git_in(self.top, "commit", "-qm", "removes new.py")
+        head = git_in(self.top, "rev-parse", "HEAD")
+>       self.assertEqual(proof.local_changed_since("dev")(proven, head), ["new.py"])
+E       AssertionError: Lists differ: [] != ['new.py']
+E       
+E       Second list contains 1 additional elements.
+E       First extra element 0:
+E       'new.py'
+E       
+E       - []
+E       + ['new.py']
+
+tests/test_proof.py:1246: AssertionError
+_ ChangedSinceRuleTests.test_a_file_reverted_to_the_base_after_the_proof_is_a_change _
+
+self = <test_proof.ChangedSinceRuleTests testMethod=test_a_file_reverted_to_the_base_after_the_proof_is_a_change>
+
+    def test_a_file_reverted_to_the_base_after_the_proof_is_a_change(self):
+        self.commit("lib/a.py", "import b\nb.new()\n", "a calls new")
+        proven = self.commit("lib/b.py", "def new(): pass\n", "b gets new")
+        head = self.commit("lib/b.py", "def old(): pass\n", "b back to the base")
+>       self.assertEqual(proof.local_changed_since("dev")(proven, head), ["lib/b.py"])
+E       AssertionError: Lists differ: [] != ['lib/b.py']
+E       
+E       Second list contains 1 additional elements.
+E       First extra element 0:
+E       'lib/b.py'
+E       
+E       - []
+E       + ['lib/b.py']
+
+tests/test_proof.py:1238: AssertionError
+_ ChangedSinceRuleTests.test_the_base_moving_on_after_the_merge_is_not_a_change _
+
+self = <test_proof.ChangedSinceRuleTests testMethod=test_the_base_moving_on_after_the_merge_is_not_a_change>
+
+    def test_the_base_moving_on_after_the_merge_is_not_a_change(self):
+        proven = self.commit("fix.py", "fix\n", "fix")
+        self.on_dev("from_dev.py", "dev\n")
+        git_in(self.top, "merge", "-q", "--no-edit", "dev")
+        head = git_in(self.top, "rev-parse", "HEAD")
+        self.on_dev("from_dev.py", "dev again\n")
+>       self.assertEqual(proof.local_changed_since("dev")(proven, head), [])
+E       AssertionError: Lists differ: ['from_dev.py'] != []
+E       
+E       First list contains 1 additional elements.
+E       First extra element 0:
+E       'from_dev.py'
+E       
+E       - ['from_dev.py']
+E       + []
+
+tests/test_proof.py:1261: AssertionError
+_ RemoteSinceTheProofTests.test_a_file_added_and_removed_after_the_proof_is_a_change _
+
+self = <test_proof.RemoteSinceTheProofTests testMethod=test_a_file_added_and_removed_after_the_proof_is_a_change>
+
+    def test_a_file_added_and_removed_after_the_proof_is_a_change(self):
+        trees = {self.P: {"a.py": "a0", "new.py": "n1"}, self.H: {"a.py": "a0"}, "dev": {"a.py": "a0"}}
+        merges = {self.P: "dev", self.H: "dev"}
+        found = self.run_with(fake_trees(trees, merges=merges),
+                              lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+>       self.assertEqual(found, ["new.py"])
+E       AssertionError: Lists differ: [] != ['new.py']
+E       
+E       Second list contains 1 additional elements.
+E       First extra element 0:
+E       'new.py'
+E       
+E       - []
+E       + ['new.py']
+
+tests/test_proof.py:1457: AssertionError
+_ RemoteSinceTheProofTests.test_a_file_reverted_to_the_base_after_the_proof_is_a_change _
+
+self = <test_proof.RemoteSinceTheProofTests testMethod=test_a_file_reverted_to_the_base_after_the_proof_is_a_change>
+
+    def test_a_file_reverted_to_the_base_after_the_proof_is_a_change(self):
+        trees = {self.P: {"a.py": "a1", "b.py": "b1"}, self.H: {"a.py": "a1", "b.py": "b0"}, "dev": {"a.py": "a0", "b.py": "b0"}}
+        merges = {self.P: "dev", self.H: "dev"}
+        found = self.run_with(fake_trees(trees, merges=merges),
+                              lambda: proof.remote_changed_since("o/r", "dev")(self.P[:7], self.H))
+>       self.assertEqual(found, ["b.py"])
+E       AssertionError: Lists differ: [] != ['b.py']
+E       
+E       Second list contains 1 additional elements.
+E       First extra element 0:
+E       'b.py'
+E       
+E       - []
+E       + ['b.py']
+
+tests/test_proof.py:1450: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_proof.py::ChangedSinceRuleTests::test_a_file_added_and_removed_after_the_proof_is_a_change
+FAILED tests/test_proof.py::ChangedSinceRuleTests::test_a_file_reverted_to_the_base_after_the_proof_is_a_change
+FAILED tests/test_proof.py::ChangedSinceRuleTests::test_the_base_moving_on_after_the_merge_is_not_a_change
+FAILED tests/test_proof.py::RemoteSinceTheProofTests::test_a_file_added_and_removed_after_the_proof_is_a_change
+FAILED tests/test_proof.py::RemoteSinceTheProofTests::test_a_file_reverted_to_the_base_after_the_proof_is_a_change
+5 failed, 8 passed, 85 deselected, 3 subtests passed in 0.73s
