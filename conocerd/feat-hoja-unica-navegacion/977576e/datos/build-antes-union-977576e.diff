@@ -1,0 +1,88 @@
+[scrubbed: 0 characters (U+2014 or U+00B7) replaced by hyphens]
+diff --git i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+index 6b949764..ad3be7ad 100644
+--- i/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
++++ w/lib/features/navigation/presentation/widgets/mapbox_nav_map_layer.dart
+@@ -2133,7 +2133,11 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+     final map = _map;
+     if (map == null || !_sceneReady || !mounted) return;
+     final trip = ref.read(activeTripProvider);
+-    final points = futureLayerPoints(trip, allPoints);
++    final points = futureRoutePoints(
++      allPoints,
++      currentLeg: trip.currentLegPolylinePoints,
++      arrived: _arrived(trip.status),
++    );
+     try {
+       await map.style.setStyleSourceProperty(
+         _futureSrcId,
+@@ -2216,7 +2220,8 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+       status == TripStatus.navigating || status == TripStatus.arriving;
+ 
+   /// La parada del tramo actual ya se alcanzó y se confirmó.
+-  static bool _arrived(TripStatus status) => stopArrivalConfirmed(status);
++  static bool _arrived(TripStatus status) =>
++      status == TripStatus.atStopConfirmed || status == TripStatus.completed;
+ 
+   Future<void> _pushRouteProgress({bool force = false}) async {
+     final fraction = _scene.visualRouteFraction;
+@@ -3011,7 +3016,8 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+       // ella al confirmar la llegada y vuelve si el viaje retoma ese leg. Al
+       // pasar a `loading` (seguir hacia la parada siguiente) se deja como
+       // está: el leg viejo no reaparece mientras llega la ruta nueva.
+-      if (futureLegsNeedPush(prev, next)) {
++      if (_arrived(prev ?? next) != _arrived(next) &&
++          next != TripStatus.loading) {
+         unawaited(
+           _pushFutureLegs(ref.read(activeTripProvider).routePolylinePoints),
+         );
+@@ -3138,12 +3144,6 @@ class _MapboxNavMapLayerState extends ConsumerState<MapboxNavMapLayer>
+ /// llegada confirmada ([arrived]) ese leg ya se cumplió y no se dibuja: quedan
+ /// los legs que le siguen (nada, si era el último). Sin llegada, o si [route]
+ /// no empieza por [currentLeg], es la ruta entera.
+-///
+-/// La cola siempre arranca en la parada. Mapbox une los legs sin repetirla
+-/// (`MapboxDirectionsService._assembleResult` salta el primer punto de cada leg
+-/// posterior), así que tras cortar el leg cumplido la cola empezaba un segmento
+-/// después del pin, y un leg siguiente de dos puntos quedaba en uno solo: se
+-/// empalma con la parada, y si la unión ya la repetía no se toca.
+ List<LatLng> futureRoutePoints(
+   List<LatLng> route, {
+   required List<LatLng> currentLeg,
+@@ -3154,35 +3154,10 @@ List<LatLng> futureRoutePoints(
+   if (route.first != currentLeg.first || route[n - 1] != currentLeg.last) {
+     return route;
+   }
+-  final tail = route.sublist(n);
+-  if (tail.isEmpty) return const [];
+-  final stop = currentLeg.last;
+-  final rest = tail.first == stop ? tail : [stop, ...tail];
++  final rest = route.sublist(n);
+   return rest.length < 2 ? const [] : rest;
+ }
+ 
+-/// La parada del tramo actual ya se alcanzó y se confirmó.
+-bool stopArrivalConfirmed(TripStatus status) =>
+-    status == TripStatus.atStopConfirmed || status == TripStatus.completed;
+-
+-/// Los puntos que la capa de legs futuros lleva para [trip]: la ruta [route]
+-/// sin el leg cumplido cuando la llegada está confirmada. La capa solo llama a
+-/// esto; no decide nada por su cuenta.
+-List<LatLng> futureLayerPoints(ActiveTripState trip, List<LatLng> route) =>
+-    futureRoutePoints(
+-      route,
+-      currentLeg: trip.currentLegPolylinePoints,
+-      arrived: stopArrivalConfirmed(trip.status),
+-    );
+-
+-/// Si un cambio de estado obliga a reescribir la capa de legs futuros: cuando
+-/// entra o sale de la llegada confirmada, salvo hacia `loading` (seguir hacia
+-/// la parada siguiente), donde el leg viejo no reaparece mientras llega la
+-/// ruta nueva.
+-bool futureLegsNeedPush(TripStatus? prev, TripStatus next) =>
+-    stopArrivalConfirmed(prev ?? next) != stopArrivalConfirmed(next) &&
+-    next != TripStatus.loading;
+-
+ /// El aro de un punto del corredor: blanco sobre el suelo claro, el propio
+ /// suelo de noche (un aro blanco brillaba más que el punto).
+ Color corridorDotStroke(bool night) =>
