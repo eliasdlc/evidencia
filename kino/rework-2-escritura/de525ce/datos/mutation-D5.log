@@ -1,0 +1,43 @@
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/rework-2-escritura
+
+(node:2396544) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:2396598) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ |dom| src/features/writing/PlotSceneList.test.tsx (14 tests | 1 failed) 656ms
+     × Deshacer devuelve una escena que no era la primera a su lugar, no al principio 47ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/features/writing/PlotSceneList.test.tsx > PlotSceneList, lo que se ve al mover > Deshacer devuelve una escena que no era la primera a su lugar, no al principio
+AssertionError: expected { kind: 'move', …(4) } to deeply equal { kind: 'move', …(4) }
+
+- Expected
++ Received
+
+  {
+    "chapterId": "cap-2",
+    "index": 1,
+    "kind": "move",
+    "toChapterId": "cap-1",
+-   "toIndex": 1,
++   "toIndex": 0,
+  }
+
+ ❯ src/features/writing/PlotSceneList.test.tsx:203:39
+    201|     mostrar(trasMover(GRID, { chapterId: "cap-1", index: 1 }, "cap-2")…
+    202|     deshacerDelUltimoAviso(onApply).onClick();
+    203|     expect(onApply.mock.calls[1]![0]).toEqual({
+       |                                       ^
+    204|       kind: "move",
+    205|       chapterId: "cap-2",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  03:14:40
+   Duration  1.53s (transform 144ms, setup 90ms, import 335ms, tests 656ms, environment 361ms)
+
