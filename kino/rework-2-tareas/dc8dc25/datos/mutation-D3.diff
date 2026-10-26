@@ -1,0 +1,13 @@
+diff --git i/src/features/tasks/useTachar.ts w/src/features/tasks/useTachar.ts
+index ac758ad0..48481fc9 100644
+--- i/src/features/tasks/useTachar.ts
++++ w/src/features/tasks/useTachar.ts
+@@ -188,7 +188,7 @@ export function useTachar(toggle: (taskId: string) => void) {
+     (taskId: string, gesto: Gesto) => {
+       if (!visita.deshacer(taskId, gesto)) return;
+       const { antes } = visita.filas().get(taskId)!;
+-      void reabrir(taskId).then(
++      void Promise.resolve({ status: 'today' as const }).then(
+         async (reabierta) => {
+           // Tachada otra vez mientras viajaba: manda el gesto nuevo.
+           if (visita.filas().get(taskId)?.gesto !== gesto) return;
