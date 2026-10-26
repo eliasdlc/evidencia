@@ -1,0 +1,32 @@
+mutation R2 at a2435b7: in lib/features/profile/data/profile_preferences_repository.dart the fix's 'await ref.update(data)' (document exists) mutated to 'await ref.set(data)', Flutter 3.47.7 local
+diff --git i/lib/features/profile/data/profile_preferences_repository.dart w/lib/features/profile/data/profile_preferences_repository.dart
+index 7d65cb49..a577ba8a 100644
+--- i/lib/features/profile/data/profile_preferences_repository.dart
++++ w/lib/features/profile/data/profile_preferences_repository.dart
+@@ -75,7 +75,7 @@ class ProfilePreferencesRepository {
+     // the watch stream, which after a cold start can hold them back for
+     // longer than "Entrar a la app" waits.
+     if (snapshot.exists) {
+-      await ref.update(data);
++      await ref.set(data);
+     } else {
+       await ref.set(data);
+     }
+$ flutter test --no-pub test/features/profile/profile_preferences_repository_test.dart
+00:00 +0: loading test/features/profile/profile_preferences_repository_test.dart
+00:00 +0: only the registering account gets a pending questionnaire
+00:00 +1: saves account answers without replacing other user fields
+00:00 +1 -1: saves account answers without replacing other user fields [E]
+  Expected: ['place-1']
+    Actual: <null>
+     Which: is not Iterable
+  
+  package:matcher                                                      expect
+  package:flutter_test/src/widget_tester.dart 473:18                   expect
+  test/features/profile/profile_preferences_repository_test.dart 48:5  main.<fn>
+  
+00:00 +1 -1: skip records no invented province or travel answers
+00:00 +2 -1: Some tests failed.
+
+Failing tests:
+  test/features/profile/profile_preferences_repository_test.dart: saves account answers without replacing other user fields
