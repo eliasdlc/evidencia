@@ -1,0 +1,51 @@
+Which commit each debug APK was compiled from; U+2014 and U+00B7 replaced by a hyphen: 0
+Which commit each debug APK was compiled from, by the Dart sources its kernel embeds
+(assets/flutter_assets/kernel_blob.bin keeps the text of every library it compiled).
+Debug kernels are not byte-reproducible: the rebuild of c66971c2 differs from the round 1 base APK
+only in kernel_blob.bin (783 of 784 zip entries equal by sha256), so the tie is by source text.
+
+base-c66971c-debug.apk (round 1 base, installed in the base runs): sha256 de5a38af956212f3d559a78008f46dc2bb441c0e7732cc308a49664a955d890e
+base-c66971c-rebuild-debug.apk (rebuilt today from c66971c2 in the same worktree): sha256 699e1896b69380361fd9706397021fc556d213b472e819003023c67d0cad15c5
+fix-a2435b7-debug.apk (round 1 fix): sha256 561e40c65fe281972d2de7ce2c8d42503bb83ebdf47433699ee8e74ff6259a37
+fix-cffda4a-debug.apk (this round, installed in every device row): sha256 608185b805468b2ee875cb0135c0c6e2865bcedc29bd591f961d4487e2794bfa
+
+lib/*.dart of c66971c2: 483 files, 467 verbatim in base-c66971c
+lib/*.dart of c66971c2: 483 files, 467 verbatim in base-c66971c-rebuild
+lib/*.dart of c66971c2: 483 files, 465 verbatim in fix-a2435b7
+lib/*.dart of c66971c2: 483 files, 463 verbatim in fix-cffda4a
+lib/*.dart of a2435b7: 483 files, 465 verbatim in base-c66971c
+lib/*.dart of a2435b7: 483 files, 465 verbatim in base-c66971c-rebuild
+lib/*.dart of a2435b7: 483 files, 467 verbatim in fix-a2435b7
+lib/*.dart of a2435b7: 483 files, 465 verbatim in fix-cffda4a
+lib/*.dart of cffda4a: 483 files, 463 verbatim in base-c66971c
+lib/*.dart of cffda4a: 483 files, 463 verbatim in base-c66971c-rebuild
+lib/*.dart of cffda4a: 483 files, 465 verbatim in fix-a2435b7
+lib/*.dart of cffda4a: 483 files, 467 verbatim in fix-cffda4a
+
+16 files are in no kernel (not compiled into the app, the same for every APK):
+  lib/core/constants/api_constants.dart
+  lib/core/presentation/widgets/entry_stamp.dart
+  lib/core/router/auth_redirect.dart
+  lib/features/navigation/data/offline/widgets/offline_download_sheet_row.dart
+  lib/features/navigation/domain/congestion_expiry.dart
+  lib/features/navigation/domain/route_corridor.dart
+  lib/features/navigation/presentation/providers/route_corridor_provider.dart
+  lib/features/navigation/presentation/providers/trip_guidance_provider.dart
+  lib/features/navigation/presentation/widgets/gps_signal_strip.dart
+  lib/features/navigation/presentation/widgets/nav_street_pill.dart
+  lib/features/navigation/presentation/widgets/off_route_strip.dart
+  lib/features/navigation/presentation/widgets/route_unavailable_strip.dart
+  lib/features/routes/domain/day_preview.dart
+  lib/features/routes/domain/route_climate_context.dart
+  lib/features/routes/domain/usecases/create_route_from_destination.dart
+  lib/features/routes/presentation/widgets/day_preview_sheet.dart
+
+Files verbatim in one APK and not in another (outside those):
+  c66971c2 in fix-a2435b7: missing ['lib/features/profile/data/profile_preferences_repository.dart', 'lib/features/profile/presentation/screens/profile_setup_screen.dart']
+  c66971c2 in fix-cffda4a: missing ['lib/features/onboarding/data/guardar_hilo.dart', 'lib/features/onboarding/presentation/providers/hilo_controller.dart', 'lib/features/profile/data/profile_preferences_repository.dart', 'lib/features/profile/presentation/screens/profile_setup_screen.dart']
+  a2435b7 in base-c66971c: missing ['lib/features/profile/data/profile_preferences_repository.dart', 'lib/features/profile/presentation/screens/profile_setup_screen.dart']
+  a2435b7 in base-c66971c-rebuild: missing ['lib/features/profile/data/profile_preferences_repository.dart', 'lib/features/profile/presentation/screens/profile_setup_screen.dart']
+  a2435b7 in fix-cffda4a: missing ['lib/features/onboarding/data/guardar_hilo.dart', 'lib/features/onboarding/presentation/providers/hilo_controller.dart']
+  cffda4a in base-c66971c: missing ['lib/features/onboarding/data/guardar_hilo.dart', 'lib/features/onboarding/presentation/providers/hilo_controller.dart', 'lib/features/profile/data/profile_preferences_repository.dart', 'lib/features/profile/presentation/screens/profile_setup_screen.dart']
+  cffda4a in base-c66971c-rebuild: missing ['lib/features/onboarding/data/guardar_hilo.dart', 'lib/features/onboarding/presentation/providers/hilo_controller.dart', 'lib/features/profile/data/profile_preferences_repository.dart', 'lib/features/profile/presentation/screens/profile_setup_screen.dart']
+  cffda4a in fix-a2435b7: missing ['lib/features/onboarding/data/guardar_hilo.dart', 'lib/features/onboarding/presentation/providers/hilo_controller.dart']
