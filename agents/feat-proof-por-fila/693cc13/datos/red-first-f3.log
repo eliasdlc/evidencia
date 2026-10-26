@@ -1,0 +1,77 @@
+FF.F                                                                   [100%]
+=================================== FAILURES ===================================
+______ ImportAliasTests.test_a_dart_conditional_import_follows_every_uri _______
+
+self = <test_proof.ImportAliasTests testMethod=test_a_dart_conditional_import_follows_every_uri>
+
+    def test_a_dart_conditional_import_follows_every_uri(self):
+        tree = {"lib/a.dart", "lib/a_stub.dart", "lib/a_io.dart", "lib/a_web.dart", "test/a_test.dart"}
+        texts = {"test/a_test.dart": "import 'package:app/a.dart';\n",
+                 "lib/a.dart": "export 'a_stub.dart'\n    if (dart.library.io) 'a_io.dart'\n"
+                               "    if (dart.library.js_interop) 'a_web.dart';\n"}
+        found = self.closure(tree, texts, {"test/a_test.dart"})
+>       self.assertLessEqual({"lib/a_stub.dart", "lib/a_io.dart", "lib/a_web.dart"}, found)
+E       AssertionError: {'lib/a_io.dart', 'lib/a_stub.dart', 'lib/a_web.dart'} not less than or equal to {'lib/a_stub.dart', 'test/a_test.dart', 'lib/a.dart'}
+
+tests/test_proof.py:1335: AssertionError
+_ ImportAliasTests.test_a_jsconfig_is_read_and_a_broken_config_means_no_alias __
+
+self = <test_proof.ImportAliasTests testMethod=test_a_jsconfig_is_read_and_a_broken_config_means_no_alias>
+
+    def test_a_jsconfig_is_read_and_a_broken_config_means_no_alias(self):
+        tree = {"jsconfig.json", "src/a.js", "t.test.js", "src/rel.js"}
+        texts = {"jsconfig.json": '{"compilerOptions": {"paths": {"#/*": ["src/*"]}}}',
+                 "t.test.js": "import a from '#/a'\nimport r from './src/rel'\n"}
+>       self.assertLessEqual({"src/a.js", "src/rel.js"}, self.closure(tree, texts, {"t.test.js"}))
+E       AssertionError: {'src/a.js', 'src/rel.js'} not less than or equal to {'t.test.js', 'src/rel.js'}
+
+tests/test_proof.py:1323: AssertionError
+_ ImportAliasTests.test_a_tsconfig_alias_leads_to_the_file (spec='@/util/fmt') _
+
+self = <test_proof.ImportAliasTests testMethod=test_a_tsconfig_alias_leads_to_the_file>
+
+    def test_a_tsconfig_alias_leads_to_the_file(self):
+        tree = {"tsconfig.json", "src/util/fmt.ts", "src/util/index.ts", "test/fmt.test.ts"}
+        config = '{\n // paths\n "compilerOptions": {\n  /* aliases */ "baseUrl": ".",\n  "paths": {"@/*": ["./src/*"]},\n }\n}'
+        for spec, target in (("@/util/fmt", "src/util/fmt.ts"), ("@/util", "src/util/index.ts")):
+            with self.subTest(spec=spec):
+                texts = {"tsconfig.json": config, "test/fmt.test.ts": f"import {{ f }} from '{spec}';\n"}
+>               self.assertIn(target, self.closure(tree, texts, {"test/fmt.test.ts"}))
+E               AssertionError: 'src/util/fmt.ts' not found in {'test/fmt.test.ts'}
+
+tests/test_proof.py:1309: AssertionError
+___ ImportAliasTests.test_a_tsconfig_alias_leads_to_the_file (spec='@/util') ___
+
+self = <test_proof.ImportAliasTests testMethod=test_a_tsconfig_alias_leads_to_the_file>
+
+    def test_a_tsconfig_alias_leads_to_the_file(self):
+        tree = {"tsconfig.json", "src/util/fmt.ts", "src/util/index.ts", "test/fmt.test.ts"}
+        config = '{\n // paths\n "compilerOptions": {\n  /* aliases */ "baseUrl": ".",\n  "paths": {"@/*": ["./src/*"]},\n }\n}'
+        for spec, target in (("@/util/fmt", "src/util/fmt.ts"), ("@/util", "src/util/index.ts")):
+            with self.subTest(spec=spec):
+                texts = {"tsconfig.json": config, "test/fmt.test.ts": f"import {{ f }} from '{spec}';\n"}
+>               self.assertIn(target, self.closure(tree, texts, {"test/fmt.test.ts"}))
+E               AssertionError: 'src/util/index.ts' not found in {'test/fmt.test.ts'}
+
+tests/test_proof.py:1309: AssertionError
+_______ ImportAliasTests.test_the_nearest_config_and_its_base_url_apply ________
+
+self = <test_proof.ImportAliasTests testMethod=test_the_nearest_config_and_its_base_url_apply>
+
+    def test_the_nearest_config_and_its_base_url_apply(self):
+        tree = {"tsconfig.json", "apps/web/tsconfig.json", "apps/web/src/lib/x.ts", "apps/web/src/a.test.ts", "shared/y.ts"}
+        texts = {"tsconfig.json": '{"compilerOptions": {"paths": {"~/*": ["./shared/*"]}}}',
+                 "apps/web/tsconfig.json": '{"compilerOptions": {"baseUrl": "src"}}',
+                 "apps/web/src/a.test.ts": "import x from 'lib/x'\nimport y from '~/y'\n"}
+        found = self.closure(tree, texts, {"apps/web/src/a.test.ts"})
+>       self.assertLessEqual({"apps/web/src/lib/x.ts", "shared/y.ts"}, found)
+E       AssertionError: {'apps/web/src/lib/x.ts', 'shared/y.ts'} not less than or equal to {'apps/web/src/a.test.ts'}
+
+tests/test_proof.py:1317: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_proof.py::ImportAliasTests::test_a_dart_conditional_import_follows_every_uri
+FAILED tests/test_proof.py::ImportAliasTests::test_a_jsconfig_is_read_and_a_broken_config_means_no_alias
+SUBFAILED(spec='@/util/fmt') tests/test_proof.py::ImportAliasTests::test_a_tsconfig_alias_leads_to_the_file
+SUBFAILED(spec='@/util') tests/test_proof.py::ImportAliasTests::test_a_tsconfig_alias_leads_to_the_file
+FAILED tests/test_proof.py::ImportAliasTests::test_the_nearest_config_and_its_base_url_apply
+5 failed, 1 passed, 94 deselected in 0.27s
