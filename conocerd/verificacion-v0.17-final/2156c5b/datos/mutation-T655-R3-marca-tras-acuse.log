@@ -1,0 +1,53 @@
+# mutation-T655-R3-marca-tras-acuse at f0490833, Flutter 3.47.7 local  [U+2014 and U+00B7 replaced by a hyphen: 0]
+# lib/features/profile/data/profile_preferences_repository.dart
+# - "    final marker = status == 'pending'\n        ? null\n        : local.remove(pendingKey(uid));\n    await write;\n    await marker;"
+# + "    await write;\n    if (status != 'pending') await local.remove(pendingKey(uid));"
+# flutter test --no-pub test/features/onboarding/guardar_hilo_test.dart test/features/profile/profile_preferences_repository_test.dart
+
+00:00 +0: loading test/features/onboarding/guardar_hilo_test.dart
+00:00 +0: test/features/onboarding/guardar_hilo_test.dart: a new account receives the answers, the visitor state, the route and an open guide
+00:00 +1: test/features/profile/profile_preferences_repository_test.dart: only the registering account gets a pending questionnaire
+00:00 +2: test/features/profile/profile_preferences_repository_test.dart: only the registering account gets a pending questionnaire
+00:00 +3: test/features/profile/profile_preferences_repository_test.dart: only the registering account gets a pending questionnaire
+00:00 +4: test/features/profile/profile_preferences_repository_test.dart: only the registering account gets a pending questionnaire
+00:00 +5: test/features/profile/profile_preferences_repository_test.dart: only the registering account gets a pending questionnaire
+00:00 +6: test/features/profile/profile_preferences_repository_test.dart: only the registering account gets a pending questionnaire
+00:00 +7: test/features/onboarding/guardar_hilo_test.dart: the connection drops between the stamp and the answers: the stamp is on the server, the answers wait in the device queue, and the device no longer marks the account as new
+00:00 +8: test/features/onboarding/guardar_hilo_test.dart: the connection drops between the stamp and the answers: the stamp is on the server, the answers wait in the device queue, and the device no longer marks the account as new
+00:00 +9: test/features/onboarding/guardar_hilo_test.dart: the connection drops between the stamp and the answers: the stamp is on the server, the answers wait in the device queue, and the device no longer marks the account as new
+00:00 +9 -1: test/features/profile/profile_preferences_repository_test.dart: a save returns only once the server took it, and the device shows it before that
+00:00 +9 -1: test/features/onboarding/guardar_hilo_test.dart: the connection drops between the stamp and the answers: the stamp is on the server, the answers wait in the device queue, and the device no longer marks the account as new [E]
+  Expected: false
+    Actual: <true>
+  the marker stays: the next sign in would treat a completed account as new and write pending answers over it
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/onboarding/guardar_hilo_test.dart 276:5  main.<fn>
+  
+00:00 +10 -1: test/features/profile/profile_preferences_repository_test.dart: a save returns only once the server took it, and the device shows it before that
+00:00 +11 -1: test/features/profile/profile_preferences_repository_test.dart: a save returns only once the server took it, and the device shows it before that
+00:00 +12 -1: test/features/onboarding/guardar_hilo_test.dart: the consent box is the legal acceptance after the thread the router does not ask again
+00:00 +13 -1: test/features/profile/profile_preferences_repository_test.dart: the device marker goes when the completed answers are issued, not when the server acknowledges them: a write queued offline must not leave the account looking new
+00:00 +14 -1: test/features/profile/profile_preferences_repository_test.dart: the device marker goes when the completed answers are issued, not when the server acknowledges them: a write queued offline must not leave the account looking new
+00:00 +15 -1: test/features/profile/profile_preferences_repository_test.dart: the device marker goes when the completed answers are issued, not when the server acknowledges them: a write queued offline must not leave the account looking new
+00:00 +16 -1: test/features/profile/profile_preferences_repository_test.dart: the device marker goes when the completed answers are issued, not when the server acknowledges them: a write queued offline must not leave the account looking new
+00:00 +17 -1: test/features/profile/profile_preferences_repository_test.dart: the device marker goes when the completed answers are issued, not when the server acknowledges them: a write queued offline must not leave the account looking new
+00:00 +18 -1: test/features/profile/profile_preferences_repository_test.dart: the device marker goes when the completed answers are issued, not when the server acknowledges them: a write queued offline must not leave the account looking new
+00:00 +19 -1: test/features/profile/profile_preferences_repository_test.dart: the device marker goes when the completed answers are issued, not when the server acknowledges them: a write queued offline must not leave the account looking new
+00:00 +19 -2: test/features/profile/profile_preferences_repository_test.dart: the device marker goes when the completed answers are issued, not when the server acknowledges them: a write queued offline must not leave the account looking new [E]
+  Expected: false
+    Actual: <true>
+  the marker outlives a queued completed write: a later sign in through the thread would write pending answers over the completed ones
+  
+  package:matcher                                                       expect
+  package:flutter_test/src/widget_tester.dart 473:18                    expect
+  test/features/profile/profile_preferences_repository_test.dart 145:5  main.<fn>
+  
+00:00 +19 -2: test/features/profile/profile_preferences_repository_test.dart: a pending save keeps the device marker
+00:00 +20 -2: test/features/profile/profile_preferences_repository_test.dart: skip records no invented province or travel answers
+00:00 +21 -2: Some tests failed.
+
+Failing tests:
+  test/features/onboarding/guardar_hilo_test.dart: the connection drops between the stamp and the answers: the stamp is on the server, the answers wait in the device queue, and the device no longer marks the account as new
+  test/features/profile/profile_preferences_repository_test.dart: the device marker goes when the completed answers are issued, not when the server acknowledges them: a write queued offline must not leave the account looking new
