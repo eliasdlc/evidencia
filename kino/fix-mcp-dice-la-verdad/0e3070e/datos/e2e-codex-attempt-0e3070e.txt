@@ -1,0 +1,18 @@
+=== headless OAuth harness, not a Kino result: Codex reached its "Authentication complete" callback page, as in the two attempts at 8919b7f, and saved no token. The successful run is e2e-codex.txt at 181237b.
+=== head 0e3070e, server with the agentbox key, Clerk Development, user prueba@usekino.dev, fresh CODEX_HOME, 2026-10-26T00:58:35Z
+=== the guide's flow: codex mcp add opens OAuth and its own listener takes the callback (consent approved headless as the seeded user). Output of add is unfiltered except the authorize URL query, redacted inline; the tool call prints its first 1500 characters
+$ codex --version: codex-cli 0.164.0
+$ codex mcp add kino-dev --url http://localhost:3010/api/mcp
+Added global MCP server 'kino-dev'.
+Detected OAuth support. Starting OAuth flow…
+Authorize `kino-dev` by opening this URL in your browser:
+https://causal-flamingo-8590.clerk.accounts.dev/oauth/authorize?<query redacted: client_id, state, code_challenge>
+$ codex mcp list
+Name      Url                            Bearer Token Env Var  Status   Auth         
+kino-dev  http://localhost:3010/api/mcp  -                     enabled  Not logged in
+$ python3 -I toolcall.py codex-home5/.credentials.json get_today_plan
+Traceback (most recent call last):
+  File "/home/decruce/.cache/kino/feat-agent-connections/toolcall.py", line 13, in <module>
+    stored = json.load(open(creds))
+                       ~~~~^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/decruce/.cache/kino/feat-agent-connections/repro/codex-home5/.credentials.json'
