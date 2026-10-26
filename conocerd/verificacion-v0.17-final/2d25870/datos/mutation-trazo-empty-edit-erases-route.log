@@ -1,0 +1,118 @@
+# mutation-trazo-empty-edit-erases-route at 2d25870f, Flutter 3.47.7 local; U+2014 and U+00B7 replaced by a hyphen: 0
+# applied:
+# diff --git i/lib/features/diary/data/services/visit_route_store.dart w/lib/features/diary/data/services/visit_route_store.dart
+# index e2529f17..c78c8e02 100644
+# --- i/lib/features/diary/data/services/visit_route_store.dart
+# +++ w/lib/features/diary/data/services/visit_route_store.dart
+# @@ -44,7 +44,7 @@ class VisitRouteStore {
+#    /// Guarda [route] como el recorrido de la entrada [id]. Un recorrido sin
+#    /// puntos suficientes para dibujarse no se guarda y no borra el anterior.
+#    Future<void> write(String id, List<LatLng> route) async {
+# -    if (route.length < 2) return;
+# +    if (route.length < 2) { await delete(id); return; }
+#      try {
+#        final dir = await _directory();
+#        await dir.create(recursive: true);
+# flutter test --no-pub test/features/diary/diary_composer_route_test.dart test/features/diary/visit_route_local_test.dart
+
+00:00 +0: loading test/features/diary/diary_composer_route_test.dart
+00:00 +0: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +1: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +2: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +3: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +4: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +5: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +6: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +6 -1: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +6 -1: test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an edit that does not know the route keeps the local one and uploads nothing [E]
+  Expected: [
+              LatLng:LatLng(19.4489, -70.695),
+              LatLng:LatLng(19.4498, -70.6949),
+              LatLng:LatLng(19.4507, -70.6947)
+            ]
+    Actual: []
+     Which: at location [0] is [] which shorter than expected
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/diary/visit_route_local_test.dart 155:7  main.<fn>.<fn>
+  
+00:00 +7 -1: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +8 -1: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +8 -2: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+00:00 +8 -2: test/features/diary/visit_route_local_test.dart: VisitRouteStore a route too short to draw is not stored and keeps the old one [E]
+  Expected: [
+              LatLng:LatLng(19.4489, -70.695),
+              LatLng:LatLng(19.4498, -70.6949),
+              LatLng:LatLng(19.4507, -70.6947)
+            ]
+    Actual: <null>
+     Which: is not Iterable
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/diary/visit_route_local_test.dart 190:9  main.<fn>.<fn>
+  
+00:00 +8 -2: test/features/diary/diary_composer_route_test.dart: editing a visit keeps its route on the phone, not in the draft or the document
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+│ #0   showAddDiaryEntry.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:conocerd/features/diary/presentation/widgets/diary_entry_composer.dart:482:52)
+│ #1   _InkResponseState.handleTap (package:flutter/src/material/ink_well.dart:1224:21)
+├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+│ 💡 Diary save: tap. authenticated=true isEdit=true
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+│ #0   showAddDiaryEntry.<anonymous closure>.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:conocerd/features/diary/presentation/widgets/diary_entry_composer.dart:662:56)
+│ #1   <asynchronous suspension>
+├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+│ 💡 Diary save OK: id=visit-1 dest=Monumento a los Héroes
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+00:01 +9 -2: test/features/diary/diary_composer_route_test.dart: an edit restored from its draft keeps the route on the phone
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+│ #0   showAddDiaryEntry.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:conocerd/features/diary/presentation/widgets/diary_entry_composer.dart:482:52)
+│ #1   _InkResponseState.handleTap (package:flutter/src/material/ink_well.dart:1224:21)
+├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+│ 💡 Diary save: tap. authenticated=true isEdit=true
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+│ #0   showAddDiaryEntry.<anonymous closure>.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:conocerd/features/diary/presentation/widgets/diary_entry_composer.dart:662:56)
+│ #1   <asynchronous suspension>
+├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+│ 💡 Diary save OK: id=visit-1 dest=Monumento a los Héroes
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: [
+            LatLng:LatLng(19.4489, -70.695),
+            LatLng:LatLng(19.4498, -70.6949),
+            LatLng:LatLng(19.4507, -70.6947)
+          ]
+  Actual: <null>
+   Which: is not Iterable
+
+When the exception was thrown, this was the stack:
+#4      main.expectEditKeptTheRouteOnThePhoneOnly (file://test/features/diary/diary_composer_route_test.dart:157:5)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file://test/features/diary/diary_composer_route_test.dart:201:5)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file://test/features/diary/diary_composer_route_test.dart line 157
+The test description was:
+  an edit restored from its draft keeps the route on the phone
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +9 -3: test/features/diary/diary_composer_route_test.dart: an edit restored from its draft keeps the route on the phone [E]
+  Test failed. See exception logs above.
+  The test description was: an edit restored from its draft keeps the route on the phone
+  
+00:01 +9 -3: Some tests failed.
+
+Failing tests:
+  test/features/diary/diary_composer_route_test.dart: an edit restored from its draft keeps the route on the phone
+  test/features/diary/visit_route_local_test.dart: VisitRouteStore a route too short to draw is not stored and keeps the old one
+  test/features/diary/visit_route_local_test.dart: the diary shows the route saved on this phone an edit that does not know the route keeps the local one and uploads nothing
