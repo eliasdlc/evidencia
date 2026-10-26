@@ -1,0 +1,53 @@
+# mutation D1: use-borrador.ts, throttle: the timer starts at the first tap and later taps only update the value
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/rework-2-ajustes
+
+ ❯ |dom| src/features/settings/EnergyLimitRow.test.tsx (5 tests | 1 failed) 348ms
+     × toques separados por menos de la espera reinician el reloj: una sola escritura, con el último valor 43ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  02:53:27
+   Duration  5.89s (transform 697ms, setup 487ms, import 3.24s, tests 348ms, environment 1.33s)
+
+(node:2235920) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:2236289) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/features/settings/EnergyLimitRow.test.tsx > EnergyLimitRow > toques separados por menos de la espera reinician el reloj: una sola escritura, con el último valor
+AssertionError: expected [ { kind: 'mutation', …(2) }, …(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "args": {
++       "dailyEnergyLimit": 60,
++     },
++     "kind": "mutation",
++     "name": "settings:update",
++   },
++   {
++     "args": {
++       "dailyEnergyLimit": 60,
++     },
++     "kind": "mutation",
++     "name": "settings:update",
++   },
++ ]
+
+ ❯ src/features/settings/EnergyLimitRow.test.tsx:57:26
+     55|     }
+     56|     // Ya pasaron 1200 ms desde el primer toque, pero sólo 300 desde e…
+     57|     expect(convex.calls).toEqual([]);
+       |                          ^
+     58|
+     59|     await act(async () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
