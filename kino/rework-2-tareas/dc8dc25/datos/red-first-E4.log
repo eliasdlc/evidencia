@@ -1,0 +1,39 @@
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/rework-2-tareas
+
+(node:2734737) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:2734952) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ |dom| src/features/tasks/TaskBacklogView.test.tsx (3 tests | 1 failed | 2 skipped) 123ms
+     × E4: entre la reapertura y la escritura del estado guardado, la fila no sale del Backlog 121ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/features/tasks/TaskBacklogView.test.tsx > TaskBacklogView > E4: entre la reapertura y la escritura del estado guardado, la fila no sale del Backlog
+AssertionError: expected [ 'Pedir la beca' ] to deeply equal [ 'Leer el capítulo dos', …(1) ]
+
+- Expected
++ Received
+
+  [
+-   "Leer el capítulo dos",
+    "Pedir la beca",
+  ]
+
+ ❯ src/features/tasks/TaskBacklogView.test.tsx:81:23
+     79|     // El servidor ya reabrió (en Hoy); la escritura del Backlog sigue…
+     80|     act(() => convex.publish(stubQuery(api.tasks.bySystem, [{ ...lectu…
+     81|     expect(titulos()).toEqual(["Leer el capítulo dos", "Pedir la beca"…
+       |                       ^
+     82|
+     83|     await act(async () => escritura.responder({ ...lectura, status: "b…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 skipped (3)
+   Start at  04:10:29
+   Duration  2.72s (transform 325ms, setup 93ms, import 2.01s, tests 123ms, environment 387ms)
+
