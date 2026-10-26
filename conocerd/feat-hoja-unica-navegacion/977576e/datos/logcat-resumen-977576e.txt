@@ -1,0 +1,18 @@
+[scrubbed: 0 characters (U+2014 or U+00B7) replaced by hyphens]
+Logcat summary, session of 25 Oct 2026 (emulator Pixel7_API35). The full log (153,901 lines, 10-25 21:20:55 to 10-26 16:21:20 in the emulator clock, which changed time zone at 21:33 AST: see the note) holds an App Check debug token and is not published.
+Builds in the session, in order: before-T558 (layer file as at 0d51d8a, unsigned sha 66a2ab79...b785), before-union (layer file as at dd7dfdf, unsigned sha 00966c9c...f999), head 977576e (unsigned sha 0ffec6f2...e291f70, installed c051c384...2990). Each install is read back in the dumpsys files and the receipts recibo-977576e.txt, -2, -3 and -4.
+Counts over the whole log:
+  FATAL EXCEPTION: 0
+  Failed to exchange debug token: 0
+  E/flutter: 1 ("Reported frame time is older than the last one; clamping", engine message, 16:18:12)
+  Unhandled Exception: 0
+  NullPointerException: 0
+  addStyleImage: 0
+  Mapbox native errors (E/Mapbox, E/mbgl): 0
+  Flutter error boxes ("FlutterError"): 4
+    10-26 15:39:19 and 15:39:31 (pid 10835): "ListTile background color or ink splashes may be invisible", a debug-only assertion on the GPS simulator screen when I switched the simulator on (the same one the e9d19cc session saw); not a file of this PR.
+    10-26 16:17:23 (pid 3172): "BoxConstraints has non-normalized height constraints ... h<=-6.2" at lib/core/presentation/screens/main_layout_screen.dart:271, on the home screen right after the 150 % font scale was applied (cold start of the 150 % pass, before the trip); not a file of this PR, not on the trip or sheet.
+  Route quote failures: 1 ("sin ruta en el tramo 0", 10-25 21:26:55): the preview before I set the emulator GPS fix (the emulator sat in California); the quote worked after `adb emu geo fix -70.6993 19.4517`.
+  Native signals: 1, "Fatal signal 6 (SIGABRT) ... pid 861 (droid.bluetooth)" at 10-25 21:29:56, the Android Bluetooth system process, not the app.
+Note on the clock: the emulator was on America/Puerto_Rico (AST, UTC-4). At 21:33 AST I set Pacific/Kiritimati (UTC+14) with `service call alarm 3 s16 Pacific/Kiritimati` so the status bar clock reads 3 to 4 PM and the map is in its day tone, like for like with the earlier sessions. lastUpdateTime in dumpsys and the receipts is therefore in +14 for installs after that, and in AST before it (the first dumpsys of the before-T558 install reads 21:20:43 AST, its receipt reads 15:20:43 +14: the same instant).
+Device: only the emulator was addressed (ANDROID_SERIAL=emulator-5554 on every adb call, `--serial emulator-5554` on every receipt); Elias's phone, which appeared on adb during the session, was never targeted.
