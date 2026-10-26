@@ -1,0 +1,73 @@
+=== head 0e3070e (mutations run at 0e3070e)
+=== mutation: kid fixed back to kino-mcp
+=== head: 0e3070e, file: src/features/mcp/auth.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agent-connections
+
+(node:645425) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ |node| src/features/mcp/auth.test.ts (20 tests | 1 failed) 43ms
+     × una máquina de pruebas firma con su propio kid, y su mitad pública lo lleva 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |node| src/features/mcp/auth.test.ts > mintConvexToken · el token que Convex valida > una máquina de pruebas firma con su propio kid, y su mitad pública lo lleva
+AssertionError: expected 'kino-mcp' to be 'kino-mcp-agentbox' // Object.is equality
+
+Expected: "kino-mcp-agentbox"
+Received: "kino-mcp"
+
+ ❯ src/features/mcp/auth.test.ts:119:48
+    117|     try {
+    118|       const token = await mintConvexToken({ clerkId: "user_123", scope…
+    119|       expect(decodeProtectedHeader(token).kid).toBe("kino-mcp-agentbox…
+       |                                                ^
+    120|       expect(publicJwks({ kty: "EC", crv: "P-256", x: "x", y: "y" }).k…
+    121|     } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  20:53:52
+   Duration  805ms (transform 164ms, setup 0ms, import 597ms, tests 43ms, environment 0ms)
+
+=== exit: 1
+=== mutation: an empty KINO_MCP_KEY_ID is kept
+=== head: 0e3070e, file: src/features/mcp/auth.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agent-connections
+
+(node:645488) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ |node| src/features/mcp/auth.test.ts (20 tests | 1 failed) 42ms
+     × una máquina de pruebas firma con su propio kid, y su mitad pública lo lleva 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |node| src/features/mcp/auth.test.ts > mintConvexToken · el token que Convex valida > una máquina de pruebas firma con su propio kid, y su mitad pública lo lleva
+AssertionError: expected '' to be 'kino-mcp' // Object.is equality
+
+- Expected
++ Received
+
+- kino-mcp
+
+ ❯ src/features/mcp/auth.test.ts:115:102
+    113|     process.env.KINO_MCP_KEY_ID = "";
+    114|     // Una variable vacía en Vercel no puede dejar el token sin kid.
+    115|     expect(decodeProtectedHeader(await mintConvexToken({ clerkId: "use…
+       |                                                                                                      ^
+    116|     process.env.KINO_MCP_KEY_ID = "kino-mcp-agentbox";
+    117|     try {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  20:53:54
+   Duration  829ms (transform 185ms, setup 0ms, import 634ms, tests 42ms, environment 0ms)
+
+=== exit: 1
