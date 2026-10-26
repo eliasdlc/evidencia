@@ -1,0 +1,63 @@
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/rework-2-resto
+
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ |dom| src/features/auth/clerk-appearance.test.tsx (11 tests | 3 failed) 134ms
+     × quita la caja y su sombra, y calla el título y su frase 62ms
+     × en las puertas el primario no lleva sombra en ningún estado y conserva un anillo al enfocar con teclado 3ms
+     × en la cuenta de Ajustes el primario no lleva sombra en ningún estado y conserva un anillo al enfocar con teclado 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/features/auth/clerk-appearance.test.tsx > clerkPuertaAppearance > quita la caja y su sombra, y calla el título y su frase
+AssertionError: expected { nombre: 'headerSubtitle', …(1) } to deeply equal { nombre: 'headerSubtitle', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "display": "none",
++   "display": "inline",
+    "nombre": "headerSubtitle",
+  }
+
+ ❯ src/features/auth/clerk-appearance.test.tsx:60:83
+     58|     // el h1 y la voz de la página.
+     59|     for (const nombre of ["headerTitle", "headerSubtitle"]) {
+     60|       expect({ nombre, display: pintado(clerkPuertaAppearance, nombre)…
+       |                                                                                   ^
+     61|     }
+     62|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |dom| src/features/auth/clerk-appearance.test.tsx > clerkPuertaAppearance > en las puertas el primario no lleva sombra en ningún estado y conserva un anillo al enfocar con teclado
+ FAIL  |dom| src/features/auth/clerk-appearance.test.tsx > clerkPuertaAppearance > en la cuenta de Ajustes el primario no lleva sombra en ningún estado y conserva un anillo al enfocar con teclado
+AssertionError: expected { estado: ':focus', regla: undefined } to deeply equal { estado: ':focus', …(1) }
+
+- Expected
++ Received
+
+  {
+    "estado": ":focus",
+-   "regla": "box-shadow:none;",
++   "regla": undefined,
+  }
+
+ ❯ src/features/auth/clerk-appearance.test.tsx:122:53
+    120|
+    121|     for (const estado of ["", ":focus", ":focus:not(:focus-visible)"])…
+    122|       expect({ estado, regla: regla(estado)?.[1] }).toEqual({ estado, …
+       |                                                     ^
+    123|     }
+    124|     expect(regla(":focus-visible")?.[1]).toMatch(/^box-shadow:(?!none)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 8 passed (11)
+   Start at  04:32:49
+   Duration  984ms (transform 103ms, setup 100ms, import 298ms, tests 134ms, environment 346ms)
+
