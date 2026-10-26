@@ -1,0 +1,680 @@
+................                                           [100%]
+=================================== FAILURES ===================================
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='PY') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='python3 -c "from pathlib import Path; Path(\'lib/features/home/presentation/home_screen.dart\').open(\'w\').write(\'x\')"') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='python3 -c "from pathlib import Path; (Path(\'src\')/\'a.css\').write_text(\'x\')"') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='python3 -c "import shutil; shutil.copy(x, \'src/a.css\')"') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='python3 -c "import shutil; shutil.move(x, \'src/a.css\')"') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='python3 -c "import os; os.replace(x, \'src/a.css\')"') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='python3 -c "open(\\"src/a.css\\",\\"w\\").write(\\"x\\")"') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='python3 -c "d=open(\'src/a.css\').read(); open(out, \'w\').write(d)"') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='sh -c "cp /tmp/s.css src/a.css"') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command="bash -c 'cp /tmp/s.css src/a.css'") _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='git checkout HEAD~1 -- src/a.css') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='git restore --source HEAD~1 src/a.css') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+_ BashWritesTests.test_redirection_variants_file_operations_and_python_writes_are_seen (command='git restore --source=HEAD src/a.css') _
+
+self = <test_design_identity.BashWritesTests testMethod=test_redirection_variants_file_operations_and_python_writes_are_seen>
+
+    def test_redirection_variants_file_operations_and_python_writes_are_seen(self):
+        (self.repo.root / Path(self.DART).parent).mkdir(parents=True)
+        for command in [
+            f"echo x &> {self.DART}",
+            f"echo x >& {self.DART}",
+            f"echo x >| {self.DART}",
+            'echo x > "lib/my dir/presentation/home_screen.dart"',
+            "echo x > $HOME/r2probe/lib/presentation/a_screen.dart",
+            "echo x > ${HOME}/r2probe/lib/presentation/a_screen.dart",
+            f"cat > /tmp/stage.dart <<EOF\nx\nEOF\nmv /tmp/stage.dart {self.DART}",
+            f"cp -f /tmp/stage.dart {self.DART}",
+            f"install -m 644 /tmp/stage.dart {self.DART}",
+            f"rsync -a /tmp/stage.dart {self.DART}",
+            f"mv /tmp/stage.dart {Path(self.DART).parent}/",
+            f"curl -sS -o {self.DART} http://localhost/x",
+            f"wget -O {self.DART} http://localhost/x",
+            f"dd if=/tmp/x of={self.DART}",
+            f"tee \"{self.DART}\" < /dev/null",
+            f"sed -i 's/a/b/' {self.DART}",
+            f"sed -i -e 's/a/b/' {self.DART}",
+            f"perl -pi -e 's/a/b/' {self.DART}",
+            "python3 -c \"open('src/a.css', 'w').write('x')\"",
+            "python3 -c \"open('src/a.css', mode='a').write('x')\"",
+            "python3 -c \"from pathlib import Path; Path('src/a.css').write_bytes(b'x')\"",
+            # a path held in a variable, an expression, another API or a nested shell
+            "python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"src/a.css\")\np.write_text(\"x\")\nPY",
+            f"python3 -c \"from pathlib import Path; Path('{self.DART}').open('w').write('x')\"",
+            "python3 -c \"from pathlib import Path; (Path('src')/'a.css').write_text('x')\"",
+            "python3 -c \"import shutil; shutil.copy(x, 'src/a.css')\"",
+            "python3 -c \"import shutil; shutil.move(x, 'src/a.css')\"",
+            "python3 -c \"import os; os.replace(x, 'src/a.css')\"",
+            "python3 -c \"open(\\\"src/a.css\\\",\\\"w\\\").write(\\\"x\\\")\"",
+            "python3 -c \"d=open('src/a.css').read(); open(out, 'w').write(d)\"",
+            "sh -c \"cp /tmp/s.css src/a.css\"",
+            "bash -c 'cp /tmp/s.css src/a.css'",
+            "zsh -c 'echo x > src/a.css'",
+            "cd src && bash -lc 'echo x > a.css'",
+            "git checkout HEAD~1 -- src/a.css",
+            "git restore --source HEAD~1 src/a.css",
+            "git restore --source=HEAD src/a.css",
+        ]:
+            with self.subTest(command=command.splitlines()[-1]):
+                code, err = self.bash(command, loaded=False)
+>               self.assertEqual(code, 2, err)
+E               AssertionError: 0 != 2 :
+
+tests/test_design_identity.py:267: AssertionError
+=========================== short test summary info ============================
+SUBFAILED(command='PY') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='python3 -c "from pathlib import Path; Path(\'lib/features/home/presentation/home_screen.dart\').open(\'w\').write(\'x\')"') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='python3 -c "from pathlib import Path; (Path(\'src\')/\'a.css\').write_text(\'x\')"') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='python3 -c "import shutil; shutil.copy(x, \'src/a.css\')"') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='python3 -c "import shutil; shutil.move(x, \'src/a.css\')"') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='python3 -c "import os; os.replace(x, \'src/a.css\')"') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='python3 -c "open(\\"src/a.css\\",\\"w\\").write(\\"x\\")"') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='python3 -c "d=open(\'src/a.css\').read(); open(out, \'w\').write(d)"') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='sh -c "cp /tmp/s.css src/a.css"') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command="bash -c 'cp /tmp/s.css src/a.css'") tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='git checkout HEAD~1 -- src/a.css') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='git restore --source HEAD~1 src/a.css') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+SUBFAILED(command='git restore --source=HEAD src/a.css') tests/test_design_identity.py::BashWritesTests::test_redirection_variants_file_operations_and_python_writes_are_seen
+13 failed, 16 passed, 73 subtests passed in 7.42s
