@@ -1,0 +1,61 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___ DraftTests.test_a_published_image_matches_after_the_same_metadata_strip ____
+
+self = <test_proof.DraftTests testMethod=test_a_published_image_matches_after_the_same_metadata_strip>
+
+    def test_a_published_image_matches_after_the_same_metadata_strip(self):
+        import io
+        from PIL import Image, PngImagePlugin
+        sys_bin = str(REPO / "bin")
+        import sys
+        if sys_bin not in sys.path:
+            sys.path.insert(0, sys_bin)
+        import evidence
+        target = "app/feat-x/f00ba12"
+        local = Path(self.tmp.name) / "r1.png"
+        info = PngImagePlugin.PngInfo()
+        info.add_text("Comment", "taken by someone")
+        Image.new("RGB", (4, 4), (10, 20, 30)).save(local, pnginfo=info)
+        published = Path(self.tmp.name) / "published.png"
+        evidence.strip_metadata(local, published)
+        self.assertNotEqual(published.read_bytes(), local.read_bytes())
+    
+        class Response(io.BytesIO):
+            def __enter__(self):
+                return self
+    
+            def __exit__(self, *exc):
+                return False
+        served = {"bytes": published.read_bytes()}
+        saved = (self.draft.exists, self.draft.urllib.request.urlopen)
+        self.draft.exists = lambda url: True
+        self.draft.urllib.request.urlopen = lambda url, timeout=None: Response(served["bytes"])
+        try:
+            publish = self.draft.publisher(target, True)
+>           self.assertEqual(publish([local]), {"r1.png": f"{RAW}{target}/r1.png"})
+                             ^^^^^^^^^^^^^^^^
+
+tests/test_proof.py:1039: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+files = [PosixPath('/tmp/tmpwrlf2f2t/r1.png')], subdir = None
+
+    def publish(files, subdir=None):
+        if not files:
+            return {}
+        if not enabled:
+            return {f.name: str(f) for f in files}
+        where = target + ("/" + subdir if subdir else "")
+        out, fresh = {}, []
+        for f in files:
+            url = gate.EVIDENCIA + where + "/" + f.name
+            if exists(url):
+                if remote_digest(url) != hashlib.sha256(f.read_bytes()).hexdigest():
+>                   raise Problem(f"{f.name} is already published at {where} with other content: rename the file")
+E                   proof_draft.Problem: r1.png is already published at app/feat-x/f00ba12 with other content: rename the file
+
+bin/proof_draft.py:211: Problem
+=========================== short test summary info ============================
+FAILED tests/test_proof.py::DraftTests::test_a_published_image_matches_after_the_same_metadata_strip
+1 failed, 97 deselected in 0.42s
