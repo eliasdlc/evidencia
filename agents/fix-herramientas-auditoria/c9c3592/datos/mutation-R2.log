@@ -1,0 +1,32 @@
+## mutation: hooks/launch-in-t3.py: '        if not where and test_client(s.text):' -> '        if test_client(s.text):'
+SUBFAILED(blocked="tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'") tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked="screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'") tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked="ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'") tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+
+## mutation: hooks/launch-in-t3.py: '<= 600' -> '<= 99999'
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+
+## mutation: hooks/launch-in-t3.py: 'if "$" in value or "`" in value or ".." in value.split("/"):' -> 'if "`" in value or ".." in value.split("/"):'
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/$X timeout 9 claude -p q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/$X timeout 9 claude -p q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+
+## mutation: hooks/launch-in-t3.py: '    if any(a in UNSAFE_FLAGS for a in args):\n        return ' -> ''
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+
+## mutation: hooks/launch-in-t3.py: 'return args[:1] in (["-p"], ["--print"])' -> 'return any(a in ("-p", "--print") for a in args)'
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+
+## mutation: hooks/launch-in-t3.py: '    return not any(real == d or' -> '    return not any(False and real == d or'
+FAILED tests/test_launch_in_t3.py::TestClientTests::test_a_symlink_into_the_real_config_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
