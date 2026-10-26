@@ -1,0 +1,34 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________ DraftTests.test_the_covers_cell_names_what_was_reverted ____________
+
+self = <test_proof.DraftTests testMethod=test_the_covers_cell_names_what_was_reverted>
+
+    def test_the_covers_cell_names_what_was_reverted(self):
+        # helper.py is on dev already, so the branch never changed it; the test
+        # reaches calc through importlib, so nothing derived covers calc.py.
+        git_in(self.top, "checkout", "-q", "dev")
+        (self.top / "helper.py").write_text("ONE = 1\n")
+        git_in(self.top, "add", "helper.py")
+        git_in(self.top, "commit", "-qm", "helper")
+        git_in(self.top, "checkout", "-q", "feat/x")
+        git_in(self.top, "merge", "-q", "--no-edit", "dev")
+        (self.top / "tests/test_dyn.py").write_text(
+            "import importlib\nimport unittest\n\n\nclass T(unittest.TestCase):\n"
+            "    def test_double(self):\n        self.assertEqual(importlib.import_module('calc').double(3), 6)\n")
+        git_in(self.top, "add", "tests/test_dyn.py")
+        git_in(self.top, "commit", "-qm", "dynamic test")
+        self.head = git_in(self.top, "rev-parse", "HEAD")
+        body = self.body.replace("tests.test_calc", "tests.test_dyn").replace(
+            "| Evidence | Seen |\n|---|---|---|---|---|\n| R1 | double doubles | `test` |",
+            "| Covers | Evidence | Seen |\n|---|---|---|---|---|---|\n| R1 | double doubles | `test` | `helper.py` |")
+        section, logs = self.run_draft(body)
+        row = next(l for l in section.split("\n") if l.startswith("| R1"))
+        self.assertIn("`helper.py`", row)
+>       self.assertIn("`calc.py`", row)
+E       AssertionError: '`calc.py`' not found in '| R1 | double doubles | `test` | `helper.py`, `tests/test_dyn.py` | `python3 -m unittest tests.test_dyn` -> +1, [red-first-r1.log](https://raw.githubusercontent.com/eliasdlc/evidencia/main/app/feat-x/a63b3bd/datos/red-first-r1.log), [test-r1.log](https://raw.githubusercontent.com/eliasdlc/evidencia/main/app/feat-x/a63b3bd/datos/test-r1.log) |  |'
+
+tests/test_proof.py:945: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_proof.py::DraftTests::test_the_covers_cell_names_what_was_reverted
+1 failed, 55 deselected in 0.70s
