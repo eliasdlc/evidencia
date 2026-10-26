@@ -1,0 +1,322 @@
+mutation R2c: convex/lib/workdir.ts
+- if (segment === '' || segment === '.') continue;
++ if (segment === '.') continue;
+
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/feat-agentes-carpetas
+
+ ❯ |convex| convex/lib/workdir.test.ts (7 tests | 1 failed) 16ms
+     × quita barras repetidas y la final, y resuelve . y .. 10ms
+ ❯ |convex| convex/workdirRules.test.ts (30 tests | 12 failed) 1030ms
+     × la tarea cae en el sistema de la carpeta sin nombrarlo 636ms
+     × las subcarpetas heredan, y la regla más profunda gana 19ms
+     × compara por segmentos: /a/Uni no cubre /a/Universidad 14ms
+     × la barra final no cambia la carpeta, ni al guardar ni al buscar 6ms
+     × guardar otra vez la misma carpeta le cambia el sistema, no la duplica 8ms
+     × no crea nada y devuelve la carpeta normalizada para preguntar 6ms
+     × con regla, todas las tareas caen en el sistema de la carpeta 11ms
+     × una carpeta sin regla no crea ninguna y devuelve lo que hay que preguntar 6ms
+     × una persona tiene como mucho 200 reglas 49ms
+     × bulkCreate: cada subtarea va con su madre; la tarea propia sigue mandando 12ms
+     × con regla, la página cae en el sistema de la carpeta 120ms
+     × una carpeta sin regla no crea nada y devuelve lo que hay que preguntar 4ms
+
+ Test Files  2 failed (2)
+      Tests  13 failed | 24 passed (37)
+   Start at  00:17:32
+   Duration  1.77s (transform 872ms, setup 0ms, import 682ms, tests 1.05s, environment 195ms)
+
+(node:842536) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta con regla > la tarea cae en el sistema de la carpeta sin nombrarlo
+AssertionError: expected { gitRemote: null, …(2) } to match object { status: 'created', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "rule",
+-   "rule": {
+-     "key": "/home/ana/Documents/Universidad",
+-     "kind": "path",
+-     "systemName": "Universidad",
+-   },
+-   "status": "created",
++   "status": "needs_system",
+  }
+
+ ❯ convex/workdirRules.test.ts:51:17
+     49|     const res = await agente.mutation(api.tasks.createFromAgent, { tit…
+     50|
+     51|     expect(res).toMatchObject({ status: 'created', routedBy: 'rule', r…
+       |                 ^
+     52|     expect(res.status === 'created' && res.task.systemId).toBe(ids.Uni…
+     53|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta con regla > las subcarpetas heredan, y la regla más profunda gana
+AssertionError: expected 'needs_system' to be '0000000000000000000010002systems' // Object.is equality
+
+Expected: "0000000000000000000010002systems"
+Received: "needs_system"
+
+ ❯ convex/workdirRules.test.ts:66:78
+     64|     };
+     65|
+     66|     expect(await sistemaDe('/home/ana/Documents/Universidad/Calculo/te…
+       |                                                                              ^
+     67|     expect(await sistemaDe('/home/ana/Documents/Universidad/Tesis/capi…
+     68|     expect(await sistemaDe('/home/ana/Documents/Universidad/Tesis')).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta con regla > compara por segmentos: /a/Uni no cubre /a/Universidad
+AssertionError: expected { gitRemote: null, …(2) } to deeply equal { status: 'needs_system', …(2) }
+
+- Expected
++ Received
+
+  {
+    "gitRemote": null,
+    "status": "needs_system",
+-   "workingDirectory": "/a/Universidad",
++   "workingDirectory": "//a/Universidad",
+  }
+
+ ❯ convex/workdirRules.test.ts:78:17
+     76|     const res = await agente.mutation(api.tasks.createFromAgent, { tit…
+     77|
+     78|     expect(res).toEqual({ status: 'needs_system', workingDirectory: '/…
+       |                 ^
+     79|   });
+     80|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta con regla > la barra final no cambia la carpeta, ni al guardar ni al buscar
+AssertionError: expected '//home/ana/Universidad/' to be '/home/ana/Universidad' // Object.is equality
+
+Expected: "/home/ana/Universidad"
+Received: "//home/ana/Universidad/"
+
+ ❯ convex/workdirRules.test.ts:88:26
+     86|     const res = await agente.mutation(api.tasks.createFromAgent, { tit…
+     87|
+     88|     expect(guardada.key).toBe('/home/ana/Universidad');
+       |                          ^
+     89|     expect(res.status === 'created' && res.task.systemId).toBe(ids.Uni…
+     90|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta con regla > guardar otra vez la misma carpeta le cambia el sistema, no la duplica
+AssertionError: expected { key: '//home/ana/U/', …(4) } to match object { replaced: true, systemName: 'Tesis' }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "replaced": true,
++   "replaced": false,
+    "systemName": "Tesis",
+  }
+
+ ❯ convex/workdirRules.test.ts:125:21
+    123|     const segunda = await agente.mutation(api.workdirRules.save, { sys…
+    124|
+    125|     expect(segunda).toMatchObject({ replaced: true, systemName: 'Tesis…
+       |                     ^
+    126|     expect(await t.run((ctx) => ctx.db.query('workdirRules').collect()…
+    127|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una carpeta sin regla > no crea nada y devuelve la carpeta normalizada para preguntar
+AssertionError: expected { …(3) } to deeply equal { status: 'needs_system', …(2) }
+
+- Expected
++ Received
+
+  {
+    "gitRemote": "github.com/ana/nueva",
+    "status": "needs_system",
+-   "workingDirectory": "/home/ana/nueva",
++   "workingDirectory": "//home/ana/nueva/",
+  }
+
+ ❯ convex/workdirRules.test.ts:137:17
+    135|     const res = await agente.mutation(api.tasks.createFromAgent, { tit…
+    136|
+    137|     expect(res).toEqual({ status: 'needs_system', workingDirectory: '/…
+       |                 ^
+    138|     expect(await t.run((ctx) => ctx.db.query('tasks').collect())).toHa…
+    139|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > bulkCreate sigue la misma regla que createFromAgent > con regla, todas las tareas caen en el sistema de la carpeta
+AssertionError: expected { gitRemote: null, …(2) } to match object { status: 'created', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "rule",
+-   "rule": {
+-     "key": "/home/ana/Universidad",
+-     "kind": "path",
+-     "systemName": "Universidad",
+-   },
+-   "status": "created",
++   "status": "needs_system",
+  }
+
+ ❯ convex/workdirRules.test.ts:182:17
+    180|     const res = await agente.mutation(api.tasks.bulkCreate, { tasks: t…
+    181|
+    182|     expect(res).toMatchObject({ status: 'created', routedBy: 'rule', r…
+       |                 ^
+    183|     expect(res.status === 'created' && res.tasks.map((task) => task.sy…
+    184|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > bulkCreate sigue la misma regla que createFromAgent > una carpeta sin regla no crea ninguna y devuelve lo que hay que preguntar
+AssertionError: expected { …(3) } to deeply equal { status: 'needs_system', …(2) }
+
+- Expected
++ Received
+
+  {
+    "gitRemote": "github.com/ana/nueva",
+    "status": "needs_system",
+-   "workingDirectory": "/home/ana/nueva",
++   "workingDirectory": "//home/ana/nueva/",
+  }
+
+ ❯ convex/workdirRules.test.ts:212:17
+    210|     });
+    211|
+    212|     expect(res).toEqual({ status: 'needs_system', workingDirectory: '/…
+       |                 ^
+    213|     expect(await t.run((ctx) => ctx.db.query('tasks').collect())).toHa…
+    214|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > cada persona, sus reglas > una persona tiene como mucho 200 reglas
+ConvexError: {"code":"VALIDATION_ERROR","message":"Ya hay 200 carpetas con sistema asignado; no caben más"}
+ ❯ invalid convex/lib/errors.ts:12:9
+     10|
+     11| export function invalid(message: string): never {
+     12|   throw new ConvexError({ code: 'VALIDATION_ERROR' as const, message }…
+       |         ^
+     13| }
+     14|
+ ❯ handler convex/workdirRules.ts:43:39
+ ❯ handler node_modules/.pnpm/convex-helpers@0.1.123_@standard-schema+spec@1.1.0_convex@1.45.0_@clerk+react@6.15.1_re_cd6a3add6a65e20974f3e63099f13cc2/node_modules/convex-helpers/server/zod4.js:591:33
+ ❯ invokeFunction node_modules/.pnpm/convex@1.45.0_@clerk+react@6.15.1_react-dom@19.2.4_react@19.2.4__react@19.2.4__bufferut_1a6a1751f2490a386db37d6f9dd7ee16/node_modules/convex/src/server/impl/registration_impl.ts:90:13
+ ❯ invokeMutation node_modules/.pnpm/convex@1.45.0_@clerk+react@6.15.1_react-dom@19.2.4_react@19.2.4__react@19.2.4__bufferut_1a6a1751f2490a386db37d6f9dd7ee16/node_modules/convex/src/server/impl/registration_impl.ts:70:17
+ ❯ runMutationWithHandler node_modules/.pnpm/convex-test@0.0.56_convex@1.45.0_@clerk+react@6.15.1_react-dom@19.2.4_react@19.2.4__rea_8f46f6db1b2514d58bce0433529d133c/node_modules/convex-test/dist/index.js:1672:31
+ ❯ Object.mutationFromPath node_modules/.pnpm/convex-test@0.0.56_convex@1.45.0_@clerk+react@6.15.1_react-dom@19.2.4_react@19.2.4__rea_8f46f6db1b2514d58bce0433529d133c/node_modules/convex-test/dist/index.js:1813:32
+ ❯ mutation node_modules/.pnpm/convex-test@0.0.56_convex@1.45.0_@clerk+react@6.15.1_react-dom@19.2.4_react@19.2.4__rea_8f46f6db1b2514d58bce0433529d133c/node_modules/convex-test/dist/index.js:1861:20
+ ❯ convex/workdirRules.test.ts:261:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una subtarea se queda con el sistema de su madre > bulkCreate: cada subtarea va con su madre; la tarea propia sigue mandando
+AssertionError: expected false to deeply equal [ …(3) ]
+
+- Expected:
+[
+  "0000000000000000000010004systems",
+  "0000000000000000000010002systems",
+  "0000000000000000000010006systems",
+]
+
++ Received:
+false
+
+ ❯ convex/workdirRules.test.ts:333:88
+    331|     const soloHijas = await agente.mutation(api.tasks.bulkCreate, { ta…
+    332|
+    333|     expect(heredan.status === 'created' && heredan.tasks.map((task) =>…
+       |                                                                                        ^
+    334|     expect(soloHijas).toMatchObject({ status: 'created', routedBy: 'pa…
+    335|     expect(soloHijas.status === 'created' && soloHijas.tasks[0]?.syste…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > pages.createFromAgent sigue la misma regla > con regla, la página cae en el sistema de la carpeta
+AssertionError: expected { gitRemote: null, …(2) } to match object { status: 'created', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "rule",
+-   "rule": {
+-     "kind": "path",
+-     "systemName": "Universidad",
+-   },
+-   "status": "created",
++   "status": "needs_system",
+  }
+
+ ❯ convex/workdirRules.test.ts:374:17
+    372|     const res = await agente.mutation(api.pages.createFromAgent, { tit…
+    373|
+    374|     expect(res).toMatchObject({ status: 'created', routedBy: 'rule', r…
+       |                 ^
+    375|     expect(res.status === 'created' && res.page.systemId).toBe(ids.Uni…
+    376|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/13]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > pages.createFromAgent sigue la misma regla > una carpeta sin regla no crea nada y devuelve lo que hay que preguntar
+AssertionError: expected { gitRemote: null, …(2) } to deeply equal { status: 'needs_system', …(2) }
+
+- Expected
++ Received
+
+  {
+    "gitRemote": null,
+    "status": "needs_system",
+-   "workingDirectory": "/home/ana/nueva",
++   "workingDirectory": "//home/ana/nueva/",
+  }
+
+ ❯ convex/workdirRules.test.ts:398:17
+    396|     const res = await agente.mutation(api.pages.createFromAgent, { tit…
+    397|
+    398|     expect(res).toEqual({ status: 'needs_system', workingDirectory: '/…
+       |                 ^
+    399|     expect(await t.run((ctx) => ctx.db.query('pages').collect())).toHa…
+    400|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/13]⎯
+
+ FAIL  |convex| convex/lib/workdir.test.ts > normalizePath > quita barras repetidas y la final, y resuelve . y ..
+AssertionError: expected '//home/ana/Universidad/' to be '/home/ana/Universidad' // Object.is equality
+
+Expected: "/home/ana/Universidad"
+Received: "//home/ana/Universidad/"
+
+ ❯ convex/lib/workdir.test.ts:10:53
+      8| describe('normalizePath', () => {
+      9|   it('quita barras repetidas y la final, y resuelve . y ..', () => {
+     10|     expect(normalizePath('/home/ana/Universidad/')).toBe('/home/ana/Un…
+       |                                                     ^
+     11|     expect(normalizePath('  /home//ana/./x/../Universidad  ')).toBe('/…
+     12|     expect(normalizePath('/')).toBe('/');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/13]⎯
+
