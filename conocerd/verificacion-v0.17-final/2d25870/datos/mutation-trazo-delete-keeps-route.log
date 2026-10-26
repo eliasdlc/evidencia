@@ -1,0 +1,45 @@
+# mutation-trazo-delete-keeps-route at 2d25870f, Flutter 3.47.7 local; U+2014 and U+00B7 replaced by a hyphen: 0
+# applied:
+# diff --git i/lib/features/diary/data/repositories/firestore_diary_repository.dart w/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# index ad63e3cb..38df182f 100644
+# --- i/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# +++ w/lib/features/diary/data/repositories/firestore_diary_repository.dart
+# @@ -196,7 +196,6 @@ class FirestoreDiaryRepository implements DiaryRepository {
+#      try {
+#        // Antes que el borrado remoto, que sin señal no termina: el recorrido
+#        // del teléfono no debe sobrevivir a la entrada que el usuario borró.
+# -      await visitRoutes?.delete(id);
+#        if (await _authorityForMutation()) {
+#          final uid = _currentUid();
+#          if (uid == null ||
+# flutter test --no-pub test/features/diary/visit_route_local_test.dart
+
+00:00 +0: loading test/features/diary/visit_route_local_test.dart
+00:00 +0: the route never leaves the phone the Firestore document has no route, on create and on edit
+00:00 +1: the route never leaves the phone the outbox payload has no route, on create and on edit
+00:00 +2: the diary shows the route saved on this phone an entry reads back its route from the local store
+00:00 +3: the diary shows the route saved on this phone a queued entry reads back its route too
+00:00 +4: the diary shows the route saved on this phone another device or a fresh install shows the entry without a route, without errors
+00:00 +5: the diary shows the route saved on this phone an unreadable route file reads as no route
+00:00 +6: the diary shows the route saved on this phone an edit that does not know the route keeps the local one and uploads nothing
+00:00 +7: deleting an entry deletes its route the local file goes with the entry
+00:00 +7 -1: deleting an entry deletes its route the local file goes with the entry [E]
+  Expected: empty
+    Actual: {
+              'visit_u1_1_0': [
+                LatLng:LatLng(19.4489, -70.695),
+                LatLng:LatLng(19.4498, -70.6949),
+                LatLng:LatLng(19.4507, -70.6947)
+              ]
+            }
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/diary/visit_route_local_test.dart 165:7  main.<fn>.<fn>
+  
+00:00 +7 -1: VisitRouteStore keeps what it is given at the stored precision and clears it
+00:00 +8 -1: VisitRouteStore a route too short to draw is not stored and keeps the old one
+00:00 +9 -1: Some tests failed.
+
+Failing tests:
+  test/features/diary/visit_route_local_test.dart: deleting an entry deletes its route the local file goes with the entry
