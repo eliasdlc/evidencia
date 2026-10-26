@@ -1,0 +1,21 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____________ RowTests.test_the_self_check_replaces_seen_and_review _____________
+
+self = <test_proof.RowTests testMethod=test_the_self_check_replaces_seen_and_review>
+
+    def test_the_self_check_replaces_seen_and_review(self):
+        self.assertEqual(by_row(ROWS).failures, [])
+        mismatch = {**ROW_LOGS, SELF: ROW_LOGS[SELF].replace("R3 matches", "R3 mismatch")}
+        found = by_row(ROWS, src=row_sources(logs=mismatch)).failures
+        self.assertTrue(any("R3: the self-check found a mismatch" in f for f in found), found)
+        none = ROWS.split("Self-checked at")[0]
+        self.assertTrue(any("'Self-checked at <sha7>' line" in f for f in by_row(none).failures))
+        before = by_row(ROWS, created=NEW).failures
+>       self.assertTrue(any("Seen cell must say" in f for f in before), before)
+E       AssertionError: False is not true : []
+
+tests/test_proof.py:651: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_proof.py::RowTests::test_the_self_check_replaces_seen_and_review
+1 failed, 55 deselected in 0.08s
