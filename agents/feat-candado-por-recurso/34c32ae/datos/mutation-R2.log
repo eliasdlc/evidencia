@@ -1,0 +1,126 @@
+.F.F.                                    [100%]
+=================================== FAILURES ===================================
+_______________ WaitLoopTests.test_background_false_still_blocks _______________
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_background_false_still_blocks>
+
+    def test_background_false_still_blocks(self):
+>       self.assertEqual(run(BLOCKED[0], background=False).returncode, 2)
+E       AssertionError: 0 != 2
+
+tests/test_wait_loop.py:78: AssertionError
+_ WaitLoopTests.test_foreground_waits_are_blocked (command='until [ -f /tmp/done ]; do sleep 5; done') _
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_foreground_waits_are_blocked>
+
+    def test_foreground_waits_are_blocked(self):
+        for command in BLOCKED:
+            with self.subTest(command=command):
+>               self.assertEqual(run(command).returncode, 2, command)
+E               AssertionError: 0 != 2 : until [ -f /tmp/done ]; do sleep 5; done
+
+tests/test_wait_loop.py:61: AssertionError
+_ WaitLoopTests.test_foreground_waits_are_blocked (command='while kill -0 $pid 2>/dev/null; do sleep 2; done; echo finished') _
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_foreground_waits_are_blocked>
+
+    def test_foreground_waits_are_blocked(self):
+        for command in BLOCKED:
+            with self.subTest(command=command):
+>               self.assertEqual(run(command).returncode, 2, command)
+E               AssertionError: 0 != 2 : while kill -0 $pid 2>/dev/null; do sleep 2; done; echo finished
+
+tests/test_wait_loop.py:61: AssertionError
+_ WaitLoopTests.test_foreground_waits_are_blocked (command='while pgrep -f flutter >/dev/null; do sleep 10; done') _
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_foreground_waits_are_blocked>
+
+    def test_foreground_waits_are_blocked(self):
+        for command in BLOCKED:
+            with self.subTest(command=command):
+>               self.assertEqual(run(command).returncode, 2, command)
+E               AssertionError: 0 != 2 : while pgrep -f flutter >/dev/null; do sleep 10; done
+
+tests/test_wait_loop.py:61: AssertionError
+_ WaitLoopTests.test_foreground_waits_are_blocked (command='until grep -q BUILD_OK build.log; do sleep 3; done') _
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_foreground_waits_are_blocked>
+
+    def test_foreground_waits_are_blocked(self):
+        for command in BLOCKED:
+            with self.subTest(command=command):
+>               self.assertEqual(run(command).returncode, 2, command)
+E               AssertionError: 0 != 2 : until grep -q BUILD_OK build.log; do sleep 3; done
+
+tests/test_wait_loop.py:61: AssertionError
+_ WaitLoopTests.test_foreground_waits_are_blocked (command="timeout 600 bash -c 'until curl -sf localhost:3000; do sleep 2; done'") _
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_foreground_waits_are_blocked>
+
+    def test_foreground_waits_are_blocked(self):
+        for command in BLOCKED:
+            with self.subTest(command=command):
+>               self.assertEqual(run(command).returncode, 2, command)
+E               AssertionError: 0 != 2 : timeout 600 bash -c 'until curl -sf localhost:3000; do sleep 2; done'
+
+tests/test_wait_loop.py:61: AssertionError
+_ WaitLoopTests.test_foreground_waits_are_blocked (command='for i in $(seq 60); do [ -f ready ] && break; sleep 1; done') _
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_foreground_waits_are_blocked>
+
+    def test_foreground_waits_are_blocked(self):
+        for command in BLOCKED:
+            with self.subTest(command=command):
+>               self.assertEqual(run(command).returncode, 2, command)
+E               AssertionError: 0 != 2 : for i in $(seq 60); do [ -f ready ] && break; sleep 1; done
+
+tests/test_wait_loop.py:61: AssertionError
+_ WaitLoopTests.test_foreground_waits_are_blocked (command='until [ -f x ]\ndo\n  echo waiting\n  sleep 5\ndone') _
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_foreground_waits_are_blocked>
+
+    def test_foreground_waits_are_blocked(self):
+        for command in BLOCKED:
+            with self.subTest(command=command):
+>               self.assertEqual(run(command).returncode, 2, command)
+E               AssertionError: 0 != 2 : until [ -f x ]
+E               do
+E                 echo waiting
+E                 sleep 5
+E               done
+
+tests/test_wait_loop.py:61: AssertionError
+_ WaitLoopTests.test_foreground_waits_are_blocked (command='while ! test -f out.txt; do sleep 1; done') _
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_foreground_waits_are_blocked>
+
+    def test_foreground_waits_are_blocked(self):
+        for command in BLOCKED:
+            with self.subTest(command=command):
+>               self.assertEqual(run(command).returncode, 2, command)
+E               AssertionError: 0 != 2 : while ! test -f out.txt; do sleep 1; done
+
+tests/test_wait_loop.py:61: AssertionError
+________________________ WaitLoopTests.test_three_steps ________________________
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_three_steps>
+
+    def test_three_steps(self):
+        self.assertEqual(run("for f in *.py; do wc -l $f; done").returncode, 0)
+        blocked = run("until [ -f /tmp/done ]; do sleep 5; done")
+>       self.assertEqual(blocked.returncode, 2)
+E       AssertionError: 0 != 2
+
+tests/test_wait_loop.py:53: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_wait_loop.py::WaitLoopTests::test_background_false_still_blocks
+SUBFAILED(command='until [ -f /tmp/done ]; do sleep 5; done') tests/test_wait_loop.py::WaitLoopTests::test_foreground_waits_are_blocked
+SUBFAILED(command='while kill -0 $pid 2>/dev/null; do sleep 2; done; echo finished') tests/test_wait_loop.py::WaitLoopTests::test_foreground_waits_are_blocked
+SUBFAILED(command='while pgrep -f flutter >/dev/null; do sleep 10; done') tests/test_wait_loop.py::WaitLoopTests::test_foreground_waits_are_blocked
+SUBFAILED(command='until grep -q BUILD_OK build.log; do sleep 3; done') tests/test_wait_loop.py::WaitLoopTests::test_foreground_waits_are_blocked
+SUBFAILED(command="timeout 600 bash -c 'until curl -sf localhost:3000; do sleep 2; done'") tests/test_wait_loop.py::WaitLoopTests::test_foreground_waits_are_blocked
+SUBFAILED(command='for i in $(seq 60); do [ -f ready ] && break; sleep 1; done') tests/test_wait_loop.py::WaitLoopTests::test_foreground_waits_are_blocked
+SUBFAILED(command='until [ -f x ]\ndo\n  echo waiting\n  sleep 5\ndone') tests/test_wait_loop.py::WaitLoopTests::test_foreground_waits_are_blocked
+SUBFAILED(command='while ! test -f out.txt; do sleep 1; done') tests/test_wait_loop.py::WaitLoopTests::test_foreground_waits_are_blocked
+FAILED tests/test_wait_loop.py::WaitLoopTests::test_three_steps - AssertionEr...
+10 failed, 3 passed, 24 subtests passed in 1.21s
