@@ -1,0 +1,47 @@
+red-first C1 (unit) at cffda4a with the fix reverted: lib/features/onboarding/data/guardar_hilo.dart restored from a2435b7, Flutter 3.47.7 local; U+2014 and U+00B7 replaced by a hyphen: 0
+$ git show a2435b7:lib/features/onboarding/data/guardar_hilo.dart > lib/features/onboarding/data/guardar_hilo.dart   # round 1 order: save(completed), then stamp.grant
+$ flutter test --no-pub test/features/onboarding/guardar_hilo_test.dart   # Flutter 3.47.7 local
+00:00 +0: loading test/features/onboarding/guardar_hilo_test.dart
+00:00 +0: a new account receives the answers, the visitor state, the route and an open guide
+00:00 +1: running it twice after a restart ends in the same documents
+00:00 +2: the pending answers keep the device marker for a restart
+00:00 +3: an existing account only receives the route
+00:00 +4: finishing completes the answers and grants the welcome stamp once
+00:00 +5: without a connection the stamp fails first and the answers stay pending, on the account and on the device
+00:00 +5 -1: without a connection the stamp fails first and the answers stay pending, on the account and on the device [E]
+  Expected: 'pending'
+    Actual: 'completed'
+     Which: is different.
+            Expected: pending
+              Actual: completed
+                      ^
+             Differ at offset 0
+  the answers were completed before the stamp could be granted
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/onboarding/guardar_hilo_test.dart 219:5  main.<fn>
+  
+00:00 +5 -1: the stamp lands and the answers are refused: the next try keeps the first stamp and completes the answers
+00:00 +5 -2: the stamp lands and the answers are refused: the next try keeps the first stamp and completes the answers [E]
+  Expected: DateTime:<2026-10-18 09:00:00.000>
+    Actual: DateTime:<2026-10-21 09:00:00.000>
+  the retry granted a second stamp
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/onboarding/guardar_hilo_test.dart 257:5  main.<fn>
+  
+00:00 +5 -2: an account without a guide does not see one
+00:00 +6 -2: the consent box is the legal acceptance after the thread the router does not ask again
+00:00 +7 -2: the consent box is the legal acceptance an existing account that accepted analytics keeps that choice through the thread
+00:00 +8 -2: the consent box is the legal acceptance an existing account with no receipt gets the box recorded with analytics refused
+00:00 +9 -2: the consent box is the legal acceptance a consent given for another account, or for none, is never written
+00:00 +10 -2: the consent box is the legal acceptance a draft that belongs to another account is refused by every write
+00:00 +11 -2: the consent box is the legal acceptance a box ticked for another version records nothing
+00:00 +12 -2: the consent box is the legal acceptance with no approved policy there is nothing to record
+00:00 +13 -2: Some tests failed.
+
+Failing tests:
+  test/features/onboarding/guardar_hilo_test.dart: the stamp lands and the answers are refused: the next try keeps the first stamp and completes the answers
+  test/features/onboarding/guardar_hilo_test.dart: without a connection the stamp fails first and the answers stay pending, on the account and on the device
