@@ -1,0 +1,73 @@
+# mutation-resenas-r2-pagina at 2d25870f, Flutter 3.47.7 local; U+2014 and U+00B7 replaced by a hyphen: 0
+# lib/features/reviews/presentation/quick_review.dart
+# - '  final result = await ref\n      .watch(reviewRepositoryProvider)\n      .getMine(destinationId, identity.authorId);\n  return result.fold(\n    (failure) => throw OwnReviewUnknown(failure.message),\n    (review) => review,\n  );'
+# + '  final reviews = await ref.watch(\n    destinationReviewsProvider(destinationId).future,\n  );\n  return myReview(reviews, identity.authorId);'
+# flutter test --no-pub test/features/reviews/own_review_test.dart
+
+00:00 +0: loading test/features/reviews/own_review_test.dart
+00:00 +0: getMine la busca por su id y solo en el servidor
+00:00 +1: getMine una respuesta de la caché no es un "no ha reseñado"
+00:00 +2: getMine sin red, el fallo es "no lo sé"
+00:00 +3: getMine una reseña retirada por moderación sigue siendo suya
+00:00 +4: myReviewProvider encuentra la reseña propia aunque no esté entre las 50 más recientes
+00:00 +4 -1: myReviewProvider encuentra la reseña propia aunque no esté entre las 50 más recientes [E]
+  Expected: 'me'
+    Actual: <null>
+     Which: not an <Instance of 'String'>
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/features/reviews/own_review_test.dart 246:7    main.<fn>.<fn>
+  
+00:00 +4 -1: myReviewProvider sin reseña confirmada por el servidor, sí se ofrecen
+00:00 +5 -1: myReviewProvider sin red, con la caché vacía del teléfono: no hay estrellas
+00:00 +5 -2: myReviewProvider sin red, con la caché vacía del teléfono: no hay estrellas [E]
+  Expected: not <Instance of 'AsyncData'>
+    Actual: AsyncData<Review?>:<AsyncData<Review?>(value: null)>
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/features/reviews/own_review_test.dart 262:9    main.<fn>.<fn>.<fn>
+  package:fake_async/fake_async.dart 182:47           FakeAsync.run.<fn>.<fn>
+  dart:async                                          runZoned
+  package:clock/src/default.dart 52:10                withClock
+  package:fake_async/fake_async.dart 182:15           FakeAsync.run.<fn>
+  dart:async                                          runZoned
+  package:fake_async/fake_async.dart 181:52           FakeAsync.run
+  package:fake_async/fake_async.dart 41:41            fakeAsync
+  test/features/reviews/own_review_test.dart 258:7    main.<fn>.<fn>
+  
+00:00 +5 -2: myReviewProvider cuando vuelve la red, minutos después, las estrellas llegan
+00:00 +5 -3: myReviewProvider cuando vuelve la red, minutos después, las estrellas llegan [E]
+  Expected: <Instance of 'AsyncData<Review?>'>
+    Actual: AsyncLoading<Review?>:<AsyncLoading<Review?>(error: Exception: unavailable, stackTrace: #0      destinationReviewsProvider.<anonymous closure>.<anonymous closure> (package:conocerd/features/reviews/presentation/providers/review_providers.dart:82:22)
+            #1      Left.match (package:fpdart/src/either.dart:620:72)
+            #2      Either.fold (package:fpdart/src/either.dart:280:7)
+            #3      destinationReviewsProvider.<anonymous closure> (package:conocerd/features/reviews/presentation/providers/review_providers.dart:81:21)
+            <asynchronous suspension>
+            #4      ElementWithFuture.handleFuture.<anonymous closure>.<anonymous closure> (package:riverpod/src/core/element.dart:232:17)
+            <asynchronous suspension>
+            #5      ElementWithFuture.handleFuture.<anonymous closure>.<anonymous closure> (package:riverpod/src/core/element.dart:237:29)
+            <asynchronous suspension>
+            , retrying)>
+     Which: is not an instance of 'AsyncData<Review?>'
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/features/reviews/own_review_test.dart 285:9    main.<fn>.<fn>.<fn>
+  package:fake_async/fake_async.dart 182:47           FakeAsync.run.<fn>.<fn>
+  dart:async                                          runZoned
+  package:clock/src/default.dart 52:10                withClock
+  package:fake_async/fake_async.dart 182:15           FakeAsync.run.<fn>
+  dart:async                                          runZoned
+  package:fake_async/fake_async.dart 181:52           FakeAsync.run
+  package:fake_async/fake_async.dart 41:41            fakeAsync
+  test/features/reviews/own_review_test.dart 268:7    main.<fn>.<fn>
+  
+00:00 +5 -3: myIdentityProvider un /me fallido al arrancar no deja la sesión sin identidad
+00:00 +6 -3: Some tests failed.
+
+Failing tests:
+  test/features/reviews/own_review_test.dart: myReviewProvider cuando vuelve la red, minutos después, las estrellas llegan
+  test/features/reviews/own_review_test.dart: myReviewProvider encuentra la reseña propia aunque no esté entre las 50 más recientes
+  test/features/reviews/own_review_test.dart: myReviewProvider sin red, con la caché vacía del teléfono: no hay estrellas
