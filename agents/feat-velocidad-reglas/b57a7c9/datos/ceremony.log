@@ -1,0 +1,34 @@
+== step 1: passes (covered by the standing authorization)
+exit=0 <- [kino] BY=standing gh pr merge 5 --merge
+exit=0 <- [conocerd] BY=standing gh pr edit 9 --add-label distribute-review
+== step 2: fails against fabricated violations, naming the rule
+BY=standing covers only a Kino merge and production deploy, and a ConoceRD review build to the tester group (the distribute label, or appdistribution:distribute with --groups). 'release-train' in eliasdlc/conocerd is not one of them: quote Elias's words as BY="<his message>".
+exit=2 <- [conocerd] BY=standing scripts/distribute.sh --prod
+BY=standing covers only a Kino merge and production deploy, and a ConoceRD review build to the tester group (the distribute label, or appdistribution:distribute with --groups). 'production-deploy' in eliasdlc/conocerd-web is not one of them: quote Elias's words as BY="<his message>".
+exit=2 <- [conocerd-web] BY=standing npx vercel --prod
+== step 3: passes again (his quoted words, and a covered Kino deploy)
+exit=0 <- [conocerd] BY="distribuye a todos, dale" scripts/distribute.sh --prod
+exit=0 <- [kino] BY=standing npx vercel --prod
+
+== round 2, step 1: passes (the review group, the label, a Kino deploy from main)
+exit=0 <- [conocerd] BY=standing firebase appdistribution:distribute a.apk --groups review
+exit=0 <- [conocerd] BY=standing firebase appdistribution:distribute a.apk --groups=review
+exit=0 <- [conocerd] BY=standing gh pr edit 9 --add-label distribute
+exit=0 <- [kino] BY=standing npx vercel --prod
+== round 2, step 2: fails against fabricated violations, naming the rule
+BY=standing covers only a Kino merge and a Kino production deploy from main, and a ConoceRD review build to the tester group (the 'distribute' label, or appdistribution:distribute with exactly --groups review). 'app-distribution' in eliasdlc/conocerd is not one of them (only --groups review, with no --testers, is the tester group): quote Elias's words as BY="<his message>".
+exit=2 <- [conocerd] BY=standing firebase appdistribution:distribute a.apk --groups users
+BY=standing covers only a Kino merge and a Kino production deploy from main, and a ConoceRD review build to the tester group (the 'distribute' label, or appdistribution:distribute with exactly --groups review). 'app-distribution' in eliasdlc/conocerd is not one of them (only --groups review, with no --testers, is the tester group): quote Elias's words as BY="<his message>".
+exit=2 <- [conocerd] BY=standing firebase appdistribution:distribute a.apk --groups review,users
+BY=standing covers only a Kino merge and a Kino production deploy from main, and a ConoceRD review build to the tester group (the 'distribute' label, or appdistribution:distribute with exactly --groups review). 'app-distribution' in eliasdlc/conocerd is not one of them (only --groups review, with no --testers, is the tester group): quote Elias's words as BY="<his message>".
+exit=2 <- [conocerd] BY=standing firebase appdistribution:distribute a.apk --groups review --testers a@b.test
+BY=standing covers only a Kino merge and a Kino production deploy from main, and a ConoceRD review build to the tester group (the 'distribute' label, or appdistribution:distribute with exactly --groups review). 'review-build-label' in eliasdlc/conocerd is not one of them (only the label 'distribute' starts a review build): quote Elias's words as BY="<his message>".
+exit=2 <- [conocerd] BY=standing gh pr edit 9 --add-label distribute-review
+BY=standing covers only a Kino merge and a Kino production deploy from main, and a ConoceRD review build to the tester group (the 'distribute' label, or appdistribution:distribute with exactly --groups review). 'production-deploy' in eliasdlc/kino is not one of them (the checkout is on 'feat/x', not main): quote Elias's words as BY="<his message>".
+exit=2 <- [kino-task] BY=standing npx vercel --prod
+BY=standing covers only a Kino merge and a Kino production deploy from main, and a ConoceRD review build to the tester group (the 'distribute' label, or appdistribution:distribute with exactly --groups review). 'production-deploy' in eliasdlc/kino is not one of them (vercel promote can put any deployment in production): quote Elias's words as BY="<his message>".
+exit=2 <- [kino] BY=standing vercel promote dpl_1
+== round 2, step 3: passes again (the violations undone)
+exit=0 <- [conocerd] BY=standing firebase appdistribution:distribute a.apk --groups review
+exit=0 <- [kino] BY=standing npx vercel --prod
+exit=0 <- [conocerd] BY="distribuye a todos, dale" scripts/distribute.sh --prod
