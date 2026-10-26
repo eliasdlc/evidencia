@@ -1,0 +1,34 @@
+# mutation log R3: tests/test_design_identity.py -k BashWritesTests at 44ab783
+=== mutation: redirections ignored
+FAILED tests/test_design_identity.py::BashWritesTests::test_a_cd_in_front_moves_the_path_into_its_repo
+FAILED tests/test_design_identity.py::BashWritesTests::test_a_web_file_through_a_heredoc_meets_the_identity_and_content_checks
+SUBFAILED(command="cat > lib/features/home/presentation/home_screen.dart <<'EOF'") tests/test_design_identity.py::BashWritesTests::test_every_way_to_write_a_ui_file_is_seen
+SUBFAILED(command='cat >> lib/features/home/presentation/home_screen.dart <<EOF') tests/test_design_identity.py::BashWritesTests::test_every_way_to_write_a_ui_file_is_seen
+SUBFAILED(command="echo 'class A {}' > lib/features/home/presentation/home_screen.dart") tests/test_design_identity.py::BashWritesTests::test_every_way_to_write_a_ui_file_is_seen
+SUBFAILED(command='printf x >lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_every_way_to_write_a_ui_file_is_seen
+SUBFAILED(command='cat <<EOF > lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_every_way_to_write_a_ui_file_is_seen
+SUBFAILED(command="mkdir -p x && cd x && cat > lib/features/home/presentation/home_screen.dart <<'EOF'") tests/test_design_identity.py::BashWritesTests::test_every_way_to_write_a_ui_file_is_seen
+8 failed, 3 passed, 9 deselected, 17 subtests passed in 1.31s
+=== mutation: tee ignored
+SUBFAILED(command="tee lib/features/home/presentation/home_screen.dart <<'EOF'") tests/test_design_identity.py::BashWritesTests::test_every_way_to_write_a_ui_file_is_seen
+SUBFAILED(command='echo x | tee -a lib/features/home/presentation/home_screen.dart') tests/test_design_identity.py::BashWritesTests::test_every_way_to_write_a_ui_file_is_seen
+2 failed, 5 passed, 9 deselected, 21 subtests passed in 1.37s
+=== mutation: scripts ignored
+SUBFAILED(command="python3 - <<'EOF'") tests/test_design_identity.py::BashWritesTests::test_every_way_to_write_a_ui_file_is_seen
+SUBFAILED(command='python3 -c "from pathlib import Path; Path(\'lib/features/home/presentation/home_screen.dart\').write_text(\'x\')"') tests/test_design_identity.py::BashWritesTests::test_every_way_to_write_a_ui_file_is
+2 failed, 5 passed, 9 deselected, 21 subtests passed in 1.37s
+=== mutation: script reads count as writes
+SUBFAILED(command='python3 -c "print(open(\'lib/features/home/presentation/home_screen.dart\').read())"') tests/test_design_identity.py::BashWritesTests::test_commands_that_do_not_write_a_ui_file_pass
+SUBFAILED(command='python3 -c "print(\'lib/features/home/presentation/home_screen.dart\')"') tests/test_design_identity.py::BashWritesTests::test_commands_that_do_not_write_a_ui_file_pass
+2 failed, 5 passed, 9 deselected, 21 subtests passed in 1.44s
+=== mutation: heredoc body read as redirections
+SUBFAILED(command="cat > notes.txt <<'EOF'") tests/test_design_identity.py::BashWritesTests::test_commands_that_do_not_write_a_ui_file_pass
+1 failed, 5 passed, 9 deselected, 22 subtests passed in 1.47s
+=== mutation: cd ignored
+FAILED tests/test_design_identity.py::BashWritesTests::test_a_cd_in_front_moves_the_path_into_its_repo
+1 failed, 4 passed, 9 deselected, 23 subtests passed in 1.43s
+=== mutation: content not checked
+FAILED tests/test_design_identity.py::BashWritesTests::test_a_web_file_through_a_heredoc_meets_the_identity_and_content_checks
+1 failed, 4 passed, 9 deselected, 23 subtests passed in 1.66s
+=== restored (no mutation)
+5 passed, 9 deselected, 23 subtests passed in 1.44s
