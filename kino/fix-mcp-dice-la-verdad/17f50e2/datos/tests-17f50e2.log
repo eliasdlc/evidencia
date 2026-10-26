@@ -1,0 +1,68 @@
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agent-connections
+
+(node:602956) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+stderr | src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo
+El conector MCP falló al autorizar una petición: Error: Falta KINO_MCP_SIGNING_JWK: el conector MCP no puede firmar tokens para Convex.
+    at signingJwk (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:78:19)
+    at mintConvexToken (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:91:28)
+    at verify (/home/decruce/.t3/worktrees/kino/feat-agent-connections/src/app/api/mcp/route.ts:49:29)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:127:14
+
+stderr | src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > sin token, aunque Clerk falle, 401: no hay conexión que decir que sigue válida
+El conector MCP falló al autorizar una petición: Error: clerkMiddleware no detectado
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/app/api/mcp/route.test.ts:54:34
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64
+
+ ✓ |node| src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > con un token que Clerk acepta y sin la clave de firma, responde 503 con el motivo 13ms
+ ✓ |node| src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > con un token que Clerk rechaza, 401 con la metadata del recurso 1ms
+ ✓ |node| src/app/api/mcp/route.test.ts > /api/mcp · el fallo de Kino y el token inválido no se confunden > sin token, aunque Clerk falle, 401: no hay conexión que decir que sigue válida 2ms
+stderr | src/features/mcp/auth.test.ts > withServerFaults · un fallo de Kino no se disfraza de login caducado > si la verificación lanza, responde 503 con el motivo y no corre ninguna tool
+El conector MCP falló al autorizar una petición: Error: Falta KINO_MCP_SIGNING_JWK: el conector MCP no puede firmar tokens para Convex.
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.test.ts:137:13
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.ts:127:20
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/index.mjs:899:24
+    at Generator.next (<anonymous>)
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/chunk-FF57VHLH.mjs:53:61
+    at new Promise (<anonymous>)
+    at __async (file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/chunk-FF57VHLH.mjs:37:10)
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/mcp-handler@1.1.0_@modelcontextprotocol+sdk@1.29.0_zod@4.3.6__next@16.2.1_@babel+core@7_2f04e79f061ede1701f00988703f77d0/node_modules/mcp-handler/dist/index.mjs:891:19
+    at /home/decruce/.t3/worktrees/kino/feat-agent-connections/src/features/mcp/auth.test.ts:138:7
+    at file:///home/decruce/.t3/worktrees/kino/feat-agent-connections/node_modules/.pnpm/@vitest+runner@4.1.3/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+
+ ✓ |node| src/features/mcp/auth.test.ts > scopeFor · de los scopes de Clerk al alcance de Convex > sin ninguno de los tres, el conector sólo lee 2ms
+ ✓ |node| src/features/mcp/auth.test.ts > scopeFor · de los scopes de Clerk al alcance de Convex > gana el más fuerte de los concedidos 0ms
+ ✓ |node| src/features/mcp/auth.test.ts > scopeFor · de los scopes de Clerk al alcance de Convex > acepta la forma con el recurso de Clerk delante 0ms
+ ✓ |node| src/features/mcp/auth.test.ts > scopeFor · de los scopes de Clerk al alcance de Convex > anuncia los tres con el recurso, como los conoce Clerk 1ms
+ ✓ |node| src/features/mcp/auth.test.ts > el documento de recurso protegido > publica exactamente los alcances que el envoltorio aplica, recorriendo SCOPES y no una lista a mano 1ms
+ ✓ |node| src/features/mcp/auth.test.ts > el documento de recurso protegido > la ruta sirve esa misma lista y no otra 11ms
+ ✓ |node| src/features/mcp/auth.test.ts > mintConvexToken · el token que Convex valida > lleva el id de Clerk en sub, el alcance en kino_scope y el emisor y audiencia compartidos 7ms
+ ✓ |node| src/features/mcp/auth.test.ts > mintConvexToken · el token que Convex valida > lleva el cliente OAuth que Clerk verificó, para que el origen no lo declare el agente 2ms
+ ✓ |node| src/features/mcp/auth.test.ts > mintConvexToken · el token que Convex valida > sin cliente el claim no viaja: el navegador no tiene origen que firmar 3ms
+ ✓ |node| src/features/mcp/auth.test.ts > mintConvexToken · el token que Convex valida > la mitad pública no lleva la privada 1ms
+ ✓ |node| src/features/mcp/auth.test.ts > mintConvexToken · el token que Convex valida > una máquina de pruebas firma con su propio kid, y su mitad pública lo lleva 1ms
+ ✓ |node| src/features/mcp/auth.test.ts > withServerFaults · un fallo de Kino no se disfraza de login caducado > si la verificación lanza, responde 503 con el motivo y no corre ninguna tool 8ms
+ ✓ |node| src/features/mcp/auth.test.ts > withServerFaults · un fallo de Kino no se disfraza de login caducado > sin token válido sigue siendo 401 con la metadata, que es lo que arranca el OAuth 1ms
+ ✓ |node| src/features/mcp/auth.test.ts > withServerFaults · un fallo de Kino no se disfraza de login caducado > con un token válido pasa al servidor 1ms
+ ✓ |node| src/features/mcp/auth.test.ts > el copy del consentimiento > cada alcance tiene su frase, y ninguna sobra 0ms
+ ✓ |node| src/features/mcp/auth.test.ts > el copy del consentimiento > el copy dice que no puede borrar, y ninguna tool borra: las dos direcciones 0ms
+ ✓ |node| src/features/mcp/auth.test.ts > el copy del consentimiento > el catálogo y el copy comparten la política de edición de páginas 0ms
+ ✓ |node| src/features/mcp/connect.test.ts > cómo se conecta cada asistente > el enlace de claude.ai abre el diálogo de conector con la URL del recurso, sin perderla al codificar 2ms
+ ✓ |node| src/features/mcp/connect.test.ts > cómo se conecta cada asistente > Claude Code y Codex llevan el paso que autoriza, no sólo el que guarda la configuración 1ms
+ ✓ |node| src/features/mcp/connect.test.ts > cómo se conecta cada asistente > Claude Code lo guarda para todas las carpetas, no sólo para la que estaba abierta 0ms
+
+ Test Files  3 passed (3)
+      Tests  23 passed (23)
+   Start at  20:02:25
+   Duration  977ms (transform 315ms, setup 0ms, import 1.30s, tests 67ms, environment 0ms)
+
