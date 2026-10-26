@@ -1,0 +1,67 @@
+mutation subtask2: convex/lib/agentRoute.ts
+-   if (parentTaskId) return { status: 'routed' as const, routedBy: 'parent' as const,
++   if (false as boolean) return { status: 'routed' as const, routedBy: 'parent' as const,
+
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/feat-agentes-carpetas
+
+ ❯ |convex| convex/workdirRules.test.ts (34 tests | 2 failed) 1319ms
+     × createFromAgent: la madre manda sobre la regla de la carpeta 64ms
+     × createFromAgent: una carpeta sin regla no frena a la subtarea 8ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 32 passed (34)
+   Start at  00:35:01
+   Duration  2.01s (transform 668ms, setup 0ms, import 356ms, tests 1.32s, environment 72ms)
+
+(node:871029) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una subtarea se queda con el sistema de su madre > createFromAgent: la madre manda sobre la regla de la carpeta
+AssertionError: expected { routedBy: 'rule', …(3) } to match object { status: 'created', …(1) }
+(45 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "parent",
++   "routedBy": "rule",
+    "status": "created",
+  }
+
+ ❯ convex/workdirRules.test.ts:328:17
+    326|     const res = await agente.mutation(api.tasks.createFromAgent, { tit…
+    327|
+    328|     expect(res).toMatchObject({ status: 'created', routedBy: 'parent' …
+       |                 ^
+    329|     expect(res.status === 'created' && res.task.systemId).toBe(ids.Cas…
+    330|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > una subtarea se queda con el sistema de su madre > createFromAgent: una carpeta sin regla no frena a la subtarea
+AssertionError: expected { gitRemote: null, …(2) } to match object { status: 'created', …(1) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "routedBy": "parent",
+-   "status": "created",
++   "status": "needs_system",
+  }
+
+ ❯ convex/workdirRules.test.ts:358:17
+    356|     });
+    357|
+    358|     expect(res).toMatchObject({ status: 'created', routedBy: 'parent' …
+       |                 ^
+    359|   });
+    360|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
