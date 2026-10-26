@@ -1,0 +1,25 @@
+== wait-loop hook, three steps ==
+-- 1 passes: a loop that does work
+exit 0
+-- 2 fails: foreground wait loop
+Blocked: a foreground 'until' loop that only sleeps and polls holds this agent's slot while it waits. Start the job with run_in_background (or watch it with Monitor, an until-loop that exits when the condition holds), do the independent work meanwhile, and end the turn: the harness wakes you when the job finishes.
+exit 2
+-- 3 passes again: same command with run_in_background
+exit 0
+== heavy.sh per-resource locks, three steps ==
+-- 1 passes: an emulator and a build on different resources run concurrently
+build exit 0 after 3s while the emulator holds its own lock
+-- 2 fails: two jobs on the same resource serialize (second refused), --status shows holder and waiter
+agents heavy: another emulator job is running (sleep 4 (pid 84795, since 23:12:53Z), held for 1s). One at a time per kind on this machine; rerun with --wait to queue.
+second emulator exit 75
+agents heavy: waiting for sleep 4 (pid 84795, since 23:12:53Z), held for 1s
+agents heavy [build]: free
+agents heavy [emulator]: held by sleep 4 (pid 84795, since 23:12:53Z) for 2s
+  waiting [emulator]: echo queued-emulator (pid 84921) for 1s
+agents heavy: memory 24.0 GiB available, 1.0 GiB reserved
+queued-emulator
+-- 3 passes again: free, then a job runs
+agents heavy [build]: free
+agents heavy [emulator]: free
+agents heavy: memory 24.0 GiB available, 1.0 GiB reserved
+exit 0
