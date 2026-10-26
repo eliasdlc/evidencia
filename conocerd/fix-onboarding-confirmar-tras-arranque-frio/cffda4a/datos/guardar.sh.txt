@@ -1,0 +1,28 @@
+Driver copy used in this round: guardar.sh; U+2014 and U+00B7 replaced by a hyphen: 0
+#!/usr/bin/env bash
+# "Guardar" in the profile editor, from Explorar with a finished account
+# already on screen: Perfil, "Mi forma de viajar", change one interest,
+# Guardar, and judge by the screen and by the CRD_PERFIL_* markers.
+#   EMULATOR_LOCK_HELD=1 guardar.sh OUT NAME
+set -uo pipefail
+OUT=$1
+NAME=${2:-g}
+[ "${EMULATOR_LOCK_HELD:-}" = 1 ] || { echo "refused: take ~/.cache/conocerd-rework/emulator.lock first"; exit 2; }
+UI="python3 $(dirname "$0")/adb_ui.py"
+A="adb -s ${ANDROID_SERIAL:?set ANDROID_SERIAL}"
+mkdir -p "$OUT"
+$A logcat -c
+$UI tap "Perfil"; $UI wait "Pestaña 4 de 4" || { echo "FAIL no Perfil"; exit 1; }
+$UI tap "Mi forma de viajar"; $UI wait "Guardar" || { echo "FAIL no editor"; exit 1; }
+sleep 1.5; $A exec-out screencap -p > "$OUT/$NAME-editor.png"
+$UI tap "Aventura"; sleep 0.8
+$UI tap "Guardar"
+sleep 4
+conf=$($A logcat -d -v time | grep -c CRD_PERFIL_CONFIRMADO); sin=$($A logcat -d -v time | grep -c CRD_PERFIL_SIN_CONFIRMAR)
+$A exec-out screencap -p > "$OUT/$NAME-tras-guardar.png"
+if $UI has "Mi forma de viajar" && ! $UI has "Seguimos confirmando" && ! $UI has "Guardar|"; then
+  echo "guardar: back on Perfil (CONFIRMADO=$conf SIN_CONFIRMAR=$sin)"
+else
+  echo "guardar: NOT back on Perfil (CONFIRMADO=$conf SIN_CONFIRMAR=$sin)"
+fi
+$A logcat -d -v time | grep -E 'CRD_PERFIL_' | sed -E 's/^[0-9-]+ //' > "$OUT/$NAME-marcas.txt"
