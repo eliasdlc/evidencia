@@ -1,0 +1,16 @@
+...... [100%]
+=================================== FAILURES ===================================
+_ WaitLoopTests.test_foreground_waits_are_blocked (command='while ! [ -f x ]; do for i in 1 2; do sleep 1; done; done') _
+
+self = <test_wait_loop.WaitLoopTests testMethod=test_foreground_waits_are_blocked>
+
+    def test_foreground_waits_are_blocked(self):
+        for command in BLOCKED:
+            with self.subTest(command=command):
+>               self.assertEqual(run(command).returncode, 2, command)
+E               AssertionError: 0 != 2 : while ! [ -f x ]; do for i in 1 2; do sleep 1; done; done
+
+tests/test_wait_loop.py:90: AssertionError
+=========================== short test summary info ============================
+SUBFAILED(command='while ! [ -f x ]; do for i in 1 2; do sleep 1; done; done') tests/test_wait_loop.py::WaitLoopTests::test_foreground_waits_are_blocked
+1 failed, 6 passed, 77 subtests passed in 3.31s
