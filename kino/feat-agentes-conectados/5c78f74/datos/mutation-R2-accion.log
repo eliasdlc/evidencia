@@ -1,0 +1,38 @@
+# mutation R2-accion: convex/lib/fn.ts
+# "if (revocado) fail('REVOKED');" -> ''
+# pnpm vitest run convex/mcpClients.test.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agentes-conectados
+
+ ❯ |convex| convex/mcpClients.test.ts (21 tests | 1 failed) 472ms
+     × una mutación y una acción con su token también fallan REVOKED 20ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  05:23:21
+   Duration  951ms (transform 370ms, setup 0ms, import 266ms, tests 472ms, environment 57ms)
+
+(node:1113773) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/mcpClients.test.ts > un cliente desconectado > una mutación y una acción con su token también fallan REVOKED
+AssertionError: expected undefined to be 'REVOKED' // Object.is equality
+
+- Expected:
+"REVOKED"
+
++ Received:
+undefined
+
+ ❯ convex/mcpClients.test.ts:237:70
+    235|
+    236|     expect(await codeOf(conToken.mutation(api.lib.fnFixture.write, {})…
+    237|     expect(await codeOf(conToken.action(api.lib.fnFixture.act, {}))).t…
+       |                                                                      ^
+    238|     // Otro cliente de la misma persona sigue entrando por las dos pue…
+    239|     expect(await t.withIdentity(conector('c2')).mutation(api.lib.fnFix…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
