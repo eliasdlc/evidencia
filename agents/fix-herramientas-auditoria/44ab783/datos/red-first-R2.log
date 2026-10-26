@@ -1,0 +1,31 @@
+# red-first R2: hooks/launch-in-t3.py reverted to HEAD (no test_client)
+        ]:
+            with self.subTest(command=command):
+>               self.assertEqual(self.verdict(command), 0)
+E               AssertionError: 2 != 0
+tests/test_launch_in_t3.py:138: AssertionError
+_ TestClientTests.test_a_bounded_print_run_with_its_own_config_passes_in_every_context _
+self = <test_launch_in_t3.TestClientTests testMethod=test_a_bounded_print_run_with_its_own_config_passes_in_every_context>
+    def test_a_bounded_print_run_with_its_own_config_passes_in_every_context(self):
+        for command in [
+            self.CLAUDE, self.CODEX,
+            "CLAUDE_CONFIG_DIR=\"$TMPDIR/kino/claude\" timeout 60s claude --print hi",
+            "CLAUDE_CONFIG_DIR=$HOME/.cache/kino/c timeout -s KILL 30 claude -p hi",
+            "timeout 90 env CODEX_HOME=/var/tmp/k codex exec --json hi",
+            "CLAUDE_CONFIG_DIR=\"$(mktemp -d)\" timeout 60 claude -p hi",
+            self.CLAUDE + " 2>&1 | tee /tmp/out.log",
+            self.CLAUDE + " &",
+            "ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'",
+        ]:
+            with self.subTest(command=command):
+                self.assertEqual(self.verdict(command), 0)
+>       self.assertEqual(self.verdict(self.CLAUDE, background=True), 0)
+E       AssertionError: 2 != 0
+tests/test_launch_in_t3.py:139: AssertionError
+----------------------------- Captured stdout call -----------------------------
+uuuuuuuuu
+=========================== short test summary info ============================
+SUBFAILED(command="CLAUDE_CONFIG_DIR=/tmp/kino-mcp/claude timeout 120 claude -p 'list the kino tools' &") tests/test_launch_in_t3.py::TestClientTests::test_a_bounded_print_run_with_its_own_config_passes_in_every_context
+SUBFAILED(command="ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'") tests/test_launch_in_t3.py::TestClientTests::test_a_bounded_print_run_with_its_own_config_passes_in_every_context
+FAILED tests/test_launch_in_t3.py::TestClientTests::test_a_bounded_print_run_with_its_own_config_passes_in_every_context
+3 failed, 1 passed, 6 deselected, 24 subtests passed in 1.35s
