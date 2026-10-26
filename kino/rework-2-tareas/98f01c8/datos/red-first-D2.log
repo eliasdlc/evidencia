@@ -1,0 +1,650 @@
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/rework-2-tareas
+
+(node:2529787) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:2529917) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2529916) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2529918) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+stderr | src/features/systems/views/PersonalView.test.tsx > PersonalView > D2: completar desde la hoja deja la fila de Hoy tachada en su renglón
+An update to TaskDetailForm inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ❯ |dom| src/features/systems/views/PersonalView.test.tsx (6 tests | 1 failed | 5 skipped) 518ms
+     × D2: completar desde la hoja deja la fila de Hoy tachada en su renglón 515ms
+ ❯ |dom| src/features/tasks/TaskDetailSheet.inplace.test.tsx (1 test | 1 failed) 477ms
+     × D2: la fila queda tachada en su sitio y el Deshacer devuelve su estado una sola vez 473ms
+stderr | src/features/systems/views/InboxView.test.tsx > InboxView > D2: completar desde la hoja deja la fila tachada en su renglón
+An update to TaskDetailForm inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ❯ |dom| src/features/systems/views/InboxView.test.tsx (8 tests | 1 failed | 7 skipped) 706ms
+     × D2: completar desde la hoja deja la fila tachada en su renglón 702ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/features/tasks/TaskDetailSheet.inplace.test.tsx > completar desde la hoja de detalle > D2: la fila queda tachada en su sitio y el Deshacer devuelve su estado una sola vez
+AssertionError: expected [ 'Pedir la beca' ] to deeply equal [ 'Leer el capítulo dos', …(1) ]
+
+- Expected
++ Received
+
+  [
+-   "Leer el capítulo dos",
+    "Pedir la beca",
+  ]
+
+ ❯ src/features/tasks/TaskDetailSheet.inplace.test.tsx:45:34
+     43|     act(() => convex.publish(stubQuery(api.tasks.bySystem, [{ ...a, st…
+     44|
+     45|     expect(titulosDe(container)).toEqual(["Leer el capítulo dos", "Ped…
+       |                                  ^
+     46|     expect(screen.getByRole("button", { name: "Completar Leer el capít…
+     47|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |dom| src/features/systems/views/InboxView.test.tsx > InboxView > D2: completar desde la hoja deja la fila tachada en su renglón
+AssertionError: expected [ Array(1) ] to have a length of 2 but got 1
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ src/features/systems/views/InboxView.test.tsx:90:80
+     88|     act(() => convex.publish(stubQuery(api.tasks.bySystem, [{ ...prime…
+     89|
+     90|     expect(screen.getAllByRole('button', { name: /^Cosa \d$/, hidden: …
+       |                                                                                ^
+     91|     expect(screen.getByRole('button', { name: 'Cosa 1', hidden: true }…
+     92|     expect(screen.getAllByRole('button', { name: 'Completar Cosa 1', h…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  |dom| src/features/systems/views/PersonalView.test.tsx > PersonalView > D2: completar desde la hoja deja la fila de Hoy tachada en su renglón
+TestingLibraryElementError: Unable to find an element with the role "button" and name "Caminar 30 minutos"
+
+Here are the available roles:
+
+  button:
+
+  Name "Nueva tarea":
+  [36m<button[39m
+    [33mclass[39m=[32m"group/button press inline-flex items-center justify-center rounded-full border bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) select-none focus-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5 border-input bg-transparent hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground h-[2.85rem] gap-2 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3 w-fit shrink-0 max-md:px-2.5"[39m
+    [33mdata-size[39m=[32m"default"[39m
+    [33mdata-slot[39m=[32m"button"[39m
+    [33mdata-variant[39m=[32m"outline"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Hoy":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"personal-hoy"[39m
+    [33mclass[39m=[32m"space-y-1"[39m
+  [36m/>[39m
+
+  Name "áreas":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"personal-areas"[39m
+    [33mclass[39m=[32m"space-y-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Hoy":
+  [36m<h3[39m
+    [33mclass[39m=[32m"text-xs font-bold tracking-[0.12em] text-muted-foreground uppercase"[39m
+    [33mid[39m=[32m"personal-hoy"[39m
+  [36m/>[39m
+
+  Name "áreas":
+  [36m<h3[39m
+    [33mclass[39m=[32m"text-xs font-bold tracking-[0.12em] text-muted-foreground uppercase"[39m
+    [33mid[39m=[32m"personal-areas"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"pt-1 text-sm text-muted-foreground"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ul />[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"border-b border-border last:border-0"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  link:
+
+  Name "Salud0":
+  [36m<a[39m
+    [33mclass[39m=[32m"flex min-h-12 items-center gap-3 py-3 text-sm"[39m
+    [33mhref[39m=[32m"/systems/sys-p/folders/fold-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------dialog:
+
+  Name "Tarea":
+  [36m<div[39m
+    [33maria-describedby[39m=[32m"radix-_r_5_"[39m
+    [33maria-labelledby[39m=[32m"radix-_r_4_"[39m
+    [33mclass[39m=[32m"fixed inset-x-0 bottom-0 z-(--z-modal) flex max-h-[92dvh] flex-col rounded-t-xl border-t border-border bg-popover text-sm text-popover-foreground shadow-(--shadow) outline-none"[39m
+    [33mdata-slot[39m=[32m"drawer-content"[39m
+    [33mdata-state[39m=[32m"closed"[39m
+    [33mdata-vaul-animate[39m=[32m"true"[39m
+    [33mdata-vaul-custom-container[39m=[32m"false"[39m
+    [33mdata-vaul-delayed-snap-points[39m=[32m"false"[39m
+    [33mdata-vaul-drawer[39m=[32m""[39m
+    [33mdata-vaul-drawer-direction[39m=[32m"bottom"[39m
+    [33mdata-vaul-snap-points[39m=[32m"false"[39m
+    [33mid[39m=[32m"radix-_r_3_"[39m
+    [33mrole[39m=[32m"dialog"[39m
+    [33mstyle[39m=[32m"pointer-events: auto;"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Cerrar":
+  [36m<button[39m
+    [33mclass[39m=[32m"group/button press inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) select-none focus-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5 hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 size-[2.85rem] absolute top-1.5 right-1.5"[39m
+    [33mdata-size[39m=[32m"icon"[39m
+    [33mdata-slot[39m=[32m"drawer-close"[39m
+    [33mdata-variant[39m=[32m"ghost"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Completar Caminar 30 minutos":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Completar Caminar 30 minutos"[39m
+    [33mclass[39m=[32m"press focus-ring flex size-[2.85rem] items-center justify-center rounded-full transition-transform duration-(--dur-toque) ease-(--ease-pluma)"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Tarea":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-foreground bg-foreground text-background"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Idea":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border bg-transparent text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Evento":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border bg-transparent text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Recordatorio":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border bg-transparent text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Épica":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border bg-transparent text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Categoría":
+  [36m<button[39m
+    [33mclass[39m=[32m"inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border border-dashed border-border text-muted-foreground hover:border-muted-foreground/50 transition-colors"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Crítica":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Alta":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Media":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-foreground bg-foreground text-background"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Baja":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Alta":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Media":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-foreground bg-foreground text-background"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Baja":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Sin carpeta":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-foreground bg-foreground text-background"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Salud":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Empieza":
+  [36m<button[39m
+    [33maria-describedby[39m=[32m"start-time-valor"[39m
+    [33maria-labelledby[39m=[32m"start-time-rotulo"[39m
+    [33mclass[39m=[32m"press focus-ring -ml-2 inline-flex min-h-[2.85rem] max-w-full items-center rounded-full px-2 text-left text-base transition-[background-color,transform] duration-(--dur-toque) ease-(--ease-pluma) hover:bg-sf2/60 md:pointer-fine:min-h-9"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Vence":
+  [36m<button[39m
+    [33maria-describedby[39m=[32m"due-time-valor"[39m
+    [33maria-labelledby[39m=[32m"due-time-rotulo"[39m
+    [33mclass[39m=[32m"press focus-ring -ml-2 inline-flex min-h-[2.85rem] max-w-full items-center rounded-full px-2 text-left text-base transition-[background-color,transform] duration-(--dur-toque) ease-(--ease-pluma) hover:bg-sf2/60 md:pointer-fine:min-h-9"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "No se repite":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-foreground bg-foreground text-background"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Cada día":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Cada semana":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Cada mes":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Otra regla":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"press focus-ring inline-flex h-[2.85rem] items-center rounded-full border px-3.5 text-sm font-medium transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) md:pointer-fine:h-8 md:pointer-fine:px-3 md:pointer-fine:text-xs border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Agregar un aviso":
+  [36m<button[39m
+    [33mclass[39m=[32m"press focus-ring -ml-2 inline-flex min-h-[2.85rem] max-w-full items-center rounded-full px-2 text-left text-base transition-[background-color,transform] duration-(--dur-toque) ease-(--ease-pluma) hover:bg-sf2/60 md:pointer-fine:min-h-9 gap-1.5 text-muted-foreground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Descargar en JSON":
+  [36m<button[39m
+    [33mclass[39m=[32m"group/button press inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) select-none focus-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5 hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 h-[2.85rem] px-3.5 md:pointer-fine:h-10 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5 gap-1.5 text-muted-foreground"[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-slot[39m=[32m"button"[39m
+    [33mdata-variant[39m=[32m"ghost"[39m
+  [36m/>[39m
+
+  Name "Marcar como hecha":
+  [36m<button[39m
+    [33mclass[39m=[32m"group/button press inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) select-none focus-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5 bg-primary text-primary-foreground shadow-[0_.5em_1.4em_-.4em_var(--glow)] hover:bg-primary/90 h-[3.2rem] gap-2 px-[1.1rem] has-data-[icon=inline-end]:pr-3.5 has-data-[icon=inline-start]:pl-3.5 md:flex-1"[39m
+    [33mdata-size[39m=[32m"lg"[39m
+    [33mdata-slot[39m=[32m"button"[39m
+    [33mdata-variant[39m=[32m"default"[39m
+  [36m/>[39m
+
+  Name "Iniciar foco":
+  [36m<button[39m
+    [33mclass[39m=[32m"group/button press inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) select-none focus-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5 bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground h-[3.2rem] gap-2 px-[1.1rem] has-data-[icon=inline-end]:pr-3.5 has-data-[icon=inline-start]:pl-3.5 md:flex-1"[39m
+    [33mdata-size[39m=[32m"lg"[39m
+    [33mdata-slot[39m=[32m"button"[39m
+    [33mdata-variant[39m=[32m"secondary"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Tarea":
+  [36m<h2[39m
+    [33mclass[39m=[32m"pl-(--margen) font-sans text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase"[39m
+    [33mdata-slot[39m=[32m"drawer-title"[39m
+    [33mid[39m=[32m"radix-_r_4_"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"text-sm text-muted-foreground sr-only"[39m
+    [33mdata-slot[39m=[32m"drawer-description"[39m
+    [33mid[39m=[32m"radix-_r_5_"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"pt-[0.6rem] text-sm text-muted-foreground"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Título":
+  [36m<textarea[39m
+    [33mclass[39m=[32m"focus-ring field-sizing-content block w-full resize-none rounded-md bg-transparent font-display text-[1.5rem] leading-[1.15] font-bold tracking-[-0.02em] outline-none"[39m
+    [33mid[39m=[32m"task-title"[39m
+    [33mmaxlength[39m=[32m"500"[39m
+    [33mrows[39m=[32m"1"[39m
+  [36m/>[39m
+
+  Name "Notas":
+  [36m<textarea[39m
+    [33mclass[39m=[32m"focus-ring field-sizing-content mt-2 block min-h-[3.2rem] w-full resize-none rounded-md bg-transparent font-voice text-[1.05rem] leading-relaxed text-body outline-none placeholder:text-muted-foreground"[39m
+    [33mid[39m=[32m"task-desc"[39m
+    [33mplaceholder[39m=[32m"Notas, si hacen falta"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "Prioridad":
+  [36m<div[39m
+    [33maria-labelledby[39m=[32m"prioridad-rotulo"[39m
+    [33mclass[39m=[32m"flex flex-wrap gap-1.5"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  Name "Energía":
+  [36m<div[39m
+    [33maria-labelledby[39m=[32m"energia-rotulo"[39m
+    [33mclass[39m=[32m"flex flex-wrap gap-1.5"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  Name "En":
+  [36m<div[39m
+    [33maria-labelledby[39m=[32m"carpeta-rotulo"[39m
+    [33mclass[39m=[32m"flex flex-wrap gap-1.5"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  Name "Repite":
+  [36m<div[39m
+    [33maria-labelledby[39m=[32m"repite-rotulo"[39m
+    [33mclass[39m=[32m"flex flex-wrap gap-1.5"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "Cargando la actividad":
+  [36m<ul[39m
+    [33maria-busy[39m=[32m"true"[39m
+    [33maria-label[39m=[32m"Cargando la actividad"[39m
+    [33mclass[39m=[32m"space-y-2"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"h-4 w-full max-w-[24rem] rounded bg-muted"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"h-4 w-full max-w-[24rem] rounded bg-muted"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"h-4 w-full max-w-[24rem] rounded bg-muted"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mdata-scroll-locked[39m=[32m"1"[39m
+  [33mstyle[39m=[32m"pointer-events: none;"[39m
+[36m>[39m
+  [36m<span[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+    [33mdata-radix-focus-guard[39m=[32m""[39m
+    [33mstyle[39m=[32m"outline: none; opacity: 0; position: fixed; pointer-events: none;"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+  [36m<div[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+  [36m>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"space-y-6"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex items-center justify-end"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"group/button press inline-flex items-center justify-center rounded-full border bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) select-none focus-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5 border-input bg-transparent hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground h-[2.85rem] gap-2 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3 w-fit shrink-0 max-md:px-2.5"[39m
+          [33mdata-size[39m=[32m"default"[39m
+          [33mdata-slot[39m=[32m"button"[39m
+          [33mdata-variant[39m=[32m"outline"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"lucide lucide-plus size-4 md:hidden"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"24"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-linecap[39m=[32m"round"[39m
+            [33mstroke-linejoin[39m=[32m"round"[39m
+            [33mstroke-width[39m=[32m"2"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"24"[39m
+            [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M5 12h14"[39m
+            [36m/>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M12 5v14"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"hidden md:inline"[39m
+          [36m>[39m
+            [0mNueva tarea[0m
+          [36m</span>[39m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"personal-hoy"[39m
+        [33mclass[39m=[32m"space-y-1"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mclass[39m=[32m"text-xs font-bold tracking-[0.12em] text-muted-foreground uppercase"[39m
+          [33mid[39m=[32m"personal-hoy"[39m
+        [36m>[39m
+          [0mHoy[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"pt-1 text-sm text-muted-foreground"[39m
+        [36m>[39m
+          [0mHoy no hay nada de este sistema en el plan.[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"personal-areas"[39m
+        [33mclass[39m=[32m"space-y-1"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mclass[39m=[32m"text-xs font-bold tracking-[0.12em] text-muted-foreground uppercase"[39m
+          [33mid[39m=[32m"personal-areas"[39m
+        [36m>[39m
+          [0máreas[0m
+        [36m</h3>[39m
+        [36m<ul>[39m
+          [36m<li[39m
+            [33mclass[39m=[32m"border-b border-border last:border-0"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"flex min-h-12 items-center gap-3 py-3 text-sm"[39m
+              [33mhref[39m=[32m"/systems/sys-p/folders/fold-1"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"min-w-0 flex-1 truncate"[39m
+              [36m>[39m
+                [0mSalud[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"shrink-0 font-mono text-xs text-muted-foreground tabular-nums"[39m
+              [36m>[39m
+                [0m0[0m
+              [36m</span>[39m
+            [36m</a>[39m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mclass[39m=[32m"fixed inset-0 z-(--z-modal) bg-(--scrim) data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+    [33mdata-slot[39m=[32m"drawer-overlay"[39m
+    [33mdata-state[39m=[32m"closed"[39m
+    [33mdata-vaul-animate[39m=[32m"true"[39m
+    [33mdata-vaul-overlay[39m=[32m""[39m
+    [33mdata-vaul-snap-points[39m=[32m"false"[39m
+    [33mdata-vaul-snap-points-overlay[39m=[32m"false"[39m
+    [33mstyle[39m=[32m"pointer-events: auto;"[39m
+  [36m/>[39m
+  [36m<div[39m
+    [33maria-describedby[39m=[32m"radix-_r_5_"[39m
+    [33maria-labelledby[39m=[32m"radix-_r_4_"[39m
+    [33mclass[39m=[32m"fixed inset-x-0 bottom-0 z-(--z-modal) flex max-h-[92dvh] flex-col rounded-t-xl border-t border-border bg-popover text-sm text-popover-foreground shadow-(--shadow) outline-none"[39m
+    [33mdata-slot[39m=[32m"drawer-content"[39m
+    [33mdata-state[39m=[32m"closed"[39m
+    [33mdata-vaul-animate[39m=[32m"true"[39m
+    [33mdata-vaul-custom-container[39m=[32m"false"[39m
+    [33mdata-vaul-delayed-snap-points[39m=[32m"false"[39m
+    [33mdata-vaul-drawer[39m=[32m""[39m
+    [33mdata-vaul-drawer-direction[39m=[32m"bottom"[39m
+    [33mdata-vaul-snap-points[39m=[32m"false"[39m
+    [33mid[39m=[32m"radix-_r_3_"[39m
+    [33mrole[39m=[32m"dialog"[39m
+    [33mstyle[39m=[32m"pointer-events: auto;"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m>[39m
+    [36m<div[39m
+      [33maria-hidden[39m=[32m"true"[39m
+      [33mclass[39m=[32m"mx-auto mt-3 h-1.5 w-10 shrink-0 rounded-full bg-ln2"[39m
+      [33mdata-slot[39m=[32m"drawer-handle"[39m
+    [36m/>[39m
+    [36m<button[39m
+      [33mclass[39m=[32m"group/button press inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[color,background-color,border-color,transform] duration-(--dur-toque) ease-(--ease-pluma) select-none focus-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5 hover:bg-muted hover:text-foreground aria-expanded:bg-muted a...
+ ❯ Object.getElementError node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/systems/views/PersonalView.test.tsx:97:19
+     95|     act(() => convex.publish(stubQuery(api.tasks.bySystem, [{ ...habit…
+     96|
+     97|     expect(screen.getByRole('button', { name: 'Caminar 30 minutos', hi…
+       |                   ^
+     98|   });
+     99| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  3 failed | 12 skipped (15)
+   Start at  03:35:57
+   Duration  4.63s (transform 1.18s, setup 379ms, import 9.32s, tests 1.70s, environment 1.71s)
+
