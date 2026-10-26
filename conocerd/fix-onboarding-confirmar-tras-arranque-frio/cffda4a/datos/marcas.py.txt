@@ -1,0 +1,27 @@
+Driver copy used in this round: marcas.py; U+2014 and U+00B7 replaced by a hyphen: 4
+#!/usr/bin/env python3
+"""marcas.py OUT TITLE RUN_DIR DRIVER_LOG [--solo-sondas]
+The raw per-attempt marker files of one driver run, verbatim and in order,
+after the driver's own log. --solo-sondas keeps only the app's own lines
+([DEBUG-c7a2] and CRD_PERFIL_), dropping the SDK's log."""
+import pathlib, re, sys
+out, title, run, log = sys.argv[1:5]
+solo = "--solo-sondas" in sys.argv
+run = pathlib.Path(run)
+parts = [title, "", f"== driver log ({pathlib.Path(log).name}) =="]
+parts += [l for l in pathlib.Path(log).read_text().splitlines() if not l.startswith("/data/app/")]
+files = sorted(run.glob("a*-marcas.txt"))
+for f in files:
+    lines = f.read_text().splitlines()
+    if solo:
+        kept = [l for l in lines if "[DEBUG-c7a2]" in l or "CRD_PERFIL_" in l]
+        parts += ["", f"== {f.name} ({len(kept)} of {len(lines)} lines: the app's own prints only) =="] + kept
+    else:
+        parts += ["", f"== {f.name} ({len(lines)} lines, verbatim) =="] + lines
+s = "\n".join(parts) + "\n"
+n = s.count("-") + s.count("-")
+s = s.replace("-", "-").replace("-", "-")
+first, rest = s.split("\n", 1)
+assert "/home/" not in s and "token" not in rest.lower(), "unsafe"
+pathlib.Path(out).write_text(f"{first}; U+2014 and U+00B7 replaced by a hyphen: {n}\n{rest}")
+print(out, len(files), "attempt files")
