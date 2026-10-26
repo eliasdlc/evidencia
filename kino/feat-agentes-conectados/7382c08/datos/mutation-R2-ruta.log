@@ -1,0 +1,38 @@
+# mutation R2-ruta: src/app/api/mcp/route.ts
+# 'if (revoked) return revoked;' -> ''
+# pnpm vitest run src/app/api/mcp/route.test.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agentes-conectados
+
+ ❯ |node| src/app/api/mcp/route.test.ts (8 tests | 1 failed) 29ms
+     × revocado: 403 con acceso revocado desde Kino, sin desafío OAuth y sin montar el servidor 4ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  02:07:38
+   Duration  1.24s (transform 107ms, setup 0ms, import 1.05s, tests 29ms, environment 0ms)
+
+(node:940973) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |node| src/app/api/mcp/route.test.ts > /api/mcp · un cliente desconectado en Ajustes no entra > revocado: 403 con acceso revocado desde Kino, sin desafío OAuth y sin montar el servidor
+AssertionError: expected 401 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 401
+
+ ❯ src/app/api/mcp/route.test.ts:136:26
+    134|     for (const body of [INITIALIZE, { jsonrpc: "2.0", id: 2, method: "…
+    135|       const res = await post("oat_1", undefined, undefined, body);
+    136|       expect(res.status).toBe(403);
+       |                          ^
+    137|       expect(res.headers.get("WWW-Authenticate")).toBeNull();
+    138|       const respuesta = (await res.json()) as { error: { message: stri…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
