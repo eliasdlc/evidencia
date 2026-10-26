@@ -1,0 +1,22 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__ DelegationTests.test_a_child_is_admitted_by_free_memory_after_the_reserve ___
+delegation.Blocked: BUDGET_MEMORY: 1.0 GiB free after the 1.0 GiB reserve, and an agent needs 1.5 GiB; wait for a running child to finish
+
+During handling of the above exception, another exception occurred:
+
+self = <test_delegation.DelegationTests testMethod=test_a_child_is_admitted_by_free_memory_after_the_reserve>
+
+    def test_a_child_is_admitted_by_free_memory_after_the_reserve(self):
+        self.set_available_gib(2.0)
+>       self.reject(r'BUDGET_MEMORY: 1\.0 GiB free after the 1\.0 GiB reserve, and an agent needs 1\.5 GiB; free memory \(a running child, the emulator or a build\) or wait')
+
+tests/test_delegation.py:365: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_delegation.py:52: in reject
+    with self.assertRaisesRegex(d.Blocked, rule):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: "BUDGET_MEMORY: 1\.0 GiB free after the 1\.0 GiB reserve, and an agent needs 1\.5 GiB; free memory \(a running child, the emulator or a build\) or wait" does not match "BUDGET_MEMORY: 1.0 GiB free after the 1.0 GiB reserve, and an agent needs 1.5 GiB; wait for a running child to finish"
+=========================== short test summary info ============================
+FAILED tests/test_delegation.py::DelegationTests::test_a_child_is_admitted_by_free_memory_after_the_reserve
+1 failed, 37 deselected in 0.07s
