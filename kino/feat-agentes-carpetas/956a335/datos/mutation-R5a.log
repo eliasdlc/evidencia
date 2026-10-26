@@ -1,0 +1,42 @@
+mutation R5a: convex/lib/workdir.ts
+- .withIndex('by_user_kind_key', (q) => q.eq('userId', userId).eq('kind', kind).eq('key', key))
++ .filter((q) => q.and(q.eq(q.field('kind'), kind), q.eq(q.field('key'), key)))
+- if (system && system.userId === userId && system.isActive)
++ if (system && system.isActive)
+
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/feat-agentes-carpetas
+
+ ❯ |convex| convex/workdirRules.test.ts (30 tests | 1 failed) 1123ms
+     × la regla de Beto para la misma carpeta nunca decide por Ana 22ms
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 36 passed (37)
+   Start at  00:17:41
+   Duration  1.83s (transform 899ms, setup 0ms, import 667ms, tests 1.13s, environment 157ms)
+
+(node:842804) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/workdirRules.test.ts > cada persona, sus reglas > la regla de Beto para la misma carpeta nunca decide por Ana
+ConvexError: {"code":"NOT_FOUND","message":"System not found"}
+ ❯ notFound convex/lib/errors.ts:8:9
+      6|
+      7| export function notFound(message: string): never {
+      8|   throw new ConvexError({ code: 'NOT_FOUND' as const, message });
+       |         ^
+      9| }
+     10|
+ ❯ ownSystem convex/tasks.ts:133:38
+ ❯ createOne convex/tasks.ts:579:18
+ ❯ handler convex/tasks.ts:662:27
+ ❯ handler node_modules/.pnpm/convex-helpers@0.1.123_@standard-schema+spec@1.1.0_convex@1.45.0_@clerk+react@6.15.1_re_cd6a3add6a65e20974f3e63099f13cc2/node_modules/convex-helpers/server/zod4.js:591:33
+ ❯ invokeFunction node_modules/.pnpm/convex@1.45.0_@clerk+react@6.15.1_react-dom@19.2.4_react@19.2.4__react@19.2.4__bufferut_1a6a1751f2490a386db37d6f9dd7ee16/node_modules/convex/src/server/impl/registration_impl.ts:90:13
+ ❯ invokeMutation node_modules/.pnpm/convex@1.45.0_@clerk+react@6.15.1_react-dom@19.2.4_react@19.2.4__react@19.2.4__bufferut_1a6a1751f2490a386db37d6f9dd7ee16/node_modules/convex/src/server/impl/registration_impl.ts:70:17
+ ❯ runMutationWithHandler node_modules/.pnpm/convex-test@0.0.56_convex@1.45.0_@clerk+react@6.15.1_react-dom@19.2.4_react@19.2.4__rea_8f46f6db1b2514d58bce0433529d133c/node_modules/convex-test/dist/index.js:1672:31
+ ❯ Object.mutationFromPath node_modules/.pnpm/convex-test@0.0.56_convex@1.45.0_@clerk+react@6.15.1_react-dom@19.2.4_react@19.2.4__rea_8f46f6db1b2514d58bce0433529d133c/node_modules/convex-test/dist/index.js:1813:32
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
