@@ -1,0 +1,926 @@
+..F......                             [100%]
+=================================== FAILURES ===================================
+_ TestClientTests.test_a_bounded_print_run_with_its_own_config_passes_in_every_context (command='CODEX_HOME=/tmp/x timeout 120 codex -c k=v exec q &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_a_bounded_print_run_with_its_own_config_passes_in_every_context>
+
+    def test_a_bounded_print_run_with_its_own_config_passes_in_every_context(self):
+        for command in [
+            self.CLAUDE, self.CODEX,
+            "CLAUDE_CONFIG_DIR=~/.cache/kino/c timeout 60s claude --print hi",
+            "CLAUDE_CONFIG_DIR=/home/decruce/.cache/kino/c timeout -s KILL 30 claude -p hi",
+            "timeout 5m env CODEX_HOME=/tmp/k codex exec --json hi",
+            "env CLAUDE_CONFIG_DIR=/tmp/x timeout 120 claude -p q &",
+            "CODEX_HOME=/tmp/x timeout 120 codex -c k=v exec q &",
+            self.CLAUDE + " 2>&1 | tee /tmp/out.log",
+            self.CLAUDE + " &",
+        ]:
+            with self.subTest(command=command):
+>               self.assertEqual(self.verdict(command), 0)
+E               AssertionError: 2 != 0
+
+tests/test_launch_in_t3.py:138: AssertionError
+_____ TestClientTests.test_a_symlink_into_the_real_config_keeps_the_block ______
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_a_symlink_into_the_real_config_keeps_the_block>
+
+    def test_a_symlink_into_the_real_config_keeps_the_block(self):
+        with tempfile.TemporaryDirectory() as home:
+            os.makedirs(os.path.join(home, ".claude"))
+            link = tempfile.mkdtemp(prefix="kino-link-", dir="/tmp")
+            os.rmdir(link)
+            os.symlink(os.path.join(home, ".claude"), link)
+            try:
+                r = run_hook(f"CLAUDE_CONFIG_DIR={link} timeout 9 claude -p hi &", home)
+            finally:
+                os.unlink(link)
+>       self.assertEqual(r.returncode, 2)
+E       AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:195: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CODEX_HOME=/tmp/k timeout 9 codex --model exec x &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked="tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'") _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked="screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'") _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked='setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &') _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+_ TestClientTests.test_each_missing_condition_keeps_the_block (blocked="ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'") _
+
+self = <test_launch_in_t3.TestClientTests testMethod=test_each_missing_condition_keeps_the_block>
+
+    def test_each_missing_condition_keeps_the_block(self):
+        for command, how in [
+            ("timeout 120 claude -p hi &", "in the background"),                                    # no config dir
+            ("CLAUDE_CONFIG_DIR=~/.claude timeout 120 claude -p hi &", "in the background"),        # the real one
+            ("CLAUDE_CONFIG_DIR=/home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.claude timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/../home/decruce/.config/x timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k claude -p hi &", "in the background"),                       # no timeout
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 0 claude -p hi &", "in the background"),            # timeout 0 is none
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 claude --permission-mode bypassPermissions &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 120 codex --full-auto brief &", "in the background"),       # not exec
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 codex exec hi &", "in the background"),          # wrong variable
+            ("CODEX_HOME=/tmp/k timeout 120 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 opencode run hi &", "in the background"),        # other agents
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 120 nohup claude -p hi &", "detached with nohup"),
+            ("tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k claude -p hi'", "inside tmux"),
+            ("ssh ab tmux new -d -s t 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude'", "over ssh"),
+            ("CLAUDE_CONFIG_DIR=$T timeout 120 claude -p hi &", "in the background"),               # unverifiable path
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &", "in the background"),         # no ceiling
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &", "in the background"),
+            ("TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &", "in the background"),       # variable
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &", "in the background"),        # -p as a value
+            ("CODEX_HOME=/tmp/k timeout 9 codex --model exec x &", "in the background"),
+            ("CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &", "in the background"),
+            ("CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &", "in the background"),
+            ("tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside tmux"),
+            ("screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'", "inside screen"),
+            ("nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with nohup"),
+            ("setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &", "detached with setsid"),
+            ("ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'", "over ssh"),
+        ]:
+            with self.subTest(blocked=command):
+                with tempfile.TemporaryDirectory() as home:
+                    r = run_hook(command, home)
+>               self.assertEqual(r.returncode, 2)
+E               AssertionError: 0 != 2
+
+tests/test_launch_in_t3.py:181: AssertionError
+=========================== short test summary info ============================
+SUBFAILED(command='CODEX_HOME=/tmp/x timeout 120 codex -c k=v exec q &') tests/test_launch_in_t3.py::TestClientTests::test_a_bounded_print_run_with_its_own_config_passes_in_every_context
+FAILED tests/test_launch_in_t3.py::TestClientTests::test_a_symlink_into_the_real_config_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 99999 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 601 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 11m claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 1h claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='TMPDIR=$HOME CLAUDE_CONFIG_DIR=$TMPDIR/.claude/. timeout 9 claude -p q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/var/tmp/k timeout 9 claude -p q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=$HOME/.cache/k timeout 9 claude -p q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude --model -p &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CODEX_HOME=/tmp/k timeout 9 codex --model exec x &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p --dangerously-skip-permissions q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CODEX_HOME=/tmp/k timeout 9 codex exec --dangerously-bypass-approvals-and-sandbox q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CODEX_HOME=/tmp/k timeout 9 codex exec --full-auto q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='CODEX_HOME=/tmp/k timeout 9 codex exec --yolo q &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked="tmux new -d 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'") tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked="screen -dm sh -c 'CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi'") tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='nohup env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked='setsid env CLAUDE_CONFIG_DIR=/tmp/k timeout 9 claude -p hi &') tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+SUBFAILED(blocked="ssh ab 'CLAUDE_CONFIG_DIR=/tmp/k timeout 60 claude -p hi'") tests/test_launch_in_t3.py::TestClientTests::test_each_missing_condition_keeps_the_block
+20 failed, 8 passed, 88 subtests passed in 12.79s
