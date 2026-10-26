@@ -1,0 +1,43 @@
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/rework-2-tareas
+
+(node:2530866) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:2531009) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ |dom| src/features/tasks/useTachar.test.tsx (3 tests | 1 failed | 2 skipped) 102ms
+     × D3: el Deshacer devuelve la tarea a su estado de antes, una sola vez 100ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/features/tasks/useTachar.test.tsx > useListaTachable > D3: el Deshacer devuelve la tarea a su estado de antes, una sola vez
+AssertionError: expected [ [ 'a' ], [ 'a' ] ] to deeply equal [ [ 'a' ] ]
+
+- Expected
++ Received
+
+  [
+    [
+      "a",
+    ],
++   [
++     "a",
++   ],
+  ]
+
+ ❯ src/features/tasks/useTachar.test.tsx:60:31
+     58|     opciones.action.onClick();
+     59|     // Completar es un flip; deshacer no lo repite: escribe el estado …
+     60|     expect(toggle.mock.calls).toEqual([["a"]]);
+       |                               ^
+     61|     expect(convex.calls.filter((c) => c.name === "tasks:update")).toEq…
+     62|       expect.objectContaining({ args: { id: "a", status: "backlog" } }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 skipped (3)
+   Start at  03:36:02
+   Duration  1.89s (transform 153ms, setup 99ms, import 1.10s, tests 102ms, environment 385ms)
+
