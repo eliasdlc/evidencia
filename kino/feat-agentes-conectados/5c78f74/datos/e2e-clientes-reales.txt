@@ -1,0 +1,196 @@
+# P3 end to end with the real CLIs against a local Kino (next dev on :3012, Convex dev deployment), functions published from 7382c08.
+# Claude Code 2.1.310 and Codex CLI 0.164.0, each with an isolated config dir; the real ~/.claude.json and ~/.codex/config.toml were not touched (verified against backups).
+# Commits after 7382c08 (944718b, ee7175d, 5c78f74) do not touch the 403 path except failing closed on a token without client_id.
+
+=== B. Claude Code, isolated CLAUDE_CONFIG_DIR=e2e/cc1 (the real ~/.claude.json is not touched), 2026-10-26T06:29:15Z
+$ claude --version
+2.1.310 (Claude Code)
+$ claude mcp add --scope user --transport http kino-local http://localhost:3012/api/mcp
+Added HTTP MCP server kino-local with URL: http://localhost:3012/api/mcp to user config
+File modified: /home/decruce/.cache/kino/feat-agentes-conectados/e2e/cc1/.claude.json
+$ claude mcp login kino-local --no-browser   (consent approved headless as prueba@usekino.dev via the Account Portal; authorize URL query values omitted; the first attempts timed out while Next recompiled or the harness missed the URL, see cc1-login.attempt*.out)
+Starting authentication for "kino-local"…
+[mcp-sdk] SEP-2352: stored OAuth credential has no 'issuer' stamp (pre-upgrade storage or provider not round-tripping the value). SEP-2352 isolation is inactive for this read; ensure your provider round-trips the issuer field.
+Visit this URL to authorize:
+Waiting for authorization… (^C to cancel)
+Or paste the redirect URL here: 
+Authenticated with "kino-local". Its tools are now available in Claude Code.
+--- rows right after login, before any MCP request:
+$ npx convex data mcpClients --format jsonl   (clientId cut to 6 chars; times as ISO)
+(no documents)
+--- rows after claude mcp list:
+$ npx convex data mcpClients --format jsonl   (clientId cut to 6 chars; times as ISO)
+{"_id": "px7c3jk57c8n915c4bexp1aaz58h0j1e", "clientId": "HGTl4v...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T08:38:01Z", "lastSeenAt": "2026-10-26T08:38:02Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+
+=== B. Codex de OpenAI, isolated CODEX_HOME=e2e/cx1 (the real ~/.codex/config.toml, which holds the production kino entry, is not read or touched), 2026-10-26T08:38:45Z
+$ codex --version: codex-cli 0.164.0
+$ codex mcp add kino-local --url http://localhost:3012/api/mcp   (stopped after 25 s; it waits on OAuth; authorize URL query redacted)
+Added global MCP server 'kino-local'.
+Detected OAuth support. Starting OAuth flow…
+Authorize `kino-local` by opening this URL in your browser:
+https://causal-flamingo-8590.clerk.accounts.dev/oauth/authorize?<query redacted>
+
+
+$ codex mcp login kino-local --no-browser   (consent approved headless as prueba@usekino.dev; authorize URL omitted)
+    note: three earlier attempts reached the "Authentication complete" callback page and hung until timeout: Codex was blocked on the desktop keyring (gnome-keyring). The isolated config sets mcp_oauth_credentials_store = "file", after which login finishes in 15 s. See cx1*-run.txt.
+Authorize the MCP server by opening this URL in your browser:
+After signing in, copy the full URL from your browser's address bar.
+If the callback page cannot load, paste that URL here anyway.
+Callback URL (input hidden): 
+Successfully logged in to MCP server 'kino-local'.
+--- rows right after login:
+$ npx convex data mcpClients --format jsonl   (clientId cut to 6 chars; times as ISO)
+{"_id": "px7c3jk57c8n915c4bexp1aaz58h0j1e", "clientId": "HGTl4v...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T08:38:01Z", "lastSeenAt": "2026-10-26T08:38:02Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+$ codex mcp list
+Name        Url                            Bearer Token Env Var  Status   Auth 
+kino-local  http://localhost:3012/api/mcp  -                     enabled  OAuth
+--- rows after codex mcp list:
+$ npx convex data mcpClients --format jsonl   (clientId cut to 6 chars; times as ISO)
+{"_id": "px7c3jk57c8n915c4bexp1aaz58h0j1e", "clientId": "HGTl4v...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T08:38:01Z", "lastSeenAt": "2026-10-26T08:38:02Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+$ codex mcp list does not connect (rows unchanged). The connection comes from a session start:
+$ codex exec --skip-git-repo-check --ephemeral -s read-only "Reply with the single word ok."   (isolated CODEX_HOME with no OpenAI login, so the model call fails with 401 after Codex has already initialized its MCP servers; last 3 lines)
+ERROR: Reconnecting... 5/5
+ERROR: unexpected status 401 Unauthorized: Missing bearer or basic authentication in header, url: https://api.openai.com/v1/responses, cf-ray: <r>, request id: <r>
+ERROR: unexpected status 401 Unauthorized: Missing bearer or basic authentication in header, url: https://api.openai.com/v1/responses, cf-ray: <r>, request id: <r>
+--- rows after codex exec:
+$ npx convex data mcpClients --format jsonl   (clientId cut to 6 chars; times as ISO)
+{"_id": "px78hg5f3s64gq9re6mnwj6bfs8h1ba1", "clientId": "NDHfCc...", "kind": "codex", "label": "Codex de OpenAI", "scope": "write", "firstSeenAt": "2026-10-26T09:03:29Z", "lastSeenAt": "2026-10-26T09:03:29Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+{"_id": "px7c3jk57c8n915c4bexp1aaz58h0j1e", "clientId": "HGTl4v...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T08:38:01Z", "lastSeenAt": "2026-10-26T08:38:02Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+
+=== D. Desconectar Claude Code in the browser (Playwright as prueba@usekino.dev, 1131 light), 2026-10-26T09:07:13Z
+$ node cap.mjs caps-7382c08 <disconnect "Claude Code">
+toast: Claude Code desconectado. Su próxima llamada recibe "acceso revocado desde Kino".
+caps-7382c08/agentes-1131-light-claudecode-revocado-toast.png viewport with toast
+caps-7382c08/agentes-1131-light-claudecode-revocado.png ok dark: false
+  line: Esperando la primera llamada de Claude Code. Esta línea cambia sola cuando llegue.
+  rows: ["Codex de OpenAI Escribir, última llamada hace 4 minutos Desconectar","Claude Code Desconectado hoy a las 05:07 Revocado"]
+--- rows after Desconectar:
+$ npx convex data mcpClients --format jsonl   (clientId cut to 6 chars; times as ISO)
+{"_id": "px78hg5f3s64gq9re6mnwj6bfs8h1ba1", "clientId": "NDHfCc...", "kind": "codex", "label": "Codex de OpenAI", "scope": "write", "firstSeenAt": "2026-10-26T09:03:29Z", "lastSeenAt": "2026-10-26T09:03:29Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+{"_id": "px7c3jk57c8n915c4bexp1aaz58h0j1e", "clientId": "HGTl4v...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T08:38:01Z", "lastSeenAt": "2026-10-26T09:04:02Z", "revokedAt": "2026-10-26T09:07:25Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+$ python3 -I probe.py e2e/cc1/.credentials.json tools/call list_systems   (raw request with the Claude Code token)
+client_id prefix HGTl4v... (len 16); token expires in 84606 s
+POST initialize -> 403 {"jsonrpc":"2.0","error":{"code":-32001,"message":"Acceso revocado desde Kino. Quien usa esta cuenta desconectó este cliente en Ajustes > Agentes; para volver, conéctalo de nuevo desde ahí."},"id":null}
+POST tools/call list_systems -> 403 {"jsonrpc":"2.0","error":{"code":-32001,"message":"Acceso revocado desde Kino. Quien usa esta cuenta desconectó este cliente en Ajustes > Agentes; para volver, conéctalo de nuevo desde ahí."},"id":null}
+$ python3 -I probe.py e2e/cx1/.credentials.json   (Codex token, still active)
+client_id prefix NDHfCc... (len 16); token expires in 86107 s
+POST initialize -> 200 {"result":{"protocolVersion":"2025-06-18","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"kino","version":"3.0.0"}},"jsonrpc":"2.0","id":1}
+$ claude mcp list   (CLAUDE_CONFIG_DIR=e2e/cc1, from e2e/neutral)
+Checking MCP server health…
+
+kino-local: http://localhost:3012/api/mcp (HTTP) - ! Needs authentication
+exit 0
+--- dev server log, last /api/mcp lines (the claude mcp list health check is the final two 403):
+ POST /api/mcp 403 in 293ms (next.js: 2ms, proxy.ts: 202ms, application-code: 88ms)
+ POST /api/mcp 403 in 184ms (next.js: 3ms, proxy.ts: 94ms, application-code: 87ms)
+
+=== D. Desconectar Codex de OpenAI in the browser (Playwright as prueba@usekino.dev, 393 dark), 2026-10-26T09:07:55Z
+$ node cap.mjs caps-7382c08 <disconnect "Codex de OpenAI", Codex tab>
+toast: Codex de OpenAI desconectado. Su próxima llamada recibe "acceso revocado desde Kino".
+caps-7382c08/agentes-393-dark-codex-revocado-toast.png viewport with toast
+caps-7382c08/agentes-393-dark-codex-revocado.png ok dark: true
+  line: Esperando la primera llamada de Codex de OpenAI. Esta línea cambia sola cuando llegue.
+  rows: ["Codex de OpenAI Desconectado hoy a las 05:08 Revocado","Claude Code Desconectado hoy a las 05:07 Revocado"]
+--- rows after Desconectar:
+$ npx convex data mcpClients --format jsonl   (clientId cut to 6 chars; times as ISO)
+{"_id": "px78hg5f3s64gq9re6mnwj6bfs8h1ba1", "clientId": "NDHfCc...", "kind": "codex", "label": "Codex de OpenAI", "scope": "write", "firstSeenAt": "2026-10-26T09:03:29Z", "lastSeenAt": "2026-10-26T09:03:29Z", "revokedAt": "2026-10-26T09:08:03Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+{"_id": "px7c3jk57c8n915c4bexp1aaz58h0j1e", "clientId": "HGTl4v...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T08:38:01Z", "lastSeenAt": "2026-10-26T09:04:02Z", "revokedAt": "2026-10-26T09:07:25Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+$ python3 -I probe.py e2e/cx1/.credentials.json tools/call list_systems   (raw request with the Codex token)
+client_id prefix NDHfCc... (len 16); token expires in 86070 s
+POST initialize -> 403 {"jsonrpc":"2.0","error":{"code":-32001,"message":"Acceso revocado desde Kino. Quien usa esta cuenta desconectó este cliente en Ajustes > Agentes; para volver, conéctalo de nuevo desde ahí."},"id":null}
+POST tools/call list_systems -> 403 {"jsonrpc":"2.0","error":{"code":-32001,"message":"Acceso revocado desde Kino. Quien usa esta cuenta desconectó este cliente en Ajustes > Agentes; para volver, conéctalo de nuevo desde ahí."},"id":null}
+$ codex exec --skip-git-repo-check --ephemeral -s read-only "Reply with the single word ok."   (CODEX_HOME=e2e/cx1, no OpenAI login; MCP lines only)
+OpenAI Codex v0.164.0
+--------
+workdir: /home/decruce/.cache/kino/feat-agentes-conectados/e2e/neutral
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: none
+reasoning summaries: none
+session id: <r>
+--------
+user
+Reply with the single word ok.
+(codex exec prints no MCP line on stdout or stderr; the server log shows its initialize answered 403:)
+--- dev server log, last /api/mcp lines (probe initialize 403, tools/call 403, then codex exec: GET 401 without token, POST 403):
+ POST /api/mcp 403 in 289ms (next.js: 3ms, proxy.ts: 194ms, application-code: 92ms)
+ POST /api/mcp 403 in 189ms (next.js: 3ms, proxy.ts: 97ms, application-code: 89ms)
+ GET /api/mcp 401 in 12ms (next.js: 2ms, proxy.ts: 6ms, application-code: 4ms)
+ POST /api/mcp 403 in 348ms (next.js: 3ms, proxy.ts: 245ms, application-code: 100ms)
+=== D. Clean section captures after both Desconectar (the section shots taken right after the click had the toast over the last row and were dropped), 2026-10-26T09:09:09Z
+caps-7382c08/agentes-1131-light-ambos-revocados.png ok dark: false
+  line: Esperando la primera llamada de Claude Code. Esta línea cambia sola cuando llegue.
+  rows: ["Codex de OpenAI Desconectado hoy a las 05:08 Revocado","Claude Code Desconectado hoy a las 05:07 Revocado"]
+caps-7382c08/agentes-393-dark-ambos-revocados.png ok dark: true
+  line: Esperando la primera llamada de Codex de OpenAI. Esta línea cambia sola cuando llegue.
+  rows: ["Codex de OpenAI Desconectado hoy a las 05:08 Revocado","Claude Code Desconectado hoy a las 05:07 Revocado"]
+
+=== E. Reconnect Claude Code after Desconectar: remove, add, login again (CLAUDE_CONFIG_DIR=e2e/cc1), 2026-10-26T09:09:41Z
+$ claude mcp remove kino-local -s user
+Removed MCP server kino-local from user config
+File modified: /home/decruce/.cache/kino/feat-agentes-conectados/e2e/cc1/.claude.json
+stored OAuth entries after remove: none
+$ claude mcp add --scope user --transport http kino-local http://localhost:3012/api/mcp
+Added HTTP MCP server kino-local with URL: http://localhost:3012/api/mcp to user config
+File modified: /home/decruce/.cache/kino/feat-agentes-conectados/e2e/cc1/.claude.json
+$ claude mcp login kino-local --no-browser   (consent approved headless; authorize URL omitted)
+Starting authentication for "kino-local"…
+Visit this URL to authorize:
+Waiting for authorization… (^C to cancel)
+Or paste the redirect URL here: 
+Authenticated with "kino-local". Its tools are now available in Claude Code.
+client_id in the new authorize URL: client_id=Tw0wKH
+--- rows after login:
+$ npx convex data mcpClients --format jsonl   (clientId cut to 6 chars; times as ISO)
+{"_id": "px78hg5f3s64gq9re6mnwj6bfs8h1ba1", "clientId": "NDHfCc...", "kind": "codex", "label": "Codex de OpenAI", "scope": "write", "firstSeenAt": "2026-10-26T09:03:29Z", "lastSeenAt": "2026-10-26T09:03:29Z", "revokedAt": "2026-10-26T09:08:03Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+{"_id": "px7c3jk57c8n915c4bexp1aaz58h0j1e", "clientId": "HGTl4v...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T08:38:01Z", "lastSeenAt": "2026-10-26T09:04:02Z", "revokedAt": "2026-10-26T09:07:25Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+$ claude mcp list   (from e2e/neutral)
+Checking MCP server health…
+
+kino-local: http://localhost:3012/api/mcp (HTTP) - ✔ Connected
+--- rows after claude mcp list:
+$ npx convex data mcpClients --format jsonl   (clientId cut to 6 chars; times as ISO)
+{"_id": "px72zsaszwxgdpg3a7vyxz1qyx8h0m0s", "clientId": "Tw0wKH...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T09:10:16Z", "lastSeenAt": "2026-10-26T09:10:16Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+{"_id": "px78hg5f3s64gq9re6mnwj6bfs8h1ba1", "clientId": "NDHfCc...", "kind": "codex", "label": "Codex de OpenAI", "scope": "write", "firstSeenAt": "2026-10-26T09:03:29Z", "lastSeenAt": "2026-10-26T09:03:29Z", "revokedAt": "2026-10-26T09:08:03Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+{"_id": "px7c3jk57c8n915c4bexp1aaz58h0j1e", "clientId": "HGTl4v...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T08:38:01Z", "lastSeenAt": "2026-10-26T09:04:02Z", "revokedAt": "2026-10-26T09:07:25Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+$ python3 -I probe.py e2e/cc1/.credentials.json tools/call list_systems   (raw request, new token; tool result cut to 600 chars)
+client_id prefix Tw0wKH... (len 16); token expires in 86384 s
+POST initialize -> 200 {"result":{"protocolVersion":"2025-06-18","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"kino","version":"3.0.0"}},"jsonrpc":"2.0","id":1}
+POST tools/call list_systems -> 200 {"result":{"content":[{"type":"text","text":"[\n  {\n    \"activeTaskCount\": 21,\n    \"color\": \"blue\",\n    \"createdAt\": \"2026-09-04T15:22:58.860Z\",\n    \"daysSinceLastActivity\": 16,\n    \"energyIdeal\": \"medium\",\n    \"expectedFrequency\": \"daily\",\n    \"icon\": \"graduation\",\n    \"id\": \"n97282sd8jk8pycp48qqw0z3fn8drdmd\",\n    \"identityStatement\": \"Llego a las entregas sin madrugadas de pánico.\",\n    \"isActive\": true,\n    \"isInbox\": false,\n    \"metadata\": null,\n    \"name\": \"Semestre actual\",\n    \"nextDueDate\": \"2026-09-01T20:15:11.871Z\",\n    \"s
+
+=== E. Reconnect Codex de OpenAI after Desconectar: remove, add, login again (CODEX_HOME=e2e/cx1, mcp_oauth_credentials_store = "file"), 2026-10-26T09:10:32Z
+$ codex mcp remove kino-local
+Removed global MCP server 'kino-local'.
+stored OAuth entries after remove: [('kino-local|b7cddf1540333f5b', 'NDHfCc')]
+--- config.toml after remove:
+mcp_oauth_credentials_store = "file"
+$ codex mcp add kino-local --url http://localhost:3012/api/mcp   (stopped after 25 s; it waits on OAuth; authorize URL query redacted)
+Added global MCP server 'kino-local'.
+Detected OAuth support. Starting OAuth flow…
+Authorize `kino-local` by opening this URL in your browser:
+https://causal-flamingo-8590.clerk.accounts.dev/oauth/authorize?<query redacted>
+client_id in the add's authorize URL: client_id=cHwuel
+$ codex exec ... (between add and login: the old stored token is still there; MCP outcome read from the server log)
+ GET /api/mcp 401 in 13ms (next.js: 2ms, proxy.ts: 6ms, application-code: 5ms)
+ POST /api/mcp 403 in 276ms (next.js: 5ms, proxy.ts: 187ms, application-code: 85ms)
+
+=== E (cont.). Codex de OpenAI: codex mcp login after re-add, by the parent agent, 2026-10-26T09:20:29Z
+$ codex mcp login kino-local --no-browser   (consent approved headless; cli-login.sh, PASTE=1)
+Successfully logged in to MCP server 'kino-local'.
+Script done on 2026-10-26 05:12:17-04:00 [COMMAND_EXIT_CODE="0"]
+client_id in the login authorize URL: client_id=qVYmu8
+stored OAuth entry after login: kino-local -> client_id prefix qVYmu8 (the revoked NDHfCc entry was replaced)
+$ python3 -I probe.py e2e/cx1/.credentials.json list_systems   (raw request with the token Codex stored; codex exec is blocked for this agent by a launcher hook, so this probe is the first request of the new client and its row is labeled by the probe name, not by Codex; result cut)
+client_id prefix qVYmu8... (len 16); token expires in 85892 s
+POST initialize -> 200 {"result":{"protocolVersion":"2025-06-18","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"kino","version":"3.0.0"}},"jsonrpc":"2.0","id":1}
+POST tools/call list_systems -> 200 {"result":{"content":[{"type":"text","text":"[\n  {\n    \"activeTaskCount\": 21,\n    \"color\": \"blue\",\n    \"createdAt\": \"2026-09-04T15:22:58.860Z\",\n    \
+--- dev server log, last /api/mcp lines:
+ POST /api/mcp 200 in 1221ms (next.js: 3ms, proxy.ts: 1073ms, application-code: 145ms)
+ POST /api/mcp 200 in 365ms (next.js: 3ms, proxy.ts: 119ms, application-code: 243ms)
+$ npx convex data mcpClients --format jsonl   (clientId cut to 6 chars; times as ISO)
+{"_id": "px7dxmpt5fh0xa2mv2kfqgmzq58h16jt", "clientId": "qVYmu8...", "kind": "otro", "label": "kino-e2e-probe", "scope": "write", "firstSeenAt": "2026-10-26T09:20:46Z", "lastSeenAt": "2026-10-26T09:20:46Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+{"_id": "px72zsaszwxgdpg3a7vyxz1qyx8h0m0s", "clientId": "Tw0wKH...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T09:10:16Z", "lastSeenAt": "2026-10-26T09:10:16Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+{"_id": "px78hg5f3s64gq9re6mnwj6bfs8h1ba1", "clientId": "NDHfCc...", "kind": "codex", "label": "Codex de OpenAI", "scope": "write", "firstSeenAt": "2026-10-26T09:03:29Z", "lastSeenAt": "2026-10-26T09:03:29Z", "revokedAt": "2026-10-26T09:08:03Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
+{"_id": "px7c3jk57c8n915c4bexp1aaz58h0j1e", "clientId": "HGTl4v...", "kind": "claude-code", "label": "Claude Code", "scope": "write", "firstSeenAt": "2026-10-26T08:38:01Z", "lastSeenAt": "2026-10-26T09:04:02Z", "revokedAt": "2026-10-26T09:07:25Z", "userId": "pd71atywffxcvjddjz3rtzfzzn8ds9bd"}
