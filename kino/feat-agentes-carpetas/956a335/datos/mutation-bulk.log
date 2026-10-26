@@ -1,0 +1,25 @@
+=== M1 bulkCreate ignores the folder (routes with the batch systemId only, so it falls to the Bandeja)
+file: convex/tasks.ts
+exit code: 1 (nonzero = test failed, mutation caught)
+     × con regla, todas las tareas caen en el sistema de la carpeta 16ms
+     × una carpeta sin regla no crea ninguna y devuelve lo que hay que preguntar 10ms
+ Test Files  1 failed (1)
+      Tests  2 failed | 16 passed (18)
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |convex| convex/workdirRules.test.ts > bulkCreate sigue la misma regla que createFromAgent > con regla, todas las tareas caen en el sistema de la carpeta
+AssertionError: expected { routedBy: 'inbox', …(2) } to match object { status: 'created', …(2) }
+- Expected
++ Received
+ FAIL  |convex| convex/workdirRules.test.ts > bulkCreate sigue la misma regla que createFromAgent > una carpeta sin regla no crea ninguna y devuelve lo que hay que preguntar
+AssertionError: expected { routedBy: 'inbox', …(2) } to deeply equal { status: 'needs_system', …(2) }
+- Expected
++ Received
+
+=== M2 bulkCreate skips the needs_system stop (creates into whatever it has)
+file: convex/tasks.ts
+exit code: 1 (nonzero = test failed, mutation caught)
+     × una carpeta sin regla no crea ninguna y devuelve lo que hay que preguntar 15ms
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 passed (18)
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |convex| convex/workdirRules.test.ts > bulkCreate sigue la misma regla que createFromAgent > una carpeta sin regla no crea ninguna y devuelve lo que hay que preguntar
