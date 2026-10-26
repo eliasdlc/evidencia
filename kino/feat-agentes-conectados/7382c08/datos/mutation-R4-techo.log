@@ -1,0 +1,44 @@
+# mutation R4-techo: convex/mcpClients.ts
+# 'if (sobran > 0) {' -> 'if (sobran > 999) {'
+# pnpm vitest run convex/mcpClients.test.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-agentes-conectados
+
+ ❯ |convex| convex/mcpClients.test.ts (20 tests | 2 failed) 456ms
+     × el cliente 31 saca al activo más antiguo y nunca a un revocado 25ms
+     × el cliente que salió por el techo y vuelve a llamar entra como activo 12ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 18 passed (20)
+   Start at  02:07:51
+   Duration  907ms (transform 330ms, setup 0ms, import 230ms, tests 456ms, environment 58ms)
+
+(node:941221) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/mcpClients.test.ts > el techo de clientes > el cliente 31 saca al activo más antiguo y nunca a un revocado
+AssertionError: expected [ 'revocado', 'activo_0', …(31) ] to not include 'activo_0'
+ ❯ convex/mcpClients.test.ts:275:25
+    273|
+    274|     const nombres = (await filas()).map((c) => c.clientId);
+    275|     expect(nombres).not.toContain('activo_0');
+       |                         ^
+    276|     expect(nombres).toContain('activo_1');
+    277|     expect(nombres).toContain('nuevo');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |convex| convex/mcpClients.test.ts > el techo de clientes > el cliente que salió por el techo y vuelve a llamar entra como activo
+AssertionError: expected [ 'activo_0', 'activo_1', …(29) ] to not include 'activo_0'
+ ❯ convex/mcpClients.test.ts:292:56
+    290|     for (let i = 0; i < MCP_CLIENTS_ACTIVE_CAP; i++) await sembrar(ana…
+    291|     await registrar('nuevo');
+    292|     expect((await filas()).map((c) => c.clientId)).not.toContain('acti…
+       |                                                        ^
+    293|
+    294|     expect(await registrar('activo_0')).toEqual({ revocado: false });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
