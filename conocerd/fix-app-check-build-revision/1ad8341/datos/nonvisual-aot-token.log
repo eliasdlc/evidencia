@@ -1,0 +1,47 @@
+Sanitized: 0 U+2014 and 0 U+00B7 replaced by a hyphen, 0 fixture UUIDs masked
+# Does a release AOT carry the App Check debug token string? Sentinel: SENTINELAC240R2 (a made-up string, not a token)
+# Fix tree = 1ad8341 (lib identical to the scratch copy), round 1 head = 70be620, base = 6faceb0. Flutter 3.47.7, android-arm64.
+# 'assemble' = flutter assemble android_aot_bundle_<mode>_android-arm64 -dDartDefines=<base64>; count = strings -a app.so | grep -c SENTINELAC240R2
+# 'apk' = flutter build apk --release --target-platform android-arm64 --dart-define=...; count = strings -a lib/arm64-v8a/libapp.so | grep -c SENTINELAC240R2
+# (flutter assemble splits -dDartDefines on commas, so the case with two defines is built with flutter build apk)
+
+build                              mode      defines                                              occurrences
+base 6faceb0, assemble             release   APP_CHECK_DEBUG_TOKEN=<sentinel>                     0
+round 1 head 70be620, assemble     release   APP_CHECK_DEBUG_TOKEN=<sentinel>                     1   (the red)
+round 1 head 70be620, apk          release   APP_CHECK_DEBUG_TOKEN=<sentinel>                     1   (the red)
+fix 1ad8341, assemble              release   APP_CHECK_DEBUG_TOKEN=<sentinel>                     0
+fix 1ad8341, assemble              release   (no App Check defines)                               0
+fix 1ad8341, apk                   release   APP_CHECK_DEBUG_TOKEN=<sentinel>                     0
+fix 1ad8341, apk                   release   APP_CHECK_DEBUG_TOKEN=<sentinel> + APP_CHECK_PROVIDER=debug 1
+fix 1ad8341, assemble              profile   APP_CHECK_DEBUG_TOKEN=<sentinel>                     1
+
+# raw tails
+-- aot-base-noflag
+label=base-noflag tree=copy-base defines=APP_CHECK_DEBUG_TOKEN=<sentinel>
+assemble exit=0
+app.so occurrences of SENTINELAC240R2: 0
+-- aot-head-noflag
+label=head-noflag tree=copy-head defines=APP_CHECK_DEBUG_TOKEN=<sentinel>
+assemble exit=0
+app.so occurrences of SENTINELAC240R2: 1
+-- aot-fix-noflag
+label=fix-noflag tree=copy defines=APP_CHECK_DEBUG_TOKEN=<sentinel>
+assemble exit=0
+app.so occurrences of SENTINELAC240R2: 0
+-- aot-fix-nodefines
+label=fix-nodefines tree=copy defines=MAPBOX_PLACEHOLDER=x
+assemble exit=0
+app.so occurrences of SENTINELAC240R2: 0
+-- aot-profile-fix-noflag
+label=profile-fix-noflag tree=copy defines=APP_CHECK_DEBUG_TOKEN=<sentinel>
+assemble exit=0
+app.so occurrences of SENTINELAC240R2: 1
+-- apk-head-noflag
+label=head-noflag tree=copy-head defines=APP_CHECK_DEBUG_TOKEN=<sentinel> 
+libapp.so occurrences of SENTINELAC240R2: 1
+-- apk-fix-noflag
+label=fix-noflag tree=copy defines=APP_CHECK_DEBUG_TOKEN=<sentinel> 
+libapp.so occurrences of SENTINELAC240R2: 0
+-- apk-fix-flag
+label=fix-flag tree=copy defines=APP_CHECK_DEBUG_TOKEN=<sentinel> APP_CHECK_PROVIDER=debug 
+libapp.so occurrences of SENTINELAC240R2: 1
