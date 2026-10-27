@@ -1,0 +1,46 @@
+# mutation: src/features/reviews/review-highlight.extension.ts
+diff --git a/src/features/reviews/review-highlight.extension.ts b/src/features/reviews/review-highlight.extension.ts
+index 315a71ec..8bfea26a 100644
+--- a/src/features/reviews/review-highlight.extension.ts
++++ b/src/features/reviews/review-highlight.extension.ts
+@@ -74 +74 @@ function aplicar(tr: Transaction, prev: HighlightState, newState: EditorState):
+-      if (from < to) mapped.set(id, { ...range, from, to });
++      if (from <= to) mapped.set(id, { ...range, from, to });
+# run: pnpm test src/features/reviews/review-highlight.test.ts
+$ vitest run src/features/reviews/review-highlight.test.ts
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/claude-lucid-pascal-bdos0x
+
+(node:276956) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ |dom| src/features/reviews/review-highlight.test.ts (6 tests | 1 failed) 201ms
+     × un fragmento borrado se queda sin rango 22ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/features/reviews/review-highlight.test.ts > el resaltado de revisión > un fragmento borrado se queda sin rango
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/features/reviews/review-highlight.test.ts:76:53
+     74|     const { from, to } = highlightRanges(editor.state).get("c3")!;
+     75|     editor.commands.deleteRange({ from, to });
+     76|     expect(highlightRanges(editor.state).has("c3")).toBe(false);
+       |                                                     ^
+     77|   });
+     78|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  21:21:55
+   Duration  1.60s (transform 99ms, setup 219ms, import 116ms, tests 201ms, environment 832ms)
+
+[ELIFECYCLE] Test failed. See above for more details.
