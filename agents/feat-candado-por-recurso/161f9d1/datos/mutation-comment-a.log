@@ -1,0 +1,37 @@
+mutation comment-a: the # branch never fires
+replaced: elif c == "#" and not started:
+with: elif False:
+FFF
+======================================================================
+FAIL: test_comments_are_not_commands (test_wait_loop.WaitLoopTests.test_comments_are_not_commands) (command='# note; until [ -f x ]; do sleep 1; done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_wait_loop.py", line 134, in assertPasses
+    self.assertEqual(run(command).returncode, 0, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : # note; until [ -f x ]; do sleep 1; done
+
+======================================================================
+FAIL: test_comments_are_not_commands (test_wait_loop.WaitLoopTests.test_comments_are_not_commands) (command='echo hi # then wait; until [ -f x ]; do sleep 1; done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_wait_loop.py", line 134, in assertPasses
+    self.assertEqual(run(command).returncode, 0, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : echo hi # then wait; until [ -f x ]; do sleep 1; done
+
+======================================================================
+FAIL: test_comments_are_not_commands (test_wait_loop.WaitLoopTests.test_comments_are_not_commands) (command='echo hi\n# first; until [ -f x ]; do sleep 1; done\necho bye')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_wait_loop.py", line 134, in assertPasses
+    self.assertEqual(run(command).returncode, 0, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : echo hi
+# first; until [ -f x ]; do sleep 1; done
+echo bye
+
+----------------------------------------------------------------------
+Ran 1 test in 0.258s
+
+FAILED (failures=3)
