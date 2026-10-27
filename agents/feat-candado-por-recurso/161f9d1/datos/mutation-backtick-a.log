@@ -1,0 +1,45 @@
+mutation backtick-a: an unquoted backtick substitution is not read
+replaced:                 end = backtick_end(t, i)
+                self.inner(t[i + 1:end])
+with:                 end = backtick_end(t, i)
+FFFF
+======================================================================
+FAIL: test_backtick_substitution_runs (test_wait_loop.WaitLoopTests.test_backtick_substitution_runs) (command='echo `until [ -f x ]; do sleep 1; done`')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_wait_loop.py", line 129, in assertBlocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : echo `until [ -f x ]; do sleep 1; done`
+
+======================================================================
+FAIL: test_backtick_substitution_runs (test_wait_loop.WaitLoopTests.test_backtick_substitution_runs) (command='x=`until [ -f x ]; do sleep 1; done`')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_wait_loop.py", line 129, in assertBlocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : x=`until [ -f x ]; do sleep 1; done`
+
+======================================================================
+FAIL: test_backtick_substitution_runs (test_wait_loop.WaitLoopTests.test_backtick_substitution_runs) (command='echo `echo a; until [ -f x ]; do sleep 1; done` done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_wait_loop.py", line 129, in assertBlocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : echo `echo a; until [ -f x ]; do sleep 1; done` done
+
+======================================================================
+FAIL: test_backtick_substitution_runs (test_wait_loop.WaitLoopTests.test_backtick_substitution_runs) (command='echo `echo \\`x\\`; until [ -f x ]; do sleep 1; done`')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_wait_loop.py", line 129, in assertBlocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : echo `echo \`x\`; until [ -f x ]; do sleep 1; done`
+
+----------------------------------------------------------------------
+Ran 1 test in 0.181s
+
+FAILED (failures=4)
