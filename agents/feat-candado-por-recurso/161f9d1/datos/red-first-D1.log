@@ -1,0 +1,57 @@
+...F.FFagents heavy: another build job is running (bash -c echo $$ > /tmp/tmp9cozvovb/jobpid; trap "echo INT > /tmp/tmp9cozvovb/got-INT; sleep 1.5; exit 0" INT; while :; do sleep 0.1; done (pid 3152775, since 00:25:57Z), held for 1s). One at a time per kind on this machine; rerun with --wait to queue.
+F/home/decruce/.cache/agents/feat-candado-por-recurso/r3/old-heavy/heavy.sh: line 160: 3152787 Killed                     "$@"
+F.
+======================================================================
+FAIL: test_a_killed_heavy_leaves_the_lock_held_while_the_job_runs (test_heavy.JobOutlivesHeavyTests.test_a_killed_heavy_leaves_the_lock_held_while_the_job_runs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_heavy.py", line 392, in test_a_killed_heavy_leaves_the_lock_held_while_the_job_runs
+    self.assertRegex(held, r"\[build\]: held by ")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Regex didn't match: '\\[build\\]: held by ' not found in 'agents heavy [build]: free\nagents heavy [emulator]: free\nagents heavy: memory 24.0 GiB available, 1.0 GiB reserved\n'
+
+======================================================================
+FAIL: test_a_signal_to_heavy_reaches_the_job_and_the_lock_waits_for_it (test_heavy.JobOutlivesHeavyTests.test_a_signal_to_heavy_reaches_the_job_and_the_lock_waits_for_it) (signal='TERM')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_heavy.py", line 368, in test_a_signal_to_heavy_reaches_the_job_and_the_lock_waits_for_it
+    self.assertTrue(marker.exists(), "the job never received the signal")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the job never received the signal
+
+======================================================================
+FAIL: test_a_signal_to_heavy_reaches_the_job_and_the_lock_waits_for_it (test_heavy.JobOutlivesHeavyTests.test_a_signal_to_heavy_reaches_the_job_and_the_lock_waits_for_it) (signal='INT')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_heavy.py", line 368, in test_a_signal_to_heavy_reaches_the_job_and_the_lock_waits_for_it
+    self.assertTrue(marker.exists(), "the job never received the signal")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the job never received the signal
+
+======================================================================
+FAIL: test_a_signal_to_heavy_reaches_the_job_and_the_lock_waits_for_it (test_heavy.JobOutlivesHeavyTests.test_a_signal_to_heavy_reaches_the_job_and_the_lock_waits_for_it) (signal='HUP')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_heavy.py", line 364, in test_a_signal_to_heavy_reaches_the_job_and_the_lock_waits_for_it
+    heavy, job = self.start(f'trap "echo {name} > {marker}; sleep 1.5; exit 0" {name}; '
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                            "while :; do sleep 0.1; done")
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_heavy.py", line 339, in start
+    self.assertTrue(pidfile.exists() and pidfile.read_text().strip(), "the job did not start")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the job did not start
+
+======================================================================
+FAIL: test_heavy_exits_with_the_status_of_a_job_that_a_signal_ended (test_heavy.JobOutlivesHeavyTests.test_heavy_exits_with_the_status_of_a_job_that_a_signal_ended)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_heavy.py", line 383, in test_heavy_exits_with_the_status_of_a_job_that_a_signal_ended
+    self.assertEqual(heavy.wait(timeout=10), 128 + signal.SIGTERM)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: -15 != 143
+
+----------------------------------------------------------------------
+Ran 8 tests in 7.799s
+
+FAILED (failures=5)
