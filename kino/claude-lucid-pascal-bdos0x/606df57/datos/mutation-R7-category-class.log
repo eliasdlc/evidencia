@@ -1,0 +1,44 @@
+# mutation: src/features/reviews/review-highlight.extension.ts
+diff --git a/src/features/reviews/review-highlight.extension.ts b/src/features/reviews/review-highlight.extension.ts
+index 315a71ec..db81444a 100644
+--- a/src/features/reviews/review-highlight.extension.ts
++++ b/src/features/reviews/review-highlight.extension.ts
+@@ -57 +57 @@ function pintar(state: EditorState["doc"], ranges: ReadonlyMap<string, TrackedRa
+-    if (range.category) clases.push(`review-cat-${range.category}`);
++    if (range.category) clases.push(`review-kat-${range.category}`);
+# run: pnpm test src/features/reviews/review-highlight.test.ts
+$ vitest run src/features/reviews/review-highlight.test.ts
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/claude-lucid-pascal-bdos0x
+
+(node:277046) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ |dom| src/features/reviews/review-highlight.test.ts (6 tests | 1 failed) 242ms
+     × lleva el color de su tipo y el peso de su importancia 24ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |dom| src/features/reviews/review-highlight.test.ts > el resaltado de revisión > lleva el color de su tipo y el peso de su importancia
+Error: [2mexpect([22m[31melement[39m[2m).toHaveClass([22m[32m[32m"review-cat-evidence"[32m[39m[2m)[22m
+
+Expected the element to have class:
+[32m  review-cat-evidence[39m
+Received:
+[31m  review-anchor review-anchor-important review-kat-evidence[39m
+ ❯ src/features/reviews/review-highlight.test.ts:46:21
+     44|     setHighlightComments(editor, [comentario("c1", "respaldos")]);
+     45|     const pintado = editor.view.dom.querySelector('[data-review-id="c1…
+     46|     expect(pintado).toHaveClass("review-cat-evidence");
+       |                     ^
+     47|     expect(pintado).toHaveClass("review-anchor-important");
+     48|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  21:21:58
+   Duration  1.70s (transform 192ms, setup 292ms, import 140ms, tests 242ms, environment 818ms)
+
+[ELIFECYCLE] Test failed. See above for more details.
