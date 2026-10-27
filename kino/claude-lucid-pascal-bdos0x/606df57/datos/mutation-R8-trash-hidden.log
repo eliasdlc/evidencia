@@ -1,0 +1,68 @@
+# mutation: convex/reviews.ts
+diff --git a/convex/reviews.ts b/convex/reviews.ts
+index 036f9a83..95699b05 100644
+--- a/convex/reviews.ts
++++ b/convex/reviews.ts
+@@ -101 +101 @@ async function paginaViva(ctx: QueryCtx | MutationCtx, userId: Id<'users'>, page
+-  if (!page || page.userId !== userId || page.deletedAt !== undefined) return null;
++  if (!page || page.userId !== userId) return null;
+# run: pnpm test convex/reviews.test.ts
+$ vitest run convex/reviews.test.ts
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/claude-lucid-pascal-bdos0x
+
+(node:277136) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ |convex| convex/reviews.test.ts (14 tests | 1 failed) 847ms
+     × una página en la papelera se lleva su revisión de la vista, y vuelve con ella 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/reviews.test.ts > aislamiento > una página en la papelera se lleva su revisión de la vista, y vuelve con ella
+AssertionError: expected [ { author: 'agent', …(18) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "author": "agent",
++     "awaiting": null,
++     "body": "¿Qué controles faltan?",
++     "category": "evidence",
++     "createdAt": "2026-10-27T01:22:02.972Z",
++     "hint": null,
++     "id": "00000000000000010006pageComments",
++     "pageId": "000000000000000000000010003pages",
++     "prefix": null,
++     "quote": "firewall perimetral",
++     "replies": [],
++     "resolution": null,
++     "resolvedAt": null,
++     "reviewId": "000000000000000010005pageReviews",
++     "severity": "critical",
++     "status": "open",
++     "suffix": null,
++     "suggestion": null,
++     "updatedAt": "2026-10-27T01:22:02.972Z",
++   },
++ ]
+
+ ❯ convex/reviews.test.ts:221:74
+    219|     await agente.mutation(api.reviews.create, { pageId, comments: [cri…
+    220|     await asAna.mutation(api.pages.remove, { id: pageId });
+    221|     expect((await asAna.query(api.reviews.byPage, { pageId })).comment…
+       |                                                                          ^
+    222|
+    223|     await asAna.mutation(api.pages.restore, { id: pageId });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  21:22:01
+   Duration  1.43s (transform 577ms, setup 0ms, import 322ms, tests 847ms, environment 71ms)
+
+[ELIFECYCLE] Test failed. See above for more details.
