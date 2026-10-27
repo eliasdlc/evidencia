@@ -1,0 +1,31 @@
+mutation comment-b: a comment swallows the rest of the command, not just its line
+replaced:                 end = t.find("\n", i)
+                i = n if end < 0 else end
+                continue
+with:                 i = n
+                continue
+FF
+======================================================================
+FAIL: test_comments_are_not_commands (test_wait_loop.WaitLoopTests.test_comments_are_not_commands) (command='# note\nuntil [ -f x ]; do sleep 1; done')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_wait_loop.py", line 129, in assertBlocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : # note
+until [ -f x ]; do sleep 1; done
+
+======================================================================
+FAIL: test_comments_are_not_commands (test_wait_loop.WaitLoopTests.test_comments_are_not_commands) (command='echo hi # one\nuntil [ -f x ]; do sleep 1; done # two')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/agents/feat/candado-por-recurso/tests/test_wait_loop.py", line 129, in assertBlocked
+    self.assertEqual(run(command).returncode, 2, command)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : echo hi # one
+until [ -f x ]; do sleep 1; done # two
+
+----------------------------------------------------------------------
+Ran 1 test in 0.259s
+
+FAILED (failures=2)
