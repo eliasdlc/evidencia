@@ -1,0 +1,70 @@
+## Hook hooks/wait-loop.py (round 3), b6c64b7+worktree
+# step 1: passes
+$ git commit -m "block inotifywait loops and while true; do sleep 1; done"
+  exit 0
+$ for i in 1 2 3; do test -f x && break; sleep 1; done
+  exit 0
+$ timeout -s KILL 600 bash -c 'echo hi'
+  exit 0
+$ echo "$(printf x)" $((1 << 3))
+  exit 0
+# step 2: a fabricated violation fails, naming the rule it caught
+$ timeout -s KILL 600 bash -c 'until test -f x; do sleep 2; done'
+Blocked: a foreground 'until' loop that sleeps holds this agent's slot while it waits. Start the job with run_in_background (or watch it with Monitor, an until-loop that exits when the condition holds), do the independent work meanwhile, and end the turn: the harness wakes you when the job finishes.
+  exit 2
+$ sudo -u root bash -c "until test -f x; do sleep 2; done"
+Blocked: a foreground 'until' loop that sleeps holds this agent's slot while it waits. Start the job with run_in_background (or watch it with Monitor, an until-loop that exits when the condition holds), do the independent work meanwhile, and end the turn: the harness wakes you when the job finishes.
+  exit 2
+$ echo "$(until test -f x; do sleep 2; done)"
+Blocked: a foreground 'until' loop that sleeps holds this agent's slot while it waits. Start the job with run_in_background (or watch it with Monitor, an until-loop that exits when the condition holds), do the independent work meanwhile, and end the turn: the harness wakes you when the job finishes.
+  exit 2
+$ (( x = 1 << 3 ))
+until y; do sleep 1; done
+Blocked: a foreground 'until' loop that sleeps holds this agent's slot while it waits. Start the job with run_in_background (or watch it with Monitor, an until-loop that exits when the condition holds), do the independent work meanwhile, and end the turn: the harness wakes you when the job finishes.
+  exit 2
+$ echo $'a\'b'
+until y; do sleep 1; done
+Blocked: a foreground 'until' loop that sleeps holds this agent's slot while it waits. Start the job with run_in_background (or watch it with Monitor, an until-loop that exits when the condition holds), do the independent work meanwhile, and end the turn: the harness wakes you when the job finishes.
+  exit 2
+$ for i in 1 2 3; do sleep 600; done
+Blocked: a foreground 'for' loop that sleeps more than 10 seconds a pass holds this agent's slot while it waits. Start the job with run_in_background (or watch it with Monitor, an until-loop that exits when the condition holds), do the independent work meanwhile, and end the turn: the harness wakes you when the job finishes.
+  exit 2
+# step 3: passes again (the same waits started with run_in_background; the retry made short)
+$ timeout -s KILL 600 bash -c 'until test -f x; do sleep 2; done'  [run_in_background]
+  exit 0
+$ for i in 1 2 3; do sleep 600; done  [run_in_background]
+  exit 0
+$ for i in 1 2 3; do test -f x && break; sleep 1; done
+  exit 0
+
+## bin/heavy.sh (round 3): the lock lasts as long as the job's own process
+# step 1: passes (a job that ends frees the lock; a child left behind does not keep it)
+$ agents heavy -- true
+  exit 0
+$ agents heavy -- bash -c "sleep 4 >/dev/null 2>&1 & echo bg"
+bg
+  exit 0
+agents heavy [build]: free
+# step 2: fabricated violations fail, naming the holder
+$ agents heavy -- bash -c "trap ... TERM; ..." &  then kill -TERM <heavy>
+job got TERM
+$ agents heavy --status   (TERM sent, job still in its cleanup)
+agents heavy [build]: held by bash -c trap "echo job got TERM; sleep 2; exit 0" TERM; while :; do sleep 0.1; done (pid 3160948, since 00:27:10Z) for 2s
+$ agents heavy -- true
+agents heavy: another build job is running (bash -c trap "echo job got TERM; sleep 2; exit 0" TERM; while :; do sleep 0.1; done (pid 3160948, since 00:27:10Z), held for 2s). One at a time per kind on this machine; rerun with --wait to queue.
+  exit 75
+  first heavy exit 0
+$ agents heavy -- bash -c "echo \$\$ > jobpid; exec sleep 20" &  then kill -KILL <heavy>
+  job pid 3161236 alive: yes
+$ agents heavy --status
+agents heavy [build]: held by bash -c echo $$ > /tmp/tmp.JXBTD68cxv/jobpid; exec sleep 20 (pid 3161221, since 00:27:13Z) for 1s
+$ agents heavy -- true
+agents heavy: another build job is running (bash -c echo $$ > /tmp/tmp.JXBTD68cxv/jobpid; exec sleep 20 (pid 3161221, since 00:27:13Z), held for 2s). One at a time per kind on this machine; rerun with --wait to queue.
+  exit 75
+# step 3: passes again once the job's process is gone
+$ agents heavy --status
+agents heavy [build]: free
+$ agents heavy -- true
+  exit 0
+job got TERM
+job got TERM
