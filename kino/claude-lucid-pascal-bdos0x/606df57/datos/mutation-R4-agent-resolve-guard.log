@@ -1,0 +1,40 @@
+# mutation: convex/reviews.ts
+diff --git a/convex/reviews.ts b/convex/reviews.ts
+index 036f9a83..da8962ac 100644
+--- a/convex/reviews.ts
++++ b/convex/reviews.ts
+@@ -490 +490 @@ export const resolve = kinoZodMutation({
+-    if (ctx.channel === 'oauth' && !doc.reviewId) {
++    if (false && ctx.channel === 'oauth' && !doc.reviewId) {
+# run: pnpm test convex/reviews.test.ts
+$ vitest run convex/reviews.test.ts
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/claude-lucid-pascal-bdos0x
+
+(node:276803) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ |convex| convex/reviews.test.ts (14 tests | 1 failed) 797ms
+     × el agente no cierra la pregunta de la persona ni retira lo que ella escribió 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/reviews.test.ts > el hilo > el agente no cierra la pregunta de la persona ni retira lo que ella escribió
+AssertionError: expected { comment: { …(19) }, …(1) } to be an instance of ConvexError
+ ❯ errorData convex/reviews.test.ts:36:17
+     34|
+     35| function errorData(error: unknown): Record<string, unknown> {
+     36|   expect(error).toBeInstanceOf(ConvexError);
+       |                 ^
+     37|   return (error as ConvexError<Value>).data as unknown as Record<strin…
+     38| }
+ ❯ convex/reviews.test.ts:170:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  21:21:51
+   Duration  1.50s (transform 593ms, setup 0ms, import 388ms, tests 797ms, environment 94ms)
+
+[ELIFECYCLE] Test failed. See above for more details.
