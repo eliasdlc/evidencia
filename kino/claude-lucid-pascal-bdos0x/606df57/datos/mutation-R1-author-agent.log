@@ -1,0 +1,123 @@
+# mutation: convex/reviews.ts
+diff --git a/convex/reviews.ts b/convex/reviews.ts
+index 036f9a83..3d0f8fea 100644
+--- a/convex/reviews.ts
++++ b/convex/reviews.ts
+@@ -49 +49 @@ const iso = (ms: number | undefined) => (ms === undefined ? null : new Date(ms).
+-const autorDe = (via: ActorChannel) => (via === 'oauth' ? ('agent' as const) : ('person' as const));
++const autorDe = (via: ActorChannel) => (via === 'session' ? ('agent' as const) : ('person' as const));
+# run: pnpm test convex/reviews.test.ts
+$ vitest run convex/reviews.test.ts
+(node:276158) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/claude-lucid-pascal-bdos0x
+
+ ❯ |convex| convex/reviews.test.ts (14 tests | 4 failed) 869ms
+     × el agente la deja entera y la persona la ve en su página, sin barra llena 704ms
+     × se cierra una vez, con el último comentario, y reabrir la devuelve 24ms
+     × el agente cierra comprobando, y su cierre se distingue del de la persona 14ms
+     × una pregunta de la persona espera al agente, y la respuesta le devuelve el turno 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/reviews.test.ts > una pasada de revisión > el agente la deja entera y la persona la ve en su página, sin barra llena
+AssertionError: expected { author: 'person', …(6) } to match object { reviewer: 'Claude', …(2) }
+(10 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "author": "agent",
++   "author": "person",
+    "closedAt": null,
+    "reviewer": "Claude",
+  }
+
+ ❯ convex/reviews.test.ts:53:20
+     51|     });
+     52|
+     53|     expect(review).toMatchObject({ reviewer: 'Claude', author: 'agent'…
+       |                    ^
+     54|     const panel = await asAna.query(api.reviews.byPage, { pageId });
+     55|     expect(panel.comments).toHaveLength(2);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |convex| convex/reviews.test.ts > cerrar la pasada > se cierra una vez, con el último comentario, y reabrir la devuelve
+AssertionError: expected { author: 'agent', …(3) } to match object { author: 'person', …(1) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "author": "person",
++   "author": "agent",
+    "body": "Lo quiero así",
+  }
+
+ ❯ convex/reviews.test.ts:131:74
+    129|     // La barra se queda llena: la de la pasada que se acaba de cerrar.
+    130|     expect(panel.progress).toMatchObject({ total: 2, open: 0, fraction…
+    131|     expect(panel.comments.find((c) => c.id === segundo!.id)!.replies[0…
+       |                                                                          ^
+    132|
+    133|     await asAna.mutation(api.reviews.reopen, { id: primero!.id });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |convex| convex/reviews.test.ts > cerrar la pasada > el agente cierra comprobando, y su cierre se distingue del de la persona
+AssertionError: expected { author: 'person', …(3) } to match object { author: 'agent' }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "author": "agent",
++   "author": "person",
+  }
+
+ ❯ convex/reviews.test.ts:147:33
+    145|     const [cerrado] = (await asAna.query(api.reviews.byPage, { pageId …
+    146|     expect(cerrado).toMatchObject({ status: 'resolved', resolution: 'v…
+    147|     expect(cerrado!.replies[0]).toMatchObject({ author: 'agent' });
+       |                                 ^
+    148|   });
+    149| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |convex| convex/reviews.test.ts > el hilo > una pregunta de la persona espera al agente, y la respuesta le devuelve el turno
+AssertionError: expected { author: 'agent', …(18) } to match object { author: 'person', …(2) }
+(16 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "author": "person",
++   "author": "agent",
+    "awaiting": "agent",
+    "reviewId": null,
+  }
+
+ ❯ convex/reviews.test.ts:155:22
+    153|     const { asAna, agente, pageId } = await seed();
+    154|     const pregunta = await asAna.mutation(api.reviews.ask, { pageId, q…
+    155|     expect(pregunta).toMatchObject({ author: 'person', awaiting: 'agen…
+       |                      ^
+    156|
+    157|     const espera = await agente.query(api.reviews.awaitingAgent, {});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 10 passed (14)
+   Start at  21:21:36
+   Duration  1.50s (transform 620ms, setup 0ms, import 347ms, tests 869ms, environment 73ms)
+
+[ELIFECYCLE] Test failed. See above for more details.
