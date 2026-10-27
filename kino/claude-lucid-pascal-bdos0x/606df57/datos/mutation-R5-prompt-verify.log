@@ -1,0 +1,43 @@
+# mutation: src/features/reviews/agent-prompt.ts
+diff --git a/src/features/reviews/agent-prompt.ts b/src/features/reviews/agent-prompt.ts
+index 10b8be74..5edc109e 100644
+--- a/src/features/reviews/agent-prompt.ts
++++ b/src/features/reviews/agent-prompt.ts
+@@ -55 +55 @@ export function agentPrompt(input: AgentPromptInput, ask: AgentAsk = nextAsk(inp
+-    `resuelve con resolve_page_comment sólo lo que compruebes arreglado, retira lo que ya no aplique ` +
++    `resuelve con resolve_page_comment todo lo que veas, retira lo que ya no aplique ` +
+# run: pnpm test src/features/reviews/agent-prompt.test.ts
+$ vitest run src/features/reviews/agent-prompt.test.ts
+
+ RUN  v4.1.3 /home/decruce/dev/wt/kino/claude-lucid-pascal-bdos0x
+
+(node:276884) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ |node| src/features/reviews/agent-prompt.test.ts (4 tests | 1 failed) 19ms
+     × la segunda pasada pide comprobar antes de resolver, y cuenta los hilos que esperan 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |node| src/features/reviews/agent-prompt.test.ts > agentPrompt > la segunda pasada pide comprobar antes de resolver, y cuenta los hilos que esperan
+AssertionError: expected 'Vuelve a revisar la página «Informe d…' to contain 'sólo lo que compruebes arreglado'
+
+Expected: "sólo lo que compruebes arreglado"
+Received: "Vuelve a revisar la página «Informe de seguridad» de Kino (pageId: page_123). Con list_page_comments y get_page mira qué cambió: contesta con reply_to_page_comment los 3 hilos donde te respondí, resuelve con resolve_page_comment todo lo que veas, retira lo que ya no aplique y deja comentarios nuevos con review_page sólo si hacen falta."
+
+ ❯ src/features/reviews/agent-prompt.test.ts:31:20
+     29|     expect(prompt).toContain("list_page_comments");
+     30|     expect(prompt).toContain("los 3 hilos");
+     31|     expect(prompt).toContain("sólo lo que compruebes arreglado");
+       |                    ^
+     32|   });
+     33|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  21:21:53
+   Duration  421ms (transform 54ms, setup 0ms, import 79ms, tests 19ms, environment 0ms)
+
+[ELIFECYCLE] Test failed. See above for more details.
