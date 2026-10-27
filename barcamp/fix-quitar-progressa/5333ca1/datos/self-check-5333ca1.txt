@@ -1,0 +1,16 @@
+Self-check at 5333ca1
+R1 matches sponsors-desktop.png: The wall runs Geek Platinum, Gold, Silver, Geek; the Geek tier is four cards on the first row and two centred on the second (Cecomsa, Union Medica, NTI, Avathar, then Alphnology, Nadserv), evenly sized and spaced, with no Progressa card or hummingbird anywhere.
+R2 matches sponsors-desktop.png: Above Geek Gold sits a "Geek Platinum" title with "Platinum" in pale blue-gray, then one centred card wider and taller than Gold's holding the Ksquare logo with a white K and white "KSQUARE" on the dark card, clearly readable.
+R1 matches sponsors-mobile.png: At 390px the Geek tier is a two-column grid of six cards (Cecomsa/Union Medica, NTI/Avathar, Alphnology/Nadserv), no gap or orphan, no Progressa.
+R2 matches sponsors-mobile.png: A full-width Platinum card with the white-K Ksquare logo sits above Gold (Popular), under a "Geek Platinum" title with a blue-gray "Platinum"; the card is a little taller than Gold's and the logo is readable.
+R1 matches sponsors-desktop-light.png: Light theme shows the same layout, Geek tier four plus two centred, all logos in their light variants (green Union Medica, navy Cecomsa and Popular), no Progressa.
+R2 matches sponsors-desktop-light.png: The Platinum title uses a darker slate blue-gray against the paper, and the card above Gold holds Ksquare with a navy K and navy "KSQUARE" (teal "THE" and "GROUP") on a white card, readable.
+R1 matches sponsors-mobile-light.png: Light mobile has the same two-column grid of six Geek cards, no Progressa, no uneven rows.
+R2 matches sponsors-mobile-light.png: A full-width light card with the navy-K Ksquare logo sits under the "Geek Platinum" title (slate "Platinum") and above Gold, readable.
+
+Notes, not counterexamples:
+- The fixed Barcamp nav pill overlaps the Colaboradores cards in all four frames (full-page capture artifact, outside the sponsors tiers); desktop-light also shows two horizontal background seams near y=387 and y=1287. Neither touches R1 or R2.
+- Diff matches the body: 7 files (sponsors.tsx, sponsors.ts, tokens.css, ksquare.png, ksquare-on-light.png, two progressa deletions); geek-platinum is first in SPONSOR_TIERS with logoScale 1.75 (Gold 1.5, Silver 1.25, Geek 1); TIER_CARD for platinum is larger than Gold; colors #a7b8c8 dark and #4b6176 light; `git grep -ic progressa` returns nothing.
+- Contrast: dark #a7b8c8 on #0a0707 recomputes to 9.88:1 (body 9.9, Gold 9.97 vs the body's 10.0), confirmed. Light #4b6176 recomputes to 5.79:1 on --color-bg-0 (body says 5.6); Silver recomputes to 5.61 (body says 5.4). Both are about 0.2 lower in the body, so it probably used a slightly different paper. Either way the claim holds at AA and the Platinum vs Silver comparison is right. The paper value is not named in the body.
+- Not verified here: the raw.githubusercontent URLs in the body (local originals only), and the sampled Figma colors. The shipped logo files are 786x144 crops, not byte-identical to the reference files (908x152 white, 810x132 color), which fits the "recortado" claim but was not diffed pixel by pixel.
+- Playwright alt-text reads and lint/tsc/build exits are claims, not re-run.
