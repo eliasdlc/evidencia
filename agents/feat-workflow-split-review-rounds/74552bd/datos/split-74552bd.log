@@ -1,0 +1,78 @@
+== head
+74552bd
+== core bytes
+origin/dev before: 50275
+this head: 11241
+ 8966 skills/development-workflow/references/budget.md
+ 5944 skills/development-workflow/references/coding.md
+ 2487 skills/development-workflow/references/continuity.md
+ 1278 skills/development-workflow/references/facts.md
+ 1155 skills/development-workflow/references/history.md
+ 7594 skills/development-workflow/references/ledger.md
+12398 skills/development-workflow/references/proof.md
+ 3515 skills/development-workflow/references/release.md
+ 6904 skills/development-workflow/references/review.md
+10065 skills/development-workflow/references/verification.md
+60306 total
+== description length
+543
+== description unchanged vs dev
+identical
+== every non-empty line of the old SKILL.md (dd96897) absent from the core and references
+   This skill owns the lifecycle; repository mechanics stay in each product repository. The requirement ledger, its validator and the handoff template ar
+   # Coding preferences - General
+   # Coding preferences - Typescript focused
+   # Coding preferences - Dart / Flutter focused
+   | Distributed | The receipt of the APK of that exact SHA, with every field listed under "Distribution and releases" | installed on my phone: that need
+   - A job that runs past a minute (a suite, a build, a capture, a CI run, a child agent) wakes you when it ends: Bash `run_in_background` or Monitor in 
+   **Review feedback** (a PR comment, an audit finding, a `delivery-reviewer` counterexample). Check each item against the code before acting, because a 
+   - Conventional Commits unless the repo defines another format. Atomic. No AI attribution trailers, co-author lines or session links. Titles simple, in
+   - Commit after validation passes and report hash and message, plus anything left uncommitted. Commit messages carry no AI co-author trailer, no "Gener
+   Publish the body once, when its proof is ready: draft it in a file, run `agents proof --body FILE --head <sha>` offline until it passes, then `gh pr e
+   **Row by row.** A PR opened on or after 27 Oct 2026 (`ROW_FROM` in `bin/proof.py`) is judged row by row, because a later fix should not throw away the
+   Every product repo measures its deterministic costs (bytes, counts, permissions) on every PR and on every push to `dev`, and posts one table that upda
+   | The repo's own checks ran and pass | The commands of Verification above, with their numbers in the PR body |
+   | Every requirement is Verified on its channel | `agents proof <n>` passes (the `proof` hook runs it for you). A `native`, `device-simulated` or `real
+   | The budget holds | The budget table of the head SHA shows no red row; a raised ceiling carries my quote |
+   - The standing authorization of `rules/CLAUDE.md` covers a green release with nothing from the list above: Kino `dev` into `main` plus its production 
+   - After a merge into `dev`: mark the tickets complete, leave the worktree on the branch's parent (verify it, `dev` for task deliveries, `main` for rel
+   | full send | Every merge criterion above holds | You merge, then carry the release where the standing authorization covers it, and watch it |
+   A full send on a PR from the needs-my-eye list runs as a full stop and says so in its first line, because the list outranks the mode. Without either p
+   The cycle both modes run, in order:
+   1. Verify on the channels the requirements need and fill the Proof section, as Verification and No merge without proof say.
+   **Review loop.** Round 1 launches `delivery-reviewer` on the range and targets behavior and tests: for anything with state it asks for the invariant a
+   # Distribution and releases
+   - Project mechanics (scripts, version scheme, tester lists) live in that repo's `CLAUDE.md` and win over this section.
+   # Visual and design work
+   - Anything visible loads the `design-grammar` skill first: the cross-project grammar (radius, spacing, type, color roles, elevation, accent, touch) an
+   - The grammar is the feel, not the layout: it never decides which screens exist or which components a product needs. Two products on it read as siblin
+   - Web UI also loads `frontend-design`, and follows `design-grammar/references/web-checklist.md`, which replaces the grammar's native rules on web.
+   - Do not edit real components first. Any non-trivial UI, layout or copy change stops and offers me several distinct static mocks (HTML for web, Dart r
+   - Mock options differ in structure, not in color, each with a reason to be picked and a real product it borrows from. Three recolors of one layout is 
+   - A web product carries `DESIGN.md` at its root before its first UI file: his pick quoted, the faces, the neutrals derived from the brand hue, the sig
+   - Reader documents follow visual-briefing and the host theme. Standalone project dashboards follow their DESIGN.md and design-grammar. Choose the comp
+   - No spinners anywhere. On web, loading is a skeleton shaped like the final layout. On Flutter and native, no continuously repainting animation at all
+   - Every interactive element does something. A control with no behavior yet is not rendered.
+   # Continuity
+   - Finish a merge's pending tracker writes idempotently. A failed external write stays visible and retriable.
+   - Before aligning an existing `dev` with `main`, inventory both sides and preserve unique work. A release PR contains only merged task work; unrelated
+   The history behind these rules is in `references/history.md`; read it only when changing a rule.
+== gate messages and the heading they cite
+skills/development-workflow/SKILL.md:56:## No merge without proof
+skills/development-workflow/references/proof.md:3:Read this before writing a PR body, taking captures for one, or answering a red `agents proof`. `SKILL.md`, section "No merge without proof", holds the rule; this file owns the body template and every check behind it.
+skills/development-workflow/references/proof.md:42:## No merge without proof
+hooks/proof.sh:5:# "No merge without proof"; bin/proof.py is the parser. A merge pressed on the
+hooks/proof.sh:62:Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit $num --body-file ...) and merge again."
+bin/proof.py:1067:                              "self-check report (development-workflow, No merge without proof)")
+== capture-mode asks left
+skills/development-workflow/references/proof.md:62:**Self-check before the PR.** Once the captures and Seen cells are written, and before the PR opens or its body is upda
+skills/development-workflow/references/proof.md:75:The self-check is the one capture-mode run of a PR opened on or after 27 Oct 2026: no second pass reads the same frames
+skills/development-workflow/references/proof.md:76:<!-- Captures read once (28 Oct 2026, decision 3A): 103 capture-mode runs took 524 min in 30 days, on top of the self-c
+subagents/delivery-reviewer.md:3:description: "Reviews a delivery adversarially before it enters review or merges: per row it traces producer, consumer and effect in the 
+subagents/delivery-reviewer.md:52:## Capture mode
+subagents/delivery-reviewer.md:62:For a self-check, write the report file the caller names: the first line `Self-check at <head sha7> (delivery-reviewer, capture mode)`, 
+== forbidden dashes in changed files
+none
+== agents check
+[32meverything coherent[0m
+
