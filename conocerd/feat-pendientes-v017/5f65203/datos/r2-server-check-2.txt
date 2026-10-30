@@ -1,0 +1,16 @@
+Server-side check for R2 (the diary entry saved with the network cut), Firestore project conocerd-dev, read with a gcloud access token.
+
+Query (REST runQuery on projects/conocerd-dev/databases/(default)/documents):
+  from collection diarys, where title == "Titulo off", limit 5
+
+Result, read after the emulator network was back:
+  documents found: 1
+  createTime: 2026-10-30T03:32:50.119433Z   (23:32:50 local, UTC-4)
+  destinationName: Offline uno
+  title: Titulo off
+
+Times of the same run, from the capture file times on this laptop (emulator clock, local UTC-4):
+  23:32:41  sign out dialog with the pending line, network cut, entry not on the server yet
+  23:33:11  after Cancelar and with the network back: diary shows 27 recuerdos
+
+The document was created at 23:32:50, after the dialog capture and before the after-cancel capture, so the write waited in the phone's cache and uploaded when the signal returned.
