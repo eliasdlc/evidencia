@@ -1,0 +1,68 @@
+== step 1: as the repo is
+-- draft-pr.sh, gh pr create --fill: eliasdlc
+Blocked: open the PR as a draft, 'gh pr create --draft'. The gates skip drafts, so iterating costs no Actions minutes: run the repo's checks locally, publish the body onc
+  -> exit 2
+-- draft-pr.sh, gh pr create --fill: example-org
+  -> exit 0
+-- real-state.sh: eliasdlc
+Repo state this turn: branch main, no upstream, clean worktree; on main; implementation commits go on a task branch.
+-- unmerged-branches.sh, gh pr merge 3: eliasdlc
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "Branches with work that is not yet in main:\n- feat/old, last commit 0 day(s) ago\nA branch t
+  -> exit 0
+-- real-state.sh: example-org
+Repo state this turn: branch main, no upstream, clean worktree.
+-- unmerged-branches.sh, gh pr merge 3: example-org
+  -> exit 0
+-- agents evidence: example-org
+  x   org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate applies and the PR body follows the repository's own format. Its evidence is not published to
+-- agents check
+16. organization PR policies
+  ok  0 organization policy file(s); every other owner has no agents PR gate
+
+
+== step 2: fabricated violation, orgs/example-org.json turns on draft_pr, branch_model, proof with evidence, plus a typo file
+-- draft-pr.sh, gh pr create --fill: eliasdlc
+Blocked: open the PR as a draft, 'gh pr create --draft'. The gates skip drafts, so iterating costs no Actions minutes: run the repo's checks locally, publish the body onc
+  -> exit 2
+-- draft-pr.sh, gh pr create --fill: example-org
+Blocked: open the PR as a draft, 'gh pr create --draft'. The gates skip drafts, so iterating costs no Actions minutes: run the repo's checks locally, publish the body onc
+  -> exit 2
+-- real-state.sh: eliasdlc
+Repo state this turn: branch main, no upstream, clean worktree; on main; implementation commits go on a task branch.
+-- unmerged-branches.sh, gh pr merge 3: eliasdlc
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "Branches with work that is not yet in main:\n- feat/old, last commit 0 day(s) ago\nA branch t
+  -> exit 0
+-- real-state.sh: example-org
+Repo state this turn: branch main, no upstream, clean worktree; on main; implementation commits go on a task branch.
+-- unmerged-branches.sh, gh pr merge 3: example-org
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "Branches with work that is not yet in main:\n- feat/old, last commit 0 day(s) ago\nA branch t
+  -> exit 0
+-- agents evidence: example-org
+  x   the path says 0000000 but this checkout is at 100e9a6. A capture proves only the build it came from: capture again at HEAD, or pass --any-sha with the reason.
+-- agents check
+16. organization PR policies
+  x   orgs/other-org.json: unknown gate 'draft-pr' (did you mean 'draft_pr'?); the gates are proof, draft_pr, branch_model, review, budget, body_template, merge_criteria
+      bin/pr_policy.py, GATES, names every gate and parameter
+
+
+== step 3: undone
+-- draft-pr.sh, gh pr create --fill: eliasdlc
+Blocked: open the PR as a draft, 'gh pr create --draft'. The gates skip drafts, so iterating costs no Actions minutes: run the repo's checks locally, publish the body onc
+  -> exit 2
+-- draft-pr.sh, gh pr create --fill: example-org
+  -> exit 0
+-- real-state.sh: eliasdlc
+Repo state this turn: branch main, no upstream, clean worktree; on main; implementation commits go on a task branch.
+-- unmerged-branches.sh, gh pr merge 3: eliasdlc
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "Branches with work that is not yet in main:\n- feat/old, last commit 0 day(s) ago\nA branch t
+  -> exit 0
+-- real-state.sh: example-org
+Repo state this turn: branch main, no upstream, clean worktree.
+-- unmerged-branches.sh, gh pr merge 3: example-org
+  -> exit 0
+-- agents evidence: example-org
+  x   org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate applies and the PR body follows the repository's own format. Its evidence is not published to
+-- agents check
+16. organization PR policies
+  ok  0 organization policy file(s); every other owner has no agents PR gate
+
