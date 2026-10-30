@@ -1,0 +1,25 @@
+diff --git a/bin/check.py b/bin/check.py
+index f7f2cde..ceed54b 100644
+--- a/bin/check.py
++++ b/bin/check.py
+@@ -632,7 +632,6 @@ def main() -> int:
+         bad(f"MODEL_CATALOG: {exc}")
+     c14_machine_inventory()
+     c15_mcp_registry()
+-    c16_org_policies()
+     print()
+     if failures:
+         print(f"{RED}{len(failures)} failure(s){END}. Each one is a defect no session was going to see.\n")
+diff --git a/bin/pr_policy.py b/bin/pr_policy.py
+index d7ef42e..97a5324 100644
+--- a/bin/pr_policy.py
++++ b/bin/pr_policy.py
+@@ -154,7 +154,7 @@ def for_owner(owner, reason=None):
+         return Policy(owner, "personal", dict(EVERY_GATE), f"PR policy: personal ({owner}), every gate on")
+     found = [p for p in orgs_dir().glob("*.json") if p.stem.lower() == owner.lower()] if orgs_dir().is_dir() else []
+     if not found:
+-        return Policy(owner, "org", {},
++        return Policy(owner, "org", dict(EVERY_GATE),
+                       f"org policy: none for {owner} (no orgs/{owner}.json in the agents repo), so no agents PR "
+                       "gate applies and the PR body follows the repository's own format")
+     path = found[0]
