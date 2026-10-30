@@ -1,0 +1,54 @@
+== step 1: as the repo is (the PR body carries proof; the org checkout has no policy)
+-- proof.sh from the org checkout: cd <personal> && gh pr merge 11
+  -> exit 0
+-- proof.sh from the personal checkout: cd <org> && gh pr merge 11
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "proof gate: org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate 
+  -> exit 0
+-- proof.sh: gh api -X PUT repos/{owner}/{repo}/pulls/11/merge in the org checkout
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "proof gate: org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate 
+  -> exit 0
+-- draft-pr.sh: gh pr create --fill in the org checkout
+  -> exit 0
+-- draft-pr.sh: cd <personal> && gh pr create --fill, from the org checkout
+Blocked: open the PR as a draft, 'gh pr create --draft'. The gates skip drafts, so iterating costs no Actions minutes: run the repo's checks locally, publish the body once 'agents proof --bo
+  -> exit 2
+
+== step 2: fabricated violations: the PR body loses its proof, and orgs/example-org.json turns proof and draft_pr on
+-- proof.sh from the org checkout: cd <personal> && gh pr merge 11
+proof: eliasdlc/app#11 at f00ba12 is not proven:
+  - no ## Proof section: add one with a row per requirement
+Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit 11 --body-file ...) and merge again.
+  -> exit 2
+-- proof.sh from the personal checkout: cd <org> && gh pr merge 11
+proof: example-org/app#11 at f00ba12: org policy: orgs/example-org.json for example-org, gates on: proof (evidence off), draft_pr
+proof: example-org/app#11 at f00ba12 is not proven:
+  - no ## Proof section: add one with a row per requirement
+Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit 11 --body-file ...) and merge again.
+  -> exit 2
+-- proof.sh: gh api -X PUT repos/{owner}/{repo}/pulls/11/merge in the org checkout
+proof: example-org/app#11 at f00ba12: org policy: orgs/example-org.json for example-org, gates on: proof (evidence off), draft_pr
+proof: example-org/app#11 at f00ba12 is not proven:
+  - no ## Proof section: add one with a row per requirement
+Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit 11 --body-file ...) and merge again.
+  -> exit 2
+-- draft-pr.sh: gh pr create --fill in the org checkout
+Blocked: open the PR as a draft, 'gh pr create --draft'. (org policy: orgs/example-org.json for example-org, gates on: proof (evidence off), draft_pr) The gates skip drafts, so iterating cos
+  -> exit 2
+-- draft-pr.sh: cd <personal> && gh pr create --fill, from the org checkout
+Blocked: open the PR as a draft, 'gh pr create --draft'. The gates skip drafts, so iterating costs no Actions minutes: run the repo's checks locally, publish the body once 'agents proof --bo
+  -> exit 2
+
+== step 3: undone
+-- proof.sh from the org checkout: cd <personal> && gh pr merge 11
+  -> exit 0
+-- proof.sh from the personal checkout: cd <org> && gh pr merge 11
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "proof gate: org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate 
+  -> exit 0
+-- proof.sh: gh api -X PUT repos/{owner}/{repo}/pulls/11/merge in the org checkout
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "proof gate: org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate 
+  -> exit 0
+-- draft-pr.sh: gh pr create --fill in the org checkout
+  -> exit 0
+-- draft-pr.sh: cd <personal> && gh pr create --fill, from the org checkout
+Blocked: open the PR as a draft, 'gh pr create --draft'. The gates skip drafts, so iterating costs no Actions minutes: run the repo's checks locally, publish the body once 'agents proof --bo
+  -> exit 2
