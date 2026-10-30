@@ -1,0 +1,26 @@
+diff --git a/bin/proof.py b/bin/proof.py
+index 4d993e1..be20c81 100755
+--- a/bin/proof.py
++++ b/bin/proof.py
+@@ -1487,7 +1487,7 @@ def main(argv):
+         print(f"proof: skipped, {policy.line()}")
+         return 0
+     # An organization that keeps evidence off is judged by the rules that read only the body.
+-    body_only = policy.kind == "org" and not policy.param("proof", "evidence")
++    body_only = False
+     if args[0] == "--body":
+         body = open(args[1]).read()
+         head = args[args.index("--head") + 1]
+diff --git a/hooks/proof.sh b/hooks/proof.sh
+index 46069ef..1cbff00 100755
+--- a/hooks/proof.sh
++++ b/hooks/proof.sh
+@@ -78,7 +78,7 @@ print(repo+"\t"+num)')
+     num=$(cd "$dir" && timeout "${PROOF_GH_TIMEOUT:-60}" gh pr view ${repo:+--repo "$repo"} --json number -q .number 2>/dev/null) ||
+       block "proof: could not tell which PR this merge is for. Name the number: gh pr merge <n>."
+   fi
+-  out=$(cd "$dir" && python3 "$PROOF" "$num" ${repo:+--repo "$repo"} --gate 2>&1) ||
++  out=$(cd "$dir" && python3 "$PROOF" "$num" ${repo:+--repo "$repo"} 2>&1) ||
+     block "$out
+ Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit $num --body-file ...) and merge again."
+   [[ $out == "proof: skipped, "* ]] && skipped+=("${out#proof: skipped, }")
