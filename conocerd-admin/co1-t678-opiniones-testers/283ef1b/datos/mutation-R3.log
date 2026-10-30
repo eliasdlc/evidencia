@@ -1,0 +1,54 @@
+ src/testers/modelo.ts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/co1-t678-opiniones-testers
+
+ ❯ src/testers/modelo.test.ts (8 tests | 2 failed) 19ms
+     × pone arriba lo que bloquea y luego lo más reciente 12ms
+     × una fecha que no es un Timestamp queda sin fecha en vez de romper 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/testers/modelo.test.ts > filtrar > pone arriba lo que bloquea y luego lo más reciente
+AssertionError: expected [ 'falla1', 'idea1', 'bloq1' ] to deeply equal [ 'bloq1', 'falla1', 'idea1' ]
+
+- Expected
++ Received
+
+  [
+-   "bloq1",
+    "falla1",
+    "idea1",
++   "bloq1",
+  ]
+
+ ❯ src/testers/modelo.test.ts:19:55
+     17|   // Lo que bloquea a un tester le impide probar todo lo demás.
+     18|   it('pone arriba lo que bloquea y luego lo más reciente', () => {
+     19|     expect(filtrar(opiniones, base).map((o) => o.id)).toEqual(['bloq1'…
+       |                                                       ^
+     20|   });
+     21|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/testers/modelo.test.ts > aOpinion > una fecha que no es un Timestamp queda sin fecha en vez de romper
+TypeError: v.toDate is not a function
+ ❯ fecha src/testers/modelo.ts:95:33
+     93| const fecha = (v: unknown): Date | null =>
+     94|   v !== null && typeof v === 'object' && 'toDate' in v
+     95|     ? (v as { toDate(): Date }).toDate()
+       |                                 ^
+     96|     : null;
+     97| const de = <T extends object>(lista: T, v: unknown): keyof T | null =>
+ ❯ aOpinion src/testers/modelo.ts:141:15
+ ❯ src/testers/modelo.test.ts:68:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed (8)
+   Start at  21:43:03
+   Duration  246ms (transform 45ms, setup 0ms, import 62ms, tests 19ms, environment 0ms)
+
