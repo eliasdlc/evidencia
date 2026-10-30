@@ -1,0 +1,93 @@
+# R2 at 6b199cc, with mutate-r2.patch applied
+# $ python3 -m unittest discover -s tests -p test_pr_policy.py -k ProofGateTests -k ReproductionTests -v
+test_a_personal_pr_without_proof_is_blocked (test_pr_policy.ProofGateTests.test_a_personal_pr_without_proof_is_blocked) ... ok
+test_an_invalid_policy_file_keeps_the_strict_behavior (test_pr_policy.ProofGateTests.test_an_invalid_policy_file_keeps_the_strict_behavior) ... ok
+test_an_organization_whose_policy_turns_proof_on_is_blocked_without_proof (test_pr_policy.ProofGateTests.test_an_organization_whose_policy_turns_proof_on_is_blocked_without_proof) ... FAIL
+test_an_organization_with_no_policy_passes_and_says_why (test_pr_policy.ProofGateTests.test_an_organization_with_no_policy_passes_and_says_why) ... 
+  test_an_organization_with_no_policy_passes_and_says_why (test_pr_policy.ProofGateTests.test_an_organization_with_no_policy_passes_and_says_why) (command='gh pr merge 11 --merge --repo example-org/app') ... FAIL
+  test_an_organization_with_no_policy_passes_and_says_why (test_pr_policy.ProofGateTests.test_an_organization_with_no_policy_passes_and_says_why) (command='gh pr merge https://github.com/example-org/app/pull/11 --squash') ... FAIL
+  test_an_organization_with_no_policy_passes_and_says_why (test_pr_policy.ProofGateTests.test_an_organization_with_no_policy_passes_and_says_why) (command='gh api -X PUT repos/example-org/app/pulls/11/merge') ... FAIL
+test_an_unresolvable_owner_keeps_the_strict_behavior (test_pr_policy.ProofGateTests.test_an_unresolvable_owner_keeps_the_strict_behavior) ... ok
+test_evidence_off_keeps_the_rules_that_read_only_the_body (test_pr_policy.ProofGateTests.test_evidence_off_keeps_the_rules_that_read_only_the_body) ... FAIL
+test_proof_by_hand_checks_any_repo (test_pr_policy.ProofGateTests.test_proof_by_hand_checks_any_repo) ... ok
+test_an_organization_merge_is_not_held_to_the_personal_proof_rule (test_pr_policy.ReproductionTests.test_an_organization_merge_is_not_held_to_the_personal_proof_rule) ... FAIL
+
+======================================================================
+FAIL: test_an_organization_whose_policy_turns_proof_on_is_blocked_without_proof (test_pr_policy.ProofGateTests.test_an_organization_whose_policy_turns_proof_on_is_blocked_without_proof)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 125, in test_an_organization_whose_policy_turns_proof_on_is_blocked_without_proof
+    self.assertEqual(self.hook("gh pr merge 11 --repo example-org/app").returncode, 0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0
+
+======================================================================
+FAIL: test_an_organization_with_no_policy_passes_and_says_why (test_pr_policy.ProofGateTests.test_an_organization_with_no_policy_passes_and_says_why) (command='gh pr merge 11 --merge --repo example-org/app')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 118, in test_an_organization_with_no_policy_passes_and_says_why
+    self.assertEqual(ran.returncode, 0, ran.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : proof: example-org/app#11 at f00ba12: org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate applies and the PR body follows the repository's own format
+proof: example-org/app#11 at f00ba12 is not proven:
+  - no ## Proof section: add one with a row per requirement
+Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit 11 --body-file ...) and merge again.
+
+
+======================================================================
+FAIL: test_an_organization_with_no_policy_passes_and_says_why (test_pr_policy.ProofGateTests.test_an_organization_with_no_policy_passes_and_says_why) (command='gh pr merge https://github.com/example-org/app/pull/11 --squash')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 118, in test_an_organization_with_no_policy_passes_and_says_why
+    self.assertEqual(ran.returncode, 0, ran.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : proof: example-org/app#11 at f00ba12: org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate applies and the PR body follows the repository's own format
+proof: example-org/app#11 at f00ba12 is not proven:
+  - no ## Proof section: add one with a row per requirement
+Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit 11 --body-file ...) and merge again.
+
+
+======================================================================
+FAIL: test_an_organization_with_no_policy_passes_and_says_why (test_pr_policy.ProofGateTests.test_an_organization_with_no_policy_passes_and_says_why) (command='gh api -X PUT repos/example-org/app/pulls/11/merge')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 118, in test_an_organization_with_no_policy_passes_and_says_why
+    self.assertEqual(ran.returncode, 0, ran.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : proof: example-org/app#11 at f00ba12: org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate applies and the PR body follows the repository's own format
+proof: example-org/app#11 at f00ba12 is not proven:
+  - no ## Proof section: add one with a row per requirement
+Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit 11 --body-file ...) and merge again.
+
+
+======================================================================
+FAIL: test_evidence_off_keeps_the_rules_that_read_only_the_body (test_pr_policy.ProofGateTests.test_evidence_off_keeps_the_rules_that_read_only_the_body)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 144, in test_evidence_off_keeps_the_rules_that_read_only_the_body
+    self.assertEqual(ran.returncode, 0, ran.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : proof: example-org/app#11 at f00ba12: org policy: orgs/example-org.json for example-org, gates on: proof (evidence off)
+proof: example-org/app#11 at f00ba12 is not proven:
+  - body line 12: R2: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix
+  - body line 11: rows with captures need a 'Self-checked at <sha7>' line linking the capture-mode self-check report (development-workflow, No merge without proof)
+Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit 11 --body-file ...) and merge again.
+
+
+======================================================================
+FAIL: test_an_organization_merge_is_not_held_to_the_personal_proof_rule (test_pr_policy.ReproductionTests.test_an_organization_merge_is_not_held_to_the_personal_proof_rule)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 97, in test_an_organization_merge_is_not_held_to_the_personal_proof_rule
+    self.assertEqual(ran.returncode, 0, ran.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : proof: example-org/app#11 at f00ba12: org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate applies and the PR body follows the repository's own format
+proof: example-org/app#11 at f00ba12 is not proven:
+  - no ## Proof section: add one with a row per requirement
+Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit 11 --body-file ...) and merge again.
+
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.306s
+
+FAILED (failures=6)
