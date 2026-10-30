@@ -1,0 +1,24 @@
+== proof.sh, step 1: passes as the repo is
+personal PR with proof:
+  -> exit 0
+org PR, no policy, plain body:
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "proof gate: org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate applies and the PR body follows the repository's own format"}}
+  -> exit 0
+== step 2: fabricated violations
+personal PR, plain body:
+proof: eliasdlc/app#11 at f00ba12 is not proven:
+  - no ## Proof section: add one with a row per requirement
+Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit 11 --body-file ...) and merge again.
+  -> exit 2
+org whose policy turns proof on, plain body:
+proof: example-org/app#11 at f00ba12: org policy: orgs/example-org.json for example-org, gates on: proof (evidence off)
+proof: example-org/app#11 at f00ba12 is not proven:
+  - no ## Proof section: add one with a row per requirement
+Blocked by the rule 'No merge without proof' (development-workflow). Fix the PR body (gh pr edit 11 --body-file ...) and merge again.
+  -> exit 2
+== step 3: violations undone
+personal PR with proof:
+  -> exit 0
+org PR, no policy:
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": "proof gate: org policy: none for example-org (no orgs/example-org.json in the agents repo), so no agents PR gate applies and the PR body follows the repository's own format"}}
+  -> exit 0
