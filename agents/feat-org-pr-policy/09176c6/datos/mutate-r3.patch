@@ -1,0 +1,51 @@
+diff --git a/bin/evidence.py b/bin/evidence.py
+index 371a0ce..e885a4d 100755
+--- a/bin/evidence.py
++++ b/bin/evidence.py
+@@ -420,7 +420,6 @@ def main(argv):
+         fail(f"target '{target}': it is written <project>/<branch>/<sha7>. The sha goes in the path because "
+              "camo caches by URL, and a new capture at an old path would still show the previous image.")
+     project, branch, sha = target.split("/")
+-    published_here(files)
+     if not opts["any_sha"]:
+         head_matches(sha)
+     if opts["dir"] is not None and not SUBDIR.match(opts["dir"]):
+diff --git a/hooks/draft-pr.sh b/hooks/draft-pr.sh
+index 00b06d6..fc8887e 100755
+--- a/hooks/draft-pr.sh
++++ b/hooks/draft-pr.sh
+@@ -30,7 +30,7 @@ print(env[0] if env else os.environ.get("GH_REPO",""))')
+     why=""
+     if [[ -n $repo || $dir != "!" ]]; then
+       # 10 is "the gate does not apply"; anything else, a crash included, keeps it.
+-      why=$(cd "$dir" && python3 "$POLICY" --gate draft_pr ${repo:+--repo "$repo"} 2>/dev/null); [[ $? == 10 ]] && continue
++      why=$(cd "$dir" && python3 "$POLICY" --gate draft_pr ${repo:+--repo "$repo"} 2>/dev/null)
+     else
+       why="the command changes directory where the hook cannot follow, so the strict rules apply"
+     fi
+diff --git a/hooks/real-state.sh b/hooks/real-state.sh
+index 7d2d43c..45165b9 100755
+--- a/hooks/real-state.sh
++++ b/hooks/real-state.sh
+@@ -36,7 +36,7 @@ warnings=()
+ # The two warnings are the branch model of development-workflow; a repository
+ # whose PR policy has no branch_model gate (an organization) keeps its own.
+ python3 "$(dirname "$(readlink -f "$0")")/../bin/pr_policy.py" --gate branch_model --local >/dev/null 2>&1
+-own_model=$(( $? != 10 ))
++own_model=1
+ (( own_model )) && [[ $branch == main || $branch == master || $branch == dev ]] &&
+   warnings+=("on $branch; implementation commits go on a task branch")
+ 
+diff --git a/hooks/unmerged-branches.sh b/hooks/unmerged-branches.sh
+index 9f35028..24e4b31 100755
+--- a/hooks/unmerged-branches.sh
++++ b/hooks/unmerged-branches.sh
+@@ -16,7 +16,7 @@ cmd=$(read_command); [[ -z $cmd ]] && exit 0
+ actions='gh pr merge|--add-label[ =]"?distribute|scripts/distribute\.sh|git push[^#]*(--tags|refs/tags)|vercel[^#]*(--prod|promote)|firebase appdistribution:distribute'
+ printf '%s' "$cmd" | grep -Eq "$actions" || exit 0
+ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
+-python3 "$(dirname "$(readlink -f "$0")")/../bin/pr_policy.py" --gate branch_model --local >/dev/null 2>&1; [[ $? == 10 ]] && exit 0
++python3 "$(dirname "$(readlink -f "$0")")/../bin/pr_policy.py" --gate branch_model --local >/dev/null 2>&1
+ 
+ base=""
+ for b in origin/dev origin/main; do
