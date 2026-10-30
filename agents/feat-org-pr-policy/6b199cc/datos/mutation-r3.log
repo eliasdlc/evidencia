@@ -1,0 +1,41 @@
+# R3 at 6b199cc, with mutate-r3.patch applied
+# $ python3 -m unittest discover -s tests -p test_pr_policy.py -k OtherGateTests -v
+test_branch_model_warnings (test_pr_policy.OtherGateTests.test_branch_model_warnings) ... 
+  test_branch_model_warnings (test_pr_policy.OtherGateTests.test_branch_model_warnings) (owner='example-org') ... FAIL
+test_draft_pr (test_pr_policy.OtherGateTests.test_draft_pr) ... FAIL
+test_evidence_is_not_published_from_an_organization (test_pr_policy.OtherGateTests.test_evidence_is_not_published_from_an_organization) ... 
+  test_evidence_is_not_published_from_an_organization (test_pr_policy.OtherGateTests.test_evidence_is_not_published_from_an_organization) (owner='example-org') ... FAIL
+
+======================================================================
+FAIL: test_branch_model_warnings (test_pr_policy.OtherGateTests.test_branch_model_warnings) (owner='example-org')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 293, in test_branch_model_warnings
+    self.assertEqual("on main; implementation commits" in state, warned, state)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True != False : Repo state this turn: branch main, no upstream, clean worktree; on main; implementation commits go on a task branch.
+
+
+======================================================================
+FAIL: test_draft_pr (test_pr_policy.OtherGateTests.test_draft_pr)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 270, in test_draft_pr
+    self.assertEqual(self.run_hook("draft-pr.sh", create, org).returncode, 0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0
+
+======================================================================
+FAIL: test_evidence_is_not_published_from_an_organization (test_pr_policy.OtherGateTests.test_evidence_is_not_published_from_an_organization) (owner='example-org')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 308, in test_evidence_is_not_published_from_an_organization
+    self.assertEqual("org policy: none for example-org" in ran.stderr, refused, ran.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False != True :   x   the path says 0000000 but this checkout is at 6052a34. A capture proves only the build it came from: capture again at HEAD, or pass --any-sha with the reason.
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.642s
+
+FAILED (failures=3)
