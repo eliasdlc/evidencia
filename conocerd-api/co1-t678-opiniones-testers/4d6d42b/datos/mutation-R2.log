@@ -1,0 +1,141 @@
+ src/lib/tester-feedback.ts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/co1-t678-opiniones-testers
+
+ ❯ src/lib/tester-feedback.test.ts (18 tests | 3 failed) 33ms
+   ✓ lo que se acepta > un error con todo lo que un error pide 2ms
+   ✓ lo que se acepta > los cuatro tipos 0ms
+   ✓ lo que se acepta > una idea no guarda lo que solo pregunta un error 0ms
+   ✓ lo que se acepta > un correo vacío cuenta como no dado 0ms
+   ✓ lo que se acepta > pero no un correo que no se entiende, ni una zona fuera de la lista 2ms
+   ✓ lo que se acepta > ni una calificación fuera de una a cinco 1ms
+   ✓ los adjuntos > reconoce JPEG, PNG y WebP por sus bytes 0ms
+   × los adjuntos > rechaza un fichero que dice ser imagen y no lo es 15ms
+     → promise resolved "{ datos: { tipo: 'falla', …(8) }, …(1) }" instead of rejecting
+   ✓ los adjuntos > acepta hasta 6 y rechaza una más 4ms
+   ✓ los adjuntos > rechaza un cuerpo por encima del límite antes de leerlo 1ms
+   ✓ los adjuntos > rechaza un cuerpo que no es multipart 0ms
+   ✓ la cuota > deja pasar ciento veinte en la misma hora y frena el siguiente 2ms
+   ✓ la cuota > y se olvida al pasar la hora 0ms
+   ✓ lo que se guarda > sube las imágenes bajo el id y guarda el documento como nuevo 2ms
+   × lo que se guarda > si la primera subida falla, limpia el prefijo igual 1ms
+     → expected "spy" to be called with arguments: [ 'testerFeedback/abc123xyz/' ]
+
+Number of calls: 0
+
+   × lo que se guarda > si el documento falla, borra lo que ya subió 1ms
+     → expected "spy" to be called with arguments: [ 'testerFeedback/abc123xyz/' ]
+
+Number of calls: 0
+
+   ✓ la URL de una captura > es la de Firebase Storage con su token 0ms
+   ✓ la URL de una captura > y la del emulador cuando se corre contra él 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/tester-feedback.test.ts > los adjuntos > rechaza un fichero que dice ser imagen y no lo es
+AssertionError: promise resolved "{ datos: { tipo: 'falla', …(8) }, …(1) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "adjuntos": [
++     {
++       "bytes": Uint8Array [
++         37,
++         80,
++         68,
++         70,
++         45,
++         49,
++         46,
++         55,
++         32,
++         110,
++         111,
++         32,
++         115,
++         111,
++         121,
++         32,
++         117,
++         110,
++         97,
++         32,
++         105,
++         109,
++         97,
++         103,
++         101,
++         110,
++       ],
++       "formato": {
++         "extension": "jpg",
++         "mime": "image/jpeg",
++       },
++     },
++   ],
++   "datos": {
++     "descripcion": "Al girar en la rotonda el aviso no cambia de maniobra.",
++     "errorExacto": "StateError: Bad state: No element",
++     "frecuencia": "siempre",
++     "gravedad": "molesta",
++     "pantalla": "Aviso de giro",
++     "pasos": "1. Inicia una ruta
++ 2. Entra a la rotonda",
++     "tipo": "falla",
++     "titulo": "El aviso se queda en 0 m",
++     "zona": "navegacion",
++   },
+  }
+
+ ❯ src/lib/tester-feedback.test.ts:100:37
+     98|   it('rechaza un fichero que dice ser imagen y no lo es', async () => {
+     99|     const peticion = envio(falla, [{ bytes: PDF, nombre: 'captura.png'…
+    100|     await expect(leerEnvio(peticion)).rejects.toMatchObject({ status: …
+       |                                     ^
+    101|   });
+    102| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/lib/tester-feedback.test.ts > lo que se guarda > si la primera subida falla, limpia el prefijo igual
+AssertionError: expected "spy" to be called with arguments: [ 'testerFeedback/abc123xyz/' ]
+
+Number of calls: 0
+
+ ❯ src/lib/tester-feedback.test.ts:174:30
+    172|       guardarOpinion(testerFeedback.parse(falla), [{ bytes: JPEG, form…
+    173|     ).rejects.toThrow('red caída');
+    174|     expect(store.borrarTodo).toHaveBeenCalledWith('testerFeedback/abc1…
+       |                              ^
+    175|     expect(set).not.toHaveBeenCalled();
+    176|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/lib/tester-feedback.test.ts > lo que se guarda > si el documento falla, borra lo que ya subió
+AssertionError: expected "spy" to be called with arguments: [ 'testerFeedback/abc123xyz/' ]
+
+Number of calls: 0
+
+ ❯ src/lib/tester-feedback.test.ts:184:30
+    182|       guardarOpinion(testerFeedback.parse(falla), [{ bytes: JPEG, form…
+    183|     ).rejects.toThrow('firestore caído');
+    184|     expect(store.borrarTodo).toHaveBeenCalledWith('testerFeedback/abc1…
+       |                              ^
+    185|   });
+    186| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 15 passed (18)
+   Start at  21:42:59
+   Duration  457ms (transform 67ms, setup 0ms, collect 259ms, tests 33ms, environment 0ms, prepare 48ms)
+
