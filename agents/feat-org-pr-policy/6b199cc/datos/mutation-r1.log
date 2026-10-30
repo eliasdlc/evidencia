@@ -1,0 +1,89 @@
+# R1 at 6b199cc, with mutate-r1.patch applied
+# $ python3 -m unittest discover -s tests -p test_pr_policy.py -k ResolverTests -k CheckTests -v
+test_the_personal_account_and_duplicate_owners_are_refused (test_pr_policy.CheckTests.test_the_personal_account_and_duplicate_owners_are_refused) ... FAIL
+test_three_steps (test_pr_policy.CheckTests.test_three_steps) ... 
+  test_three_steps (test_pr_policy.CheckTests.test_three_steps) (rule="unknown gate 'prof' (did you mean 'proof'?)") ... FAIL
+  test_three_steps (test_pr_policy.CheckTests.test_three_steps) (rule="gate 'proof' has no parameter 'evidense' (did you mean 'evidence'?)") ... FAIL
+  test_three_steps (test_pr_policy.CheckTests.test_three_steps) (rule="'proof.evidence' is a bool") ... FAIL
+  test_three_steps (test_pr_policy.CheckTests.test_three_steps) (rule="unknown key 'gate' (did you mean 'gates'?)") ... FAIL
+  test_three_steps (test_pr_policy.CheckTests.test_three_steps) (rule='not valid JSON') ... FAIL
+test_gh_answers_only_when_no_remote_parses_and_is_cached (test_pr_policy.ResolverTests.test_gh_answers_only_when_no_remote_parses_and_is_cached) ... ok
+test_owner_from_a_repo_argument (test_pr_policy.ResolverTests.test_owner_from_a_repo_argument) ... ok
+test_owner_from_the_remote_gh_would_pick (test_pr_policy.ResolverTests.test_owner_from_the_remote_gh_would_pick) ... ok
+test_what_each_kind_of_owner_gets (test_pr_policy.ResolverTests.test_what_each_kind_of_owner_gets) ... FAIL
+
+======================================================================
+FAIL: test_the_personal_account_and_duplicate_owners_are_refused (test_pr_policy.CheckTests.test_the_personal_account_and_duplicate_owners_are_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 203, in test_the_personal_account_and_duplicate_owners_are_refused
+    self.assertIn("eliasdlc is the personal account", self.check().stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'eliasdlc is the personal account' not found in '\x1b[1mcheck\x1b[0m \x1b[2m/home/decruce/.t3/worktrees/agents/feat-org-pr-policy\x1b[0m\n\n\x1b[1m1. skill frontmatter\x1b[0m\n  \x1b[32mok\x1b[0m  60 skills with a valid frontmatter\n\n\x1b[1m2. size of the SKILL.md files\x1b[0m\n  \x1b[33m!\x1b[0m   skill-development: 638 lines, with 1 sibling files\n  \x1b[33m!\x1b[0m   3 third-party skills with the same defect: design-taste-frontend, firestore-rules-creation, scrollytelling\n  \x1b[32mok\x1b[0m  reviewed\n\n\x1b[1m3. references between skills\x1b[0m\n  \x1b[33m!\x1b[0m   1 third-party skills with the same defect: maplibre-tile-sources\n\n\x1b[1m4. hooks\x1b[0m\n  \x1b[32mok\x1b[0m  25 repository hooks declared\n\n\x1b[1m7. em dash\x1b[0m\n  \x1b[33m!\x1b[0m   23 third-party skills carry it: design-taste-frontend, find-skills, firebase-basics, frontend-design, godot-3d-essentials, godot-gdscript, godot-gdscript-headless-testing, godot-nodes-scenes, godot-physics, godot-resources, godot-signals-groups, godot-ui-control, higgsfield-brandkit, higgsfield-generate, higgsfield-product-photoshoot, higgsfield-soul-id, higgsfield-video-explainer, higgsfield-websites, higgsfield-youtube-thumbnail, maplibre-tile-sources, redesign-existing-projects, scrollytelling, skill-development\n\n\x1b[1m8. markdown out of place\x1b[0m\n  \x1b[32mok\x1b[0m  no stray markdown\n\n\x1b[1m9. repo contract\x1b[0m\n  \x1b[32mok\x1b[0m  CLAUDE.md links to AGENTS.md: a session inside the repo loads its contract\n\n\x1b[1m10. the ticket template and its contract\x1b[0m\n  \x1b[32mok\x1b[0m  the 9 ticket sections are in the contract checklist\n\n\x1b[1m11. machine identities\x1b[0m\n  \x1b[32mok\x1b[0m  every enrolled machine identity is reviewed\n\n\x1b[1m12. workspaces\x1b[0m\n  \x1b[32mok\x1b[0m  5 domains named in the core rules, 1 project workspace(s)\n\n\x1b[1m13. model delegation catalog\x1b[0m\n  \x1b[32mok\x1b[0m  MODEL_CATALOG: 3 reviewed CLI identities with explicit adapter efforts; live discovery is separate\n\n\x1b[1m14. machine inventory blocks\x1b[0m\n  \x1b[32mok\x1b[0m  every machine file carries a valid inventory block, free of credentials\n\n\x1b[1m15. MCP registry\x1b[0m\n  \x1b[32mok\x1b[0m  3 servers, 1 workspace server(s) approved, 6 retired names\n\n\x1b[32meverything coherent\x1b[0m\n\n'
+
+======================================================================
+FAIL: test_three_steps (test_pr_policy.CheckTests.test_three_steps) (rule="unknown gate 'prof' (did you mean 'proof'?)")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 196, in test_three_steps
+    self.assertEqual(failed.returncode, 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_three_steps (test_pr_policy.CheckTests.test_three_steps) (rule="gate 'proof' has no parameter 'evidense' (did you mean 'evidence'?)")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 196, in test_three_steps
+    self.assertEqual(failed.returncode, 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_three_steps (test_pr_policy.CheckTests.test_three_steps) (rule="'proof.evidence' is a bool")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 196, in test_three_steps
+    self.assertEqual(failed.returncode, 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_three_steps (test_pr_policy.CheckTests.test_three_steps) (rule="unknown key 'gate' (did you mean 'gates'?)")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 196, in test_three_steps
+    self.assertEqual(failed.returncode, 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_three_steps (test_pr_policy.CheckTests.test_three_steps) (rule='not valid JSON')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 196, in test_three_steps
+    self.assertEqual(failed.returncode, 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_what_each_kind_of_owner_gets (test_pr_policy.ResolverTests.test_what_each_kind_of_owner_gets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-org-pr-policy/tests/test_pr_policy.py", line 249, in test_what_each_kind_of_owner_gets
+    self.assertEqual(org.gates, {})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+AssertionError: {'proof': {'evidence': True}, 'draft_pr': [89 chars]: {}} != {}
++ {}
+- {'body_template': {},
+-  'branch_model': {},
+-  'budget': {},
+-  'draft_pr': {},
+-  'merge_criteria': {},
+-  'proof': {'evidence': True},
+-  'review': {}}
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.286s
+
+FAILED (failures=7)
