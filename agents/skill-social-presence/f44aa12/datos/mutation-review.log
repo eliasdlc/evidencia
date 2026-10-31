@@ -1,0 +1,32 @@
+.............FFF
+======================================================================
+FAIL: test_follower_snapshot_after_the_week_is_ignored (test_social_presence.Review.test_follower_snapshot_after_the_week_is_ignored)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence/tests/test_social_presence.py", line 142, in test_follower_snapshot_after_the_week_is_ignored
+    self.assertIn("x: 20 on 2026-11-03", report)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'x: 20 on 2026-11-03' not found in "# Week of 2026-11-02 to 2026-11-08\n\n## Followers against pace\n- x: 90 on 2026-11-20, pace 160, behind by 70\n\n## What was published\nNothing logged this week: paste the week's posts and their numbers into ledger.csv.\n\n## Best and worst by engagement rate\n\n## Leads\n- 0 this week, pace 3.0 cumulative\n\n## Campaign split\n"
+
+======================================================================
+FAIL: test_pace_is_the_line_to_the_next_checkpoint (test_social_presence.Review.test_pace_is_the_line_to_the_next_checkpoint)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence/tests/test_social_presence.py", line 127, in test_pace_is_the_line_to_the_next_checkpoint
+    self.assertAlmostEqual(review.pace(goals, "x_followers", dt.date(2026, 11, 16)), 85)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 160.0 != 85 within 7 places (75.0 difference)
+
+======================================================================
+FAIL: test_report_flags_a_platform_behind_pace (test_social_presence.Review.test_report_flags_a_platform_behind_pace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence/tests/test_social_presence.py", line 136, in test_report_flags_a_platform_behind_pace
+    self.assertIn("x: 20 on 2026-11-06, pace 35, behind by 15", report)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'x: 20 on 2026-11-06, pace 35, behind by 15' not found in '# Week of 2026-11-02 to 2026-11-08\n\n## Followers against pace\n- x: 20 on 2026-11-06, pace 160, behind by 140\n\n## What was published\n- x reply: 1 posts, median 1200 impressions, 4 follows\n- total: 1 posts, 1200 impressions, 4 follows, 30 profile visits, 0 link clicks\n\n## Best and worst by engagement rate\n- best: x reply 3.0% "hi" https://x.com/a/status/1\n\n## Leads\n- 0 this week, pace 3.0 cumulative\n\n## Campaign split\n- launch: 1 posts, 1200 impressions, 4 follows\n'
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.178s
+
+FAILED (failures=3)
