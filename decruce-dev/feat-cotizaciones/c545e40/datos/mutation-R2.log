@@ -1,0 +1,89 @@
+Mutation R2 at c545e40: lib/cotiza/calculo.ts
+- const veces = p.porPagina ? paginas : 1;
++ const veces = 1;
+$ node --test test/cotiza/calculo.test.ts   (exit 1; file restored afterwards)
+
+✔ opens on the recommended package with its included item (1.380929ms)
+✖ the recommended package adds up: ITBIS, list price courtesy, per page monthly, dollars and first year (1.302305ms)
+✖ a company client: Elias receives 85% and the withheld ISR is listed for the IR-1 (0.335881ms)
+✔ a person who does not withhold: Elias collects base plus ITBIS and there is no ISR to credit (0.192809ms)
+✔ turning an item on adds what it requires (0.269511ms)
+✔ turning a requirement off removes what depends on it, in cascade, and the included item follows (0.140006ms)
+✔ removing the second page halves the per page monthly (0.187443ms)
+✔ radio options swap and cannot be turned off; included items cannot be turned off (0.206033ms)
+✔ quantities multiply pesos and dollars, clamped to their range (0.188928ms)
+✔ the discount comes off before ITBIS and never below zero (0.231087ms)
+✔ money reads like the old quotes (10.915867ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 9
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 143.626292
+
+✖ failing tests:
+
+test at test/cotiza/calculo.test.ts:28:1
+✖ the recommended package adds up: ITBIS, list price courtesy, per page monthly, dollars and first year (1.302305ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   itbis: 270,
+  +   subtotal: 1500,
+  +   total: 1770
+  -   itbis: 540,
+  -   subtotal: 3000,
+  -   total: 3540
+    }
+  
+      at TestContext.<anonymous> (file:///home/decruce/.t3/worktrees/decruce-dev/feat-cotizaciones/test/cotiza/calculo.test.ts:34:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { subtotal: 1500, itbis: 270, total: 1770 },
+    expected: { subtotal: 3000, itbis: 540, total: 3540 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/cotiza/calculo.test.ts:39:1
+✖ a company client: Elias receives 85% and the withheld ISR is listed for the IR-1 (0.335881ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   isr: 225,
+  +   itbis: 270,
+  +   recibe: 1275
+  -   isr: 450,
+  -   itbis: 540,
+  -   recibe: 2550
+    }
+  
+      at TestContext.<anonymous> (file:///home/decruce/.t3/worktrees/decruce-dev/feat-cotizaciones/test/cotiza/calculo.test.ts:43:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { recibe: 1275, isr: 225, itbis: 270 },
+    expected: { recibe: 2550, isr: 450, itbis: 540 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+Summary translated from the ✖ and ℹ lines above:
+FAIL test/cotiza/calculo.test.ts > the recommended package adds up: ITBIS, list price courtesy, per page monthly, dollars and first year
+FAIL test/cotiza/calculo.test.ts > a company client: Elias receives 85% and the withheld ISR is listed for the IR-1
+9 passed, 2 failed
