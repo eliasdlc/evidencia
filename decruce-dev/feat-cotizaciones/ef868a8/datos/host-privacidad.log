@@ -1,0 +1,38 @@
+Host routing and privacy at ef868a8 (next start, COTIZA_HOST=cotiza.localhost:3000)
+$ curl -sI http://localhost:3000/
+HTTP/1.1 200 OK
+$ curl -sI http://localhost:3000/cotiza/<token>
+HTTP/1.1 404 Not Found
+$ curl -sI http://localhost:3000/cotiza/panel
+HTTP/1.1 404 Not Found
+$ curl -sI http://cotiza.localhost:3000/
+HTTP/1.1 404 Not Found
+referrer-policy: no-referrer
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow, noarchive
+$ curl -sI http://cotiza.localhost:3000/ejemplo-la-espiga-adivinado1
+HTTP/1.1 404 Not Found
+referrer-policy: no-referrer
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow, noarchive
+$ curl -sI http://cotiza.localhost:3000/<token>
+HTTP/1.1 200 OK
+referrer-policy: no-referrer
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow, noarchive
+$ curl -sI http://cotiza.localhost:3000/panel
+HTTP/1.1 307 Temporary Redirect
+referrer-policy: no-referrer
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow, noarchive
+location: /panel/entrar
+$ curl -s http://cotiza.localhost:3000/robots.txt
+User-agent: *
+Disallow: /
+$ curl -s http://cotiza.localhost:3000/<token> | grep -o "<meta name=\"robots\"[^>]*>"
+<meta name="robots" content="noindex, nofollow, nocache"/>
+$ curl -s -X POST http://cotiza.localhost:3000/api/publicar (no passphrase)
+{"ok":false,"errores":["Inicia sesión o usa COTIZA_CLAVE."]}
+$ curl -s -X POST -d clave=wrong http://cotiza.localhost:3000/api/sesion (wrong passphrase)
+HTTP/1.1 303 See Other
+location: http://cotiza.localhost:3000/panel/entrar?error=1
