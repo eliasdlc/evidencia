@@ -1,0 +1,22 @@
+== delivery.sh (production Facts check)
+1 pass, a read: vercel ls
+rc=0
+2 fail, deploy in a repo without Facts:
+'production-deploy' needs the production target written in the repo first: add a '## Facts' section to /home/decruce/.cache/agents/remove-by-quote/tmp.TX7zzFwVoP/AGENTS.md (or CLAUDE.md) with 'production: <url>' and 'production branch: main', confirmed with Elias, then deploy to exactly that.
+rc=2
+3 pass, Facts added:
+rc=0
+former quote-gated actions, no quote, in the same repo:
+  gh pr merge 12 --merge -> rc=0
+  git push origin --tags -> rc=0
+  gh workflow run build.yml -> rc=0
+  gh run cancel 9 -> rc=0
+
+== launch-in-t3.sh (block stays, BY= way out gone)
+1 pass, foreground claude -p: rc=0
+Agents run in T3 Code (model-delegation skill): this command starts an agent inside tmux on another machine over ssh, out of Elias's sight. A bounded task is a subagent (the Agent tool, or delegate_task for another provider). Work that runs on its own is a T3 thread: t3_thread_launch on this machine, or `agents t3-launch --host agentbox|laptop` for the other one, so it appears in his sidebar. Never hand him the launch to do himself.
+2 fail, tmux over ssh: rc=2
+Agents run in T3 Code (model-delegation skill): this command starts an agent inside tmux on another machine over ssh, out of Elias's sight. A bounded task is a subagent (the Agent tool, or delegate_task for another provider). Work that runs on its own is a T3 thread: t3_thread_launch on this machine, or `agents t3-launch --host agentbox|laptop` for the other one, so it appears in his sidebar. Never hand him the launch to do himself.
+   same launch with a BY= prefix: rc=2 (was 0 before)
+3 pass again: rc=0
+
