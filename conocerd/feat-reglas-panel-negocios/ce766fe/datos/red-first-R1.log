@@ -1,0 +1,585 @@
+NOTE (added after the run): new tests from test_rules/rules.spec.js run against origin/dev firestore.rules (13690fe5).
+Result: 161 passing, 0 failing. None of the 25 new tests could be seen red here: origin/dev has no match for
+ownerships, owners, ownerInvitations, profileEdits, monthlyReports or users/{uid}/contactSignals, so every request
+falls to the catch-all `match /{document=**} { allow read, write: if false; }` (denials cite "@ L552", that line)
+plus Firestore's default deny; `match /users/{uid}` does not cascade to subcollections. R1 makes the closure explicit
+and documented; it does not change behavior. That the tests catch an opening is shown in mutation-R2.log.
+-------------------------------------------------------------------------------------------------------------------
+
+> conocerd-firestore-rules-tests@1.0.0 test
+> cd .. && firebase emulators:exec --only firestore,storage --project demo-conocerd "cd test_rules && npx mocha rules.spec.js storage.spec.js --timeout 30000"
+
+i  emulators: Starting emulators: firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: cd test_rules && npx mocha rules.spec.js storage.spec.js --timeout 30000
+npm warn install-scripts .npmrc allow-scripts setting is being ignored because --allow-scripts was passed on the command line
+
+
+  destinations
+[2026-11-02T22:33:06.239Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d941 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L552, false for 'update' @ L160, false for 'update' @ L552
+[2026-11-02T22:33:06.260Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d942 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L552, false for 'update' @ L160, false for 'update' @ L552
+[2026-11-02T22:33:06.282Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d943 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L203, false for 'create' @ L552, false for 'update' @ L203, false for 'update' @ L552
+[2026-11-02T22:33:06.320Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d944 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L552, false for 'update' @ L160, false for 'update' @ L552
+[2026-11-02T22:33:06.334Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d945 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L552, false for 'update' @ L160, false for 'update' @ L552
+[2026-11-02T22:33:06.346Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d946 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L203, false for 'create' @ L552, false for 'update' @ L203, false for 'update' @ L552
+    ✔ countryless and regionless creates remain denied for ordinary and admin clients (320ms)
+    ✔ lectura pública sin auth (54ms)
+[2026-11-02T22:33:06.561Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d94a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L552, false for 'update' @ L160, false for 'update' @ L552
+[2026-11-02T22:33:06.569Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d94b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L159, false for 'delete' @ L552
+    ✔ el cliente no crea ni borra destinos
+[2026-11-02T22:33:06.651Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d94d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L552
+    ✔ inflar el rating con un delta "con forma de reseña" ya NO pasa
+[2026-11-02T22:33:06.714Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d94f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L552
+    ✔ inflar la suma sin tocar el conteo (promedio > 5) no pasa
+[2026-11-02T22:33:06.781Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d951 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L552
+    ✔ hundir a un competidor bajando la suma no pasa
+[2026-11-02T22:33:06.853Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d953 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L552
+[2026-11-02T22:33:06.860Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d954 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L552
+    ✔ tocar cualquier otro campo falla (sponsorTier, name…)
+[2026-11-02T22:33:06.950Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d956 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L552
+    ✔ sin auth tampoco (49ms)
+
+  reviews
+    ✔ sin sesión no se puede leer (64ms)
+    ✔ con sesión sí se lee: las reseñas son contenido compartido (54ms)
+    el cliente no escribe, en ninguna forma
+[2026-11-02T22:33:07.299Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d95f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L223, false for 'create' @ L552, false for 'update' @ L223, false for 'update' @ L552
+      ✔ crear una reseña propia falla
+[2026-11-02T22:33:07.398Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d962 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L223, false for 'update' @ L552
+      ✔ editar la propia falla, aunque sea solo el texto
+[2026-11-02T22:33:07.480Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d965 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L223, false for 'delete' @ L552
+      ✔ borrar la propia falla
+[2026-11-02T22:33:07.562Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d968 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L223, false for 'update' @ L552
+      ✔ votar útil falla: los votos también pasan por el servidor
+[2026-11-02T22:33:07.642Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d96b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L223, false for 'update' @ L552
+      ✔ un dueño verificado tampoco escribe la respuesta a mano
+[2026-11-02T22:33:07.722Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d96e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L223, false for 'update' @ L552
+      ✔ ni un admin: el panel también pasa por el backend
+[2026-11-02T22:33:07.791Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d971 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L223, false for 'create' @ L552, false for 'update' @ L223, false for 'update' @ L552
+      ✔ el batch de reseña + contadores tampoco, por ninguno de sus dos lados
+
+  destinos con dueño verificado
+    ✔ el dueño edita su lista blanca (93ms)
+[2026-11-02T22:33:08.015Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d975 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L552
+    ✔ el dueño de OTRO destino no toca este
+[2026-11-02T22:33:08.098Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d977 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L552
+    ✔ una cuenta sin claim biz no edita nada, aunque tenga sesión
+[2026-11-02T22:33:08.186Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d979 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+[2026-11-02T22:33:08.200Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d97a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+[2026-11-02T22:33:08.215Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d97b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+    ✔ el dueño no se sube el tier ni los entitlements (65ms)
+[2026-11-02T22:33:08.292Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d97d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+    ✔ el dueño no toca los contadores de reseñas de su propio negocio
+[2026-11-02T22:33:08.382Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d97f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+[2026-11-02T22:33:08.393Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d980 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+[2026-11-02T22:33:08.406Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d981 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+    ✔ ni la promoción, ni el nombre, ni dónde está (52ms)
+[2026-11-02T22:33:08.486Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d983 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+    ✔ la galería no pasa del tope del plan (39ms)
+[2026-11-02T22:33:08.552Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d985 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+    ✔ un destino sin plan no se edita, aunque el claim diga que es suyo
+[2026-11-02T22:33:08.626Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d987 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L552, evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'create' @ L159, false for 'create' @ L552
+[2026-11-02T22:33:08.635Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d988 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L159, false for 'delete' @ L552
+    ✔ crear o borrar destinos sigue siendo imposible desde el cliente (40ms)
+    con más fotos editoriales que las del plan
+      ✔ el dueño sigue editando lo demás
+[2026-11-02T22:33:08.812Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d98e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+      ✔ y puede quitar fotos, pero no añadir
+    el contenido, no solo el campo
+[2026-11-02T22:33:08.872Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d990 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+      ✔ un teléfono que no es texto no entra
+[2026-11-02T22:33:08.929Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d992 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+      ✔ una descripción que es un número, tampoco
+[2026-11-02T22:33:08.993Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d994 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+      ✔ ni una descripción localizada en un idioma inventado
+[2026-11-02T22:33:09.048Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d996 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+      ✔ ni un texto sin final
+[2026-11-02T22:33:09.110Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d998 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+      ✔ la portada tiene que vivir en el almacenamiento de Firebase (38ms)
+[2026-11-02T22:33:09.178Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d99b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L552, false for 'update' @ L160, false for 'update' @ L552
+      ✔ los servicios siguen siendo una lista
+
+  agregados y contenido del negocio
+    ✔ los agregados los ve su dueño y el admin, nadie más (63ms)
+[2026-11-02T22:33:09.370Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9a4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L170, false for 'create' @ L552, false for 'update' @ L170, false for 'update' @ L552
+    ✔ nadie escribe agregados: los calcula el backend
+[2026-11-02T22:33:09.456Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9a8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L177, false for 'update' @ L552
+    ✔ los tratos son públicos porque la app los enseña, pero no se editan a mano
+    ✔ las llegadas con ETA solo las ve el destino al que van
+
+  membresías
+    ✔ el dueño ve la suya y el admin todas
+    ✔ un tercero no la ve
+[2026-11-02T22:33:09.765Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9b7 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L450, false for 'update' @ L552
+[2026-11-02T22:33:09.782Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9b8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L450, false for 'update' @ L552
+    ✔ nadie la escribe desde el cliente, ni el dueño ni el admin
+
+  cobros presenciales
+[2026-11-02T22:33:09.830Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9ba error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L467, false for 'create' @ L552, false for 'update' @ L467, false for 'update' @ L552
+    ✔ ni el agente levanta el recibo desde el cliente
+[2026-11-02T22:33:09.873Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9bc error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L467, false for 'create' @ L552, false for 'update' @ L467, false for 'update' @ L552
+    ✔ ni una cuenta sin el rol, claro
+    con un recibo pendiente
+[2026-11-02T22:33:09.934Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9bf error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L467, false for 'update' @ L552
+      ✔ un admin tampoco lo confirma desde el cliente
+      ✔ el agente ve su propio recibo; otro agente no (87ms)
+[2026-11-02T22:33:10.180Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9c6 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L467, false for 'delete' @ L552
+[2026-11-02T22:33:10.199Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9c7 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L467, false for 'delete' @ L552
+      ✔ nadie borra un cobro (39ms)
+
+  reclamos, visitas y canjes
+    ✔ el solicitante ve su reclamo y un tercero no (54ms)
+[2026-11-02T22:33:10.385Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9cf error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L475, false for 'update' @ L552
+[2026-11-02T22:33:10.403Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9d0 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L475, false for 'update' @ L552
+    ✔ nadie se aprueba su propio reclamo
+[2026-11-02T22:33:10.506Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9d5 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L482, false for 'create' @ L552, false for 'update' @ L482, false for 'update' @ L552
+    ✔ la visita cruda no la lee nadie, ni el negocio visitado ni el admin (43ms)
+    ✔ los canjes los ve el negocio donde ocurrieron, no otro (46ms)
+[2026-11-02T22:33:10.660Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9dd error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L489, false for 'create' @ L552, false for 'update' @ L489, false for 'update' @ L552
+    ✔ un canje no se inventa desde el cliente
+
+  bitácoras del backend
+[2026-11-02T22:33:10.813Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9e4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L496, false for 'create' @ L552, false for 'update' @ L496, false for 'update' @ L552
+    ✔ no se leen ni se escriben desde ningún cliente, tampoco el admin (81ms)
+
+  panel de negocios: rutas solo del servidor
+[2026-11-02T22:33:10.910Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9e8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:10.917Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9e9 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:10.923Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9ea error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ ownerships: sin sesión no lee ni escribe (56ms)
+[2026-11-02T22:33:11.007Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9ee error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:11.013Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9ef error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:11.017Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9f0 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ ownerships: cuenta sin claims no lee ni escribe (41ms)
+[2026-11-02T22:33:11.142Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9f4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:11.155Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9f5 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:11.163Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9f6 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ ownerships: dueño con biz del destino no lee ni escribe (85ms)
+[2026-11-02T22:33:11.286Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9fa error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:11.296Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9fb error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:11.303Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8d9fc error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ ownerships: admin desde un cliente no lee ni escribe (52ms)
+[2026-11-02T22:33:11.396Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da00 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:11.404Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da01 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:11.410Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da02 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ owners: sin sesión no lee ni escribe (42ms)
+[2026-11-02T22:33:11.503Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da06 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:11.508Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da07 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:11.514Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da08 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ owners: cuenta sin claims no lee ni escribe (40ms)
+[2026-11-02T22:33:11.608Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da0c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:11.616Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da0d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:11.623Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da0e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ owners: dueño con biz del destino no lee ni escribe (41ms)
+[2026-11-02T22:33:11.718Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da12 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:11.724Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da13 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:11.730Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da14 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ owners: admin desde un cliente no lee ni escribe (39ms)
+[2026-11-02T22:33:11.823Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da18 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:11.829Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da19 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:11.834Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da1a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ ownerInvitations: sin sesión no lee ni escribe (40ms)
+[2026-11-02T22:33:11.925Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da1e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:11.931Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da1f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:11.936Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da20 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ ownerInvitations: cuenta sin claims no lee ni escribe (46ms)
+[2026-11-02T22:33:12.011Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da24 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.017Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da25 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.023Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da26 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ ownerInvitations: dueño con biz del destino no lee ni escribe
+[2026-11-02T22:33:12.106Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da2a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.113Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da2b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.117Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da2c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ ownerInvitations: admin desde un cliente no lee ni escribe
+[2026-11-02T22:33:12.192Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da30 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.197Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da31 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.202Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da32 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ profileEdits: sin sesión no lee ni escribe
+[2026-11-02T22:33:12.271Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da36 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.276Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da37 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.280Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da38 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ profileEdits: cuenta sin claims no lee ni escribe
+[2026-11-02T22:33:12.354Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da3c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.358Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da3d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.364Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da3e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ profileEdits: dueño con biz del destino no lee ni escribe
+[2026-11-02T22:33:12.437Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da42 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.442Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da43 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.446Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da44 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ profileEdits: admin desde un cliente no lee ni escribe
+[2026-11-02T22:33:12.515Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da48 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.520Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da49 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.524Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da4a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ monthlyReports: sin sesión no lee ni escribe
+[2026-11-02T22:33:12.611Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da4e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.616Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da4f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.620Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da50 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ monthlyReports: cuenta sin claims no lee ni escribe (38ms)
+[2026-11-02T22:33:12.696Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da54 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.700Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da55 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.703Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da56 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ monthlyReports: dueño con biz del destino no lee ni escribe
+[2026-11-02T22:33:12.772Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da5a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.777Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da5b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.781Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da5c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ monthlyReports: admin desde un cliente no lee ni escribe
+[2026-11-02T22:33:12.872Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da60 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:12.881Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da61 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:12.890Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da62 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ users/alice/contactSignals: sin sesión no lee ni escribe (55ms)
+[2026-11-02T22:33:13.007Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da66 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:13.013Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da67 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:13.017Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da68 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ users/alice/contactSignals: cuenta sin claims no lee ni escribe (42ms)
+[2026-11-02T22:33:13.102Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da6c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:13.108Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da6d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:13.113Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da6e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ users/alice/contactSignals: dueño con biz del destino no lee ni escribe (38ms)
+[2026-11-02T22:33:13.204Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da72 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:13.211Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da73 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+[2026-11-02T22:33:13.218Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da74 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L552
+    ✔ users/alice/contactSignals: admin desde un cliente no lee ni escribe (44ms)
+    ✔ contactSignals/current: ni la propia cuenta lo lee
+
+  moderación y suspensiones
+    ✔ los reportes no los lee nadie, ni quien reportó
+[2026-11-02T22:33:13.566Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da7e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L522, false for 'create' @ L552, false for 'update' @ L522, false for 'update' @ L552
+    ✔ un reporte no se escribe desde el cliente (55ms)
+[2026-11-02T22:33:13.754Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da83 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L530, false for 'create' @ L552, false for 'update' @ L530, false for 'update' @ L552
+    ✔ nadie lee por qué se suspendió una cuenta, ni la propia cuenta (88ms)
+
+  estado de la app
+    ✔ lo lee cualquiera, con sesión y sin ella (61ms)
+[2026-11-02T22:33:13.971Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da8a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L545, false for 'update' @ L552
+[2026-11-02T22:33:13.990Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da8b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L545, false for 'create' @ L552, false for 'update' @ L545, false for 'update' @ L552
+[2026-11-02T22:33:14.007Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8da8c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L545, false for 'delete' @ L552
+    ✔ no lo escribe ningún cliente, tampoco un admin (61ms)
+
+  rutas publicadas
+    ✔ una ruta aprobada la lee cualquiera, con sesión y sin ella (40ms)
+    ✔ una que espera revisión NO la ve nadie más que su autor (65ms)
+    ✔ una rechazada la lee su autor, y nadie más (63ms)
+    ✔ una publicación inexistente no se puede sondear por id (96ms)
+    ✔ el autor puede consultar sus publicaciones privadas por ownerId (87ms)
+    ✔ el autor puede consultar sus publicaciones aprobadas sin ownerId (49ms)
+    ✔ Explorar puede listar las aprobadas
+    ✔ pero no listar las que esperan revisión
+    ✔ ni barrer la colección entera
+[2026-11-02T22:33:15.303Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8daaf error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L254, false for 'create' @ L552, false for 'update' @ L254, false for 'update' @ L552
+[2026-11-02T22:33:15.322Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dab0 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L254, false for 'update' @ L552
+[2026-11-02T22:33:15.343Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dab1 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L254, false for 'update' @ L552
+[2026-11-02T22:33:15.361Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dab2 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L254, false for 'delete' @ L552
+    ✔ no la escribe ningún cliente, ni su autor ni un admin (77ms)
+
+  colecciones que nadie declaró
+[2026-11-02T22:33:15.427Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dab4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L552, false for 'update' @ L552
+    ✔ una colección nueva no se estrena abierta (50ms)
+
+  routes
+[2026-11-02T22:33:15.520Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dab8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L229, false for 'create' @ L552, false for 'update' @ L229, false for 'update' @ L552
+[2026-11-02T22:33:15.539Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dab9 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L229, false for 'update' @ L552
+    ✔ lectura pública, escritura prohibida (53ms)
+
+  users y subcolecciones
+[2026-11-02T22:33:15.632Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dabd error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L277, false for 'create' @ L552, false for 'update' @ L279, false for 'update' @ L552
+    ✔ el dueño lee/escribe su doc; otros no (55ms)
+[2026-11-02T22:33:15.703Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dac0 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L296, false for 'create' @ L552, false for 'update' @ L296, false for 'update' @ L552
+    ✔ activeTrip/current: solo el dueño (55ms)
+[2026-11-02T22:33:15.795Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dac4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L283, false for 'create' @ L552, false for 'update' @ L283, false for 'update' @ L552
+    ✔ savedRoutes/{routeId}: solo el dueño (59ms)
+[2026-11-02T22:33:15.904Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dac8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L303, false for 'create' @ L552, false for 'update' @ L303, false for 'update' @ L552
+    ✔ stats/summary: solo el dueño (FE-5) (83ms)
+[2026-11-02T22:33:16.058Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dace error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L316, false for 'create' @ L552, false for 'update' @ L552
+[2026-11-02T22:33:16.091Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dad0 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L552
+    ✔ timeline/{eventId}: solo el dueño, y es un registro que no se corrige (141ms)
+[2026-11-02T22:33:16.178Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dad4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L288, false for 'create' @ L552, false for 'update' @ L288, false for 'update' @ L552
+    ✔ routeProgress/{routeId}: solo el dueño (FIX-6)
+[2026-11-02T22:33:16.266Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dad8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L327, false for 'create' @ L552, false for 'update' @ L327, false for 'update' @ L552
+[2026-11-02T22:33:16.289Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dad9 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L327:25 for 'update' @ L327, false for 'update' @ L552, false for 'update' @ L327, false for 'update' @ L552
+    ✔ requestQuota/daily: solo el dueño y solo con un paso válido (74ms)
+
+  diarys
+[2026-11-02T22:33:16.362Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dadc error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L342, false for 'create' @ L552, evaluation error at L346:24 for 'update' @ L346, false for 'update' @ L552, false for 'create' @ L342, false for 'create' @ L552
+    ✔ crear con userId propio pasa; ajeno falla (41ms)
+    con una entrada de alice
+      ✔ solo el dueño la lee: el diario no se comparte con nadie
+      ✔ el dueño consulta solo sus entradas, pero no barre diarios ajenos (39ms)
+[2026-11-02T22:33:16.634Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dae8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L346:24 for 'update' @ L346, false for 'update' @ L552, false for 'update' @ L346, false for 'update' @ L552
+      ✔ editar manteniendo userId pasa; reasignar el dueño falla
+[2026-11-02T22:33:16.695Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8daeb error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L349:24 for 'delete' @ L349, false for 'delete' @ L552, false for 'delete' @ L349, false for 'delete' @ L552
+      ✔ borrar: dueño sí, tercero no
+
+  places_minimal (CRD-103)
+    ✔ lectura pública sin auth: el catálogo mínimo se busca sin sesión
+[2026-11-02T22:33:16.790Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8daf0 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L203, false for 'create' @ L552, false for 'update' @ L203, false for 'update' @ L552
+[2026-11-02T22:33:16.793Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8daf1 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L203, false for 'delete' @ L552
+    ✔ el cliente no crea ni borra lugares del import
+[2026-11-02T22:33:16.837Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8daf3 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L203, false for 'update' @ L552
+    ✔ los contadores de un mínimo tampoco los mueve el cliente
+[2026-11-02T22:33:16.897Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8daf5 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L203, false for 'update' @ L552
+[2026-11-02T22:33:16.902Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8daf6 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L203, false for 'update' @ L552
+    ✔ no se puede tocar ningún otro campo (tier, retired…)
+
+  destinationRequests
+    ✔ crear con uid propio y cupo dentro del tope pasa
+[2026-11-02T22:33:17.013Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dafa error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L436, false for 'update' @ L552
+    ✔ crear a nombre de otro falla
+[2026-11-02T22:33:17.068Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dafc error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L436, false for 'update' @ L552
+    ✔ auto-aprobarse falla: el estado inicial solo puede ser pending
+[2026-11-02T22:33:17.138Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8dafe error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L436, false for 'update' @ L552
+    ✔ una petición fuera de RD falla
+[2026-11-02T22:33:17.200Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8db00 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L436, false for 'update' @ L552
+    ✔ un tipo inventado falla
+[2026-11-02T22:33:17.268Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8db02 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L427:24 for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L436, false for 'update' @ L552, Null value error. for 'create' @ L427, false for 'create' @ L552
+    ✔ sin escribir el cupo en el mismo batch falla
+[2026-11-02T22:33:17.331Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8db05 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L427:24 for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L436, false for 'update' @ L552, evaluation error at L327:25 for 'create' @ L327, false for 'create' @ L552, evaluation error at L327:25 for 'update' @ L327, false for 'update' @ L552, false for 'create' @ L427, false for 'create' @ L552
+    ✔ pasado el tope diario, la petición 11 se rechaza
+[2026-11-02T22:33:17.395Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8db08 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L427:24 for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L436, false for 'update' @ L552, evaluation error at L327:25 for 'create' @ L327, false for 'create' @ L552, evaluation error at L327:25 for 'update' @ L327, false for 'update' @ L552, false for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L327, false for 'update' @ L552
+    ✔ el contador no puede repetirse: solo avanza de uno en uno (58ms)
+[2026-11-02T22:33:17.476Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8db0b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L427:24 for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L436, false for 'update' @ L552, false for 'create' @ L327, false for 'create' @ L552, false for 'update' @ L327, false for 'update' @ L552
+    ✔ fechar el cupo mañana no compra cupo
+    ✔ una petición sellada ayer y sincronizada hoy sigue entrando
+[2026-11-02T22:33:17.624Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8db10 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L427:24 for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L436, false for 'update' @ L552, evaluation error at L327:25 for 'create' @ L327, false for 'create' @ L552, evaluation error at L327:25 for 'update' @ L327, false for 'update' @ L552, false for 'update' @ L327, false for 'update' @ L552
+    ✔ la cubeta no retrocede: sellar ayer sobre un cupo de hoy falla (48ms)
+[2026-11-02T22:33:17.695Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8db12 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L427:24 for 'create' @ L427, false for 'create' @ L552, false for 'update' @ L436, false for 'update' @ L552, evaluation error at L327:25 for 'create' @ L327, false for 'create' @ L552, evaluation error at L327:25 for 'update' @ L327, false for 'update' @ L552, false for 'create' @ L327, false for 'create' @ L552, false for 'create' @ L427, false for 'create' @ L552
+    ✔ la petición y su cupo tienen que hablar del mismo día
+    con una petición de alice
+      ✔ solo el autor la lee (44ms)
+      ✔ el autor consulta su cola, pero no barre solicitudes ajenas (63ms)
+[2026-11-02T22:33:18.020Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8db1d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L436, false for 'update' @ L552
+[2026-11-02T22:33:18.042Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x8ef8db1e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L436, false for 'delete' @ L552
+      ✔ nadie la edita ni la borra desde el cliente, ni su autor (52ms)
+
+  diary/{userId} — lectura
+    ✔ el dueño lee su propia foto (253ms)
+    ✔ otra cuenta autenticada NO lee la foto ajena (CRD-142)
+    ✔ sin sesión tampoco
+    ✔ otra cuenta NO puede enumerar el álbum ajeno
+    ✔ el dueño sí puede enumerar el suyo
+
+  diary/{userId} — escritura
+    ✔ el dueño sube una imagen
+    ✔ nadie escribe en el prefijo de otro
+    ✔ subir algo que no es imagen falla
+    ✔ una imagen por encima de 10 MB falla (191ms)
+    ✔ el dueño borra su foto; un tercero no
+    ✔ el dueño borra TODAS sus fotos, que es lo que necesita el borrado de cuenta (86ms)
+
+  fotos de reseña
+    ✔ el dueño lee y sube su propio staging
+    ✔ nadie más lo lee, ni con sesión ni sin ella
+    ✔ nadie sube al staging de otra persona
+    ✔ lo que no es imagen no entra
+    ✔ el dueño borra el suyo, que es lo que necesita el borrado de cuenta
+    ✔ lo publicado se lee sin cuenta
+    ✔ ningún cliente escribe en lo publicado
+
+  galería del negocio
+    ✔ el dueño verificado sube fotos de su destino
+    ✔ el dueño de otro destino no sube nada aquí
+    ✔ una cuenta sin claim biz tampoco, aunque tenga sesión
+    ✔ lo que no es imagen no entra
+    ✔ la galería se lee sin cuenta
+    ✔ solo el dueño de ese destino o un admin borran una foto
+
+  evidencias de reclamos y cobros
+    ✔ la evidencia de un reclamo la ve quien reclama y quien aprueba
+    ✔ la evidencia se puede listar solo por su dueño y por un admin
+    ✔ el solicitante sube evidencia nueva con forma de imagen
+    ✔ nadie sube evidencia al reclamo de otra persona
+    ✔ una evidencia ya subida no se sustituye
+    ✔ solo un admin retira evidencia de un reclamo
+    ✔ el recibo lo sube el agente que cobró y nadie más
+    ✔ el recibo lo mira su agente y el admin que confirma
+    ✔ el recibo se lista solo por su agente y por un admin
+    ✔ un recibo ya subido no se sustituye
+    ✔ un recibo no se borra: es dinero
+
+  fuera de los prefijos declarados
+    ✔ todo lo demás está cerrado
+
+
+  161 passing (17s)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
