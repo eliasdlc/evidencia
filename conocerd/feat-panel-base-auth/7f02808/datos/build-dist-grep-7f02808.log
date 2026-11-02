@@ -1,0 +1,28 @@
+# head 7f02808
+$ pnpm build
+dist/assets/index-BaK6Aoxm.css   33.59 kB │ gzip:   7.81 kB
+dist/assets/index-DezkvVEj.js   367.79 kB │ gzip: 114.97 kB
+
+✓ built in 956ms
+build exit 0
+$ grep -rn "Mamá Tingó\|Doña Mercedes\|Mercedes\|Tingó" dist
+grep exit 1
+$ grep -rno ".\{30\}189.\{30\}" dist
+dist/assets/index-DezkvVEj.js:1:u.sibling}if(!c)throw Error(i(189))}}if(n.alternate!==r)throw E
+grep exit 0
+$ every quoted literal of 8+ chars in src/data.ts and src/businessTypes.ts, searched in dist/
+literals: 217, found in dist:
+dist/assets/index-DezkvVEj.js:schedule
+$ grep -c "127.0.0.1:9099" dist/assets/*.js
+0
+$ VITE_USE_EMULATORS=true build, grep -c 127.0.0.1:9099
+0
+$ stat -c %s dist/assets/*.js
+367792
+$ node scripts/medir-presupuesto.mjs
+Entry JS         359 KB
+Total client JS  359 KB
+CSS              33 KB
+Fonts            0 KB
+npm packages     17 packages
+oxlint issues    0 
