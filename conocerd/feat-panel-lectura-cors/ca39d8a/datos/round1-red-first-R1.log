@@ -1,0 +1,209 @@
+# round 1 red-first R1: new attacker, PANEL_PREVIEW_ORIGINS and If-Match tests against the OLD cors.ts (commit b97904a), 2026-11-02T19:13:04-04:00
+$ pnpm vitest run src/lib/cors.test.ts test/cors-proxy.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+ ❯ test/cors-proxy.test.ts (12 tests | 4 failed) 33ms
+   × preflight > a un origen permitido le responde 204 con métodos, cabeceras y max-age 14ms
+     → expected 'Authorization, Content-Type' to be 'Authorization, Content-Type, If-Match' // Object.is equality
+   × preflight > permite If-Match, que el PATCH del perfil manda para no pisar una edición ajena 4ms
+     → if-match: expected [ 'authorization', 'content-type' ] to include 'if-match'
+   × preflight > el alias de rama de un equipo con el mismo sufijo no recibe permiso 2ms
+     → expected 'https://conocerd-dashboard-git-main-e…' to be null
+   × preflight > un origen de PANEL_PREVIEW_ORIGINS recibe permiso 1ms
+     → expected null to be 'https://panel-estable.example.com' // Object.is equality
+   ✓ preflight > a un preview del panel también le responde 1ms
+   ✓ preflight > a un origen ajeno le responde sin ninguna cabecera de permiso 1ms
+   ✓ preflight > localhost no pasa en producción y sí fuera de ella 0ms
+   ✓ peticiones normales > a un origen permitido le deja pasar con ACAO y Vary 1ms
+   ✓ peticiones normales > a un origen ajeno le deja pasar sin ACAO: el navegador es quien bloquea 0ms
+   ✓ peticiones normales > la app, que no manda Origin, pasa igual que antes 0ms
+   ✓ matcher > cubre las rutas que el panel llama desde el navegador 6ms
+   ✓ matcher > deja fuera las rutas de la app y del admin 1ms
+ ❯ src/lib/cors.test.ts (34 tests | 5 failed) 13ms
+   ✓ isAllowedOrigin > acepta producción en producción y fuera de ella 1ms
+   ✓ isAllowedOrigin > acepta preview de un deployment en producción y fuera de ella 0ms
+   ✓ isAllowedOrigin > rechaza sin Origin 0ms
+   ✓ isAllowedOrigin > rechaza Origin vacío 0ms
+   ✓ isAllowedOrigin > rechaza el literal null de un iframe aislado 0ms
+   ✓ isAllowedOrigin > rechaza producción por http 0ms
+   ✓ isAllowedOrigin > rechaza producción con puerto 0ms
+   ✓ isAllowedOrigin > rechaza producción con barra final 0ms
+   ✓ isAllowedOrigin > rechaza un sufijo que imita producción 0ms
+   ✓ isAllowedOrigin > rechaza un prefijo que imita producción 0ms
+   ✓ isAllowedOrigin > rechaza otro subdominio propio 0ms
+   ✓ isAllowedOrigin > rechaza el sitio público 0ms
+   ✓ isAllowedOrigin > rechaza un vercel.app ajeno 0ms
+   ✓ isAllowedOrigin > rechaza el mismo proyecto en otro equipo 0ms
+   ✓ isAllowedOrigin > rechaza otro proyecto del mismo equipo 0ms
+   ✓ isAllowedOrigin > rechaza un hash de deployment corto 0ms
+   ✓ isAllowedOrigin > rechaza un preview seguido de otro dominio 0ms
+   ✓ isAllowedOrigin > rechaza un preview por http 0ms
+   ✓ isAllowedOrigin > rechaza un preview con prefijo 0ms
+   ✓ isAllowedOrigin > rechaza una rama con mayúsculas 0ms
+   ✓ isAllowedOrigin > rechaza una rama vacía 0ms
+   ✓ isAllowedOrigin > rechaza un localhost en otro puerto 0ms
+   ✓ isAllowedOrigin > rechaza un localhost por https 0ms
+   × isAllowedOrigin > rechaza el alias de rama de un equipo con el mismo sufijo 6ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza un alias de rama propio 0ms
+     → expected true to be false // Object.is equality
+   ✓ isAllowedOrigin > rechaza un deployment de un equipo con el mismo sufijo 0ms
+   ✓ isAllowedOrigin > rechaza un proyecto con sufijo extra 0ms
+   × isAllowedOrigin > rechaza un proyecto con sufijo extra que imita una rama 0ms
+     → expected true to be false // Object.is equality
+   ✓ isAllowedOrigin > http://localhost:5173 solo pasa fuera de producción 0ms
+   ✓ isAllowedOrigin > http://127.0.0.1:5173 solo pasa fuera de producción 0ms
+   × PANEL_PREVIEW_ORIGINS > acepta un origen de la lista exacta, también en producción 0ms
+     → expected false to be true // Object.is equality
+   ✓ PANEL_PREVIEW_ORIGINS > no acepta nada que no sea idéntico a una entrada 0ms
+   ✓ PANEL_PREVIEW_ORIGINS > una lista vacía o un comodín no abren nada 0ms
+   × CORS > anuncia los métodos del panel y solo las cabeceras Authorization, Content-Type e If-Match 1ms
+     → expected 'Authorization, Content-Type' to be 'Authorization, Content-Type, If-Match' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cors-proxy.test.ts > preflight > a un origen permitido le responde 204 con métodos, cabeceras y max-age
+AssertionError: expected 'Authorization, Content-Type' to be 'Authorization, Content-Type, If-Match' // Object.is equality
+
+Expected: [32m"Authorization, Content-Type[7m, If-Match[27m"[39m
+Received: [31m"Authorization, Content-Type"[39m
+
+ ❯ test/cors-proxy.test.ts:33:92
+     34| 
+     35| describe('preflight', () => {
+     36|   it('a un origen permitido le responde 204 con métodos, cabeceras y m…
+       |                                                         ^
+     37|     vi.stubEnv('VERCEL_ENV', 'production');
+     38|     const response = await proxy(preflight('/business/me', PANEL, 'PAT…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  test/cors-proxy.test.ts > preflight > permite If-Match, que el PATCH del perfil manda para no pisar una edición ajena
+AssertionError: if-match: expected [ 'authorization', 'content-type' ] to include 'if-match'
+ ❯ test/cors-proxy.test.ts:52:57
+     50|   });
+     51| 
+     52|   it('permite If-Match, que el PATCH del perfil manda para no pisar un…
+       |                                                         ^
+     53|     vi.stubEnv('VERCEL_ENV', 'production');
+     54|     const request = new NextRequest('https://api.conocerd.app/business…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  test/cors-proxy.test.ts > preflight > el alias de rama de un equipo con el mismo sufijo no recibe permiso
+AssertionError: expected 'https://conocerd-dashboard-git-main-e…' to be null
+
+[32m- Expected:[39m 
+null
+
+[31m+ Received:[39m 
+"https://conocerd-dashboard-git-main-evil-eliasdlcs-projects.vercel.app"
+
+ ❯ test/cors-proxy.test.ts:60:91
+     61|     });
+     62|     const response = await proxy(request);
+     63|     const allowed = (response.headers.get('access-control-allow-header…
+       |                               ^
+     64|       .split(',')
+     65|       .map((header) => header.trim().toLowerCase());
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  test/cors-proxy.test.ts > preflight > un origen de PANEL_PREVIEW_ORIGINS recibe permiso
+AssertionError: expected null to be 'https://panel-estable.example.com' // Object.is equality
+
+[32m- Expected:[39m 
+"https://panel-estable.example.com"
+
+[31m+ Received:[39m 
+null
+
+ ❯ test/cors-proxy.test.ts:66:91
+     65|       .map((header) => header.trim().toLowerCase());
+     66|     for (const header of ['authorization', 'content-type', 'if-match']…
+     67|       expect(allowed, header).toContain(header);
+       |                 ^
+     68|     }
+     69|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza el alias de rama de un equipo con el mismo sufijo
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un alias de rama propio
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un proyecto con sufijo extra que imita una rama
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ src/lib/cors.test.ts:57:53
+     55|   for (const [label, origin] of rejectedEverywhere) {
+     56|     it(`rechaza ${label}`, () => {
+     57|       expect(isAllowedOrigin(origin, 'production')).toBe(false);
+       |                                                     ^
+     58|       expect(isAllowedOrigin(origin, 'preview')).toBe(false);
+     59|       expect(isAllowedOrigin(origin, undefined)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  src/lib/cors.test.ts > PANEL_PREVIEW_ORIGINS > acepta un origen de la lista exacta, también en producción
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ src/lib/cors.test.ts:77:86
+     75| 
+     76|   it('acepta un origen de la lista exacta, también en producción', () …
+     77|     expect(isAllowedOrigin('https://panel-estable.example.com', 'produ…
+       |                                                                                      ^
+     78|     expect(isAllowedOrigin('https://otro.example.com', 'production', l…
+     79|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  src/lib/cors.test.ts > CORS > anuncia los métodos del panel y solo las cabeceras Authorization, Content-Type e If-Match
+AssertionError: expected 'Authorization, Content-Type' to be 'Authorization, Content-Type, If-Match' // Object.is equality
+
+Expected: [32m"Authorization, Content-Type[7m, If-Match[27m"[39m
+Received: [31m"Authorization, Content-Type"[39m
+
+ ❯ src/lib/cors.test.ts:103:26
+    101|   it('anuncia los métodos del panel y solo las cabeceras Authorization…
+    102|     expect(CORS.methods).toBe('GET, POST, PATCH, DELETE, OPTIONS');
+    103|     expect(CORS.headers).toBe('Authorization, Content-Type, If-Match');
+       |                          ^
+    104|     expect(CORS.maxAge).toBe('600');
+    105|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  9 failed | 37 passed (46)
+   Start at  19:13:05
+   Duration  749ms (transform 51ms, setup 0ms, collect 354ms, tests 46ms, environment 0ms, prepare 123ms)
+
+exit=1
+
+# round 1 green R1: branch alias dropped, PANEL_PREVIEW_ORIGINS exact list, If-Match allowed, 2026-11-02T19:13:41-04:00
+$ pnpm vitest run src/lib/cors.test.ts test/cors-proxy.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+ ✓ test/cors-proxy.test.ts (12 tests) 22ms
+ ✓ src/lib/cors.test.ts (34 tests) 7ms
+
+ Test Files  2 passed (2)
+      Tests  46 passed (46)
+   Start at  19:13:42
+   Duration  882ms (transform 120ms, setup 0ms, collect 376ms, tests 29ms, environment 0ms, prepare 161ms)
+
+exit=0
