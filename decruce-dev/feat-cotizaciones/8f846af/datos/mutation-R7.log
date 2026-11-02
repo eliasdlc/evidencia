@@ -1,0 +1,44 @@
+Mutation R7 at 8f846af: lib/cotiza/almacen.ts
+- select (select n from previas) = 0 as primera
++ select true as primera
+$ node --test test/cotiza/almacen.test.ts   (exit 1; file restored afterwards)
+
+✔ publishing keeps one unguessable link per quote number and versions every real change (60.804655ms)
+✔ a missing image stops the first publish and leaves no link behind (6.755508ms)
+✔ images uploaded ahead of the JSON are found by the publish that follows (10.513616ms)
+✔ a quote without its own issuer takes the account profile, and fails without one (10.759249ms)
+✖ openings: the first of each version is flagged (7.620851ms)
+✔ acceptance: current version only, once, with figures computed on the server (15.200367ms)
+✔ an expired quote cannot be accepted (10.536796ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 295.262865
+
+✖ failing tests:
+
+test at test/cotiza/almacen.test.ts:89:1
+✖ openings: the first of each version is flagged (7.620851ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///home/decruce/.t3/worktrees/decruce-dev/feat-cotizaciones/test/cotiza/almacen.test.ts:92:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+Summary translated from the ✖ and ℹ lines above:
+FAIL test/cotiza/almacen.test.ts > openings: the first of each version is flagged
+6 passed, 1 failed
