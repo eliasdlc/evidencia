@@ -1,0 +1,307 @@
+# mutation round1-mutation-C3-claims in src/lib/claims-service.ts
+# replaced:     const transition = applyClaimChange(parseClaims(fresh.customClaims), change);
+# with:     const transition = applyClaimChange({}, change);
+diff --git 1/src/lib/claims-service.ts.bak 2/src/lib/claims-service.ts
+index 2fb2c32..c3c81de 100644
+--- 1/src/lib/claims-service.ts.bak
++++ 2/src/lib/claims-service.ts
+@@ -143,7 +143,7 @@ const CLAIM_WRITE_ATTEMPTS = 5;
+ async function writeClaims(uid: string, change: ClaimChange): Promise<ConocerdClaims> {
+   for (let attempt = 0; attempt < CLAIM_WRITE_ATTEMPTS; attempt += 1) {
+     const fresh = await adminAuth().getUser(uid);
+-    const transition = applyClaimChange(parseClaims(fresh.customClaims), change);
++    const transition = applyClaimChange({}, change);
+     if (!transition.ok) throw new ApiError(422, 'claim_rejected', transition.reason);
+     if (transition.changed) {
+       await adminAuth().setCustomUserClaims(uid, toCustomClaims(transition.claims, fresh.customClaims));
+$ tsc --noEmit
+typecheck exit=0
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/owner-service.test.ts test/admin-owners-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo
+
+ ❯ test/owner-service.test.ts (22 tests | 5 failed) 3172ms
+   ✓ transiciones de propiedad > conceder crea solo los destinos que la cuenta no tenía activos, sin duplicados 1ms
+   ✓ transiciones de propiedad > conceder lo que ya estaba activo no crea nada 0ms
+   ✓ transiciones de propiedad > revocar toca solo los activos pedidos 0ms
+   ✓ transiciones de propiedad > el piso sube minimal y un destino sin tier a registrado con sus entitlements 1ms
+   ✓ transiciones de propiedad > el piso nunca baja un destino que ya está en registrado o más arriba 0ms
+   ✓ transiciones de propiedad > la reconciliación separa índice sin claim, claim sin índice y duplicados 0ms
+   ✓ transiciones de propiedad > la verificación exige un método de la lista cerrada y una nota de 1 a 500 2ms
+   ✓ transiciones de propiedad > C3: revertir un cambio no toca lo que otro escritor hizo entre medias 0ms
+   ✓ transiciones de propiedad > C2: un claim sin índice con índice revocado y revocación en bitácora es una revocación a medias 0ms
+   ✓ transiciones de propiedad > --fix fuera del emulador exige --project igual al proyecto configurado 0ms
+   ✓ transiciones de propiedad > staff y métodos de entrada 0ms
+   ✓ owner-service contra el emulador > conceder escribe la propiedad, la bitácora con verificación, el claim y el piso de tier  1129ms
+   ✓ owner-service contra el emulador > conceder dos veces no duplica la propiedad ni ensucia la bitácora 122ms
+   ✓ owner-service contra el emulador > si el claim falla, no queda propiedad, ni bitácora, ni piso de tier 122ms
+   ✓ owner-service contra el emulador > un destino que no existe se rechaza sin escribir nada 40ms
+   ✓ owner-service contra el emulador > una cuenta de staff no puede ser dueña 16ms
+   × owner-service contra el emulador > C2: si revocar los refresh tokens falla, la revocación se deshace entera 92ms
+     → expected [Function] to throw error including 'Auth caído' but got 'Otra escritura de claims de esta cuen…'
+   × owner-service contra el emulador > C4: si la compensación falla, la línea de bitácora queda marcada y no se borra 76ms
+     → expected [Function] to throw error including 'Auth caído' but got 'Otra escritura de claims de esta cuen…'
+   × owner-service contra el emulador > C3: dos concesiones con el mismo registro de cuenta viejo no se pisan el claim 66ms
+     → expected { Object (biz) } to match object { biz: [ …(2) ] }
+   ✓ owner-service contra el emulador > C3: deshacer el piso no baja un destino que ya tiene otro dueño activo 70ms
+   × owner-service contra el emulador > C2: la reconciliación termina una revocación a medias en vez de pedir volver a conceder 1218ms
+     → Otra escritura de claims de esta cuenta no deja terminar; reintenta
+   × owner-service contra el emulador > revocar pasa la propiedad a revoked, quita el claim y deja el motivo en la bitácora 69ms
+     → Otra escritura de claims de esta cuenta no deja terminar; reintenta
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo nuevo crea la cuenta, la hace dueña y devuelve la invitación sin enviarla
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo que ya tiene cuenta la reutiliza y conserva sus otros destinos
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar a personal interno responde 409 email_belongs_to_staff
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un destino inexistente responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /me
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar a quien no es dueño responde 409 not_owner
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > C1: traspasar a una cuenta que ya tiene 40 destinos responde 422 y el dueño anterior sigue intacto
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > C1: traspasar a una cuenta que ya tiene 40 destinos responde 422 y el dueño anterior sigue intacto
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar desde quien no es dueño responde 409 y no crea la cuenta nueva
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owners
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owners
+
+ ❯ test/admin-owners-route.test.ts (13 tests | 3 failed) 2550ms
+   ✓ rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas 120ms
+   ✓ rutas de dueños contra el emulador > sin token responde 401 1ms
+   ✓ rutas de dueños contra el emulador > invitar un correo nuevo crea la cuenta, la hace dueña y devuelve la invitación sin enviarla 111ms
+   × rutas de dueños contra el emulador > invitar un correo que ya tiene cuenta la reutiliza y conserva sus otros destinos 83ms
+     → expected { Object (biz) } to match object { biz: [ …(2) ] }
+   ✓ rutas de dueños contra el emulador > invitar a personal interno responde 409 email_belongs_to_staff 26ms
+   ✓ rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta 14ms
+   ✓ rutas de dueños contra el emulador > un destino inexistente responde 422 y no crea la cuenta 10ms
+   × rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401 1264ms
+     → expected 503 to be 200 // Object.is equality
+   ✓ rutas de dueños contra el emulador > revocar a quien no es dueño responde 409 not_owner 39ms
+   × rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId 215ms
+     → expected 503 to be 200 // Object.is equality
+   ✓ rutas de dueños contra el emulador > C1: traspasar a una cuenta que ya tiene 40 destinos responde 422 y el dueño anterior sigue intacto 119ms
+   ✓ rutas de dueños contra el emulador > traspasar desde quien no es dueño responde 409 y no crea la cuenta nueva 27ms
+   ✓ rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo 73ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo que ya tiene cuenta la reutiliza y conserva sus otros destinos
+AssertionError: expected { Object (biz) } to match object { biz: [ …(2) ] }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "biz": [[22m
+[32m-     "destino-<test-uuid-1>",[39m
+[2m      "destino-<test-uuid-2>",[22m
+[2m    ],[22m
+[2m  }[22m
+
+ ❯ test/admin-owners-route.test.ts:127:77
+    125|     expect(response.status).toBe(200);
+    126|     await expect(response.json()).resolves.toMatchObject({ uid: existi…
+    127|     expect((await firebase.adminAuth().getUser(existing.uid)).customCl…
+       |                                                                             ^
+    128|       biz: [first, second].sort(),
+    129|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+AssertionError: expected 503 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 503[39m
+
+ ❯ test/admin-owners-route.test.ts:172:29
+    170|       post(REVOKE, { uid: invited.uid, destinationIds: [destination], …
+    171|     );
+    172|     expect(response.status).toBe(200);
+       |                             ^
+    173|     await expect(response.json()).resolves.toMatchObject({
+    174|       uid: invited.uid,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId
+AssertionError: expected 503 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 503[39m
+
+ ❯ test/admin-owners-route.test.ts:211:29
+    209|       post(TRANSFER, { destinationId: destination, fromUid: from.uid, …
+    210|     );
+    211|     expect(response.status).toBe(200);
+       |                             ^
+    212|     const body = (await response.json()) as TransferResult;
+    213|     expect(body).toMatchObject({ fromUid: from.uid, created: true, inv…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  test/owner-service.test.ts > owner-service contra el emulador > C2: si revocar los refresh tokens falla, la revocación se deshace entera
+AssertionError: expected [Function] to throw error including 'Auth caído' but got 'Otra escritura de claims de esta cuen…'
+
+Expected: [32m"Auth caído"[39m
+Received: [31m"Otra escritura de claims de esta cuenta no deja terminar; reintenta"[39m
+
+ ❯ test/owner-service.test.ts:298:5
+    296|     vi.spyOn(auth, 'revokeRefreshTokens').mockRejectedValueOnce(new Er…
+    297| 
+    298|     await expect(revokeFrom(owner.uid, [destination])).rejects.toThrow…
+       |     ^
+    299| 
+    300|     expect(await ownershipsOf(firebase, owner.uid)).toEqual([expect.ob…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  test/owner-service.test.ts > owner-service contra el emulador > C4: si la compensación falla, la línea de bitácora queda marcada y no se borra
+AssertionError: expected [Function] to throw error including 'Auth caído' but got 'Otra escritura de claims de esta cuen…'
+
+Expected: [32m"Auth caído"[39m
+Received: [31m"Otra escritura de claims de esta cuenta no deja terminar; reintenta"[39m
+
+ ❯ test/owner-service.test.ts:317:5
+    315|       .mockImplementation((uid, claims) => real(uid, claims));
+    316| 
+    317|     await expect(revokeFrom(owner.uid, [destination])).rejects.toThrow…
+       |     ^
+    318| 
+    319|     const revokeAudit = (await auditsOf(firebase, owner.uid)).find((a)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  test/owner-service.test.ts > owner-service contra el emulador > C3: dos concesiones con el mismo registro de cuenta viejo no se pisan el claim
+AssertionError: expected { Object (biz) } to match object { biz: [ …(2) ] }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "biz": [[22m
+[2m      "destino-<test-uuid-3>",[22m
+[32m-     "destino-<test-uuid-4>",[39m
+[2m    ],[22m
+[2m  }[22m
+
+ ❯ test/owner-service.test.ts:335:56
+    333|     await grantTo(owner.uid, [second], stale);
+    334| 
+    335|     expect((await userRecord(owner.uid)).customClaims).toMatchObject({…
+       |                                                        ^
+    336|   });
+    337| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  test/owner-service.test.ts > owner-service contra el emulador > C2: la reconciliación termina una revocación a medias en vez de pedir volver a conceder
+ApiError: Otra escritura de claims de esta cuenta no deja terminar; reintenta
+ ❯ writeClaims src/lib/claims-service.ts:155:9
+    153|     if (again.ok && !again.changed) return written;
+    154|   }
+    155|   throw new ApiError(503, 'claims_contention', 'Otra escritura de clai…
+       |         ^
+    156| }
+    157| 
+ ❯ changeClaims src/lib/claims-service.ts:120:17
+ ❯ Module.reconcileOwnerships src/lib/owner-service.ts:664:20
+ ❯ test/owner-service.test.ts:397:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  test/owner-service.test.ts > owner-service contra el emulador > revocar pasa la propiedad a revoked, quita el claim y deja el motivo en la bitácora
+ApiError: Otra escritura de claims de esta cuenta no deja terminar; reintenta
+ ❯ writeClaims src/lib/claims-service.ts:155:9
+    153|     if (again.ok && !again.changed) return written;
+    154|   }
+    155|   throw new ApiError(503, 'claims_contention', 'Otra escritura de clai…
+       |         ^
+    156| }
+    157| 
+ ❯ changeClaims src/lib/claims-service.ts:120:17
+ ❯ Module.revokeOwnership src/lib/owner-service.ts:246:18
+ ❯ test/owner-service.test.ts:422:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  8 failed | 27 passed (35)
+   Start at  19:23:15
+   Duration  7.89s (transform 196ms, setup 0ms, collect 710ms, tests 5.72s, environment 0ms, prepare 1.19s)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/owner-service.test.ts test/admin-owners-route.test.ts" exited with code 1
+emulator exit=1
+
+# note: 4 random test-fixture UUID(s) replaced by <test-uuid-N> before publishing; original kept locally.
