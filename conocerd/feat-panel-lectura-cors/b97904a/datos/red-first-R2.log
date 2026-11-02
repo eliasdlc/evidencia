@@ -1,0 +1,69 @@
+# red-first R2: entitlements.ts unchanged (dashboard.access from 'recomendado'), 2026-11-02T17:34:29-04:00
+$ pnpm vitest run test/business-me-route.test.ts   (no emulator: unit block runs, emulator suite skipped)
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+ ❯ test/business-me-route.test.ts (18 tests | 1 failed | 17 skipped) 20ms
+   × dashboard.access > lo incluye desde registrado, no antes 19ms
+     → expected false to be true // Object.is equality
+   ↓ panel de negocios contra el emulador > requireBusinessAccess > deja pasar al dueño de un destino registrado y devuelve el documento
+   ↓ panel de negocios contra el emulador > requireBusinessAccess > a quien no es dueño de ese destino le responde 403 not_owner
+   ↓ panel de negocios contra el emulador > requireBusinessAccess > al dueño de un destino minimal le responde 403 dashboard_not_included
+   ↓ panel de negocios contra el emulador > requireBusinessAccess > un destino sin tier cuenta como minimal
+   ↓ panel de negocios contra el emulador > requireBusinessAccess > un destino que no existe responde 404 aunque el token lo traiga
+   ↓ panel de negocios contra el emulador > GET /business/me > sin token responde 401
+   ↓ panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño
+   ↓ panel de negocios contra el emulador > GET /business/me > ordena por name.es, cae a name.en, omite destinos borrados y dice qué incluye cada plan
+   ↓ panel de negocios contra el emulador > GET /business/me > una cuenta sin destinos recibe una sesión vacía, no un error
+   ↓ panel de negocios contra el emulador > GET /business/me > un token revocado responde 401 aunque no haya caducado
+   ↓ panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+   ↓ panel de negocios contra el emulador > GET /business/me > lista las solicitudes propias, la más nueva primero, y nunca las ajenas
+   ↓ panel de negocios contra el emulador > PATCH /business/me/preferences > sin token responde 401
+   ↓ panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+   ↓ panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+   ↓ panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+   ↓ panel de negocios contra el emulador > PATCH /business/me/preferences > un cuerpo que no es JSON responde 400
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/business-me-route.test.ts > dashboard.access > lo incluye desde registrado, no antes
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/business-me-route.test.ts:20:63
+     18|   it('lo incluye desde registrado, no antes', () => {
+     19|     expect(entitlementsFor('minimal')['dashboard.access']).toBe(false);
+     20|     expect(entitlementsFor('registrado')['dashboard.access']).toBe(tru…
+       |                                                               ^
+     21|     expect(entitlementsFor('recomendado')['dashboard.access']).toBe(tr…
+     22|     expect(entitlementsFor('destacado')['dashboard.access']).toBe(true…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 skipped (18)
+   Start at  17:34:31
+   Duration  617ms (transform 146ms, setup 0ms, collect 205ms, tests 20ms, environment 0ms, prepare 114ms)
+
+exit=1
+
+# green R2: dashboard.access from 'registrado', 2026-11-02T17:34:40-04:00
+$ pnpm vitest run test/business-me-route.test.ts src/lib/reviews.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+ ✓ test/business-me-route.test.ts (18 tests | 17 skipped) 14ms
+ ✓ src/lib/reviews.test.ts (19 tests) 42ms
+
+ Test Files  2 passed (2)
+      Tests  20 passed | 17 skipped (37)
+   Start at  17:34:42
+   Duration  1.82s (transform 266ms, setup 0ms, collect 603ms, tests 55ms, environment 1ms, prepare 361ms)
+
+exit=0
