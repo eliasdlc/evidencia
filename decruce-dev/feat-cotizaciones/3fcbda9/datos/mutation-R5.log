@@ -1,0 +1,203 @@
+Mutation R5 at 3fcbda9: lib/cotiza/almacen.ts
+- Array.from({ length: 10 }
++ Array.from({ length: 4 }
+$ node --test test/cotiza/almacen.test.ts   (exit 1; file restored afterwards)
+
+✖ publishing keeps one unguessable link per quote number and versions every real change (68.699063ms)
+✔ a missing image stops the first publish and leaves no link behind (16.343676ms)
+✔ images uploaded ahead of the JSON are found by the publish that follows (18.96226ms)
+✔ a quote without its own issuer takes the account profile, and fails without one (15.831192ms)
+✖ openings: the first of each version is flagged (3.094374ms)
+✖ acceptance: current version only, once, with figures computed on the server (9.248574ms)
+✔ an expired quote cannot be accepted (11.309061ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 4
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 324.114101
+
+✖ failing tests:
+
+test at test/cotiza/almacen.test.ts:33:1
+✖ publishing keeps one unguessable link per quote number and versions every real change (68.699063ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /^ejemplo-la-espiga-[a-z2-9]{10}$/. Input:
+  
+  'ejemplo-la-espiga-ndfm'
+  
+      at TestContext.<anonymous> (file:///home/decruce/.t3/worktrees/decruce-dev/feat-cotizaciones/test/cotiza/almacen.test.ts:36:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ejemplo-la-espiga-ndfm',
+    expected: /^ejemplo-la-espiga-[a-z2-9]{10}$/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test/cotiza/almacen.test.ts:89:1
+✖ openings: the first of each version is flagged (3.094374ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///home/decruce/.t3/worktrees/decruce-dev/feat-cotizaciones/test/cotiza/almacen.test.ts:91:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/cotiza/almacen.test.ts:97:1
+✖ acceptance: current version only, once, with figures computed on the server (9.248574ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   aceptacion: {
+  +     en: 2026-11-02T16:35:06.642Z,
+  +     nombre: 'Carmen Pérez',
+  +     seleccion: {
+  +       cant: {
+  +         web: 9
+  +       },
+  +       sel: [
+  +         'web',
+  +         'tienda',
+  +         'mant_b',
+  +         'dominio',
+  +         'whatsapp'
+  +       ]
+  +     },
+  +     totales: {
+  +       interno: {
+  +         anticipo: 24225,
+  +         isrPrimerAnio: 13950,
+  +         mensual: {
+  +           isr: 450,
+  +           itbis: 540,
+  +           recibe: 2550
+  +         },
+  +         retiene: true,
+  +         unico: {
+  +           isr: 8550,
+  +           itbis: 10260,
+  +           recibe: 48450
+  +         }
+  +       },
+  +       lineas: [
+  +         {
+  +           cantidad: null,
+  +           id: 'web',
+  +           lista: 42000,
+  +           monto: 35000,
+  +           nombre: 'Página de La Espiga',
+  +           paginas: null,
+  +           tipo: 'unico',
+  +           unidad: null,
+  +           usd: null
+  +         },
+  +         {
+  +           cantidad: null,
+  +           id: 'tienda',
+  +           lista: 22000,
+  +           monto: 22000,
+  +           nombre: 'Pedidos por encargo',
+  +           paginas: null,
+  +           tipo: 'unico',
+  +           unidad: null,
+  +           usd: null
+  +         },
+  +         {
+  +           cantidad: null,
+  +           id: 'whatsapp',
+  +           lista: 0,
+  +           monto: 0,
+  +           nombre: 'Pedidos que llegan a WhatsApp',
+  +           paginas: null,
+  +           tipo: 'unico',
+  +           unidad: null,
+  +           usd: null
+  +         },
+  +         {
+  +           cantidad: null,
+  +           id: 'mant_b',
+  +           lista: 0,
+  +           monto: 3000,
+  +           nombre: 'Básico',
+  +           paginas: 2,
+  +           tipo: 'mensual',
+  +           unidad: null,
+  +           usd: null
+  +         },
+  +         {
+  +           cantidad: null,
+  +           id: 'dominio',
+  +           lista: 0,
+  +           monto: 3355,
+  +           nombre: 'Dominio laespiga.com.do',
+  +           paginas: null,
+  +           tipo: 'tercero_anual',
+  +           unidad: null,
+  +           usd: 55
+  +         }
+  +       ],
+  +       mensual: {
+  +         itbis: 540,
+  +         subtotal: 3000,
+  +         total: 3540
+  +       },
+  +       primerAnio: 113095,
+  +       terceros: {
+  +         anual: 3355,
+  +         mensual: 0,
+  +         primerAnio: 3355
+  +       },
+  +       unico: {
+  +         anticipo: 33630,
+  +         base: 57000,
+  +         cortesia: 7000,
+  +         descuento: 0,
+  +         itbis: 10260,
+  +         lista: 64000,
+  +         subtotal: 57000,
+  +         total: 67260
+  +       }
+  +     },
+  +     version: 1
+  +   },
+  +   cliente: 'Panadería La Espiga (ejemplo)',
+  +   numero: 'prueba-7811ca6a-001',
+  +   ok: true
+  -   error: 'Hay una versión más nueva de esta cotización. Recargue la página.',
+  -   ok: false
+    }
+  
+      at TestContext.<anonymous> (file:///home/decruce/.t3/worktrees/decruce-dev/feat-cotizaciones/test/cotiza/almacen.test.ts:100:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { ok: true, aceptacion: { nombre: 'Carmen Pérez', en: 2026-11-02T16:35:06.642Z, version: 1, seleccion: [Object], totales: [Object] }, cliente: 'Panadería La Espiga (ejemplo)', numero: 'prueba-7811ca6a-001' },
+    expected: { ok: false, error: 'Hay una versión más nueva de esta cotización. Recargue la página.' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+Summary translated from the ✖ and ℹ lines above:
+FAIL test/cotiza/almacen.test.ts > publishing keeps one unguessable link per quote number and versions every real change
+FAIL test/cotiza/almacen.test.ts > openings: the first of each version is flagged
+FAIL test/cotiza/almacen.test.ts > acceptance: current version only, once, with figures computed on the server
+4 passed, 3 failed
