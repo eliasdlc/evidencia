@@ -1,0 +1,48 @@
+MUTATION round1-F2: non-loopback FIRESTORE_EMULATOR_HOST no longer refused (unit test only, the CLI test is not run so nothing contacts the remote host)
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/stats-visitas-destino
+
+ ❯ test/visit-stats.test.ts (12 tests | 1 failed | 11 skipped) 17ms
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > cuenta el día en UTC-4, también cuando UTC ya cambió de mes
+   × estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez 15ms
+     → expected true to be false // Object.is equality
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script rechaza un host de emulador remoto aun con las dos banderas y dice cuál es
+   ↓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento
+   ↓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística
+   ↓ estadística mensual de visitas por destino, contra el emulador > R3: visitas validadas simultáneas de usuarios distintos suman exactamente N
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > el periodo cuenta: cifras bien con el periodo ausente o ajeno se reparan
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco no abre transacciones y avisa del alcance antes de leer por destino
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > la CLI sin --write no escribe nada y con --write escribe, y repetir no cambia nada
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-stats.test.ts > estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ test/visit-stats.test.ts:25:65
+     23|     // Un host de emulador que no es de esta máquina se rechaza aun co…
+     24|     const remote = {...real, FIRESTORE_EMULATOR_HOST: 'db.example.com:…
+     25|     expect(resolveTarget(remote, {allowNonEmulator: false}).ok).toBe(f…
+       |                                                                 ^
+     26|     expect(resolveTarget(remote, {allowNonEmulator: true, project: 'co…
+     27|       .toMatchObject({ok: false, emulatorHost: 'db.example.com:8080'});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  19:25:37
+   Duration  1.67s (transform 175ms, setup 0ms, collect 1.01s, tests 17ms, environment 0ms, prepare 227ms)
+
+
+Error: Script "pnpm vitest run test/visit-stats.test.ts -t 'solo escribe contra'" exited with code 1
