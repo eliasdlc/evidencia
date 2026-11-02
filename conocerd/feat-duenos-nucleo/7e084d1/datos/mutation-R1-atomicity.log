@@ -1,0 +1,164 @@
+# mutation mutation-R1-atomicity in src/lib/claims-service.ts
+# replaced:       await compensate(user, coupledChanged ? coupled : undefined, audited ? auditRef : undefined);
+# with:       void compensate;
+diff --git 1/src/lib/claims-service.ts.bak 2/src/lib/claims-service.ts
+index aebc79a..de39f34 100644
+--- 1/src/lib/claims-service.ts.bak
++++ 2/src/lib/claims-service.ts
+@@ -108,7 +108,7 @@ export async function changeClaims(input: {
+       await adminAuth().setCustomUserClaims(user.uid, toCustomClaims(transition.claims, user.customClaims));
+       if (change.op === 'revoke') await adminAuth().revokeRefreshTokens(user.uid);
+     } catch (error) {
+-      await compensate(user, coupledChanged ? coupled : undefined, audited ? auditRef : undefined);
++      void compensate;
+       throw error;
+     }
+   }
+$ tsc --noEmit
+typecheck exit=0
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/owner-service.test.ts test/admin-owners-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo nuevo crea la cuenta, la hace dueña y devuelve la invitación sin enviarla
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo que ya tiene cuenta la reutiliza y conserva sus otros destinos
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar a personal interno responde 409 email_belongs_to_staff
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un destino inexistente responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /me
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar a quien no es dueño responde 409 not_owner
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar desde quien no es dueño responde 409 y no crea la cuenta nueva
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owners
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owners
+
+ ✓ test/admin-owners-route.test.ts (12 tests) 5491ms
+   ✓ rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas  1743ms
+   ✓ rutas de dueños contra el emulador > invitar un correo nuevo crea la cuenta, la hace dueña y devuelve la invitación sin enviarla  583ms
+   ✓ rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401  1324ms
+   ✓ rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId  320ms
+ ❯ test/owner-service.test.ts (14 tests | 1 failed) 1638ms
+   ✓ transiciones de propiedad > conceder crea solo los destinos que la cuenta no tenía activos, sin duplicados 5ms
+   ✓ transiciones de propiedad > conceder lo que ya estaba activo no crea nada 1ms
+   ✓ transiciones de propiedad > revocar toca solo los activos pedidos 1ms
+   ✓ transiciones de propiedad > el piso sube minimal y un destino sin tier a registrado con sus entitlements 2ms
+   ✓ transiciones de propiedad > el piso nunca baja un destino que ya está en registrado o más arriba 0ms
+   ✓ transiciones de propiedad > la reconciliación separa índice sin claim, claim sin índice y duplicados 1ms
+   ✓ transiciones de propiedad > la verificación exige un método de la lista cerrada y una nota de 1 a 500 7ms
+   ✓ transiciones de propiedad > staff y métodos de entrada 1ms
+   ✓ owner-service contra el emulador > conceder escribe la propiedad, la bitácora con verificación, el claim y el piso de tier  387ms
+   ✓ owner-service contra el emulador > conceder dos veces no duplica la propiedad ni ensucia la bitácora 135ms
+   × owner-service contra el emulador > si el claim falla, no queda propiedad, ni bitácora, ni piso de tier 103ms
+     → expected [ Array(1) ] to deeply equal []
+   ✓ owner-service contra el emulador > un destino que no existe se rechaza sin escribir nada 39ms
+   ✓ owner-service contra el emulador > una cuenta de staff no puede ser dueña 30ms
+   ✓ owner-service contra el emulador > revocar pasa la propiedad a revoked, quita el claim y deja el motivo en la bitácora  353ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/owner-service.test.ts > owner-service contra el emulador > si el claim falla, no queda propiedad, ni bitácora, ni piso de tier
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   {[39m
+[31m+     "destinationId": "destino-<test-uuid-1>",[39m
+[31m+     "grantedAt": Timestamp {[39m
+[31m+       "_nanoseconds": 79000000,[39m
+[31m+       "_seconds": 1793655581,[39m
+[31m+     },[39m
+[31m+     "grantedBy": "jgEODY2Ccg6zX2qEesMhE0S0dmBB",[39m
+[31m+     "id": "3KqQx97yku1xs4S7POCq",[39m
+[31m+     "role": "owner",[39m
+[31m+     "status": "active",[39m
+[31m+     "uid": "8DdoB12ZIEb6Btqc7zTRrRkrOwJ7",[39m
+[31m+     "via": "invitation",[39m
+[31m+   },[39m
+[31m+ ][39m
+
+ ❯ test/owner-service.test.ts:191:53
+    189|     ).rejects.toThrow('Auth caído');
+    190| 
+    191|     expect(await ownershipsOf(firebase, owner.uid)).toEqual([]);
+       |                                                     ^
+    192|     expect(await auditsOf(firebase, owner.uid)).toEqual([]);
+    193|     expect((await userRecord(owner.uid)).customClaims ?? {}).not.toHav…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 25 passed (26)
+   Start at  17:39:33
+   Duration  8.24s (transform 318ms, setup 0ms, collect 358ms, tests 7.13s, environment 0ms, prepare 207ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/owner-service.test.ts test/admin-owners-route.test.ts" exited with code 1
+emulator exit=1
+
+# note: 1 random test-fixture UUID(s) replaced by <test-uuid-N> before publishing; original kept locally.
