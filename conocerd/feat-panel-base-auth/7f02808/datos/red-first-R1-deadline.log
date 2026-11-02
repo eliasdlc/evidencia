@@ -1,0 +1,85 @@
+# round 2, R1: tests for one deadline per call (stalled 200 and 503 bodies, a token that never arrives) and for keeping the first answer when the tokenStale repeat fails; src/lib/api.ts as at 1738df6
+$ pnpm exec vitest run src/lib/api.test.ts
+✓ Lockfile passes supply-chain policies (verified 15m ago)
+Lockfile is up to date, resolution step is skipped
+Already up to date
+Done in 1.2s using pnpm v12.15.0
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat/panel-base-auth
+
+ ❯ src/lib/api.test.ts (19 tests | 5 failed) 20228ms
+   ❯ createApiClient (19)
+     × gives up when a 200 body never finishes arriving 5035ms
+     × gives up when a 503 body never finishes arriving 5009ms
+     × gives up when the token never arrives, without calling the API 5008ms
+     × keeps the first answer when the tokenStale repeat fails 27ms
+     × keeps the first answer when the tokenStale repeat never finishes 5005ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > gives up when a 200 body never finishes arriving
+ FAIL  src/lib/api.test.ts > createApiClient > gives up when a 503 body never finishes arriving
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/lib/api.test.ts:147:22
+    145|     new Response(new ReadableStream({ start() {} }), { status, headers…
+    146|
+    147|   it.each([200, 503])('gives up when a %i body never finishes arriving…
+       |                      ^
+    148|     const client = createApiClient({
+    149|       baseUrl: BASE,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > gives up when the token never arrives, without calling the API
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/lib/api.test.ts:158:3
+    156|   });
+    157|
+    158|   it('gives up when the token never arrives, without calling the API',…
+       |   ^
+    159|     const fetch = vi.fn(async () => json(200, owner()));
+    160|     const client = createApiClient({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > keeps the first answer when the tokenStale repeat fails
+AssertionError: promise rejected "ApiError: unavailable { …(2) }" instead of resolving
+ ❯ src/lib/api.test.ts:175:40
+    173|     const h = harness(json(200, first), json(503, { error: 'unavailabl…
+    174|
+    175|     await expect(h.client.businessMe()).resolves.toEqual(first);
+       |                                        ^
+    176|     expect(h.fetch).toHaveBeenCalledTimes(2);
+    177|   });
+
+Caused by: ApiError: unavailable
+ ❯ errorFrom src/lib/api.ts:205:10
+ ❯ call src/lib/api.ts:143:19
+ ❯ src/lib/api.test.ts:175:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { status: 503, code: 'unavailable' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > keeps the first answer when the tokenStale repeat never finishes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/lib/api.test.ts:179:3
+    177|   });
+    178|
+    179|   it('keeps the first answer when the tokenStale repeat never finishes…
+       |   ^
+    180|     const first = owner({ tokenStale: true });
+    181|     const fetch = vi
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 14 passed (19)
+   Start at  19:30:57
+   Duration  21.69s (tests 99%, transform 1%)
+
+exit 1
