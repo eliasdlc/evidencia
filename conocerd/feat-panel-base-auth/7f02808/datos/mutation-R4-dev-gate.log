@@ -1,0 +1,50 @@
+# round 2, mutation: the emulator switch in src/lib/firebase.ts without the import.meta.env.DEV gate
+-if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS === 'true') {
++if (import.meta.env.VITE_USE_EMULATORS === 'true') {
+$ pnpm exec vitest run src/lib/firebase.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat/panel-base-auth
+
+ ❯ src/lib/firebase.test.ts (3 tests | 1 failed) 140ms
+   ❯ the Auth emulator switch (3)
+     × stays off in a production build even when VITE_USE_EMULATORS is true 126ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/firebase.test.ts > the Auth emulator switch > stays off in a production build even when VITE_USE_EMULATORS is true
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      Object {
+        "languageCode": "es",
+      },
+      "http://127.0.0.1:9099",
+      Object {
+        "disableWarnings": true,
+      },
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/lib/firebase.test.ts:32:37
+     30|   it('stays off in a production build even when VITE_USE_EMULATORS is …
+     31|     await load({ dev: false, emulators: 'true' });
+     32|     expect(connectAuthEmulator).not.toHaveBeenCalled();
+       |                                     ^
+     33|   });
+     34|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  19:32:23
+   Duration  512ms (tests 71%, import 17%, transform 6%, worker 6%)
+
+exit 1
