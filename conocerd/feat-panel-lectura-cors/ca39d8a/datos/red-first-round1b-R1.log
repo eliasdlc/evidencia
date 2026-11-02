@@ -1,0 +1,139 @@
+# round 1b red-first R1: deployment form now expected rejected, tests run against cors.ts at 81b92b9 (deployment pattern still present), 2026-11-02T19:18:51-04:00
+$ pnpm vitest run src/lib/cors.test.ts test/cors-proxy.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+ ❯ test/cors-proxy.test.ts (12 tests | 1 failed) 21ms
+   ✓ preflight > a un origen permitido le responde 204 con métodos, cabeceras y max-age 5ms
+   ✓ preflight > permite If-Match, que el PATCH del perfil manda para no pisar una edición ajena 1ms
+   ✓ preflight > el alias de rama de un equipo con el mismo sufijo no recibe permiso 1ms
+   ✓ preflight > un origen de PANEL_PREVIEW_ORIGINS recibe permiso 0ms
+   × preflight > un preview del panel recibe permiso solo si está en PANEL_PREVIEW_ORIGINS 3ms
+     → expected 'https://conocerd-dashboard-guduu36zs-…' to be null
+   ✓ preflight > a un origen ajeno le responde sin ninguna cabecera de permiso 1ms
+   ✓ preflight > localhost no pasa en producción y sí fuera de ella 1ms
+   ✓ peticiones normales > a un origen permitido le deja pasar con ACAO y Vary 1ms
+   ✓ peticiones normales > a un origen ajeno le deja pasar sin ACAO: el navegador es quien bloquea 0ms
+   ✓ peticiones normales > la app, que no manda Origin, pasa igual que antes 0ms
+   ✓ matcher > cubre las rutas que el panel llama desde el navegador 5ms
+   ✓ matcher > deja fuera las rutas de la app y del admin 1ms
+ ❯ src/lib/cors.test.ts (35 tests | 2 failed) 16ms
+   ✓ isAllowedOrigin > acepta producción en producción y fuera de ella 2ms
+   ✓ isAllowedOrigin > rechaza sin Origin 0ms
+   ✓ isAllowedOrigin > rechaza Origin vacío 0ms
+   ✓ isAllowedOrigin > rechaza el literal null de un iframe aislado 0ms
+   ✓ isAllowedOrigin > rechaza producción por http 0ms
+   ✓ isAllowedOrigin > rechaza producción con puerto 0ms
+   ✓ isAllowedOrigin > rechaza producción con barra final 0ms
+   ✓ isAllowedOrigin > rechaza un sufijo que imita producción 0ms
+   ✓ isAllowedOrigin > rechaza un prefijo que imita producción 0ms
+   ✓ isAllowedOrigin > rechaza otro subdominio propio 0ms
+   ✓ isAllowedOrigin > rechaza el sitio público 0ms
+   ✓ isAllowedOrigin > rechaza un vercel.app ajeno 0ms
+   ✓ isAllowedOrigin > rechaza el mismo proyecto en otro equipo 0ms
+   ✓ isAllowedOrigin > rechaza otro proyecto del mismo equipo 0ms
+   ✓ isAllowedOrigin > rechaza un hash de deployment corto 0ms
+   ✓ isAllowedOrigin > rechaza un preview seguido de otro dominio 0ms
+   ✓ isAllowedOrigin > rechaza un preview por http 0ms
+   ✓ isAllowedOrigin > rechaza un preview con prefijo 0ms
+   ✓ isAllowedOrigin > rechaza una rama con mayúsculas 0ms
+   ✓ isAllowedOrigin > rechaza una rama vacía 0ms
+   ✓ isAllowedOrigin > rechaza un localhost en otro puerto 0ms
+   ✓ isAllowedOrigin > rechaza un localhost por https 0ms
+   × isAllowedOrigin > rechaza un deployment propio que no está en la lista 6ms
+     → expected true to be false // Object.is equality
+   ✓ isAllowedOrigin > rechaza el alias de rama de un equipo con el mismo sufijo 0ms
+   ✓ isAllowedOrigin > rechaza un alias de rama propio 0ms
+   ✓ isAllowedOrigin > rechaza un deployment de un equipo con el mismo sufijo 0ms
+   ✓ isAllowedOrigin > rechaza un proyecto con sufijo extra 0ms
+   ✓ isAllowedOrigin > rechaza un proyecto con sufijo extra que imita una rama 0ms
+   ✓ isAllowedOrigin > http://localhost:5173 solo pasa fuera de producción 0ms
+   ✓ isAllowedOrigin > http://127.0.0.1:5173 solo pasa fuera de producción 0ms
+   ✓ PANEL_PREVIEW_ORIGINS > acepta un origen de la lista exacta, también en producción 0ms
+   ✓ PANEL_PREVIEW_ORIGINS > no acepta nada que no sea idéntico a una entrada 0ms
+   × PANEL_PREVIEW_ORIGINS > un preview de Vercel pasa solo si está escrito tal cual en la lista 1ms
+     → expected true to be false // Object.is equality
+   ✓ PANEL_PREVIEW_ORIGINS > una lista vacía o un comodín no abren nada 0ms
+   ✓ CORS > anuncia los métodos del panel y solo las cabeceras Authorization, Content-Type e If-Match 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cors-proxy.test.ts > preflight > un preview del panel recibe permiso solo si está en PANEL_PREVIEW_ORIGINS
+AssertionError: expected 'https://conocerd-dashboard-guduu36zs-…' to be null
+
+[32m- Expected:[39m 
+null
+
+[31m+ Received:[39m 
+"https://conocerd-dashboard-guduu36zs-eliasdlcs-projects.vercel.app"
+
+ ❯ test/cors-proxy.test.ts:73:91
+     72|     vi.stubEnv('VERCEL_ENV', 'production');
+     73|     const response = await proxy(
+     74|       preflight('/business/me', 'https://conocerd-dashboard-git-main-e…
+       |                                                         ^
+     75|     );
+     76|     expect(response.headers.get('access-control-allow-origin')).toBeNu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un deployment propio que no está en la lista
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ src/lib/cors.test.ts:58:53
+     56|   for (const [label, origin] of rejectedEverywhere) {
+     57|     it(`rechaza ${label}`, () => {
+     58|       expect(isAllowedOrigin(origin, 'production')).toBe(false);
+       |                                                     ^
+     59|       expect(isAllowedOrigin(origin, 'preview')).toBe(false);
+     60|       expect(isAllowedOrigin(origin, undefined)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/lib/cors.test.ts > PANEL_PREVIEW_ORIGINS > un preview de Vercel pasa solo si está escrito tal cual en la lista
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ src/lib/cors.test.ts:97:122
+     95|     const preview = 'https://conocerd-dashboard-guduu36zs-eliasdlcs-pr…
+     96|     expect(isAllowedOrigin(preview, 'production', preview)).toBe(true);
+     97|     expect(isAllowedOrigin('https://conocerd-dashboard-abcdefghi-elias…
+       |                                                                                                                          ^
+     98|     expect(isAllowedOrigin(preview, 'production', '')).toBe(false);
+     99|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 44 passed (47)
+   Start at  19:18:52
+   Duration  763ms (transform 53ms, setup 0ms, collect 356ms, tests 37ms, environment 0ms, prepare 105ms)
+
+exit=1
+
+# round 1b green R1: deployment pattern removed, previews only via PANEL_PREVIEW_ORIGINS, 2026-11-02T19:19:07-04:00
+$ pnpm vitest run src/lib/cors.test.ts test/cors-proxy.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+ ✓ test/cors-proxy.test.ts (12 tests) 35ms
+ ✓ src/lib/cors.test.ts (35 tests) 9ms
+
+ Test Files  2 passed (2)
+      Tests  47 passed (47)
+   Start at  19:19:08
+   Duration  923ms (transform 71ms, setup 0ms, collect 282ms, tests 44ms, environment 0ms, prepare 164ms)
+
+exit=0
