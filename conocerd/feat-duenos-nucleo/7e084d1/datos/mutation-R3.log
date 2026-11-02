@@ -1,0 +1,197 @@
+# mutation mutation-R3 in src/lib/owner-service.ts
+# replaced:   let user = await findUserByEmail(email);
+# with:   let user = email.length < 0 ? await findUserByEmail(email) : null;
+diff --git 1/src/lib/owner-service.ts.bak 2/src/lib/owner-service.ts
+index 003f438..c65e663 100644
+--- 1/src/lib/owner-service.ts.bak
++++ 2/src/lib/owner-service.ts
+@@ -345,7 +345,7 @@ export async function inviteOwner(input: {
+   // Antes de crear ninguna cuenta: un id mal escrito no debe dejar una cuenta huérfana.
+   await assertDestinationsExist(destinationIds);
+ 
+-  let user = await findUserByEmail(email);
++  let user = email.length < 0 ? await findUserByEmail(email) : null;
+   if (user && isStaff(user.customClaims)) throw staffConflict();
+ 
+   let created = false;
+$ tsc --noEmit
+typecheck exit=0
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/owner-service.test.ts test/admin-owners-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo nuevo crea la cuenta, la hace dueña y devuelve la invitación sin enviarla
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo que ya tiene cuenta la reutiliza y conserva sus otros destinos
+[app-check] ausente /admin/owner-invitations
+
+stderr | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo que ya tiene cuenta la reutiliza y conserva sus otros destinos
+[conocerd-api] error no controlado FirebaseAuthError: The email address is already in use by another account.
+    at FirebaseAuthError.fromServerError [90m(/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mnode_modules/[4m.pnpm[24m/firebase-admin@13.10.0/node_modules/[4mfirebase-admin[24m/lib/utils/error.js:148:16[90m)[39m
+    at [90m/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mnode_modules/[4m.pnpm[24m/firebase-admin@13.10.0/node_modules/[4mfirebase-admin[24m/lib/auth/auth-api-request.js:1629:49
+[90m    at processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+    at inviteOwner [90m(/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39msrc/lib/owner-service.ts:353:12[90m)[39m
+    at [90m/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39msrc/app/admin/owner-invitations/route.ts:28:18
+    at Module.<anonymous> [90m(/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39msrc/lib/http.ts:29:14[90m)[39m
+    at [90m/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mtest/admin-owners-route.test.ts:122:22
+    at [90mfile:///home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@3.2.7/node_modules/[4m@vitest/runner[24m/dist/chunk-hooks.js:752:20 {
+  errorInfo: {
+    code: [32m'auth/email-already-exists'[39m,
+    message: [32m'The email address is already in use by another account.'[39m
+  },
+  codePrefix: [32m'auth'[39m
+}
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar a personal interno responde 409 email_belongs_to_staff
+[app-check] ausente /admin/owner-invitations
+
+stderr | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar a personal interno responde 409 email_belongs_to_staff
+[conocerd-api] error no controlado FirebaseAuthError: The email address is already in use by another account.
+    at FirebaseAuthError.fromServerError [90m(/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mnode_modules/[4m.pnpm[24m/firebase-admin@13.10.0/node_modules/[4mfirebase-admin[24m/lib/utils/error.js:148:16[90m)[39m
+    at [90m/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mnode_modules/[4m.pnpm[24m/firebase-admin@13.10.0/node_modules/[4mfirebase-admin[24m/lib/auth/auth-api-request.js:1629:49
+[90m    at processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+    at inviteOwner [90m(/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39msrc/lib/owner-service.ts:353:12[90m)[39m
+    at [90m/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39msrc/app/admin/owner-invitations/route.ts:28:18
+    at Module.<anonymous> [90m(/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39msrc/lib/http.ts:29:14[90m)[39m
+    at [90m/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mtest/admin-owners-route.test.ts:135:22
+    at [90mfile:///home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@3.2.7/node_modules/[4m@vitest/runner[24m/dist/chunk-hooks.js:752:20 {
+  errorInfo: {
+    code: [32m'auth/email-already-exists'[39m,
+    message: [32m'The email address is already in use by another account.'[39m
+  },
+  codePrefix: [32m'auth'[39m
+}
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un destino inexistente responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /me
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar a quien no es dueño responde 409 not_owner
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar desde quien no es dueño responde 409 y no crea la cuenta nueva
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owners
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owners
+
+ ❯ test/admin-owners-route.test.ts (12 tests | 2 failed) 5581ms
+   ✓ rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas  1510ms
+   ✓ rutas de dueños contra el emulador > sin token responde 401 1ms
+   ✓ rutas de dueños contra el emulador > invitar un correo nuevo crea la cuenta, la hace dueña y devuelve la invitación sin enviarla  439ms
+   × rutas de dueños contra el emulador > invitar un correo que ya tiene cuenta la reutiliza y conserva sus otros destinos 79ms
+     → expected 500 to be 200 // Object.is equality
+   × rutas de dueños contra el emulador > invitar a personal interno responde 409 email_belongs_to_staff 56ms
+     → expected 500 to be 409 // Object.is equality
+   ✓ rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta 28ms
+   ✓ rutas de dueños contra el emulador > un destino inexistente responde 422 y no crea la cuenta 25ms
+   ✓ rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401  1288ms
+   ✓ rutas de dueños contra el emulador > revocar a quien no es dueño responde 409 not_owner 74ms
+   ✓ rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId  714ms
+   ✓ rutas de dueños contra el emulador > traspasar desde quien no es dueño responde 409 y no crea la cuenta nueva 76ms
+   ✓ rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo 128ms
+ ✓ test/owner-service.test.ts (14 tests) 1752ms
+   ✓ owner-service contra el emulador > conceder escribe la propiedad, la bitácora con verificación, el claim y el piso de tier  367ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo que ya tiene cuenta la reutiliza y conserva sus otros destinos
+AssertionError: expected 500 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 500[39m
+
+ ❯ test/admin-owners-route.test.ts:125:29
+    123|       post(INVITE, { email: existing.email, destinationIds: [second], …
+    124|     );
+    125|     expect(response.status).toBe(200);
+       |                             ^
+    126|     await expect(response.json()).resolves.toMatchObject({ uid: existi…
+    127|     expect((await firebase.adminAuth().getUser(existing.uid)).customCl…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar a personal interno responde 409 email_belongs_to_staff
+AssertionError: expected 500 to be 409 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 500[39m
+
+ ❯ test/admin-owners-route.test.ts:136:29
+    134|     const agent = await newUser(firebase, { agent: true });
+    135|     const response = await invite.POST(post(INVITE, { email: agent.ema…
+    136|     expect(response.status).toBe(409);
+       |                             ^
+    137|     await expect(response.json()).resolves.toMatchObject({ error: 'ema…
+    138|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 24 passed (26)
+   Start at  17:48:05
+   Duration  8.50s (transform 240ms, setup 0ms, collect 370ms, tests 7.33s, environment 1ms, prepare 229ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/owner-service.test.ts test/admin-owners-route.test.ts" exited with code 1
+emulator exit=1
