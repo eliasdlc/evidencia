@@ -1,0 +1,55 @@
+MUTATION R1: recordVisit no longer calls countValidatedVisit
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/stats-visitas-destino
+
+ ❯ test/visit-stats.test.ts (8 tests | 1 failed | 7 skipped) 1052ms
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > cuenta el día en UTC-4, también cuando UTC ya cambió de mes
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore
+   × estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento 887ms
+     → expected { contacts: { phone: 5 }, …(2) } to match object { period: '2026-02', visits: 2, …(4) }
+   ↓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística
+   ↓ estadística mensual de visitas por destino, contra el emulador > R3: visitas validadas simultáneas de usuarios distintos suman exactamente N
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento
+AssertionError: expected { contacts: { phone: 5 }, …(2) } to match object { period: '2026-02', visits: 2, …(4) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -5,12 +5,7 @@[39m
+[2m    "contactsByDay": {[22m
+[2m      "28": {[22m
+[2m        "phone": 5,[22m
+[2m      },[22m
+[2m    },[22m
+[32m-   "period": "2026-02",[39m
+[2m    "savesAtClose": 3,[22m
+[32m-   "visits": 2,[39m
+[32m-   "visitsByDay": {[39m
+[32m-     "28": 2,[39m
+[32m-   },[39m
+[2m  }[22m
+
+ ❯ test/visit-stats.test.ts:77:17
+     75|     expect((await service.recordVisit(user(), input(later), later)).st…
+     76|     const feb = await month('2026-02');
+     77|     expect(feb).toMatchObject({period: '2026-02', visits: 2, visitsByD…
+       |                 ^
+     78|       contactsByDay: {'28': {phone: 5}}, savesAtClose: 3});
+     79|     expect(feb?.updatedAt.toMillis()).toBeGreaterThan(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 skipped (8)
+   Start at  18:44:29
+   Duration  1.54s (transform 70ms, setup 0ms, collect 297ms, tests 1.05s, environment 0ms, prepare 62ms)
+
+
+Error: Script "pnpm vitest run test/visit-stats.test.ts -t 'R1:'" exited with code 1
