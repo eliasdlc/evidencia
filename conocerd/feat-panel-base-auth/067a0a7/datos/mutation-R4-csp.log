@@ -1,0 +1,70 @@
+# mutation: vercel.json style-src narrowed to 'none' (the build's own stylesheet becomes a violation)
+style-src 'none'
+$ agents heavy --wait -- pnpm exec playwright test --project 'production-*'
+
+Running 2 tests using 1 worker
+
+  ✘  1 [production-phone] › e2e/smoke.spec.ts:7:1 › the signed-out root goes to /entrar and shows no figure @production (753ms)
+  ✘  2 [production-desktop] › e2e/smoke.spec.ts:7:1 › the signed-out root goes to /entrar and shows no figure @production (481ms)
+
+
+  1) [production-phone] › e2e/smoke.spec.ts:7:1 › the signed-out root goes to /entrar and shows no figure @production 
+
+    Error: Content Security Policy violations
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 4
+
+    - Array []
+    + Array [
+    +   "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap' violates the following Content Security Policy directive: \"style-src 'none'\". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked.",
+    +   "Loading the stylesheet 'http://127.0.0.1:4179/assets/index-BaK6Aoxm.css' violates the following Content Security Policy directive: \"style-src 'none'\". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked.",
+    + ]
+
+       at fixtures/test.ts:115
+
+      113 |       }
+      114 |       await provide(violations);
+    > 115 |       expect(violations, 'Content Security Policy violations').toEqual([]);
+          |                                                                ^
+      116 |     },
+      117 |     { auto: true },
+      118 |   ],
+        at Object.base.extend.csp.auto (/home/decruce/dev/wt/conocerd-dashboard/feat/panel-base-auth/e2e/fixtures/test.ts:115:64)
+
+    Error Context: node_modules/.cache/playwright/smoke-the-signed-out-root-goes-to-entrar-and-shows-no-figure-production-phone/error-context.md
+
+  2) [production-desktop] › e2e/smoke.spec.ts:7:1 › the signed-out root goes to /entrar and shows no figure @production 
+
+    Error: Content Security Policy violations
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 4
+
+    - Array []
+    + Array [
+    +   "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap' violates the following Content Security Policy directive: \"style-src 'none'\". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked.",
+    +   "Loading the stylesheet 'http://127.0.0.1:4179/assets/index-BaK6Aoxm.css' violates the following Content Security Policy directive: \"style-src 'none'\". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked.",
+    + ]
+
+       at fixtures/test.ts:115
+
+      113 |       }
+      114 |       await provide(violations);
+    > 115 |       expect(violations, 'Content Security Policy violations').toEqual([]);
+          |                                                                ^
+      116 |     },
+      117 |     { auto: true },
+      118 |   ],
+        at Object.base.extend.csp.auto (/home/decruce/dev/wt/conocerd-dashboard/feat/panel-base-auth/e2e/fixtures/test.ts:115:64)
+
+    Error Context: node_modules/.cache/playwright/smoke-the-signed-out-root-goes-to-entrar-and-shows-no-figure-production-desktop/error-context.md
+
+  2 failed
+    [production-phone] › e2e/smoke.spec.ts:7:1 › the signed-out root goes to /entrar and shows no figure @production 
+    [production-desktop] › e2e/smoke.spec.ts:7:1 › the signed-out root goes to /entrar and shows no figure @production 
+exit 1
