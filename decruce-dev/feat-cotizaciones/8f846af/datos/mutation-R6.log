@@ -1,0 +1,163 @@
+Mutation R6 at 8f846af: lib/cotiza/almacen.ts
+- if (entrada.version !== vista.version) return
++ if (false) return
+$ node --test test/cotiza/almacen.test.ts   (exit 1; file restored afterwards)
+
+✔ publishing keeps one unguessable link per quote number and versions every real change (60.513787ms)
+✔ a missing image stops the first publish and leaves no link behind (4.532957ms)
+✔ images uploaded ahead of the JSON are found by the publish that follows (8.816102ms)
+✔ a quote without its own issuer takes the account profile, and fails without one (8.733303ms)
+✔ openings: the first of each version is flagged (7.625913ms)
+✖ acceptance: current version only, once, with figures computed on the server (9.273538ms)
+✔ an expired quote cannot be accepted (26.74385ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 292.029465
+
+✖ failing tests:
+
+test at test/cotiza/almacen.test.ts:97:1
+✖ acceptance: current version only, once, with figures computed on the server (9.273538ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   aceptacion: {
+  +     en: 2026-11-02T16:45:39.820Z,
+  +     nombre: 'Carmen Pérez',
+  +     seleccion: {
+  +       cant: {
+  +         web: 9
+  +       },
+  +       sel: [
+  +         'web',
+  +         'tienda',
+  +         'mant_b',
+  +         'dominio',
+  +         'whatsapp'
+  +       ]
+  +     },
+  +     totales: {
+  +       interno: {
+  +         anticipo: 24650,
+  +         isrPrimerAnio: 14100,
+  +         mensual: {
+  +           isr: 450,
+  +           itbis: 540,
+  +           recibe: 2550
+  +         },
+  +         retiene: true,
+  +         unico: {
+  +           isr: 8700,
+  +           itbis: 10440,
+  +           recibe: 49300
+  +         }
+  +       },
+  +       lineas: [
+  +         {
+  +           cantidad: null,
+  +           id: 'web',
+  +           lista: 42000,
+  +           monto: 36000,
+  +           nombre: 'Página de La Espiga',
+  +           paginas: null,
+  +           tipo: 'unico',
+  +           unidad: null,
+  +           usd: null
+  +         },
+  +         {
+  +           cantidad: null,
+  +           id: 'tienda',
+  +           lista: 22000,
+  +           monto: 22000,
+  +           nombre: 'Pedidos por encargo',
+  +           paginas: null,
+  +           tipo: 'unico',
+  +           unidad: null,
+  +           usd: null
+  +         },
+  +         {
+  +           cantidad: null,
+  +           id: 'whatsapp',
+  +           lista: 0,
+  +           monto: 0,
+  +           nombre: 'Pedidos que llegan a WhatsApp',
+  +           paginas: null,
+  +           tipo: 'unico',
+  +           unidad: null,
+  +           usd: null
+  +         },
+  +         {
+  +           cantidad: null,
+  +           id: 'mant_b',
+  +           lista: 0,
+  +           monto: 3000,
+  +           nombre: 'Básico',
+  +           paginas: 2,
+  +           tipo: 'mensual',
+  +           unidad: null,
+  +           usd: null
+  +         },
+  +         {
+  +           cantidad: null,
+  +           id: 'dominio',
+  +           lista: 0,
+  +           monto: 3355,
+  +           nombre: 'Dominio laespiga.com.do',
+  +           paginas: null,
+  +           tipo: 'tercero_anual',
+  +           unidad: null,
+  +           usd: 55
+  +         }
+  +       ],
+  +       mensual: {
+  +         itbis: 540,
+  +         subtotal: 3000,
+  +         total: 3540
+  +       },
+  +       primerAnio: 114275,
+  +       terceros: {
+  +         anual: 3355,
+  +         mensual: 0,
+  +         primerAnio: 3355
+  +       },
+  +       unico: {
+  +         anticipo: 34220,
+  +         base: 58000,
+  +         cortesia: 6000,
+  +         descuento: 0,
+  +         itbis: 10440,
+  +         lista: 64000,
+  +         subtotal: 58000,
+  +         total: 68440
+  +       }
+  +     },
+  +     version: 2
+  +   },
+  +   cliente: 'Panadería La Espiga (ejemplo)',
+  +   numero: 'prueba-6c594231-001',
+  +   ok: true
+  -   error: 'Hay una versión más nueva de esta cotización. Recargue la página.',
+  -   ok: false
+    }
+  
+      at TestContext.<anonymous> (file:///home/decruce/.t3/worktrees/decruce-dev/feat-cotizaciones/test/cotiza/almacen.test.ts:100:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { ok: true, aceptacion: { nombre: 'Carmen Pérez', en: 2026-11-02T16:45:39.820Z, version: 2, seleccion: [Object], totales: [Object] }, cliente: 'Panadería La Espiga (ejemplo)', numero: 'prueba-6c594231-001' },
+    expected: { ok: false, error: 'Hay una versión más nueva de esta cotización. Recargue la página.' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+Summary translated from the ✖ and ℹ lines above:
+FAIL test/cotiza/almacen.test.ts > acceptance: current version only, once, with figures computed on the server
+6 passed, 1 failed
