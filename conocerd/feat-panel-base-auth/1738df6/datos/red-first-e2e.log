@@ -1,0 +1,136 @@
+# round 1 e2e tests (ended line, invalid token, failed with retry, hung /business/me) against src/router.tsx, src/lib/session.ts, src/lib/api.ts, src/lib/firebase.ts as at 067a0a7
+$ flock ~/.cache/conocerd/emulator.lock agents heavy --wait -- mise exec node@26.8.1 -- firebase emulators:exec --config e2e/fixtures/firebase.json --project demo-conocerd --only auth 'pnpm exec playwright test --project emulator-phone'
+i  emulators: Starting emulators: auth
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  Running script: pnpm exec playwright test --project emulator-phone
+
+Running 8 tests using 1 worker
+
+  ✓  1 [emulator-phone] › e2e/smoke.spec.ts:7:1 › the signed-out root goes to /entrar and shows no figure @production (616ms)
+  ✓  2 [emulator-phone] › e2e/smoke.spec.ts:19:1 › a seeded owner signs in against the Auth emulator and reaches /hoy (866ms)
+  ✓  3 [emulator-phone] › e2e/smoke.spec.ts:37:1 › signing in returns to the route that asked for it (625ms)
+  ✓  4 [emulator-phone] › e2e/smoke.spec.ts:47:1 › browser back from a second route returns to the first (754ms)
+  ✘  5 [emulator-phone] › e2e/smoke.spec.ts:64:1 › a session the API revoked signs out and stays on /entrar (5.7s)
+FAIL [emulator-phone] e2e/smoke.spec.ts > a session the API revoked signs out and stays on /entrar (failed)
+  ✘  6 [emulator-phone] › e2e/smoke.spec.ts:87:1 › a token the API calls invalid signs out and says why (5.3s)
+FAIL [emulator-phone] e2e/smoke.spec.ts > a token the API calls invalid signs out and says why (failed)
+  ✘  7 [emulator-phone] › e2e/smoke.spec.ts:102:1 › a failed /business/me shows an error with a retry instead of the route (5.3s)
+FAIL [emulator-phone] e2e/smoke.spec.ts > a failed /business/me shows an error with a retry instead of the route (failed)
+  ✘  8 [emulator-phone] › e2e/smoke.spec.ts:121:1 › a /business/me that never answers ends in the error with a retry, not a blank page (5.6s)
+FAIL [emulator-phone] e2e/smoke.spec.ts > a /business/me that never answers ends in the error with a retry, not a blank page (failed)
+
+
+  1) [emulator-phone] › e2e/smoke.spec.ts:64:1 › a session the API revoked signs out and stays on /entrar 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Tu acceso a este panel fue retirado.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Tu acceso a este panel fue retirado.') with timeout 5000ms
+      - waiting for getByText('Tu acceso a este panel fue retirado.')
+
+
+      78 |   await expect(page).toHaveURL(/\/entrar$/);
+      79 |   await expect(heading(page, '/entrar')).toBeVisible();
+    > 80 |   await expect(page.getByText('Tu acceso a este panel fue retirado.')).toBeVisible();
+         |                                                                        ^
+      81 |   await evidence('revoked-signed-out');
+      82 |
+      83 |   await page.goto('/hoy');
+        at /home/decruce/dev/wt/conocerd-dashboard/feat/panel-base-auth/e2e/smoke.spec.ts:80:72
+
+    Error Context: node_modules/.cache/playwright/smoke-a-session-the-API-re-ac7d3-gns-out-and-stays-on-entrar-emulator-phone/error-context.md
+
+  2) [emulator-phone] › e2e/smoke.spec.ts:87:1 › a token the API calls invalid signs out and says why 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Tu sesión ya no es válida. Entra de nuevo.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Tu sesión ya no es válida. Entra de nuevo.') with timeout 5000ms
+      - waiting for getByText('Tu sesión ya no es válida. Entra de nuevo.')
+
+
+       95 |   await signIn(owner);
+       96 |
+    >  97 |   await expect(page.getByText('Tu sesión ya no es válida. Entra de nuevo.')).toBeVisible();
+          |                                                                              ^
+       98 |   await expect(page).toHaveURL(/\/entrar$/);
+       99 |   await expect(page.getByText('No se pudo cargar tu sesión.')).toBeHidden();
+      100 | });
+        at /home/decruce/dev/wt/conocerd-dashboard/feat/panel-base-auth/e2e/smoke.spec.ts:97:78
+
+    Error Context: node_modules/.cache/playwright/smoke-a-token-the-API-calls-invalid-signs-out-and-says-why-emulator-phone/error-context.md
+
+  3) [emulator-phone] › e2e/smoke.spec.ts:102:1 › a failed /business/me shows an error with a retry instead of the route 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('No se pudo cargar tu sesión.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('No se pudo cargar tu sesión.') with timeout 5000ms
+      - waiting for getByText('No se pudo cargar tu sesión.')
+
+
+      109 |   await signIn(owner);
+      110 |
+    > 111 |   await expect(page.getByText('No se pudo cargar tu sesión.')).toBeVisible();
+          |                                                                ^
+      112 |   await expect(heading(page, '/hoy')).toBeHidden();
+      113 |   await evidence('session-failed');
+      114 |
+        at /home/decruce/dev/wt/conocerd-dashboard/feat/panel-base-auth/e2e/smoke.spec.ts:111:64
+
+    Error Context: node_modules/.cache/playwright/smoke-a-failed-business-me-d102e--retry-instead-of-the-route-emulator-phone/error-context.md
+
+  4) [emulator-phone] › e2e/smoke.spec.ts:121:1 › a /business/me that never answers ends in the error with a retry, not a blank page 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('No se pudo cargar tu sesión.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('No se pudo cargar tu sesión.') with timeout 5000ms
+      - waiting for getByText('No se pudo cargar tu sesión.')
+
+
+      129 |   await page.clock.fastForward(16_000);
+      130 |
+    > 131 |   await expect(page.getByText('No se pudo cargar tu sesión.')).toBeVisible();
+          |                                                                ^
+      132 |   await expect(page.getByRole('button', { name: 'Reintentar' })).toBeVisible();
+      133 | });
+      134 |
+        at /home/decruce/dev/wt/conocerd-dashboard/feat/panel-base-auth/e2e/smoke.spec.ts:131:64
+
+    Error Context: node_modules/.cache/playwright/smoke-a-business-me-that-n-b90b0-th-a-retry-not-a-blank-page-emulator-phone/error-context.md
+
+  4 failed
+    [emulator-phone] › e2e/smoke.spec.ts:64:1 › a session the API revoked signs out and stays on /entrar 
+    [emulator-phone] › e2e/smoke.spec.ts:87:1 › a token the API calls invalid signs out and says why 
+    [emulator-phone] › e2e/smoke.spec.ts:102:1 › a failed /business/me shows an error with a retry instead of the route 
+    [emulator-phone] › e2e/smoke.spec.ts:121:1 › a /business/me that never answers ends in the error with a retry, not a blank page 
+  4 passed (29.1s)
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec playwright test --project emulator-phone" exited with code 1
+exit 1
