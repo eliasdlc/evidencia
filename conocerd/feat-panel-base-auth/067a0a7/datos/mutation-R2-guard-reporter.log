@@ -1,0 +1,27 @@
+# mutation: RequireSession never redirects a signed-out visitor (src/router.tsx, condition made always false); one-off reporter prints FAIL/ok per test
+$ flock ~/.cache/conocerd/emulator.lock agents heavy --wait -- mise exec node@26.8.1 -- pnpm exec firebase emulators:exec --config e2e/fixtures/firebase.json --project demo-conocerd --only auth 'playwright test --reporter=<one-off fail reporter>'
+i  emulators: Starting emulators: auth
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  Running script: playwright test --reporter=/home/decruce/.cache/conocerd-dashboard/feat-panel-base-auth/fail-reporter.mjs
+Running 12 tests
+FAIL emulator-phone > e2e/smoke.spec.ts:7 > the signed-out root goes to /entrar and shows no figure
+ok emulator-phone > e2e/smoke.spec.ts:19 > a seeded owner signs in against the Auth emulator and reaches /hoy
+FAIL emulator-phone > e2e/smoke.spec.ts:37 > signing in returns to the route that asked for it
+ok emulator-phone > e2e/smoke.spec.ts:47 > browser back from a second route returns to the first
+FAIL emulator-phone > e2e/smoke.spec.ts:64 > a session the API revoked signs out and stays on /entrar
+FAIL production-phone > e2e/smoke.spec.ts:7 > the signed-out root goes to /entrar and shows no figure
+FAIL emulator-desktop > e2e/smoke.spec.ts:7 > the signed-out root goes to /entrar and shows no figure
+ok emulator-desktop > e2e/smoke.spec.ts:19 > a seeded owner signs in against the Auth emulator and reaches /hoy
+FAIL emulator-desktop > e2e/smoke.spec.ts:37 > signing in returns to the route that asked for it
+ok emulator-desktop > e2e/smoke.spec.ts:47 > browser back from a second route returns to the first
+FAIL emulator-desktop > e2e/smoke.spec.ts:64 > a session the API revoked signs out and stays on /entrar
+FAIL production-desktop > e2e/smoke.spec.ts:7 > the signed-out root goes to /entrar and shows no figure
+status: failed
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "playwright test --reporter=/home/decruce/.cache/conocerd-dashboard/feat-panel-base-auth/fail-reporter.mjs" exited with code 1
+exit 1
