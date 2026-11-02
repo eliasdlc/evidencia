@@ -1,0 +1,75 @@
+# round 1, R1 (a) one forced refresh per call, (b) invalid token ends the session, (c) fetch timeout; tests added, src/lib/api.ts as at 067a0a7
+$ pnpm exec vitest run src/lib/api.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat/panel-base-auth
+
+ ❯ src/lib/api.test.ts (13 tests | 3 failed) 5052ms
+   ❯ createApiClient (13)
+     × forces at most one token refresh per call, even when an expired 401 is followed by tokenStale 10ms
+     × signs out with a reason when the API calls the token invalid 1ms
+     × gives up on a request that hangs past the timeout 5003ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > forces at most one token refresh per call, even when an expired 401 is followed by tokenStale
+AssertionError: expected { uid: 'owner-1', …(8) } to deeply equal { uid: 'owner-1', …(8) }
+
+- Expected
++ Received
+
+@@ -8,8 +8,8 @@
+    },
+    "providers": [
+      "password",
+    ],
+    "requests": [],
+-   "tokenStale": true,
++   "tokenStale": false,
+    "uid": "owner-1",
+  }
+
+ ❯ src/lib/api.test.ts:110:40
+    108|     const h = harness(json(401, expired), json(200, stale), json(200, …
+    109|
+    110|     await expect(h.client.businessMe()).resolves.toEqual(stale);
+       |                                        ^
+    111|
+    112|     expect(h.fetch).toHaveBeenCalledTimes(2);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > signs out with a reason when the API calls the token invalid
+AssertionError: expected "vi.fn()" to be called once with arguments: [ 'invalid' ]
+
+Number of calls: 0
+
+ ❯ src/lib/api.test.ts:121:26
+    119|     await expect(h.client.businessMe()).rejects.toMatchObject({ status…
+    120|
+    121|     expect(h.endSession).toHaveBeenCalledExactlyOnceWith('invalid');
+       |                          ^
+    122|     expect(h.fetch).toHaveBeenCalledTimes(1);
+    123|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > gives up on a request that hangs past the timeout
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/lib/api.test.ts:125:3
+    123|   });
+    124|
+    125|   it('gives up on a request that hangs past the timeout', async () => {
+       |   ^
+    126|     const fetch = vi.fn(
+    127|       (_url: string | URL | Request, init?: RequestInit) =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 10 passed (13)
+   Start at  19:13:50
+   Duration  5.25s (tests 99%, transform 1%)
+
+exit 1
