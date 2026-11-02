@@ -1,0 +1,27 @@
+# head 067a0a7
+$ VITE_FIREBASE_*=demo values VITE_API_BASE=https://api.conocerd.app pnpm build
+computing gzip size...
+dist/index.html                   0.91 kB │ gzip:   0.49 kB
+dist/assets/index-BaK6Aoxm.css   33.59 kB │ gzip:   7.81 kB
+dist/assets/index-BfIqhqR-.js   366.41 kB │ gzip: 114.45 kB
+
+✓ built in 795ms
+build exit 0
+$ grep -rn "Mamá Tingó\|Doña Mercedes\|Mercedes\|Tingó" dist
+grep exit 1
+$ grep -rno ".\{30\}189.\{30\}" dist
+dist/assets/index-BfIqhqR-.js:1:u.sibling}if(!c)throw Error(i(189))}}if(n.alternate!==r)throw E
+grep exit 0
+$ grep -c "127.0.0.1:9099" dist/assets/*.js
+0
+$ node scripts/medir-presupuesto.mjs
+Entry JS         358 KB
+Total client JS  358 KB
+CSS              33 KB
+Fonts            0 KB
+npm packages     15 packages
+oxlint issues    0 
+$ every quoted literal of 8+ chars in src/data.ts and src/businessTypes.ts, searched in dist/
+literals: 217
+found in dist: 1
+dist/assets/index-BfIqhqR-.js:schedule
