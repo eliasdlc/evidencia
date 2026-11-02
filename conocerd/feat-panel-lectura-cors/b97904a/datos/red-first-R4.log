@@ -1,0 +1,361 @@
+# red-first R4: stub GET /business/me and PATCH /business/me/preferences (authenticated, answer 501 not_implemented), 2026-11-02T17:35:52-04:00
+$ flock ~/.cache/conocerd/emulator.lock firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm vitest run test/business-me-route.test.ts -t /business/me"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm vitest run test/business-me-route.test.ts -t /business/me
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > ordena por name.es, cae a name.en, omite destinos borrados y dice qué incluye cada plan
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > una cuenta sin destinos recibe una sesión vacía, no un error
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > lista las solicitudes propias, la más nueva primero, y nunca las ajenas
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > un cuerpo que no es JSON responde 400
+[app-check] ausente /business/me/preferences
+
+ ❯ test/business-me-route.test.ts (18 tests | 9 failed | 6 skipped) 4903ms
+   ↓ dashboard.access > lo incluye desde registrado, no antes
+   ↓ panel de negocios contra el emulador > requireBusinessAccess > deja pasar al dueño de un destino registrado y devuelve el documento
+   ↓ panel de negocios contra el emulador > requireBusinessAccess > a quien no es dueño de ese destino le responde 403 not_owner
+   ↓ panel de negocios contra el emulador > requireBusinessAccess > al dueño de un destino minimal le responde 403 dashboard_not_included
+   ↓ panel de negocios contra el emulador > requireBusinessAccess > un destino sin tier cuenta como minimal
+   ↓ panel de negocios contra el emulador > requireBusinessAccess > un destino que no existe responde 404 aunque el token lo traiga
+   ✓ panel de negocios contra el emulador > GET /business/me > sin token responde 401 14ms
+   × panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño 2009ms
+     → expected 501 to be 200 // Object.is equality
+   × panel de negocios contra el emulador > GET /business/me > ordena por name.es, cae a name.en, omite destinos borrados y dice qué incluye cada plan 80ms
+     → expected 501 to be 200 // Object.is equality
+   × panel de negocios contra el emulador > GET /business/me > una cuenta sin destinos recibe una sesión vacía, no un error 22ms
+     → expected 501 to be 200 // Object.is equality
+   ✓ panel de negocios contra el emulador > GET /business/me > un token revocado responde 401 aunque no haya caducado  1164ms
+   × panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae 195ms
+     → expected 501 to be 200 // Object.is equality
+   × panel de negocios contra el emulador > GET /business/me > lista las solicitudes propias, la más nueva primero, y nunca las ajenas 98ms
+     → expected 501 to be 200 // Object.is equality
+   ✓ panel de negocios contra el emulador > PATCH /business/me/preferences > sin token responde 401 2ms
+   × panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja 23ms
+     → expected 501 to be 200 // Object.is equality
+   × panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen 23ms
+     → expected 501 to be 200 // Object.is equality
+   × panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada 15ms
+     → {}: expected 501 to be 422 // Object.is equality
+   × panel de negocios contra el emulador > PATCH /business/me/preferences > un cuerpo que no es JSON responde 400 16ms
+     → expected 501 to be 400 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño
+AssertionError: expected 501 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 501[39m
+
+ ❯ session test/business-me-route.test.ts:90:29
+     88|   async function session(token: string) {
+     89|     const response = await me.GET(get('/business/me', token));
+     90|     expect(response.status).toBe(200);
+       |                             ^
+     91|     return (await response.json()) as import('@/lib/business-types').O…
+     92|   }
+ ❯ test/business-me-route.test.ts:172:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > ordena por name.es, cae a name.en, omite destinos borrados y dice qué incluye cada plan
+AssertionError: expected 501 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 501[39m
+
+ ❯ session test/business-me-route.test.ts:90:29
+     88|   async function session(token: string) {
+     89|     const response = await me.GET(get('/business/me', token));
+     90|     expect(response.status).toBe(200);
+       |                             ^
+     91|     return (await response.json()) as import('@/lib/business-types').O…
+     92|   }
+ ❯ test/business-me-route.test.ts:203:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > una cuenta sin destinos recibe una sesión vacía, no un error
+AssertionError: expected 501 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 501[39m
+
+ ❯ session test/business-me-route.test.ts:90:29
+     88|   async function session(token: string) {
+     89|     const response = await me.GET(get('/business/me', token));
+     90|     expect(response.status).toBe(200);
+       |                             ^
+     91|     return (await response.json()) as import('@/lib/business-types').O…
+     92|   }
+ ❯ test/business-me-route.test.ts:213:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+AssertionError: expected 501 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 501[39m
+
+ ❯ session test/business-me-route.test.ts:90:29
+     88|   async function session(token: string) {
+     89|     const response = await me.GET(get('/business/me', token));
+     90|     expect(response.status).toBe(200);
+       |                             ^
+     91|     return (await response.json()) as import('@/lib/business-types').O…
+     92|   }
+ ❯ test/business-me-route.test.ts:241:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > lista las solicitudes propias, la más nueva primero, y nunca las ajenas
+AssertionError: expected 501 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 501[39m
+
+ ❯ session test/business-me-route.test.ts:90:29
+     88|   async function session(token: string) {
+     89|     const response = await me.GET(get('/business/me', token));
+     90|     expect(response.status).toBe(200);
+       |                             ^
+     91|     return (await response.json()) as import('@/lib/business-types').O…
+     92|   }
+ ❯ test/business-me-route.test.ts:287:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+AssertionError: expected 501 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 501[39m
+
+ ❯ test/business-me-route.test.ts:320:31
+    318|       const owner = await newUser();
+    319|       const response = await preferences.PATCH(patch({ monthlyReport: …
+    320|       expect(response.status).toBe(200);
+       |                               ^
+    321|       await expect(response.json()).resolves.toEqual({
+    322|         preferences: { monthlyReport: false },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+AssertionError: expected 501 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 501[39m
+
+ ❯ test/business-me-route.test.ts:338:31
+    336|         patch({ acceptTermsVersion: access.OWNER_TERMS_VERSION }, owne…
+    337|       );
+    338|       expect(response.status).toBe(200);
+       |                               ^
+    339|       await expect(response.json()).resolves.toEqual({
+    340|         preferences: { monthlyReport: false },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+AssertionError: {}: expected 501 to be 422 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 422[39m
+[31m+ 501[39m
+
+ ❯ test/business-me-route.test.ts:363:55
+    361|       for (const body of invalid) {
+    362|         const response = await preferences.PATCH(patch(body, owner.tok…
+    363|         expect(response.status, JSON.stringify(body)).toBe(422);
+       |                                                       ^
+    364|       }
+    365|       const outdated = await preferences.PATCH(patch({ acceptTermsVers…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > un cuerpo que no es JSON responde 400
+AssertionError: expected 501 to be 400 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 400[39m
+[31m+ 501[39m
+
+ ❯ test/business-me-route.test.ts:375:31
+    373|       const owner = await newUser();
+    374|       const response = await preferences.PATCH(patch('{no es json', ow…
+    375|       expect(response.status).toBe(400);
+       |                               ^
+    376|     });
+    377|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed | 3 passed | 6 skipped (18)
+   Start at  17:36:12
+   Duration  5.52s (transform 198ms, setup 0ms, collect 195ms, tests 4.90s, environment 0ms, prepare 117ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm vitest run test/business-me-route.test.ts -t /business/me" exited with code 1
+exit=1
+
+# green R3 and R4: real business-access.ts and routes, 2026-11-02T17:37:47-04:00
+$ flock ~/.cache/conocerd/emulator.lock firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm vitest run test/business-me-route.test.ts"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm vitest run test/business-me-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > ordena por name.es, cae a name.en, omite destinos borrados y dice qué incluye cada plan
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > una cuenta sin destinos recibe una sesión vacía, no un error
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > lista las solicitudes propias, la más nueva primero, y nunca las ajenas
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > un cuerpo que no es JSON responde 400
+[app-check] ausente /business/me/preferences
+
+ ✓ test/business-me-route.test.ts (18 tests) 5592ms
+   ✓ panel de negocios contra el emulador > requireBusinessAccess > deja pasar al dueño de un destino registrado y devuelve el documento  1884ms
+   ✓ panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño  315ms
+   ✓ panel de negocios contra el emulador > GET /business/me > un token revocado responde 401 aunque no haya caducado  1147ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  17:38:31
+   Duration  6.22s (transform 234ms, setup 0ms, collect 214ms, tests 5.59s, environment 0ms, prepare 141ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+exit=0
