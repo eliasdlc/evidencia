@@ -1,0 +1,31 @@
+test_a_table_that_is_not_utf8_is_left_out_and_the_rest_still_crosses (tests.test_social_presence.Mirror.test_a_table_that_is_not_utf8_is_left_out_and_the_rest_still_crosses) ... ERROR
+
+======================================================================
+ERROR: test_a_table_that_is_not_utf8_is_left_out_and_the_rest_still_crosses (tests.test_social_presence.Mirror.test_a_table_that_is_not_utf8_is_left_out_and_the_rest_still_crosses)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/tests/test_social_presence.py", line 487, in test_a_table_that_is_not_utf8_is_left_out_and_the_rest_still_crosses
+    self.assertFalse(self.run_sync())
+                     ~~~~~~~~~~~~~^^
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/tests/test_social_presence.py", line 417, in run_sync
+    return sync.sync(self.laptop, f"{self.box}/")
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/skills/social-presence/scripts/sync.py", line 219, in sync
+    fetched, skipped, settled = merge_tables(local, remote, dry_run)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/skills/social-presence/scripts/sync.py", line 187, in merge_tables
+    their_text, my_text = read_text(theirs), read_text(mine)
+                                             ~~~~~~~~~^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/skills/social-presence/scripts/sync.py", line 74, in read_text
+    return path.read_text(encoding="utf-8")
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/pathlib/__init__.py", line 789, in read_text
+    return f.read()
+           ~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xed in position 41: invalid continuation byte
+
+----------------------------------------------------------------------
+Ran 1 test in 0.048s
+
+FAILED (errors=1)
