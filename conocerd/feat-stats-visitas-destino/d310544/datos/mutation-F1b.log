@@ -1,0 +1,71 @@
+MUTATION round1-F1b: script ignores --write and never writes
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/stats-visitas-destino
+
+ ❯ test/visit-stats.test.ts (12 tests | 1 failed | 11 skipped) 6527ms
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > cuenta el día en UTC-4, también cuando UTC ya cambió de mes
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script rechaza un host de emulador remoto aun con las dos banderas y dice cuál es
+   ↓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento
+   ↓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística
+   ↓ estadística mensual de visitas por destino, contra el emulador > R3: visitas validadas simultáneas de usuarios distintos suman exactamente N
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > el periodo cuenta: cifras bien con el periodo ausente o ajeno se reparan
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco no abre transacciones y avisa del alcance antes de leer por destino
+   × estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > la CLI sin --write no escribe nada y con --write escribe, y repetir no cambia nada 5930ms
+     → expected {} to deeply equal { '2026-02': { …(3) }, …(2) }
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > la CLI sin --write no escribe nada y con --write escribe, y repetir no cambia nada
+AssertionError: expected {} to deeply equal { '2026-02': { …(3) }, …(2) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- {[39m
+[32m-   "2026-02": {[39m
+[32m-     "period": "2026-02",[39m
+[32m-     "visits": 2,[39m
+[32m-     "visitsByDay": {[39m
+[32m-       "28": 2,[39m
+[32m-     },[39m
+[32m-   },[39m
+[32m-   "2026-03": {[39m
+[32m-     "period": "2026-03",[39m
+[32m-     "visits": 2,[39m
+[32m-     "visitsByDay": {[39m
+[32m-       "01": 1,[39m
+[32m-       "02": 1,[39m
+[32m-     },[39m
+[32m-   },[39m
+[32m-   "2026-04": {[39m
+[32m-     "period": "2026-04",[39m
+[32m-     "visits": 1,[39m
+[32m-     "visitsByDay": {[39m
+[32m-       "09": 1,[39m
+[32m-     },[39m
+[32m-   },[39m
+[32m- }[39m
+[31m+ {}[39m
+
+ ❯ test/visit-stats.test.ts:205:29
+    203|       expect(written).toContain('Escritura');
+    204|       expect(written).toContain('3 documento(s) reescritos');
+    205|       expect(await plain()).toEqual(expected);
+       |                             ^
+    206| 
+    207|       expect(await cli('--write')).toContain('0 documento(s) reescrito…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  19:23:37
+   Duration  7.74s (transform 183ms, setup 0ms, collect 816ms, tests 6.53s, environment 0ms, prepare 137ms)
+
+
+Error: Script "pnpm vitest run test/visit-stats.test.ts -t 'la CLI sin'" exited with code 1
