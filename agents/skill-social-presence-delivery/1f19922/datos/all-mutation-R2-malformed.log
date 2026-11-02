@@ -1,0 +1,29 @@
+test_a_malformed_table_is_left_out_and_the_rest_still_crosses (tests.test_social_presence.Mirror.test_a_malformed_table_is_left_out_and_the_rest_still_crosses) ... ERROR
+
+======================================================================
+ERROR: test_a_malformed_table_is_left_out_and_the_rest_still_crosses (tests.test_social_presence.Mirror.test_a_malformed_table_is_left_out_and_the_rest_still_crosses)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/tests/test_social_presence.py", line 559, in test_a_malformed_table_is_left_out_and_the_rest_still_crosses
+    self.assertFalse(self.run_sync())
+                     ~~~~~~~~~~~~~^^
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/tests/test_social_presence.py", line 417, in run_sync
+    return sync.sync(self.laptop, f"{self.box}/")
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/skills/social-presence/scripts/sync.py", line 219, in sync
+    fetched, skipped, settled = merge_tables(local, remote, dry_run)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/skills/social-presence/scripts/sync.py", line 192, in merge_tables
+    merged = merge_csv(*((my_text, their_text) if newer_mine else (their_text, my_text)), key, before)
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/skills/social-presence/scripts/sync.py", line 125, in merge_csv
+    new_index = dict(zip(keyed(new_rows, key), new_rows))
+                         ~~~~~^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/skill-social-presence-delivery/skills/social-presence/scripts/sync.py", line 96, in keyed
+    k = tuple(row.get(c, "") for c in key) if key else tuple(sorted(row.items()))
+                                                             ~~~~~~^^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'NoneType' and 'str'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.049s
+
+FAILED (errors=1)
