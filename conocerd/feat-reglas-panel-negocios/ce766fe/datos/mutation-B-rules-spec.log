@@ -1,0 +1,405 @@
+=== MUTATION B: reads stay closed, the six new paths set to 'allow write: if true;' ===
+(run with an uncommitted one-off mocha reporter, fail-reporter.cjs, at ce766fe)
+diff --git i/firestore.rules w/firestore.rules
+index 8797e789..ec790e09 100644
+--- i/firestore.rules
++++ w/firestore.rules
+@@ -333 +333,2 @@ service cloud.firestore {
+-        allow read, write: if false;
++        allow read: if false;
++        allow write: if true;
+@@ -561 +562,2 @@ service cloud.firestore {
+-      allow read, write: if false;
++      allow read: if false;
++      allow write: if true;
+@@ -566 +568,2 @@ service cloud.firestore {
+-      allow read, write: if false;
++      allow read: if false;
++      allow write: if true;
+@@ -571 +574,2 @@ service cloud.firestore {
+-      allow read, write: if false;
++      allow read: if false;
++      allow write: if true;
+@@ -576 +580,2 @@ service cloud.firestore {
+-      allow read, write: if false;
++      allow read: if false;
++      allow write: if true;
+@@ -581 +586,2 @@ service cloud.firestore {
+-      allow read, write: if false;
++      allow read: if false;
++      allow write: if true;
+i  emulators: Starting emulators: firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: cd test_rules && npx mocha rules.spec.js storage.spec.js --timeout 30000 --reporter /home/decruce/.cache/conocerd-app/feat-reglas-panel-negocios/fail-reporter.cjs
+[2026-11-02T23:18:52.168Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5912d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L594, false for 'update' @ L160, false for 'update' @ L594
+[2026-11-02T23:18:52.194Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5912e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L594, false for 'update' @ L160, false for 'update' @ L594
+[2026-11-02T23:18:52.217Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5912f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L203, false for 'create' @ L594, false for 'update' @ L203, false for 'update' @ L594
+[2026-11-02T23:18:52.270Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59130 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L594, false for 'update' @ L160, false for 'update' @ L594
+[2026-11-02T23:18:52.290Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59131 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L594, false for 'update' @ L160, false for 'update' @ L594
+[2026-11-02T23:18:52.305Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59132 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L203, false for 'create' @ L594, false for 'update' @ L203, false for 'update' @ L594
+ok destinations countryless and regionless creates remain denied for ordinary and admin clients [test_rules/rules.spec.js]
+ok destinations lectura pública sin auth [test_rules/rules.spec.js]
+[2026-11-02T23:18:52.576Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59136 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L594, false for 'update' @ L160, false for 'update' @ L594
+[2026-11-02T23:18:52.586Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59137 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L159, false for 'delete' @ L594
+ok destinations el cliente no crea ni borra destinos [test_rules/rules.spec.js]
+[2026-11-02T23:18:52.680Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59139 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L594
+ok destinations inflar el rating con un delta "con forma de reseña" ya NO pasa [test_rules/rules.spec.js]
+[2026-11-02T23:18:52.759Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5913b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L594
+ok destinations inflar la suma sin tocar el conteo (promedio > 5) no pasa [test_rules/rules.spec.js]
+[2026-11-02T23:18:52.829Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5913d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L594
+ok destinations hundir a un competidor bajando la suma no pasa [test_rules/rules.spec.js]
+[2026-11-02T23:18:52.916Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5913f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L594
+[2026-11-02T23:18:52.928Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59140 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L594
+ok destinations tocar cualquier otro campo falla (sponsorTier, name…) [test_rules/rules.spec.js]
+[2026-11-02T23:18:52.999Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59142 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L594
+ok destinations sin auth tampoco [test_rules/rules.spec.js]
+ok reviews sin sesión no se puede leer [test_rules/rules.spec.js]
+ok reviews con sesión sí se lee: las reseñas son contenido compartido [test_rules/rules.spec.js]
+[2026-11-02T23:18:53.297Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5914b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L223, false for 'create' @ L594, false for 'update' @ L223, false for 'update' @ L594
+ok reviews el cliente no escribe, en ninguna forma crear una reseña propia falla [test_rules/rules.spec.js]
+[2026-11-02T23:18:53.406Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5914e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L223, false for 'update' @ L594
+ok reviews el cliente no escribe, en ninguna forma editar la propia falla, aunque sea solo el texto [test_rules/rules.spec.js]
+[2026-11-02T23:18:53.498Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59151 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L223, false for 'delete' @ L594
+ok reviews el cliente no escribe, en ninguna forma borrar la propia falla [test_rules/rules.spec.js]
+[2026-11-02T23:18:53.582Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59154 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L223, false for 'update' @ L594
+ok reviews el cliente no escribe, en ninguna forma votar útil falla: los votos también pasan por el servidor [test_rules/rules.spec.js]
+[2026-11-02T23:18:53.676Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59157 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L223, false for 'update' @ L594
+ok reviews el cliente no escribe, en ninguna forma un dueño verificado tampoco escribe la respuesta a mano [test_rules/rules.spec.js]
+[2026-11-02T23:18:53.804Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5915a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L223, false for 'update' @ L594
+ok reviews el cliente no escribe, en ninguna forma ni un admin: el panel también pasa por el backend [test_rules/rules.spec.js]
+[2026-11-02T23:18:53.917Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5915d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L223, false for 'create' @ L594, false for 'update' @ L223, false for 'update' @ L594
+ok reviews el cliente no escribe, en ninguna forma el batch de reseña + contadores tampoco, por ninguno de sus dos lados [test_rules/rules.spec.js]
+ok destinos con dueño verificado el dueño edita su lista blanca [test_rules/rules.spec.js]
+[2026-11-02T23:18:54.150Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59161 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado el dueño de OTRO destino no toca este [test_rules/rules.spec.js]
+[2026-11-02T23:18:54.213Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59163 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado una cuenta sin claim biz no edita nada, aunque tenga sesión [test_rules/rules.spec.js]
+[2026-11-02T23:18:54.289Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59165 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+[2026-11-02T23:18:54.305Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59166 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+[2026-11-02T23:18:54.325Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59167 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado el dueño no se sube el tier ni los entitlements [test_rules/rules.spec.js]
+[2026-11-02T23:18:54.395Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59169 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado el dueño no toca los contadores de reseñas de su propio negocio [test_rules/rules.spec.js]
+[2026-11-02T23:18:54.469Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5916b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+[2026-11-02T23:18:54.481Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5916c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+[2026-11-02T23:18:54.498Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5916d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado ni la promoción, ni el nombre, ni dónde está [test_rules/rules.spec.js]
+[2026-11-02T23:18:54.565Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5916f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado la galería no pasa del tope del plan [test_rules/rules.spec.js]
+[2026-11-02T23:18:54.638Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59171 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado un destino sin plan no se edita, aunque el claim diga que es suyo [test_rules/rules.spec.js]
+[2026-11-02T23:18:54.708Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59173 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L159, false for 'create' @ L594, evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'create' @ L159, false for 'create' @ L594
+[2026-11-02T23:18:54.715Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59174 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L159, false for 'delete' @ L594
+ok destinos con dueño verificado crear o borrar destinos sigue siendo imposible desde el cliente [test_rules/rules.spec.js]
+ok destinos con dueño verificado con más fotos editoriales que las del plan el dueño sigue editando lo demás [test_rules/rules.spec.js]
+[2026-11-02T23:18:54.885Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5917a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado con más fotos editoriales que las del plan y puede quitar fotos, pero no añadir [test_rules/rules.spec.js]
+[2026-11-02T23:18:54.944Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5917c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado el contenido, no solo el campo un teléfono que no es texto no entra [test_rules/rules.spec.js]
+[2026-11-02T23:18:55.005Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5917e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado el contenido, no solo el campo una descripción que es un número, tampoco [test_rules/rules.spec.js]
+[2026-11-02T23:18:55.068Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59180 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado el contenido, no solo el campo ni una descripción localizada en un idioma inventado [test_rules/rules.spec.js]
+[2026-11-02T23:18:55.123Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59182 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado el contenido, no solo el campo ni un texto sin final [test_rules/rules.spec.js]
+[2026-11-02T23:18:55.180Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59184 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado el contenido, no solo el campo la portada tiene que vivir en el almacenamiento de Firebase [test_rules/rules.spec.js]
+[2026-11-02T23:18:55.244Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59187 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L160:24 for 'update' @ L160, false for 'update' @ L594, false for 'update' @ L160, false for 'update' @ L594
+ok destinos con dueño verificado el contenido, no solo el campo los servicios siguen siendo una lista [test_rules/rules.spec.js]
+ok agregados y contenido del negocio los agregados los ve su dueño y el admin, nadie más [test_rules/rules.spec.js]
+[2026-11-02T23:18:55.434Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59190 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L170, false for 'create' @ L594, false for 'update' @ L170, false for 'update' @ L594
+ok agregados y contenido del negocio nadie escribe agregados: los calcula el backend [test_rules/rules.spec.js]
+[2026-11-02T23:18:55.518Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59194 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L177, false for 'update' @ L594
+ok agregados y contenido del negocio los tratos son públicos porque la app los enseña, pero no se editan a mano [test_rules/rules.spec.js]
+ok agregados y contenido del negocio las llegadas con ETA solo las ve el destino al que van [test_rules/rules.spec.js]
+ok membresías el dueño ve la suya y el admin todas [test_rules/rules.spec.js]
+ok membresías un tercero no la ve [test_rules/rules.spec.js]
+[2026-11-02T23:18:55.824Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591a3 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L456, false for 'update' @ L594
+[2026-11-02T23:18:55.841Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591a4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L456, false for 'update' @ L594
+ok membresías nadie la escribe desde el cliente, ni el dueño ni el admin [test_rules/rules.spec.js]
+[2026-11-02T23:18:55.889Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591a6 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L473, false for 'create' @ L594, false for 'update' @ L473, false for 'update' @ L594
+ok cobros presenciales ni el agente levanta el recibo desde el cliente [test_rules/rules.spec.js]
+[2026-11-02T23:18:55.977Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591a8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L473, false for 'create' @ L594, false for 'update' @ L473, false for 'update' @ L594
+ok cobros presenciales ni una cuenta sin el rol, claro [test_rules/rules.spec.js]
+[2026-11-02T23:18:56.075Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591ab error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L473, false for 'update' @ L594
+ok cobros presenciales con un recibo pendiente un admin tampoco lo confirma desde el cliente [test_rules/rules.spec.js]
+ok cobros presenciales con un recibo pendiente el agente ve su propio recibo; otro agente no [test_rules/rules.spec.js]
+[2026-11-02T23:18:56.267Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591b2 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L473, false for 'delete' @ L594
+[2026-11-02T23:18:56.282Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591b3 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L473, false for 'delete' @ L594
+ok cobros presenciales con un recibo pendiente nadie borra un cobro [test_rules/rules.spec.js]
+ok reclamos, visitas y canjes el solicitante ve su reclamo y un tercero no [test_rules/rules.spec.js]
+[2026-11-02T23:18:56.456Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591bb error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L481, false for 'update' @ L594
+[2026-11-02T23:18:56.477Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591bc error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L481, false for 'update' @ L594
+ok reclamos, visitas y canjes nadie se aprueba su propio reclamo [test_rules/rules.spec.js]
+[2026-11-02T23:18:56.565Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591c1 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L488, false for 'create' @ L594, false for 'update' @ L488, false for 'update' @ L594
+ok reclamos, visitas y canjes la visita cruda no la lee nadie, ni el negocio visitado ni el admin [test_rules/rules.spec.js]
+ok reclamos, visitas y canjes los canjes los ve el negocio donde ocurrieron, no otro [test_rules/rules.spec.js]
+[2026-11-02T23:18:56.738Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591c9 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L495, false for 'create' @ L594, false for 'update' @ L495, false for 'update' @ L594
+ok reclamos, visitas y canjes un canje no se inventa desde el cliente [test_rules/rules.spec.js]
+[2026-11-02T23:18:56.874Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e591d0 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L502, false for 'create' @ L594, false for 'update' @ L502, false for 'update' @ L594
+ok bitácoras del backend no se leen ni se escriben desde ningún cliente, tampoco el admin [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor ownerships: sin sesión no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor ownerships: cuenta sin claims no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor ownerships: dueño con biz del destino no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor ownerships: admin desde un cliente no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor owners: sin sesión no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor owners: cuenta sin claims no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor owners: dueño con biz del destino no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor owners: admin desde un cliente no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor ownerInvitations: sin sesión no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor ownerInvitations: cuenta sin claims no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor ownerInvitations: dueño con biz del destino no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor ownerInvitations: admin desde un cliente no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor profileEdits: sin sesión no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor profileEdits: cuenta sin claims no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor profileEdits: dueño con biz del destino no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor profileEdits: admin desde un cliente no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor monthlyReports: sin sesión no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor monthlyReports: cuenta sin claims no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor monthlyReports: dueño con biz del destino no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor monthlyReports: admin desde un cliente no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor users/alice/contactSignals: sin sesión no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor users/alice/contactSignals: cuenta sin claims no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor users/alice/contactSignals: dueño con biz del destino no lee ni escribe [test_rules/rules.spec.js]
+FAIL panel de negocios: rutas solo del servidor users/alice/contactSignals: admin desde un cliente no lee ni escribe [test_rules/rules.spec.js]
+ok panel de negocios: rutas solo del servidor contactSignals/current: ni la propia cuenta lo lee [test_rules/rules.spec.js]
+ok moderación y suspensiones los reportes no los lee nadie, ni quien reportó [test_rules/rules.spec.js]
+[2026-11-02T23:18:59.018Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5923a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L528, false for 'create' @ L594, false for 'update' @ L528, false for 'update' @ L594
+ok moderación y suspensiones un reporte no se escribe desde el cliente [test_rules/rules.spec.js]
+[2026-11-02T23:18:59.198Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5923f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L536, false for 'create' @ L594, false for 'update' @ L536, false for 'update' @ L594
+ok moderación y suspensiones nadie lee por qué se suspendió una cuenta, ni la propia cuenta [test_rules/rules.spec.js]
+ok estado de la app lo lee cualquiera, con sesión y sin ella [test_rules/rules.spec.js]
+[2026-11-02T23:18:59.466Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59246 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L551, false for 'update' @ L594
+[2026-11-02T23:18:59.494Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59247 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L551, false for 'create' @ L594, false for 'update' @ L551, false for 'update' @ L594
+[2026-11-02T23:18:59.514Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59248 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L551, false for 'delete' @ L594
+ok estado de la app no lo escribe ningún cliente, tampoco un admin [test_rules/rules.spec.js]
+ok rutas publicadas una ruta aprobada la lee cualquiera, con sesión y sin ella [test_rules/rules.spec.js]
+ok rutas publicadas una que espera revisión NO la ve nadie más que su autor [test_rules/rules.spec.js]
+ok rutas publicadas una rechazada la lee su autor, y nadie más [test_rules/rules.spec.js]
+ok rutas publicadas una publicación inexistente no se puede sondear por id [test_rules/rules.spec.js]
+ok rutas publicadas el autor puede consultar sus publicaciones privadas por ownerId [test_rules/rules.spec.js]
+ok rutas publicadas el autor puede consultar sus publicaciones aprobadas sin ownerId [test_rules/rules.spec.js]
+ok rutas publicadas Explorar puede listar las aprobadas [test_rules/rules.spec.js]
+ok rutas publicadas pero no listar las que esperan revisión [test_rules/rules.spec.js]
+ok rutas publicadas ni barrer la colección entera [test_rules/rules.spec.js]
+[2026-11-02T23:19:00.442Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5926b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L254, false for 'create' @ L594, false for 'update' @ L254, false for 'update' @ L594
+[2026-11-02T23:19:00.460Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5926c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L254, false for 'update' @ L594
+[2026-11-02T23:19:00.477Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5926d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L254, false for 'update' @ L594
+[2026-11-02T23:19:00.495Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5926e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L254, false for 'delete' @ L594
+ok rutas publicadas no la escribe ningún cliente, ni su autor ni un admin [test_rules/rules.spec.js]
+[2026-11-02T23:19:00.550Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59270 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L594, false for 'update' @ L594
+ok colecciones que nadie declaró una colección nueva no se estrena abierta [test_rules/rules.spec.js]
+[2026-11-02T23:19:00.675Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59274 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L229, false for 'create' @ L594, false for 'update' @ L229, false for 'update' @ L594
+[2026-11-02T23:19:00.703Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59275 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L229, false for 'update' @ L594
+ok routes lectura pública, escritura prohibida [test_rules/rules.spec.js]
+[2026-11-02T23:19:00.900Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59279 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L277, false for 'create' @ L594, false for 'update' @ L279, false for 'update' @ L594
+ok users y subcolecciones el dueño lee/escribe su doc; otros no [test_rules/rules.spec.js]
+[2026-11-02T23:19:01.079Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5927c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L296, false for 'create' @ L594, false for 'update' @ L296, false for 'update' @ L594
+ok users y subcolecciones activeTrip/current: solo el dueño [test_rules/rules.spec.js]
+[2026-11-02T23:19:01.210Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59280 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L283, false for 'create' @ L594, false for 'update' @ L283, false for 'update' @ L594
+ok users y subcolecciones savedRoutes/{routeId}: solo el dueño [test_rules/rules.spec.js]
+[2026-11-02T23:19:01.318Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59284 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L303, false for 'create' @ L594, false for 'update' @ L303, false for 'update' @ L594
+ok users y subcolecciones stats/summary: solo el dueño (FE-5) [test_rules/rules.spec.js]
+[2026-11-02T23:19:01.458Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5928a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L316, false for 'create' @ L594, false for 'update' @ L594
+[2026-11-02T23:19:01.491Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e5928c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L594
+ok users y subcolecciones timeline/{eventId}: solo el dueño, y es un registro que no se corrige [test_rules/rules.spec.js]
+[2026-11-02T23:19:01.604Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59290 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L288, false for 'create' @ L594, false for 'update' @ L288, false for 'update' @ L594
+ok users y subcolecciones routeProgress/{routeId}: solo el dueño (FIX-6) [test_rules/rules.spec.js]
+[2026-11-02T23:19:01.716Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59294 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L327, false for 'create' @ L594, false for 'update' @ L327, false for 'update' @ L594
+[2026-11-02T23:19:01.736Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59295 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L327:25 for 'update' @ L327, false for 'update' @ L594, false for 'update' @ L327, false for 'update' @ L594
+ok users y subcolecciones requestQuota/daily: solo el dueño y solo con un paso válido [test_rules/rules.spec.js]
+[2026-11-02T23:19:01.835Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e59298 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L348, false for 'create' @ L594, evaluation error at L352:24 for 'update' @ L352, false for 'update' @ L594, false for 'create' @ L348, false for 'create' @ L594
+ok diarys crear con userId propio pasa; ajeno falla [test_rules/rules.spec.js]
+ok diarys con una entrada de alice solo el dueño la lee: el diario no se comparte con nadie [test_rules/rules.spec.js]
+ok diarys con una entrada de alice el dueño consulta solo sus entradas, pero no barre diarios ajenos [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.138Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592a4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L352:24 for 'update' @ L352, false for 'update' @ L594, false for 'update' @ L352, false for 'update' @ L594
+ok diarys con una entrada de alice editar manteniendo userId pasa; reasignar el dueño falla [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.211Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592a7 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L355:24 for 'delete' @ L355, false for 'delete' @ L594, false for 'delete' @ L355, false for 'delete' @ L594
+ok diarys con una entrada de alice borrar: dueño sí, tercero no [test_rules/rules.spec.js]
+ok places_minimal (CRD-103) lectura pública sin auth: el catálogo mínimo se busca sin sesión [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.345Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592ac error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L203, false for 'create' @ L594, false for 'update' @ L203, false for 'update' @ L594
+[2026-11-02T23:19:02.350Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592ad error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L203, false for 'delete' @ L594
+ok places_minimal (CRD-103) el cliente no crea ni borra lugares del import [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.396Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592af error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L203, false for 'update' @ L594
+ok places_minimal (CRD-103) los contadores de un mínimo tampoco los mueve el cliente [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.447Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592b1 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L203, false for 'update' @ L594
+[2026-11-02T23:19:02.452Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592b2 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L203, false for 'update' @ L594
+ok places_minimal (CRD-103) no se puede tocar ningún otro campo (tier, retired…) [test_rules/rules.spec.js]
+ok destinationRequests crear con uid propio y cupo dentro del tope pasa [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.553Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592b6 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L442, false for 'update' @ L594
+ok destinationRequests crear a nombre de otro falla [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.596Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592b8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L442, false for 'update' @ L594
+ok destinationRequests auto-aprobarse falla: el estado inicial solo puede ser pending [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.645Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592ba error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L442, false for 'update' @ L594
+ok destinationRequests una petición fuera de RD falla [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.688Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592bc error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L442, false for 'update' @ L594
+ok destinationRequests un tipo inventado falla [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.739Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592be error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L433:24 for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L442, false for 'update' @ L594, Null value error. for 'create' @ L433, false for 'create' @ L594
+ok destinationRequests sin escribir el cupo en el mismo batch falla [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.800Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592c1 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L433:24 for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L442, false for 'update' @ L594, evaluation error at L327:25 for 'create' @ L327, false for 'create' @ L594, evaluation error at L327:25 for 'update' @ L327, false for 'update' @ L594, false for 'create' @ L433, false for 'create' @ L594
+ok destinationRequests pasado el tope diario, la petición 11 se rechaza [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.875Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592c4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L433:24 for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L442, false for 'update' @ L594, evaluation error at L327:25 for 'create' @ L327, false for 'create' @ L594, evaluation error at L327:25 for 'update' @ L327, false for 'update' @ L594, false for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L327, false for 'update' @ L594
+ok destinationRequests el contador no puede repetirse: solo avanza de uno en uno [test_rules/rules.spec.js]
+[2026-11-02T23:19:02.948Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592c7 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L433:24 for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L442, false for 'update' @ L594, false for 'create' @ L327, false for 'create' @ L594, false for 'update' @ L327, false for 'update' @ L594
+ok destinationRequests fechar el cupo mañana no compra cupo [test_rules/rules.spec.js]
+ok destinationRequests una petición sellada ayer y sincronizada hoy sigue entrando [test_rules/rules.spec.js]
+[2026-11-02T23:19:03.083Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592cc error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L433:24 for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L442, false for 'update' @ L594, evaluation error at L327:25 for 'create' @ L327, false for 'create' @ L594, evaluation error at L327:25 for 'update' @ L327, false for 'update' @ L594, false for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L327, false for 'update' @ L594
+ok destinationRequests la cubeta no retrocede: sellar ayer sobre un cupo de hoy falla [test_rules/rules.spec.js]
+[2026-11-02T23:19:03.134Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592ce error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L433:24 for 'create' @ L433, false for 'create' @ L594, false for 'update' @ L442, false for 'update' @ L594, evaluation error at L327:25 for 'create' @ L327, false for 'create' @ L594, evaluation error at L327:25 for 'update' @ L327, false for 'update' @ L594, false for 'create' @ L433, false for 'create' @ L594
+ok destinationRequests la petición y su cupo tienen que hablar del mismo día [test_rules/rules.spec.js]
+ok destinationRequests con una petición de alice solo el autor la lee [test_rules/rules.spec.js]
+ok destinationRequests con una petición de alice el autor consulta su cola, pero no barre solicitudes ajenas [test_rules/rules.spec.js]
+[2026-11-02T23:19:03.348Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592d9 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L442, false for 'update' @ L594
+[2026-11-02T23:19:03.364Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Write' stream 0x54e592da error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L442, false for 'delete' @ L594
+ok destinationRequests con una petición de alice nadie la edita ni la borra desde el cliente, ni su autor [test_rules/rules.spec.js]
+ok diary/{userId} — lectura el dueño lee su propia foto [test_rules/storage.spec.js]
+ok diary/{userId} — lectura otra cuenta autenticada NO lee la foto ajena (CRD-142) [test_rules/storage.spec.js]
+ok diary/{userId} — lectura sin sesión tampoco [test_rules/storage.spec.js]
+ok diary/{userId} — lectura otra cuenta NO puede enumerar el álbum ajeno [test_rules/storage.spec.js]
+ok diary/{userId} — lectura el dueño sí puede enumerar el suyo [test_rules/storage.spec.js]
+ok diary/{userId} — escritura el dueño sube una imagen [test_rules/storage.spec.js]
+ok diary/{userId} — escritura nadie escribe en el prefijo de otro [test_rules/storage.spec.js]
+ok diary/{userId} — escritura subir algo que no es imagen falla [test_rules/storage.spec.js]
+ok diary/{userId} — escritura una imagen por encima de 10 MB falla [test_rules/storage.spec.js]
+ok diary/{userId} — escritura el dueño borra su foto; un tercero no [test_rules/storage.spec.js]
+ok diary/{userId} — escritura el dueño borra TODAS sus fotos, que es lo que necesita el borrado de cuenta [test_rules/storage.spec.js]
+ok fotos de reseña el dueño lee y sube su propio staging [test_rules/storage.spec.js]
+ok fotos de reseña nadie más lo lee, ni con sesión ni sin ella [test_rules/storage.spec.js]
+ok fotos de reseña nadie sube al staging de otra persona [test_rules/storage.spec.js]
+ok fotos de reseña lo que no es imagen no entra [test_rules/storage.spec.js]
+ok fotos de reseña el dueño borra el suyo, que es lo que necesita el borrado de cuenta [test_rules/storage.spec.js]
+ok fotos de reseña lo publicado se lee sin cuenta [test_rules/storage.spec.js]
+ok fotos de reseña ningún cliente escribe en lo publicado [test_rules/storage.spec.js]
+ok galería del negocio el dueño verificado sube fotos de su destino [test_rules/storage.spec.js]
+ok galería del negocio el dueño de otro destino no sube nada aquí [test_rules/storage.spec.js]
+ok galería del negocio una cuenta sin claim biz tampoco, aunque tenga sesión [test_rules/storage.spec.js]
+ok galería del negocio lo que no es imagen no entra [test_rules/storage.spec.js]
+ok galería del negocio la galería se lee sin cuenta [test_rules/storage.spec.js]
+ok galería del negocio solo el dueño de ese destino o un admin borran una foto [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros la evidencia de un reclamo la ve quien reclama y quien aprueba [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros la evidencia se puede listar solo por su dueño y por un admin [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros el solicitante sube evidencia nueva con forma de imagen [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros nadie sube evidencia al reclamo de otra persona [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros una evidencia ya subida no se sustituye [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros solo un admin retira evidencia de un reclamo [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros el recibo lo sube el agente que cobró y nadie más [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros el recibo lo mira su agente y el admin que confirma [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros el recibo se lista solo por su agente y por un admin [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros un recibo ya subido no se sustituye [test_rules/storage.spec.js]
+ok evidencias de reclamos y cobros un recibo no se borra: es dinero [test_rules/storage.spec.js]
+ok fuera de los prefijos declarados todo lo demás está cerrado [test_rules/storage.spec.js]
+24 failed
+137 passed
+⚠  Script exited unsuccessfully (code 24)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "cd test_rules && npx mocha rules.spec.js storage.spec.js --timeout 30000 --reporter /home/decruce/.cache/conocerd-app/feat-reglas-panel-negocios/fail-reporter.cjs" exited with code 24
+mocha exit code: 24
