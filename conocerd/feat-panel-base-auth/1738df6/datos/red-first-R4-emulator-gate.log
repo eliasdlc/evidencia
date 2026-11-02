@@ -1,0 +1,15 @@
+# round 1, R4: production build with VITE_USE_EMULATORS=true, src/lib/firebase.ts as at 067a0a7 (gate on VITE_USE_EMULATORS only)
+# the scratch directory in the command below was shortened to <scratch>; nothing else was changed
+$ VITE_USE_EMULATORS=true pnpm exec vite build --outDir <scratch>/dist-gate
+
+✓ built in 582ms
+$ grep -c "127.0.0.1:9099" dist-gate/assets/*.js
+1
+grep exit 0
+
+# after the fix: gate on import.meta.env.DEV and VITE_USE_EMULATORS
+$ VITE_USE_EMULATORS=true pnpm exec vite build --outDir dist-gate
+✓ built in 674ms
+$ grep -c "127.0.0.1:9099" dist-gate/assets/*.js
+0
+grep exit 1
