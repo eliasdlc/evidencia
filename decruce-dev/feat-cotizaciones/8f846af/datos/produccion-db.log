@@ -1,0 +1,17 @@
+Production database for the quotes (decision 1A), checked 2026-11-02T16:45:31Z at 8f846af
+Role cotiza and schema cotiza inside Postplan's Postgres (Supabase, transaction pooler 6543). URL in ~/.config/secrets/cotiza.env, never printed.
+
+$ psql "$COTIZA_DATABASE_URL" (as role cotiza)
+current_user | cotiza
+search_path | {cotiza,public}
+can create in public | false
+tables in public (names listable) | 7
+of those, readable by cotiza | 0
+cotiza tables in schema cotiza | cotiza_aceptaciones, cotiza_aperturas, cotiza_archivos, cotiza_cotizaciones, cotiza_cuentas, cotiza_versiones
+
+$ vercel api /v9/projects/decruce-dev/env (names, targets, type only)
+COTIZA_CLAVE ['production', 'preview'] sensitive
+COTIZA_DATABASE_URL ['production', 'preview'] sensitive
+
+$ curl -s "https://cloudflare-dns.com/dns-query?name=cotiza.decruce.dev&type=CNAME" (DNS over HTTPS)
+answer: none, the CNAME is not published yet
