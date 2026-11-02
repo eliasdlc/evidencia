@@ -1,0 +1,50 @@
+MUTATION round2-F2: --all dry run re-reads every receipt per destination instead of reusing the first scan
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/stats-visitas-destino
+
+ ❯ test/visit-stats.test.ts (14 tests | 1 failed | 13 skipped) 1358ms
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > cuenta el día en UTC-4, también cuando UTC ya cambió de mes
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script rechaza un host de emulador remoto aun con las dos banderas y dice cuál es
+   ↓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento
+   ↓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística
+   ↓ estadística mensual de visitas por destino, contra el emulador > R3: visitas validadas simultáneas de usuarios distintos suman exactamente N
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > el periodo cuenta: cifras bien con el periodo ausente o ajeno se reparan
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco no abre transacciones y avisa del alcance antes de leer por destino
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > la CLI sin --write no escribe nada y con --write escribe, y repetir no cambia nada
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > un mes con solo campos de contactos, sin visitas ni periodo, queda intacto con --write
+   × estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > --all lee cada recibo una sola vez en seco; con --write los relee dentro de la transacción 1226ms
+     → expected 10 to be 5 // Object.is equality
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > --all lee cada recibo una sola vez en seco; con --write los relee dentro de la transacción
+AssertionError: expected 10 to be 5 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 5[39m
+[31m+ 10[39m
+
+ ❯ test/visit-stats.test.ts:230:32
+    228|       const scopes: {destinations: number; receipts: number}[] = [];
+    229|       const dry = await stats.rebuildVisitStats(db, {range: {}, write:…
+    230|       expect(dry.receiptsRead).toBe(scopes[0]!.receipts);
+       |                                ^
+    231|       const one = await stats.rebuildVisitStats(db, {destinationId: pl…
+    232|       expect(one.receiptsRead).toBe(5);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 skipped (14)
+   Start at  19:40:03
+   Duration  2.14s (transform 72ms, setup 0ms, collect 263ms, tests 1.36s, environment 0ms, prepare 358ms)
+
+
+Error: Script "pnpm vitest run test/visit-stats.test.ts -t 'lee cada recibo'" exited with code 1
