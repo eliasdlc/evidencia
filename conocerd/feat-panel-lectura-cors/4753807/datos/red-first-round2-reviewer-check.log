@@ -1,0 +1,204 @@
+# reviewer red check round 3: head tests (4753807) against cors.ts of ca39d8a, scratch copy review-44-3/red
+$ vitest run src/lib/cors.test.ts test/cors-proxy.test.ts
+ RUN  v3.2.7 /home/decruce/.cache/conocerd-api/review-44-3/red
+ ❯ test/cors-proxy.test.ts (12 tests | 1 failed) 32ms
+   ✓ preflight > a un origen permitido le responde 204 con métodos, cabeceras y max-age 10ms
+   ✓ preflight > permite If-Match, que el PATCH del perfil manda para no pisar una edición ajena 3ms
+   ✓ preflight > el alias de rama de un equipo con el mismo sufijo no recibe permiso 1ms
+   ✓ preflight > un origen de PANEL_PREVIEW_ORIGINS recibe permiso 1ms
+   ✓ preflight > un preview del panel recibe permiso solo si está en PANEL_PREVIEW_ORIGINS 1ms
+   ✓ preflight > a un origen ajeno le responde sin ninguna cabecera de permiso 1ms
+   × preflight > localhost pasa solo con NODE_ENV development, y falla cerrado sin él 4ms
+     → expected 'http://localhost:5173' to be null
+   ✓ peticiones normales > a un origen permitido le deja pasar con ACAO y Vary 1ms
+   ✓ peticiones normales > a un origen ajeno le deja pasar sin ACAO: el navegador es quien bloquea 0ms
+   ✓ peticiones normales > la app, que no manda Origin, pasa igual que antes 0ms
+   ✓ matcher > cubre las rutas que el panel llama desde el navegador 7ms
+   ✓ matcher > deja fuera las rutas de la app y del admin 2ms
+ ❯ src/lib/cors.test.ts (60 tests | 23 failed) 39ms
+   ✓ isAllowedOrigin > acepta producción con cualquier NODE_ENV 3ms
+   ✓ isAllowedOrigin > rechaza sin Origin 1ms
+   ✓ isAllowedOrigin > rechaza Origin vacío 0ms
+   ✓ isAllowedOrigin > rechaza el literal null de un iframe aislado 0ms
+   ✓ isAllowedOrigin > rechaza producción por http 0ms
+   ✓ isAllowedOrigin > rechaza producción con puerto 0ms
+   ✓ isAllowedOrigin > rechaza producción con barra final 0ms
+   ✓ isAllowedOrigin > rechaza un sufijo que imita producción 0ms
+   ✓ isAllowedOrigin > rechaza un prefijo que imita producción 0ms
+   ✓ isAllowedOrigin > rechaza otro subdominio propio 0ms
+   ✓ isAllowedOrigin > rechaza el sitio público 0ms
+   ✓ isAllowedOrigin > rechaza un vercel.app ajeno 0ms
+   ✓ isAllowedOrigin > rechaza el mismo proyecto en otro equipo 0ms
+   ✓ isAllowedOrigin > rechaza otro proyecto del mismo equipo 0ms
+   ✓ isAllowedOrigin > rechaza un hash de deployment corto 0ms
+   ✓ isAllowedOrigin > rechaza un preview seguido de otro dominio 0ms
+   ✓ isAllowedOrigin > rechaza un preview por http 0ms
+   ✓ isAllowedOrigin > rechaza un preview con prefijo 0ms
+   ✓ isAllowedOrigin > rechaza una rama con mayúsculas 0ms
+   ✓ isAllowedOrigin > rechaza una rama vacía 0ms
+   ✓ isAllowedOrigin > rechaza un localhost en otro puerto 0ms
+   ✓ isAllowedOrigin > rechaza un localhost por https 0ms
+   ✓ isAllowedOrigin > rechaza un deployment propio que no está en la lista 0ms
+   ✓ isAllowedOrigin > rechaza el alias de rama de un equipo con el mismo sufijo 0ms
+   ✓ isAllowedOrigin > rechaza un alias de rama propio 0ms
+   ✓ isAllowedOrigin > rechaza un deployment de un equipo con el mismo sufijo 0ms
+   ✓ isAllowedOrigin > rechaza un proyecto con sufijo extra 0ms
+   ✓ isAllowedOrigin > rechaza un proyecto con sufijo extra que imita una rama 0ms
+   ✓ isAllowedOrigin > http://localhost:5173 solo pasa con NODE_ENV development o test 0ms
+   × isAllowedOrigin > http://localhost:5173 no pasa si NODE_ENV está mal escrito o es production 12ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > http://localhost:5173 no pasa si NODE_ENV falta 2ms
+     → expected true to be false // Object.is equality
+   ✓ isAllowedOrigin > http://127.0.0.1:5173 solo pasa con NODE_ENV development o test 0ms
+   × isAllowedOrigin > http://127.0.0.1:5173 no pasa si NODE_ENV está mal escrito o es production 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > http://127.0.0.1:5173 no pasa si NODE_ENV falta 1ms
+     → expected true to be false // Object.is equality
+   ✓ PANEL_PREVIEW_ORIGINS > acepta un origen de la lista exacta, también en producción 0ms
+   ✓ PANEL_PREVIEW_ORIGINS > no acepta nada que no sea idéntico a una entrada 0ms
+   ✓ PANEL_PREVIEW_ORIGINS > un preview de Vercel pasa solo si está escrito tal cual en la lista 0ms
+   ✓ PANEL_PREVIEW_ORIGINS > una lista vacía o un comodín no abren nada 0ms
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con http 2ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con host con mayúsculas 1ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con barra final 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con ruta 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con query 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con credenciales 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con puerto por defecto escrito 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con el literal null 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con localhost 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con un subdominio de localhost 1ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con 127.0.0.1 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con otra dirección de loopback 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con loopback IPv6 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con localhost por http 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con un comodín 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con un comodín de subdominio 0ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con sin esquema 0ms
+     → expected true to be false // Object.is equality
+   ✓ validación de PANEL_PREVIEW_ORIGINS > una entrada con mayúsculas no se normaliza: se descarta 0ms
+   × validación de PANEL_PREVIEW_ORIGINS > las entradas válidas siguen sirviendo junto a las descartadas 1ms
+     → expected true to be false // Object.is equality
+   × validación de PANEL_PREVIEW_ORIGINS > avisa una sola vez, nombrando solo las entradas descartadas 1ms
+     → expected "warn" to be called 1 times, but got 0 times
+   ✓ validación de PANEL_PREVIEW_ORIGINS > una lista válida no avisa 0ms
+   ✓ CORS > anuncia los métodos del panel y solo las cabeceras Authorization, Content-Type e If-Match 0ms
+⎯⎯⎯⎯⎯⎯ Failed Tests 24 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  test/cors-proxy.test.ts > preflight > localhost pasa solo con NODE_ENV development, y falla cerrado sin él
+AssertionError: expected 'http://localhost:5173' to be null
+[32m- Expected:[39m 
+null
+[31m+ Received:[39m 
+"http://localhost:5173"
+ ❯ test/cors-proxy.test.ts:92:98
+     92| 
+     93|     vi.stubEnv('PANEL_PREVIEW_ORIGINS', PREVIEW);
+     94|     const listed = await proxy(preflight('/review-reply', PREVIEW, 'PO…
+       |                                               ^
+     95|     expect(listed.headers.get('access-control-allow-origin')).toBe(PRE…
+     96|   });
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/24]⎯
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > http://localhost:5173 no pasa si NODE_ENV está mal escrito o es production
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > http://127.0.0.1:5173 no pasa si NODE_ENV está mal escrito o es production
+AssertionError: expected true to be false // Object.is equality
+[32m- Expected[39m
+[31m+ Received[39m
+[32m- false[39m
+[31m+ true[39m
+ ❯ src/lib/cors.test.ts:71:59
+     69|     it(`${origin} no pasa si NODE_ENV está mal escrito o es production…
+     70|       for (const nodeEnv of ['production', '', 'Production', 'preview'…
+     71|         expect(isAllowedOrigin(origin, nodeEnv), nodeEnv).toBe(false);
+       |                                                           ^
+     72|       }
+     73|     });
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/24]⎯
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > http://localhost:5173 no pasa si NODE_ENV falta
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > http://127.0.0.1:5173 no pasa si NODE_ENV falta
+AssertionError: expected true to be false // Object.is equality
+[32m- Expected[39m
+[31m+ Received[39m
+[32m- false[39m
+[31m+ true[39m
+ ❯ src/lib/cors.test.ts:79:41
+     77|       try {
+     78|         expect(process.env.NODE_ENV).toBeUndefined();
+     79|         expect(isAllowedOrigin(origin)).toBe(false);
+       |                                         ^
+     80|       } finally {
+     81|         vi.unstubAllEnvs();
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/24]⎯
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con http
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con host con mayúsculas
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con barra final
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con ruta
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con query
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con credenciales
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con puerto por defecto escrito
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con el literal null
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con localhost
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con un subdominio de localhost
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con 127.0.0.1
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con otra dirección de loopback
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con loopback IPv6
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con localhost por http
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con un comodín
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con un comodín de subdominio
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con sin esquema
+AssertionError: expected true to be false // Object.is equality
+[32m- Expected[39m
+[31m+ Received[39m
+[32m- false[39m
+[31m+ true[39m
+ ❯ src/lib/cors.test.ts:149:59
+    147|     it(`descarta una entrada con ${label}`, () => {
+    148|       vi.spyOn(console, 'warn').mockImplementation(() => {});
+    149|       expect(isAllowedOrigin(entry, 'production', entry)).toBe(false);
+       |                                                           ^
+    150|     });
+    151|   }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/24]⎯
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > las entradas válidas siguen sirviendo junto a las descartadas
+AssertionError: expected true to be false // Object.is equality
+[32m- Expected[39m
+[31m+ Received[39m
+[32m- false[39m
+[31m+ true[39m
+ ❯ src/lib/cors.test.ts:162:78
+    160|     const list = 'https://valido.example.com,http://mezcla.example.com…
+    161|     expect(isAllowedOrigin('https://valido.example.com', 'production',…
+    162|     expect(isAllowedOrigin('http://mezcla.example.com', 'production', …
+       |                                                                              ^
+    163|     expect(isAllowedOrigin('null', 'production', list)).toBe(false);
+    164|   });
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/24]⎯
+ FAIL  src/lib/cors.test.ts > validación de PANEL_PREVIEW_ORIGINS > avisa una sola vez, nombrando solo las entradas descartadas
+AssertionError: expected "warn" to be called 1 times, but got 0 times
+ ❯ src/lib/cors.test.ts:171:18
+    169|     isAllowedOrigin('https://aviso-ok.example.com', 'production', list…
+    170|     isAllowedOrigin('https://otro.example.com', 'production', list);
+    171|     expect(warn).toHaveBeenCalledTimes(1);
+       |                  ^
+    172|     const message = String(warn.mock.calls[0]?.join(' '));
+    173|     expect(message).toContain('PANEL_PREVIEW_ORIGINS');
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/24]⎯
+ Test Files  2 failed (2)
+      Tests  24 failed | 48 passed (72)
+   Start at  19:37:30
+   Duration  1.50s (transform 106ms, setup 0ms, collect 755ms, tests 71ms, environment 1ms, prepare 306ms)
