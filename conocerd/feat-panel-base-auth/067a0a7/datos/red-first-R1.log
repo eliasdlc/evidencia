@@ -1,0 +1,123 @@
+# api.ts without the tokenStale retry, the expired-token retry and the sign-out on revoked/suspended (uncommitted first draft on 39082ab)
+$ pnpm exec vitest run src/lib/api.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat/panel-base-auth
+
+ ❯ src/lib/api.test.ts (10 tests | 6 failed) 144ms
+   ❯ createApiClient (10)
+     × refreshes the token and repeats /business/me once when the API says tokenStale 27ms
+     × retries tokenStale only once 4ms
+     × refreshes and retries once on a 401 for an expired token 6ms
+     × gives up after one retry when the refreshed token is still expired 5ms
+     × signs out without retrying when the API revoked the session 3ms
+     × signs out when the account is suspended 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > refreshes the token and repeats /business/me once when the API says tokenStale
+AssertionError: expected { uid: 'owner-1', …(8) } to deeply equal { uid: 'owner-1', …(8) }
+
+- Expected
++ Received
+
+@@ -8,8 +8,8 @@
+    },
+    "providers": [
+      "password",
+    ],
+    "requests": [],
+-   "tokenStale": false,
++   "tokenStale": true,
+    "uid": "owner-1",
+  }
+
+ ❯ src/lib/api.test.ts:60:40
+     58|     const h = harness(json(200, owner({ tokenStale: true })), json(200…
+     59|
+     60|     await expect(h.client.businessMe()).resolves.toEqual(fresh);
+       |                                        ^
+     61|
+     62|     expect(h.authorizations()).toEqual(['Bearer token-1', 'Bearer toke…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > retries tokenStale only once
+AssertionError: expected "vi.fn()" to be called 2 times, but got 1 times
+ ❯ src/lib/api.test.ts:72:21
+     70|     await expect(h.client.businessMe()).resolves.toEqual(stillStale);
+     71|
+     72|     expect(h.fetch).toHaveBeenCalledTimes(2);
+       |                     ^
+     73|   });
+     74|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > refreshes and retries once on a 401 for an expired token
+AssertionError: promise rejected "ApiError: El ID token caducó { …(2) }" instead of resolving
+ ❯ src/lib/api.test.ts:79:40
+     77|     const h = harness(json(401, expired), json(200, owner()));
+     78|
+     79|     await expect(h.client.businessMe()).resolves.toEqual(owner());
+       |                                        ^
+     80|
+     81|     expect(h.authorizations()).toEqual(['Bearer token-1', 'Bearer toke…
+
+Caused by: ApiError: El ID token caducó
+ ❯ errorFrom src/lib/api.ts:137:10
+ ❯ request src/lib/api.ts:114:29
+ ❯ src/lib/api.test.ts:79:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { status: 401, code: 'unauthorized' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > gives up after one retry when the refreshed token is still expired
+AssertionError: expected "vi.fn()" to be called 2 times, but got 1 times
+ ❯ src/lib/api.test.ts:91:21
+     89|     await expect(h.client.businessMe()).rejects.toMatchObject({ status…
+     90|
+     91|     expect(h.fetch).toHaveBeenCalledTimes(2);
+       |                     ^
+     92|   });
+     93|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > signs out without retrying when the API revoked the session
+AssertionError: expected "vi.fn()" to be called once with arguments: [ 'revoked' ]
+
+Number of calls: 0
+
+ ❯ src/lib/api.test.ts:101:26
+     99|     expect(error).toBeInstanceOf(ApiError);
+    100|     expect(error).toMatchObject({ status: 401, code: 'unauthorized', m…
+    101|     expect(h.endSession).toHaveBeenCalledExactlyOnceWith('revoked');
+       |                          ^
+    102|     expect(h.fetch).toHaveBeenCalledTimes(1);
+    103|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > signs out when the account is suspended
+AssertionError: expected "vi.fn()" to be called once with arguments: [ 'suspended' ]
+
+Number of calls: 0
+
+ ❯ src/lib/api.test.ts:110:26
+    108|     await expect(h.client.businessMe()).rejects.toMatchObject({ code: …
+    109|
+    110|     expect(h.endSession).toHaveBeenCalledExactlyOnceWith('suspended');
+       |                          ^
+    111|   });
+    112|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 4 passed (10)
+   Start at  17:35:12
+   Duration  680ms (tests 43%, transform 42%, import 13%, worker 3%)
+
+exit 1
