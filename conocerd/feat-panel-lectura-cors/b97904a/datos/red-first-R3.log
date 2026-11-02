@@ -1,0 +1,417 @@
+# red-first R3: stub requireBusinessAccess reads destinations/{id} and checks nothing, 2026-11-02T17:35:16-04:00
+# firebase CLI 15.29.0 from the node 26.8.1 install, symlinked onto PATH (the mise shim refuses under node 26.13.0)
+$ flock ~/.cache/conocerd/emulator.lock firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm vitest run test/business-me-route.test.ts -t requireBusinessAccess"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm vitest run test/business-me-route.test.ts -t requireBusinessAccess
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+ ❯ test/business-me-route.test.ts (18 tests | 4 failed | 13 skipped) 3970ms
+   ↓ dashboard.access > lo incluye desde registrado, no antes
+   ✓ panel de negocios contra el emulador > requireBusinessAccess > deja pasar al dueño de un destino registrado y devuelve el documento  1995ms
+   × panel de negocios contra el emulador > requireBusinessAccess > a quien no es dueño de ese destino le responde 403 not_owner 253ms
+     → promise resolved "QueryDocumentSnapshot{ …(6) }" instead of rejecting
+   × panel de negocios contra el emulador > requireBusinessAccess > al dueño de un destino minimal le responde 403 dashboard_not_included 131ms
+     → promise resolved "QueryDocumentSnapshot{ …(6) }" instead of rejecting
+   × panel de negocios contra el emulador > requireBusinessAccess > un destino sin tier cuenta como minimal 115ms
+     → promise resolved "QueryDocumentSnapshot{ …(6) }" instead of rejecting
+   × panel de negocios contra el emulador > requireBusinessAccess > un destino que no existe responde 404 aunque el token lo traiga 54ms
+     → promise resolved "DocumentSnapshot{ …(6) }" instead of rejecting
+   ↓ panel de negocios contra el emulador > GET /business/me > sin token responde 401
+   ↓ panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño
+   ↓ panel de negocios contra el emulador > GET /business/me > ordena por name.es, cae a name.en, omite destinos borrados y dice qué incluye cada plan
+   ↓ panel de negocios contra el emulador > GET /business/me > una cuenta sin destinos recibe una sesión vacía, no un error
+   ↓ panel de negocios contra el emulador > GET /business/me > un token revocado responde 401 aunque no haya caducado
+   ↓ panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+   ↓ panel de negocios contra el emulador > GET /business/me > lista las solicitudes propias, la más nueva primero, y nunca las ajenas
+   ↓ panel de negocios contra el emulador > PATCH /business/me/preferences > sin token responde 401
+   ↓ panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+   ↓ panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+   ↓ panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+   ↓ panel de negocios contra el emulador > PATCH /business/me/preferences > un cuerpo que no es JSON responde 400
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > requireBusinessAccess > a quien no es dueño de ese destino le responde 403 not_owner
+AssertionError: promise resolved "QueryDocumentSnapshot{ …(6) }" instead of rejecting
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Error {[39m
+[32m-   "message": "rejected promise",[39m
+[31m+ QueryDocumentSnapshot {[39m
+[31m+   "_createTime": Timestamp {[39m
+[31m+     "_nanoseconds": 843554000,[39m
+[31m+     "_seconds": 1793655343,[39m
+[31m+   },[39m
+[31m+   "_fieldsProto": {[39m
+[31m+     "name": {[39m
+[31m+       "mapValue": {[39m
+[31m+         "fields": {[39m
+[31m+           "es": {[39m
+[31m+             "stringValue": "Ajeno",[39m
+[31m+             "valueType": "stringValue",[39m
+[31m+           },[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "valueType": "mapValue",[39m
+[31m+     },[39m
+[31m+     "province": {[39m
+[31m+       "stringValue": "La Romana",[39m
+[31m+       "valueType": "stringValue",[39m
+[31m+     },[39m
+[31m+     "tier": {[39m
+[31m+       "stringValue": "registrado",[39m
+[31m+       "valueType": "stringValue",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "_readTime": Timestamp {[39m
+[31m+     "_nanoseconds": 956269000,[39m
+[31m+     "_seconds": 1793655343,[39m
+[31m+   },[39m
+[31m+   "_ref": DocumentReference {[39m
+[31m+     "_converter": {[39m
+[31m+       "fromFirestore": [Function fromFirestore],[39m
+[31m+       "toFirestore": [Function toFirestore],[39m
+[31m+     },[39m
+[31m+     "_firestore": {[39m
+[31m+       "projectId": "demo-conocerd",[39m
+[31m+     },[39m
+[31m+     "_path": ResourcePath {[39m
+[31m+       "segments": [[39m
+[31m+         "destinations",[39m
+[31m+         "destino-3733aac2",[39m
+[31m+       ],[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "_serializer": Serializer {[39m
+[31m+     "allowUndefined": false,[39m
+[31m+     "createInteger": [Function anonymous],[39m
+[31m+     "createReference": [Function anonymous],[39m
+[31m+   },[39m
+[31m+   "_updateTime": Timestamp {[39m
+[31m+     "_nanoseconds": 843554000,[39m
+[31m+     "_seconds": 1793655343,[39m
+[31m+   },[39m
+[2m  }[22m
+
+ ❯ test/business-me-route.test.ts:121:86
+    119|       const theirs = await destination({ name: { es: 'Ajeno' }, tier: …
+    120|       const owner = await newUser({ biz: [mine] });
+    121|       await expect(access.requireBusinessAccess(await contextOf(owner.…
+       |                                                                                      ^
+    122|         status: 403,
+    123|         code: 'not_owner',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > requireBusinessAccess > al dueño de un destino minimal le responde 403 dashboard_not_included
+AssertionError: promise resolved "QueryDocumentSnapshot{ …(6) }" instead of rejecting
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Error {[39m
+[32m-   "message": "rejected promise",[39m
+[31m+ QueryDocumentSnapshot {[39m
+[31m+   "_createTime": Timestamp {[39m
+[31m+     "_nanoseconds": 64659000,[39m
+[31m+     "_seconds": 1793655344,[39m
+[31m+   },[39m
+[31m+   "_fieldsProto": {[39m
+[31m+     "name": {[39m
+[31m+       "mapValue": {[39m
+[31m+         "fields": {[39m
+[31m+           "es": {[39m
+[31m+             "stringValue": "Mínimo",[39m
+[31m+             "valueType": "stringValue",[39m
+[31m+           },[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "valueType": "mapValue",[39m
+[31m+     },[39m
+[31m+     "province": {[39m
+[31m+       "stringValue": "La Romana",[39m
+[31m+       "valueType": "stringValue",[39m
+[31m+     },[39m
+[31m+     "tier": {[39m
+[31m+       "stringValue": "minimal",[39m
+[31m+       "valueType": "stringValue",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "_readTime": Timestamp {[39m
+[31m+     "_nanoseconds": 141717000,[39m
+[31m+     "_seconds": 1793655344,[39m
+[31m+   },[39m
+[31m+   "_ref": DocumentReference {[39m
+[31m+     "_converter": {[39m
+[31m+       "fromFirestore": [Function fromFirestore],[39m
+[31m+       "toFirestore": [Function toFirestore],[39m
+[31m+     },[39m
+[31m+     "_firestore": {[39m
+[31m+       "projectId": "demo-conocerd",[39m
+[31m+     },[39m
+[31m+     "_path": ResourcePath {[39m
+[31m+       "segments": [[39m
+[31m+         "destinations",[39m
+[31m+         "destino-a21d3e61",[39m
+[31m+       ],[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "_serializer": Serializer {[39m
+[31m+     "allowUndefined": false,[39m
+[31m+     "createInteger": [Function anonymous],[39m
+[31m+     "createReference": [Function anonymous],[39m
+[31m+   },[39m
+[31m+   "_updateTime": Timestamp {[39m
+[31m+     "_nanoseconds": 64659000,[39m
+[31m+     "_seconds": 1793655344,[39m
+[31m+   },[39m
+[2m  }[22m
+
+ ❯ test/business-me-route.test.ts:130:82
+    128|       const id = await destination({ name: { es: 'Mínimo' }, tier: 'mi…
+    129|       const owner = await newUser({ biz: [id] });
+    130|       await expect(access.requireBusinessAccess(await contextOf(owner.…
+       |                                                                                  ^
+    131|         status: 403,
+    132|         code: 'dashboard_not_included',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > requireBusinessAccess > un destino sin tier cuenta como minimal
+AssertionError: promise resolved "QueryDocumentSnapshot{ …(6) }" instead of rejecting
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Error {[39m
+[32m-   "message": "rejected promise",[39m
+[31m+ QueryDocumentSnapshot {[39m
+[31m+   "_createTime": Timestamp {[39m
+[31m+     "_nanoseconds": 208143000,[39m
+[31m+     "_seconds": 1793655344,[39m
+[31m+   },[39m
+[31m+   "_fieldsProto": {[39m
+[31m+     "name": {[39m
+[31m+       "mapValue": {[39m
+[31m+         "fields": {[39m
+[31m+           "es": {[39m
+[31m+             "stringValue": "Sin nivel",[39m
+[31m+             "valueType": "stringValue",[39m
+[31m+           },[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "valueType": "mapValue",[39m
+[31m+     },[39m
+[31m+     "province": {[39m
+[31m+       "stringValue": "La Romana",[39m
+[31m+       "valueType": "stringValue",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "_readTime": Timestamp {[39m
+[31m+     "_nanoseconds": 268952000,[39m
+[31m+     "_seconds": 1793655344,[39m
+[31m+   },[39m
+[31m+   "_ref": DocumentReference {[39m
+[31m+     "_converter": {[39m
+[31m+       "fromFirestore": [Function fromFirestore],[39m
+[31m+       "toFirestore": [Function toFirestore],[39m
+[31m+     },[39m
+[31m+     "_firestore": {[39m
+[31m+       "projectId": "demo-conocerd",[39m
+[31m+     },[39m
+[31m+     "_path": ResourcePath {[39m
+[31m+       "segments": [[39m
+[31m+         "destinations",[39m
+[31m+         "destino-dd40f5a3",[39m
+[31m+       ],[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "_serializer": Serializer {[39m
+[31m+     "allowUndefined": false,[39m
+[31m+     "createInteger": [Function anonymous],[39m
+[31m+     "createReference": [Function anonymous],[39m
+[31m+   },[39m
+[31m+   "_updateTime": Timestamp {[39m
+[31m+     "_nanoseconds": 208143000,[39m
+[31m+     "_seconds": 1793655344,[39m
+[31m+   },[39m
+[2m  }[22m
+
+ ❯ test/business-me-route.test.ts:139:82
+    137|       const id = await destination({ name: { es: 'Sin nivel' } });
+    138|       const owner = await newUser({ biz: [id] });
+    139|       await expect(access.requireBusinessAccess(await contextOf(owner.…
+       |                                                                                  ^
+    140|         code: 'dashboard_not_included',
+    141|       });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/business-me-route.test.ts > panel de negocios contra el emulador > requireBusinessAccess > un destino que no existe responde 404 aunque el token lo traiga
+AssertionError: promise resolved "DocumentSnapshot{ …(6) }" instead of rejecting
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Error {[39m
+[32m-   "message": "rejected promise",[39m
+[31m+ DocumentSnapshot {[39m
+[31m+   "_createTime": undefined,[39m
+[31m+   "_fieldsProto": undefined,[39m
+[31m+   "_readTime": Timestamp {[39m
+[31m+     "_nanoseconds": 328999000,[39m
+[31m+     "_seconds": 1793655344,[39m
+[31m+   },[39m
+[31m+   "_ref": DocumentReference {[39m
+[31m+     "_converter": {[39m
+[31m+       "fromFirestore": [Function fromFirestore],[39m
+[31m+       "toFirestore": [Function toFirestore],[39m
+[31m+     },[39m
+[31m+     "_firestore": {[39m
+[31m+       "projectId": "demo-conocerd",[39m
+[31m+     },[39m
+[31m+     "_path": ResourcePath {[39m
+[31m+       "segments": [[39m
+[31m+         "destinations",[39m
+[31m+         "borrado-9c13c10f",[39m
+[31m+       ],[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "_serializer": Serializer {[39m
+[31m+     "allowUndefined": false,[39m
+[31m+     "createInteger": [Function anonymous],[39m
+[31m+     "createReference": [Function anonymous],[39m
+[31m+   },[39m
+[31m+   "_updateTime": undefined,[39m
+[2m  }[22m
+
+ ❯ test/business-me-route.test.ts:147:82
+    145|       const id = unique('borrado');
+    146|       const owner = await newUser({ biz: [id] });
+    147|       await expect(access.requireBusinessAccess(await contextOf(owner.…
+       |                                                                                  ^
+    148|         status: 404,
+    149|         code: 'not_found',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed | 13 skipped (18)
+   Start at  17:35:39
+   Duration  4.73s (transform 225ms, setup 0ms, collect 254ms, tests 3.97s, environment 0ms, prepare 188ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm vitest run test/business-me-route.test.ts -t requireBusinessAccess" exited with code 1
+exit=1
+
+# green R3 and R4: real business-access.ts and routes, 2026-11-02T17:37:47-04:00
+$ flock ~/.cache/conocerd/emulator.lock firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm vitest run test/business-me-route.test.ts"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm vitest run test/business-me-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > ordena por name.es, cae a name.en, omite destinos borrados y dice qué incluye cada plan
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > una cuenta sin destinos recibe una sesión vacía, no un error
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > lista las solicitudes propias, la más nueva primero, y nunca las ajenas
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > un cuerpo que no es JSON responde 400
+[app-check] ausente /business/me/preferences
+
+ ✓ test/business-me-route.test.ts (18 tests) 5592ms
+   ✓ panel de negocios contra el emulador > requireBusinessAccess > deja pasar al dueño de un destino registrado y devuelve el documento  1884ms
+   ✓ panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño  315ms
+   ✓ panel de negocios contra el emulador > GET /business/me > un token revocado responde 401 aunque no haya caducado  1147ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  17:38:31
+   Duration  6.22s (transform 234ms, setup 0ms, collect 214ms, tests 5.59s, environment 0ms, prepare 141ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+exit=0
