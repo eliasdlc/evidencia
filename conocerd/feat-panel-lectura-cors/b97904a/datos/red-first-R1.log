@@ -1,0 +1,288 @@
+# red-first R1: stub cors.ts accepts any origin, stub proxy.ts passes every request untouched with matcher '/:path*'
+# HEAD 220c42b, 2026-11-02T17:32:26-04:00
+$ pnpm vitest run src/lib/cors.test.ts test/cors-proxy.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+ ❯ test/cors-proxy.test.ts (9 tests | 6 failed) 48ms
+   × preflight > a un origen permitido le responde 204 con métodos, cabeceras y max-age 21ms
+     → expected 200 to be 204 // Object.is equality
+   × preflight > a un preview del panel también le responde 2ms
+     → expected 200 to be 204 // Object.is equality
+   × preflight > a un origen ajeno le responde sin ninguna cabecera de permiso 2ms
+     → expected 200 to be 204 // Object.is equality
+   × preflight > localhost no pasa en producción y sí fuera de ella 4ms
+     → expected null to be 'http://localhost:5173' // Object.is equality
+   × peticiones normales > a un origen permitido le deja pasar con ACAO y Vary 2ms
+     → expected null to be 'https://dashboard.conocerd.app' // Object.is equality
+   ✓ peticiones normales > a un origen ajeno le deja pasar sin ACAO: el navegador es quien bloquea 2ms
+   ✓ peticiones normales > la app, que no manda Origin, pasa igual que antes 2ms
+   ✓ matcher > cubre las rutas del panel que lista el contrato 8ms
+   × matcher > deja fuera las rutas de la app y del admin 2ms
+     → /membership-grant: expected true to be false // Object.is equality
+ ❯ src/lib/cors.test.ts (27 tests | 23 failed) 46ms
+   ✓ isAllowedOrigin > acepta producción en producción y fuera de ella 3ms
+   ✓ isAllowedOrigin > acepta preview de un deployment en producción y fuera de ella 0ms
+   ✓ isAllowedOrigin > acepta preview de una rama en producción y fuera de ella 0ms
+   ✓ isAllowedOrigin > rechaza sin Origin 0ms
+   × isAllowedOrigin > rechaza Origin vacío 16ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza el literal null de un iframe aislado 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza producción por http 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza producción con puerto 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza producción con barra final 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza un sufijo que imita producción 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza un prefijo que imita producción 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza otro subdominio propio 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza el sitio público 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza un vercel.app ajeno 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza el mismo proyecto en otro equipo 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza otro proyecto del mismo equipo 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza un hash de deployment corto 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza un preview seguido de otro dominio 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza un preview por http 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza un preview con prefijo 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza una rama con mayúsculas 0ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza una rama vacía 0ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza un localhost en otro puerto 0ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > rechaza un localhost por https 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > http://localhost:5173 solo pasa fuera de producción 1ms
+     → expected true to be false // Object.is equality
+   × isAllowedOrigin > http://127.0.0.1:5173 solo pasa fuera de producción 1ms
+     → expected true to be false // Object.is equality
+   × CORS > anuncia los métodos del panel y solo las cabeceras Authorization y Content-Type 6ms
+     → expected '' to be 'GET, POST, PATCH, DELETE, OPTIONS' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 29 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cors-proxy.test.ts > preflight > a un origen permitido le responde 204 con métodos, cabeceras y max-age
+AssertionError: expected 200 to be 204 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 204[39m
+[31m+ 200[39m
+
+ ❯ test/cors-proxy.test.ts:30:55
+     33| });
+     34| 
+     35| describe('preflight', () => {
+       |         ^
+     36|   it('a un origen permitido le responde 204 con métodos, cabeceras y m…
+     37|     vi.stubEnv('VERCEL_ENV', 'production');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/29]⎯
+
+ FAIL  test/cors-proxy.test.ts > preflight > a un preview del panel también le responde
+AssertionError: expected 200 to be 204 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 204[39m
+[31m+ 200[39m
+
+ ❯ test/cors-proxy.test.ts:42:55
+     40|     expect(response.headers.get('access-control-allow-origin')).toBe(P…
+     41|     expect(response.headers.get('access-control-allow-methods')).toBe(…
+     42|     expect(response.headers.get('access-control-allow-headers')).toBe(…
+       |                                                       ^
+     43|     expect(response.headers.get('access-control-max-age')).toBe('600');
+     44|     expect(response.headers.get('vary')).toContain('Origin');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/29]⎯
+
+ FAIL  test/cors-proxy.test.ts > preflight > a un origen ajeno le responde sin ninguna cabecera de permiso
+AssertionError: expected 200 to be 204 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 204[39m
+[31m+ 200[39m
+
+ ❯ test/cors-proxy.test.ts:49:57
+     47|     expect(response.headers.get('access-control-allow-credentials')).t…
+     48|     // Respondida aquí: no llega al OPTIONS automático de Next.
+     49|     expect(response.headers.get('x-middleware-next')).toBeNull();
+       |                                                         ^
+     50|   });
+     51| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/29]⎯
+
+ FAIL  test/cors-proxy.test.ts > preflight > localhost no pasa en producción y sí fuera de ella
+AssertionError: expected null to be 'http://localhost:5173' // Object.is equality
+
+[32m- Expected:[39m 
+"http://localhost:5173"
+
+[31m+ Received:[39m 
+null
+
+ ❯ test/cors-proxy.test.ts:62:92
+     61|     for (const origin of ['https://dashboard.conocerd.app.evil.com', '…
+     62|       const response = await proxy(preflight('/business/me', origin));
+     63|       expect(response.status).toBe(204);
+       |                     ^
+     64|       expect(response.headers.get('access-control-allow-origin')).toBe…
+     65|       expect(response.headers.get('access-control-allow-methods')).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/29]⎯
+
+ FAIL  test/cors-proxy.test.ts > peticiones normales > a un origen permitido le deja pasar con ACAO y Vary
+AssertionError: expected null to be 'https://dashboard.conocerd.app' // Object.is equality
+
+[32m- Expected:[39m 
+"https://dashboard.conocerd.app"
+
+[31m+ Received:[39m 
+null
+
+ ❯ test/cors-proxy.test.ts:70:91
+     70| 
+     71|   it('localhost no pasa en producción y sí fuera de ella', async () =>…
+     72|     vi.stubEnv('VERCEL_ENV', 'production');
+       |                 ^
+     73|     const inProduction = await proxy(preflight('/business/me', 'http:/…
+     74|     expect(inProduction.headers.get('access-control-allow-origin')).to…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/29]⎯
+
+ FAIL  test/cors-proxy.test.ts > matcher > deja fuera las rutas de la app y del admin
+AssertionError: /membership-grant: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ test/cors-proxy.test.ts:113:59
+    113|       '/business/destino-1/overview',
+    114|       '/me',
+    115|       '/review-reply',
+       |        ^
+    116|       '/account-delete',
+    117|       '/email/unsubscribe',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/29]⎯
+
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza Origin vacío
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza el literal null de un iframe aislado
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza producción por http
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza producción con puerto
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza producción con barra final
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un sufijo que imita producción
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un prefijo que imita producción
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza otro subdominio propio
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza el sitio público
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un vercel.app ajeno
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza el mismo proyecto en otro equipo
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza otro proyecto del mismo equipo
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un hash de deployment corto
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un preview seguido de otro dominio
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un preview por http
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un preview con prefijo
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza una rama con mayúsculas
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza una rama vacía
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un localhost en otro puerto
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > rechaza un localhost por https
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ src/lib/cors.test.ts:50:53
+     48|   for (const [label, origin] of rejectedEverywhere) {
+     49|     it(`rechaza ${label}`, () => {
+     50|       expect(isAllowedOrigin(origin, 'production')).toBe(false);
+       |                                                     ^
+     51|       expect(isAllowedOrigin(origin, 'preview')).toBe(false);
+     52|       expect(isAllowedOrigin(origin, undefined)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/29]⎯
+
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > http://localhost:5173 solo pasa fuera de producción
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > http://127.0.0.1:5173 solo pasa fuera de producción
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ src/lib/cors.test.ts:58:53
+     56|   for (const origin of ['http://localhost:5173', 'http://127.0.0.1:517…
+     57|     it(`${origin} solo pasa fuera de producción`, () => {
+     58|       expect(isAllowedOrigin(origin, 'production')).toBe(false);
+       |                                                     ^
+     59|       expect(isAllowedOrigin(origin, 'preview')).toBe(true);
+     60|       expect(isAllowedOrigin(origin, 'development')).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/29]⎯
+
+ FAIL  src/lib/cors.test.ts > CORS > anuncia los métodos del panel y solo las cabeceras Authorization y Content-Type
+AssertionError: expected '' to be 'GET, POST, PATCH, DELETE, OPTIONS' // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- GET, POST, PATCH, DELETE, OPTIONS[39m
+
+ ❯ src/lib/cors.test.ts:68:26
+     66| describe('CORS', () => {
+     67|   it('anuncia los métodos del panel y solo las cabeceras Authorization…
+     68|     expect(CORS.methods).toBe('GET, POST, PATCH, DELETE, OPTIONS');
+       |                          ^
+     69|     expect(CORS.headers).toBe('Authorization, Content-Type');
+     70|     expect(CORS.maxAge).toBe('600');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/29]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  29 failed | 7 passed (36)
+   Start at  17:32:28
+   Duration  1.75s (transform 160ms, setup 0ms, collect 600ms, tests 95ms, environment 1ms, prepare 432ms)
+
+exit=1
+
+# green R1: real cors.ts and proxy.ts, 2026-11-02T17:33:07-04:00
+$ pnpm vitest run src/lib/cors.test.ts test/cors-proxy.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-lectura-cors
+
+ ✓ test/cors-proxy.test.ts (9 tests) 54ms
+ ✓ src/lib/cors.test.ts (27 tests) 22ms
+
+ Test Files  2 passed (2)
+      Tests  36 passed (36)
+   Start at  17:33:09
+   Duration  1.71s (transform 195ms, setup 0ms, collect 688ms, tests 76ms, environment 1ms, prepare 329ms)
+
+exit=0
