@@ -1,0 +1,59 @@
+MUTATION round2-F1: contacts-only month is no longer left alone (period and zero counts get written)
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/stats-visitas-destino
+
+ ❯ test/visit-stats.test.ts (14 tests | 1 failed | 13 skipped) 3030ms
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > cuenta el día en UTC-4, también cuando UTC ya cambió de mes
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script rechaza un host de emulador remoto aun con las dos banderas y dice cuál es
+   ↓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento
+   ↓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística
+   ↓ estadística mensual de visitas por destino, contra el emulador > R3: visitas validadas simultáneas de usuarios distintos suman exactamente N
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > el periodo cuenta: cifras bien con el periodo ausente o ajeno se reparan
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco no abre transacciones y avisa del alcance antes de leer por destino
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > la CLI sin --write no escribe nada y con --write escribe, y repetir no cambia nada
+   × estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > un mes con solo campos de contactos, sin visitas ni periodo, queda intacto con --write 2864ms
+     → expected 'Proyecto de destino: demo-conocerd (e…' to contain '0 documento(s) distintos'
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > --all lee cada recibo una sola vez en seco; con --write los relee dentro de la transacción
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > un mes con solo campos de contactos, sin visitas ni periodo, queda intacto con --write
+AssertionError: expected 'Proyecto de destino: demo-conocerd (e…' to contain '0 documento(s) distintos'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0 documento(s) distintos[39m
+[31m+ Proyecto de destino: demo-conocerd (emulador)[39m
+[31m+ Host del emulador de Firestore: 127.0.0.1:8080[39m
+[31m+ Alcance: 1 destino(s), 5 recibo(s) validado(s). Leyendo por destino.[39m
+[31m+ Pasada en seco: 1 destino(s), 5 visita(s) validada(s) en el rango, 0 sin receivedAt, 5 recibo(s) leído(s).[39m
+[31m+ stats-<uuid>/2026-05[39m
+[31m+   guardado: {"period":null,"visits":0,"visitsByDay":{}}[39m
+[31m+   calculado: {"visits":0,"visitsByDay":{}}[39m
+[31m+ 1 documento(s) distintos.[39m
+[31m+ Nada se escribió: era una pasada en seco. Añade --write para aplicarlo.[39m
+[31m+[39m
+
+ ❯ test/visit-stats.test.ts:219:27
+    217|       const cli = (...flags: string[]) => promisify(execFile)('pnpm',
+    218|         ['rebuild:visit-stats', '--destination', place, ...flags], {en…
+    219|       expect(await cli()).toContain('0 documento(s) distintos');
+       |                           ^
+    220|       expect(await cli('--write')).toContain('0 documento(s) reescrito…
+    221|       const after = await statsDoc('2026-05').get();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 skipped (14)
+   Start at  19:39:31
+   Duration  3.52s (transform 108ms, setup 0ms, collect 259ms, tests 3.03s, environment 0ms, prepare 85ms)
+
+
+Error: Script "pnpm vitest run test/visit-stats.test.ts -t 'un mes con solo campos'" exited with code 1
