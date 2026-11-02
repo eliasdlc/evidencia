@@ -1,0 +1,53 @@
+MUTATION round1-F3: sameStats ignores period
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/stats-visitas-destino
+
+ ❯ test/visit-stats.test.ts (12 tests | 1 failed | 11 skipped) 5207ms
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > cuenta el día en UTC-4, también cuando UTC ya cambió de mes
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script rechaza un host de emulador remoto aun con las dos banderas y dice cuál es
+   ↓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento
+   ↓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística
+   ↓ estadística mensual de visitas por destino, contra el emulador > R3: visitas validadas simultáneas de usuarios distintos suman exactamente N
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada
+   × estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > el periodo cuenta: cifras bien con el periodo ausente o ajeno se reparan 3939ms
+     → expected [] to deeply equal [ [ '2026-02', null ] ]
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco no abre transacciones y avisa del alcance antes de leer por destino
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > la CLI sin --write no escribe nada y con --write escribe, y repetir no cambia nada
+   ↓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > el periodo cuenta: cifras bien con el periodo ausente o ajeno se reparan
+AssertionError: expected [] to deeply equal [ [ '2026-02', null ] ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   [[39m
+[32m-     "2026-02",[39m
+[32m-     null,[39m
+[32m-   ],[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ test/visit-stats.test.ts:163:73
+    161|       await statsDoc('2026-02').set({visits: 1, visitsByDay: {'28': 1}…
+    162|       const dry = await stats.rebuildVisitStats(db, {destinationId: pl…
+    163|       expect(dry.diffs.map(diff => [diff.period, diff.stored?.period])…
+       |                                                                         ^
+    164|       await stats.rebuildVisitStats(db, {destinationId: place, range: …
+    165|       expect(await month('2026-02')).toMatchObject({period: '2026-02',…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  19:27:06
+   Duration  9.27s (transform 505ms, setup 0ms, collect 2.71s, tests 5.21s, environment 0ms, prepare 521ms)
+
+
+Error: Script "pnpm vitest run test/visit-stats.test.ts -t 'el periodo cuenta'" exited with code 1
