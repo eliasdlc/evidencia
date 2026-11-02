@@ -1,0 +1,70 @@
+Mutation R4 at 3fcbda9: lib/cotiza/almacen.ts
+- if (ultima?.huella === firma)
++ if (false)
+$ node --test test/cotiza/almacen.test.ts   (exit 1; file restored afterwards)
+
+✖ publishing keeps one unguessable link per quote number and versions every real change (77.720742ms)
+✔ a missing image stops the first publish and leaves no link behind (11.564167ms)
+✔ images uploaded ahead of the JSON are found by the publish that follows (18.779322ms)
+✔ a quote without its own issuer takes the account profile, and fails without one (18.131175ms)
+✔ openings: the first of each version is flagged (14.860017ms)
+✖ acceptance: current version only, once, with figures computed on the server (11.233762ms)
+✔ an expired quote cannot be accepted (13.921254ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 5
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 356.574436
+
+✖ failing tests:
+
+test at test/cotiza/almacen.test.ts:33:1
+✖ publishing keeps one unguessable link per quote number and versions every real change (77.720742ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'ejemplo-la-espiga-4ubzzhxun4',
+  +   2,
+  +   true
+  -   1,
+  -   false
+    ]
+  
+      at TestContext.<anonymous> (file:///home/decruce/.t3/worktrees/decruce-dev/feat-cotizaciones/test/cotiza/almacen.test.ts:41:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'ejemplo-la-espiga-4ubzzhxun4', 2, true ],
+    expected: [ 'ejemplo-la-espiga-4ubzzhxun4', 1, false ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/cotiza/almacen.test.ts:97:1
+✖ acceptance: current version only, once, with figures computed on the server (11.233762ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  57000 !== 58000
+  
+      at TestContext.<anonymous> (file:///home/decruce/.t3/worktrees/decruce-dev/feat-cotizaciones/test/cotiza/almacen.test.ts:107:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 57000,
+    expected: 58000,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+Summary translated from the ✖ and ℹ lines above:
+FAIL test/cotiza/almacen.test.ts > publishing keeps one unguessable link per quote number and versions every real change
+FAIL test/cotiza/almacen.test.ts > acceptance: current version only, once, with figures computed on the server
+5 passed, 2 failed
