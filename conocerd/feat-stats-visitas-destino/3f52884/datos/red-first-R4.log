@@ -1,0 +1,205 @@
+MUTATION R4a: rebuild computes month/day from the UTC clock
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/stats-visitas-destino
+
+ ❯ test/visit-stats.test.ts (8 tests | 2 failed | 6 skipped) 1957ms
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > cuenta el día en UTC-4, también cuando UTC ya cambió de mes
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore
+   ↓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento
+   ↓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística
+   ↓ estadística mensual de visitas por destino, contra el emulador > R3: visitas validadas simultáneas de usuarios distintos suman exactamente N
+   × estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada 1399ms
+     → expected [ '2026-01', '2026-02', …(2) ] to deeply equal [ '2026-01', '2026-02', '2026-03' ]
+   × estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino 421ms
+     → expected [ '2026-04' ] to deeply equal [ '2026-02', '2026-04' ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada
+AssertionError: expected [ '2026-01', '2026-02', …(2) ] to deeply equal [ '2026-01', '2026-02', '2026-03' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "2026-01",[22m
+[2m    "2026-02",[22m
+[2m    "2026-03",[22m
+[31m+   "2026-04",[39m
+[2m  ][22m
+
+ ❯ test/visit-stats.test.ts:126:50
+    124| 
+    125|       const dry = await stats.rebuildVisitStats(db, {destinationId: pl…
+    126|       expect(dry.diffs.map(diff => diff.period)).toEqual(['2026-01', '…
+       |                                                  ^
+    127|       expect(dry.diffs.every(diff => !diff.written)).toBe(true);
+    128|       expect(await plain()).toEqual(broken);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino
+AssertionError: expected [ '2026-04' ] to deeply equal [ '2026-02', '2026-04' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "2026-02",[39m
+[2m    "2026-04",[22m
+[2m  ][22m
+
+ ❯ test/visit-stats.test.ts:151:95
+    149|       expect((await monthsOf()).map(doc => doc.id)).toEqual(['2026-03'…
+    150|       const all = await stats.rebuildVisitStats(db, {range: {}, write:…
+    151|       expect(all.diffs.filter(diff => diff.destinationId === place).ma…
+       |                                                                                               ^
+    152|     });
+    153|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 skipped (8)
+   Start at  18:45:00
+   Duration  2.47s (transform 95ms, setup 0ms, collect 250ms, tests 1.96s, environment 0ms, prepare 62ms)
+
+
+Error: Script "pnpm vitest run test/visit-stats.test.ts -t 'R4:'" exited with code 1
+
+MUTATION R4b: sameStats never matches, so every run rewrites every month (not idempotent)
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/stats-visitas-destino
+
+ ❯ test/visit-stats.test.ts (8 tests | 2 failed | 6 skipped) 2061ms
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > cuenta el día en UTC-4, también cuando UTC ya cambió de mes
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore
+   ↓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento
+   ↓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística
+   ↓ estadística mensual de visitas por destino, contra el emulador > R3: visitas validadas simultáneas de usuarios distintos suman exactamente N
+   × estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada 1468ms
+     → expected [ '2026-01', '2026-02', …(2) ] to deeply equal [ '2026-01', '2026-02', '2026-03' ]
+   × estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino 360ms
+     → expected [ '2026-02', '2026-03', '2026-04' ] to deeply equal [ '2026-02', '2026-04' ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada
+AssertionError: expected [ '2026-01', '2026-02', …(2) ] to deeply equal [ '2026-01', '2026-02', '2026-03' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "2026-01",[22m
+[2m    "2026-02",[22m
+[2m    "2026-03",[22m
+[31m+   "2026-04",[39m
+[2m  ][22m
+
+ ❯ test/visit-stats.test.ts:126:50
+    124| 
+    125|       const dry = await stats.rebuildVisitStats(db, {destinationId: pl…
+    126|       expect(dry.diffs.map(diff => diff.period)).toEqual(['2026-01', '…
+       |                                                  ^
+    127|       expect(dry.diffs.every(diff => !diff.written)).toBe(true);
+    128|       expect(await plain()).toEqual(broken);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino
+AssertionError: expected [ '2026-02', '2026-03', '2026-04' ] to deeply equal [ '2026-02', '2026-04' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "2026-02",[22m
+[31m+   "2026-03",[39m
+[2m    "2026-04",[22m
+[2m  ][22m
+
+ ❯ test/visit-stats.test.ts:151:95
+    149|       expect((await monthsOf()).map(doc => doc.id)).toEqual(['2026-03'…
+    150|       const all = await stats.rebuildVisitStats(db, {range: {}, write:…
+    151|       expect(all.diffs.filter(diff => diff.destinationId === place).ma…
+       |                                                                                               ^
+    152|     });
+    153|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 skipped (8)
+   Start at  18:45:14
+   Duration  2.59s (transform 115ms, setup 0ms, collect 300ms, tests 2.06s, environment 0ms, prepare 77ms)
+
+
+Error: Script "pnpm vitest run test/visit-stats.test.ts -t 'R4:'" exited with code 1
+
+MUTATION R4c: rebuild replaces the whole document (no mergeFields), erasing contacts fields
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/stats-visitas-destino
+
+ ❯ test/visit-stats.test.ts (8 tests | 1 failed | 6 skipped) 2024ms
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > cuenta el día en UTC-4, también cuando UTC ya cambió de mes
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez
+   ↓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore
+   ↓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento
+   ↓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística
+   ↓ estadística mensual de visitas por destino, contra el emulador > R3: visitas validadas simultáneas de usuarios distintos suman exactamente N
+   × estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada 1526ms
+     → expected { period: '2026-02', visits: 2, …(2) } to match object { contacts: { whatsapp: 2 }, …(2) }
+(7 matching properties omitted from actual)
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino  312ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada
+AssertionError: expected { period: '2026-02', visits: 2, …(2) } to match object { contacts: { whatsapp: 2 }, …(2) }
+(7 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "contacts": {[39m
+[32m-     "whatsapp": 2,[39m
+[32m-   },[39m
+[32m-   "contactsByDay": {[39m
+[32m-     "28": {[39m
+[32m-       "whatsapp": 2,[39m
+[31m+   "period": "2026-02",[39m
+[31m+   "updatedAt": Timestamp {[39m
+[31m+     "_nanoseconds": 763000000,[39m
+[31m+     "_seconds": 1793659529,[39m
+[2m    },[22m
+[31m+   "visits": 2,[39m
+[31m+   "visitsByDay": {[39m
+[31m+     "28": 2,[39m
+[2m    },[22m
+[32m-   "savesAtClose": 7,[39m
+[2m  }[22m
+
+ ❯ test/visit-stats.test.ts:137:38
+    135|       expect(rebuilt['2026-04']).toEqual(incremental['2026-04']);
+    136|       expect(rebuilt['2026-01']).toEqual({period: '2026-01', visits: 0…
+    137|       expect(await month('2026-02')).toMatchObject(foreign);
+       |                                      ^
+    138| 
+    139|       const again = await stats.rebuildVisitStats(db, {destinationId: …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed | 6 skipped (8)
+   Start at  18:45:27
+   Duration  2.53s (transform 85ms, setup 0ms, collect 224ms, tests 2.02s, environment 0ms, prepare 75ms)
+
+
+Error: Script "pnpm vitest run test/visit-stats.test.ts -t 'R4:'" exited with code 1
