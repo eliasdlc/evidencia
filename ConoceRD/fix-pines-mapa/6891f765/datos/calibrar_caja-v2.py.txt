@@ -1,0 +1,55 @@
+"""Calibrates the pin collision box against the pins the engine drew in the
+native captures of the dev build (before the change).
+
+Model: pins in priority order (pines.json, the real catalog of conocerd-dev);
+a pin is dropped when a placed pin is closer than one box on both axes (the
+rule of lib/core/map/pin_layout.dart placePins, pins up to one box outside the
+screen still block). Mercator tiles of 512, no tilt.
+
+Capture window of each view: the screen is W x H dp, the camera is its centre,
+and the pins are counted in the strip the captures are cropped to (y from 430 to
+1900 px of 2400 px, away from the search bar and the buttons). Native counts are
+orange blobs counted on the crops of the dev build (caps/antes).
+"""
+import json, math, sys
+
+PX_PER_DP = 2.75
+PINS = json.load(open(sys.argv[1]))
+W, H = 1080 / PX_PER_DP, 2400 / PX_PER_DP
+TOP, BOTTOM = 430 / PX_PER_DP, 1900 / PX_PER_DP
+CITIES = {'Santiago': (19.4517, -70.6970), 'Santo Domingo': (18.4733, -69.8837)}
+VIEWS = [('Santiago', 8), ('Santiago', 10), ('Santiago', 12), ('Santiago', 14),
+         ('Santo Domingo', 8), ('Santo Domingo', 10), ('Santo Domingo', 12), ('Santo Domingo', 14)]
+NATIVE = [26, 6, 4, 2, 10, 7, 8, 12]
+
+
+def drawn(center, zoom, box):
+    world = 512 * 2 ** zoom
+    mx = lambda lng: (lng + 180) / 360 * world
+    my = lambda lat: (0.5 - math.log((1 + math.sin(math.radians(lat))) / (1 - math.sin(math.radians(lat)))) / (4 * math.pi)) * world
+    cx, cy = mx(center[1]), my(center[0])
+    placed, count = [], 0
+    for p in PINS:
+        dx, dy = mx(p['lng']) - cx, my(p['lat']) - cy
+        if abs(dx) > W / 2 + box or abs(dy) > H / 2 + box:
+            continue
+        blocked = any(abs(dx - a) < box and abs(dy - b) < box for a, b in placed)
+        if not blocked:
+            placed.append((dx, dy))
+            if abs(dx) <= W / 2 and TOP <= dy + H / 2 <= BOTTOM:
+                count += 1
+    return count
+
+
+print('reproduce: python3 calibrar_caja.py.txt-as-calibrar_caja.py catalogo-curado.json (the files of this folder). The window is the visible strip of the capture, 393 dp wide and from y 430 to 1900 px of a 1080x2400 screen at 2.75 px/dp (156 to 691 dp), centered on the camera of the whole screen; it is NOT the 393x852 window of test/render/medicion_pines.dart, whose rows in medicion-pines.json count the whole screen')
+print('native counts: pins counted by eye on the dev captures by two independent readers (a colour blob count read 27 at Santiago zoom 8 and 3 at Santiago zoom 14, counting a basemap marker and a clipped pin)')
+print('view                      native  ' + '  '.join(f'{b:>5}' for b in (10, 12, 14, 16.36, 18, 20, 24, 38)))
+tot = {b: 0 for b in (10, 12, 14, 16.36, 18, 20, 24, 38)}
+for (city, z), nat in zip(VIEWS, NATIVE):
+    row = []
+    for b in tot:
+        n = drawn(CITIES[city], z, b)
+        tot[b] += abs(n - nat)
+        row.append(f'{n:>5}')
+    print(f'{city:14} zoom {z:>2}   {nat:>6}  ' + '  '.join(row))
+print('sum of |model - native| ' + '  '.join(f'{tot[b]:>5}' for b in tot))
