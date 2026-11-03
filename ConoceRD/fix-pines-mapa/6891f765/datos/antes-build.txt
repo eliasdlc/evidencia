@@ -1,0 +1,49 @@
+Baseline (dev) builds for the left panels of the sheets
+worktree HEAD: bc722ea2cb5876beda11e5637fe9b41c04d721ba
+is ancestor of 84f8eb38 (the base of this PR): yes
+uncommitted changes in that worktree (the Flutter lock file the local SDK rewrites, and the demo harness):
+ M pubspec.lock
+?? integration_test/pines_demo_app.dart
+
+antes2.apk  sha256=9071ef1edc4dfc51  used for the A, B and C sheets, the tilted sheet and the default view; its harness has the pitch option
+exp-antes.apk sha256=57bfd5ab3f46dd0a  used only for the night-toggle sheet; its harness adds the night toggle
+
+difference between this branch's harness and the one built into the dev apks (the option dev does not have, and later demo options not used by the left panels):
+75,77c75,76
+<   // The catalog can change while the screen is open, as it does from Firestore
+<   // (`initial`: how many places show first; `pinsAfter`: the second at which the
+<   // rest appear; `rename`: at that second every place comes back with a new id).
+---
+>   // The catalog can arrive after the map, as it does from Firestore:
+>   // `pinsAfter` is the second at which the pins appear (0 or absent: at once).
+79,84c78,80
+<   final initial = (config['initial'] as num?)?.toInt();
+<   final rename = config['rename'] == true;
+<   final first = pinsAfter > 0 && initial == null && !rename
+<       ? const <Destination>[]
+<       : (initial == null ? pins : pins.take(initial).toList());
+<   final pinsFlag = ValueNotifier<List<Destination>>(first);
+---
+>   final pinsFlag = ValueNotifier<List<Destination>>(
+>     pinsAfter > 0 ? const [] : pins,
+>   );
+86,100c82
+<     final later = rename
+<         ? [
+<             for (final d in pins)
+<               Destination(
+<                 id: '${d.id}r',
+<                 name: d.name,
+<                 province: d.province,
+<                 latitude: d.latitude,
+<                 longitude: d.longitude,
+<                 placeType: d.placeType,
+<                 categories: d.categories,
+<               ),
+<           ]
+<         : pins;
+<     Timer(Duration(seconds: pinsAfter), () => pinsFlag.value = later);
+---
+>     Timer(Duration(seconds: pinsAfter), () => pinsFlag.value = pins);
+147d128
+<             markersPreSpaced: map.markersPreSpaced,
