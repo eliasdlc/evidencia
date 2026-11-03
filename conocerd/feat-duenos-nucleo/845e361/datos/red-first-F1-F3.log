@@ -1,0 +1,209 @@
+b979f5fa551b7a36c63c1869c9dbc6fdb7b4cce5
+# round 2 red first: new F1, F2, F3 tests against unfixed b979f5f (tests uncommitted)
+$ tsc --noEmit
+typecheck exit=0
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/owner-service.test.ts test/admin-owners-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo
+
+stderr | test/owner-service.test.ts > owner-service contra el emulador > C4: si la compensación falla, la línea de bitácora queda marcada y no se borra
+[conocerd-api] compensación incompleta (claims) para 2s3zmdHPlj4i1TVSfYINDTPfKDUj; corre scripts/reconcile-ownerships.ts Error: Auth sigue caído
+    at [90m/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mtest/owner-service.test.ts:317:30
+[90m    at processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+    at [90mfile:///home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@3.2.7/node_modules/[4m@vitest/runner[24m/dist/chunk-hooks.js:752:20
+
+stdout | test/owner-service.test.ts > owner-service contra el emulador > F1: una concesión por /claims después de una revocación normal se reporta y no se toca
+[app-check] ausente /claims
+
+ ❯ test/owner-service.test.ts (26 tests | 1 failed) 4588ms
+   ✓ transiciones de propiedad > conceder crea solo los destinos que la cuenta no tenía activos, sin duplicados 2ms
+   ✓ transiciones de propiedad > conceder lo que ya estaba activo no crea nada 0ms
+   ✓ transiciones de propiedad > revocar toca solo los activos pedidos 0ms
+   ✓ transiciones de propiedad > el piso sube minimal y un destino sin tier a registrado con sus entitlements 1ms
+   ✓ transiciones de propiedad > el piso nunca baja un destino que ya está en registrado o más arriba 0ms
+   ✓ transiciones de propiedad > la reconciliación separa índice sin claim, claim sin índice y duplicados 0ms
+   ✓ transiciones de propiedad > la verificación exige un método de la lista cerrada y una nota de 1 a 500 2ms
+   ✓ transiciones de propiedad > C3: revertir un cambio no toca lo que otro escritor hizo entre medias 0ms
+   ✓ transiciones de propiedad > C2: un claim sin índice con índice revocado y revocación en bitácora es una revocación a medias 0ms
+   ✓ transiciones de propiedad > --fix fuera del emulador exige --project igual al proyecto configurado 0ms
+   ✓ transiciones de propiedad > staff y métodos de entrada 0ms
+   ✓ owner-service contra el emulador > conceder escribe la propiedad, la bitácora con verificación, el claim y el piso de tier  1691ms
+   ✓ owner-service contra el emulador > conceder dos veces no duplica la propiedad ni ensucia la bitácora 140ms
+   ✓ owner-service contra el emulador > si el claim falla, no queda propiedad, ni bitácora, ni piso de tier 165ms
+   ✓ owner-service contra el emulador > un destino que no existe se rechaza sin escribir nada 41ms
+   ✓ owner-service contra el emulador > una cuenta de staff no puede ser dueña 23ms
+   ✓ owner-service contra el emulador > C2: si revocar los refresh tokens falla, la revocación se deshace entera 134ms
+   ✓ owner-service contra el emulador > C4: si la compensación falla, la línea de bitácora queda marcada y no se borra 113ms
+   ✓ owner-service contra el emulador > C3: dos concesiones con el mismo registro de cuenta viejo no se pisan el claim 101ms
+   ✓ owner-service contra el emulador > C3: deshacer el piso no baja un destino que ya tiene otro dueño activo 108ms
+   ✓ owner-service contra el emulador > C2: la reconciliación termina una revocación a medias en vez de pedir volver a conceder  1302ms
+   × owner-service contra el emulador > F1: una concesión por /claims después de una revocación normal se reporta y no se toca 190ms
+     → expected [ { …(2) } ] to deeply equal []
+   ✓ owner-service contra el emulador > F2: si el claim nunca queda escrito, para a los cinco intentos con 503 claims_contention y compensa 120ms
+   ✓ owner-service contra el emulador > F2: al conceder, vuelve a aplicar su cambio si otro escritor lo pisa 60ms
+   ✓ owner-service contra el emulador > F2: al revocar, vuelve a aplicar su cambio si otro escritor lo pisa 107ms
+   ✓ owner-service contra el emulador > revocar pasa la propiedad a revoked, quita el claim y deja el motivo en la bitácora 117ms
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo nuevo crea la cuenta, la hace dueña y devuelve la invitación sin enviarla
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar un correo que ya tiene cuenta la reutiliza y conserva sus otros destinos
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > invitar a personal interno responde 409 email_belongs_to_staff
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > un destino inexistente responde 422 y no crea la cuenta
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /me
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > revocar a quien no es dueño responde 409 not_owner
+[app-check] ausente /admin/owners/revoke
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > C1: traspasar a una cuenta que ya tiene 40 destinos responde 422 y el dueño anterior sigue intacto
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > C1: traspasar a una cuenta que ya tiene 40 destinos responde 422 y el dueño anterior sigue intacto
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > F3: si la revocación del traspaso falla después de conceder, responde 502 transfer_incomplete con lo necesario para repetirla
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > F3: si la revocación del traspaso falla después de conceder, responde 502 transfer_incomplete con lo necesario para repetirla
+[app-check] ausente /admin/owners/transfer
+
+stderr | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > F3: si la revocación del traspaso falla después de conceder, responde 502 transfer_incomplete con lo necesario para repetirla
+[conocerd-api] error no controlado Error: Auth caído
+    at [90m/home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mtest/admin-owners-route.test.ts:259:81
+    at [90mfile:///home/decruce/dev/wt/conocerd-api/feat/duenos-nucleo/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@3.2.7/node_modules/[4m@vitest/runner[24m/dist/chunk-hooks.js:752:20
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > traspasar desde quien no es dueño responde 409 y no crea la cuenta nueva
+[app-check] ausente /admin/owners/transfer
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owners
+
+stdout | test/admin-owners-route.test.ts > rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo
+[app-check] ausente /admin/owners
+
+ ❯ test/admin-owners-route.test.ts (14 tests | 1 failed) 3038ms
+   ✓ rutas de dueños contra el emulador > una cuenta sin admin recibe 403 en las cuatro rutas 193ms
+   ✓ rutas de dueños contra el emulador > sin token responde 401 2ms
+   ✓ rutas de dueños contra el emulador > invitar un correo nuevo crea la cuenta, la hace dueña y devuelve la invitación sin enviarla 130ms
+   ✓ rutas de dueños contra el emulador > invitar un correo que ya tiene cuenta la reutiliza y conserva sus otros destinos 72ms
+   ✓ rutas de dueños contra el emulador > invitar a personal interno responde 409 email_belongs_to_staff 30ms
+   ✓ rutas de dueños contra el emulador > un método fuera de la lista o sin nota responde 422 y no crea la cuenta 25ms
+   ✓ rutas de dueños contra el emulador > un destino inexistente responde 422 y no crea la cuenta 16ms
+   ✓ rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401  1232ms
+   ✓ rutas de dueños contra el emulador > revocar a quien no es dueño responde 409 not_owner 34ms
+   ✓ rutas de dueños contra el emulador > traspasar escribe el par revocación y concesión con el mismo refId 172ms
+   ✓ rutas de dueños contra el emulador > C1: traspasar a una cuenta que ya tiene 40 destinos responde 422 y el dueño anterior sigue intacto 110ms
+   × rutas de dueños contra el emulador > F3: si la revocación del traspaso falla después de conceder, responde 502 transfer_incomplete con lo necesario para repetirla 166ms
+     → expected 500 to be 502 // Object.is equality
+   ✓ rutas de dueños contra el emulador > traspasar desde quien no es dueño responde 409 y no crea la cuenta nueva 30ms
+   ✓ rutas de dueños contra el emulador > GET /admin/owners lista los dueños activos con su correo 77ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/admin-owners-route.test.ts > rutas de dueños contra el emulador > F3: si la revocación del traspaso falla después de conceder, responde 502 transfer_incomplete con lo necesario para repetirla
+AssertionError: expected 500 to be 502 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 502[39m
+[31m+ 500[39m
+
+ ❯ test/admin-owners-route.test.ts:264:29
+    262|       post(TRANSFER, { destinationId: destination, fromUid: from.uid, …
+    263|     );
+    264|     expect(response.status).toBe(502);
+       |                             ^
+    265|     const body = (await response.json()) as Record<string, string>;
+    266|     const to = await firebase.adminAuth().getUserByEmail(toEmail);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/owner-service.test.ts > owner-service contra el emulador > F1: una concesión por /claims después de una revocación normal se reporta y no se toca
+AssertionError: expected [ { …(2) } ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   {[39m
+[31m+     "destinationId": "destino-<test-uuid-1>",[39m
+[31m+     "uid": "ivxTi7pTCfVlOqP93SkazvGXYP4s",[39m
+[31m+   },[39m
+[31m+ ][39m
+
+ ❯ test/owner-service.test.ts:432:31
+    430| 
+    431|     const dry = await service.reconcileOwnerships({ fix: false, uids: …
+    432|     expect(dry.pendingRevoke).toEqual([]);
+       |                               ^
+    433|     expect(dry.needsGrant).toEqual([{ uid: owner.uid, destinationId: d…
+    434| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 38 passed (40)
+   Start at  19:47:25
+   Duration  9.21s (transform 240ms, setup 0ms, collect 983ms, tests 7.63s, environment 1ms, prepare 184ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/owner-service.test.ts test/admin-owners-route.test.ts" exited with code 1
+emulator exit=1
+
+# note: 1 random test-fixture UUID(s) replaced by <test-uuid-N> before publishing; original kept locally.
