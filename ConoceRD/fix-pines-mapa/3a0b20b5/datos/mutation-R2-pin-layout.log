@@ -1,0 +1,52 @@
+00:00 +0: loading /home/decruce/.t3/worktrees/app/fix-pines-mapa/test/core/map/pin_layout_test.dart
+00:00 +0: pinBoxDp the sprite is drawn at its pixel size over the density
+00:00 +1: groupPins every place lands in exactly one group, lead first
+00:00 +2: groupPins nearby places share one marker and the count is the group size
+00:00 +2 -1: groupPins nearby places share one marker and the count is the group size [E]
+  Expected: [0, 1, 2, 3, 4]
+    Actual: [0]
+     Which: at location [1] is [0] which shorter than expected
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/core/map/pin_layout_test.dart 44:7             main.<fn>.<fn>
+  
+00:00 +2 -1: groupPins the highest priority place leads the group
+00:00 +2 -2: groupPins the highest priority place leads the group [E]
+  Bad state: Too many elements
+  dart:core                                 List.single
+  test/core/map/pin_layout_test.dart 52:21  main.<fn>.<fn>
+  
+00:00 +2 -2: groupPins leads never sit closer than one pin box
+00:00 +3 -2: groupPins a group splits as the zoom grows, and is alone from max zoom
+00:00 +4 -2: placePins models the engine: a colliding pin is hidden, not drawn
+00:00 +5 -2: placePins pins outside the viewport are not counted
+00:00 +6 -2: pinGroupZoom steps down to the quarter level below the camera
+00:00 +7 -2: pinGroupZoom grouping at the step never packs tighter than the real camera
+00:00 +8 -2: zoomToSplit returns the first step where no group holds more than half
+00:00 +8 -3: zoomToSplit returns the first step where no group holds more than half [E]
+  Expected: a value greater than <3>
+    Actual: <1>
+     Which: is not a value greater than <3>
+  one step earlier a group still holds most of them
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/core/map/pin_layout_test.dart 138:7            main.<fn>.<fn>
+  
+00:00 +8 -3: zoomToSplit two places on the same spot never split before max zoom
+00:00 +8 -4: zoomToSplit two places on the same spot never split before max zoom [E]
+  Expected: <19.0>
+    Actual: <10.25>
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/core/map/pin_layout_test.dart 147:7            main.<fn>.<fn>
+  
+00:00 +8 -4: Some tests failed.
+
+Failing tests:
+  /home/decruce/.t3/worktrees/app/fix-pines-mapa/test/core/map/pin_layout_test.dart: groupPins nearby places share one marker and the count is the group size
+  /home/decruce/.t3/worktrees/app/fix-pines-mapa/test/core/map/pin_layout_test.dart: groupPins the highest priority place leads the group
+  /home/decruce/.t3/worktrees/app/fix-pines-mapa/test/core/map/pin_layout_test.dart: zoomToSplit returns the first step where no group holds more than half
+  /home/decruce/.t3/worktrees/app/fix-pines-mapa/test/core/map/pin_layout_test.dart: zoomToSplit two places on the same spot never split before max zoom
