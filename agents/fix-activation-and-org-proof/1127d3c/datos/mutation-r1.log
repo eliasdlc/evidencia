@@ -1,0 +1,36 @@
+# R1 at 1127d3c, with suite-timeout.patch applied
+# $ python3 -m unittest discover -s tests -p test_configuration.py -k test_a_suite_longer_than_the_command_cap_still_activates
+E
+======================================================================
+ERROR: test_a_suite_longer_than_the_command_cap_still_activates (test_configuration.ConfigurationTests.test_a_suite_longer_than_the_command_cap_still_activates)
+The suite runs under SUITE_TIMEOUT, not the cap meant for git commands.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/fix-activation-and-org-proof/tests/test_configuration.py", line 144, in test_a_suite_longer_than_the_command_cap_still_activates
+    self.cfg.update()
+    ~~~~~~~~~~~~~~~^^
+  File "/home/decruce/.t3/worktrees/agents/fix-activation-and-org-proof/bin/configuration.py", line 465, in update
+    run(sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', cwd=source)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/fix-activation-and-org-proof/bin/configuration.py", line 35, in run
+    result = subprocess.run(args, cwd=cwd, capture_output=True, text=True, timeout=timeout or COMMAND_TIMEOUT,
+                            env={**os.environ, "GIT_TERMINAL_PROMPT": "0"})
+  File "/usr/lib/python3.14/subprocess.py", line 557, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 1221, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 2154, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 1268, in _check_timeout
+    raise TimeoutExpired(
+    ...<2 lines>...
+            stderr=b''.join(stderr_seq) if stderr_seq else None)
+subprocess.TimeoutExpired: Command '('/usr/bin/python3', '-m', 'unittest', 'discover', '-s', 'tests')' timed out after 1 seconds
+
+----------------------------------------------------------------------
+Ran 1 test in 1.063s
+
+FAILED (errors=1)
