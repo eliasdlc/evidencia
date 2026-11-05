@@ -1,0 +1,48 @@
+Self-check at 28a6db0 (delivery-reviewer, capture mode), round 1
+
+Scope: the one row on a channel above test, R1 (native). R1 to R3 on `test` and R2 to R2h have no capture; capture mode does not read them. Captures opened: 03-intereses.png and 05-playa-dia2.png (the two the row links). Also opened 04-ruta.png, which is in the evidence folder and not linked by the row, to read the route header. Receipt opened: datos/recibo-28a6db0.txt.
+
+R1 matches 03-intereses.png: wizard step 3 of 4 ("Paso 3 / 4", "Planifica tu aventura", question "¿Qué te mueve?", "Toma todos los que te llamen."). Seven tiles in two columns: Experiencia, Playa, Montaña, Cultura, Gastro, Aventura, Naturaleza. Playa (right column, first row) and Naturaleza (left column, last row) are filled light gray with dark icon and text; the other five are dark with an outline. Orange "Siguiente" at the bottom, active. Light fill is the selected state: hilo_marco.dart:538 and :540 paint `elegido` with `c.selectedFill` and no border, and the rest with `c.sf` and a border, and PasoIntereses passes `elegido: r.interests.contains(categoria)` (pasos_preguntas.dart:494). So the selection in this frame is Playa plus Naturaleza and nothing else; Cultura is off, as the Evidence cell says. The earlier run (beach turned off by a tap on the pre-selected Cultura and Playa) is the opposite case; this frame is the clean one.
+
+R1 mostly matches 05-playa-dia2.png, with a gap: route sheet scrolled to the list, dark theme, map visible at the top edge ("Bayaguana" label), "Usar este viaje sin señal" card with "Descargar", then the day rail. Day 1 is folded: "5 paradas", "9:05 AM a 6:13 PM", chevron down. Day 2 is open: "Parque Zoológico Nac..." with a bird photo at 9:03 AM, "Distrito Nacional"; a car leg "56 min, 38 km"; "Playa de Boca Chica" with a beach photo at 12:59 PM, "Santo Domingo"; "Vuelves al inicio" 5:22 PM with a flag. Bottom button reads "Completa el día anterior primero" with a lock.
+- "Day 2 carries Playa de Boca Chica at 12:59 PM after the Zoo": matches. Name, hour, order and the beach photo are on screen. This is the claim of the row that the build 120 carries a beach in a 2 day route.
+- "day 1 has Jardín Botánico, Parque Mirador Sur, Tres Ojos and La Caleta": not in this frame. Day 1 is folded and shows only "5 paradas". 04-ruta.png shows "Jardín Botánico Naciona..." as the first label of the route strip and nothing of the other three. The row names four stops for a day the frame counts as five. See Could not verify.
+- "Every interest was served": the beach half is shown. The Naturaleza half is not: no frame shows a nature stop by name and category (the Zoo and a folded day 1 are all there is). It rests on the day 1 names the row gives and on the catalog categories, neither of which is in a frame.
+- "no 'No encontramos' line is owed": consistent with 04-ruta.png, whose description under "El Salvaje Escape" reads "Ruta generada según tus preferencias." with no second sentence (generate_route.dart:208 to 220 adds the line only when `unmet` is not empty). The row says that line is pinned only by tests, which is right; 04 is not linked in the Evidence cell, so the row does not rest on it.
+
+Build identity
+- Head is 28a6db05d60443ffb16276025225d8a3ed7a0131 and the PR headRefOid is the same. Worktree /home/decruce/dev/wt/app/intereses-pedidos: `git status --short` is empty, as the receipt says. HEAD committed 2026-11-05 02:28:35 local.
+- Receipt datos/recibo-28a6db0.txt: sha 28a6db0, package com.conocerd.app.review, versionName 0.17.0-intereses-pedidos.28a6db05 (carries the sha7 plus one digit, so it ties the build to the commit), versionCode 120 (the build the row claims), worktree clean, base.apk sha256 fbcc30d8...09e3, which equals `sha256sum app-review-120.apk` in the folder. apkanalyzer on that APK reads versionCode 120, versionName 0.17.0-intereses-pedidos.28a6db05, package com.conocerd.app.review.
+- Order in time (local): commit 02:28:35, APK written 05:41:21, installed 05:41:44 (lastUpdateTime), frames 03 at 5:48 and 04, 05 at 5:49 by the status bar, receipt recorded 05:50:16 (09:50:16Z), after the frames. The mtimes of 03 and 05 (05:50:10) are later than their status-bar clocks, which reads as a copy time, not a retake; the scratch copies in scratchpad/t733ev/ have the same sha256 as the originals.
+- The sha7 in the capture path (28a6db0) is the head. The PR was opened 2026-11-05T06:36:38Z, after 27 Oct, so this is the one capture read of the PR. The three raw URLs of the row (03, 05, recibo) already answer 200.
+- Both frames are 1080x2316, taken with adb screencap on the main screen, as the row says. No system dock appears; "Completa el día anterior primero" sits above the gesture bar with no overlap.
+
+Visible in the frames, not in the Seen cell, or limits of what they show
+- Day 2 has no lunch card. Zoo at 9:03 AM, a 56 min leg, the beach at 12:59 PM, and the return at 5:22 PM, with no meal row between or after. 9:03 plus 56 min is 9:59, so the Zoo stay or a wait fills about three hours before the 12:59 arrival; the frame does not say which. The PR names fewer lunches per day (0.641 to 0.507) as a cost it did not isolate; this day is a visible instance, not a counterexample to the row, which claims nothing about meals.
+- The Zoo (9:03) and the beach (12:59) are 38 km apart, and the beach is a day-2 stop reached by a 56 min drive; day 1 ends at 6:13 PM. Nothing there contradicts the row.
+- 04-ruta.png has an empty dark band between the "Orden original / Orden sugerido" pills and the sheet (no map tiles drawn), while 05 shows the map at its top edge. It looks like the map not yet drawn in that frame, not a defect of the change; not claimed by the row.
+- "Orden sugerido -81 min" and "7 paradas, 1 noche, 123 km" in 04 are consistent with 5 stops on day 1 and 2 on day 2.
+- The wizard answers other than the interests (whole country from Distrito Nacional, 2 days, balanced, 9:00, circuit, $$, couple) are in the Evidence cell only. 03 shows step 3 of 4; 04 shows "2 personas", which is consistent with a couple, and "1 noche" with 2 days. Balanced, 9:00 (day 1 reads 9:05 AM), $$ and the origin do not show.
+- Large text scale is not looked for, by Elias's decision of 4 Nov 2026.
+
+Could not verify from the frames
+- The five stops of day 1 and the names the row lists (Parque Mirador Sur, Tres Ojos, La Caleta; Jardín Botánico only as a truncated label in 04). The row lists four and the frame counts five. The channel that would settle it is the same native build 120 with day 1 unfolded in one frame (or a frame of the map pins), which also gives the Naturaleza half of "every interest was served".
+- That the saved route carries tags playa and naturaleza (the earlier run's route carried cultura, naturaleza): no capture or log shows the route's tags. A frame of the route's interest chips, or a printed `types` from build 120, would settle it. Frame 03 settles the selection, not what reached `GenerateRouteUseCase`.
+- That the wizard interests were the ones sent after "Siguiente": 03 is taken before the tap. It is the selection at step 3, and 04 and 05 are the result, with no frame of steps 4 or of the generation.
+- The "No encontramos ..." line on the phone: not seen, and the row says so.
+- Logcat: none linked.
+
+Verdict
+- R1 (native) first claim, step 3 shows Playa and Naturaleza selected: confirmed by 03-intereses.png and by the selected style in code.
+- R1 (native) second claim, day 2 carries Playa de Boca Chica at 12:59 PM after the Zoo: confirmed by 05-playa-dia2.png.
+- R1 (native) third claim, day 1 has Jardín Botánico, Parque Mirador Sur, Tres Ojos and La Caleta, and every interest served: not verifiable from these captures (day 1 is folded; Naturaleza has no named stop in any frame). Not a mismatch: nothing in the frames contradicts it. It stays a claim until a frame with day 1 open is added.
+- Build identity: confirmed against the head (sha, versionName, versionCode 120, sha256 of the APK, clean worktree, receipt after the frames).
+
+Commands run
+- gh pr view 261 --json body,headRefOid,createdAt
+- git -C /home/decruce/dev/wt/app/intereses-pedidos rev-parse HEAD; git status --short; git log -1 --format='%H %cd' --date=iso-local
+- sha256sum app-review-120.apk 03-intereses.png 05-playa-dia2.png and the scratch copies; apkanalyzer manifest print app-review-120.apk | grep -E "versionCode|versionName|package="
+- ls -l --time-style=full-iso on the evidence folder and datos/recibo-28a6db0.txt; file on the three PNGs
+- curl -s -o /dev/null -w "%{http_code}" -L on the three raw URLs of the row
+- sed -n 505,545p lib/features/onboarding/presentation/widgets/hilo/hilo_marco.dart; sed -n 485,500p lib/features/onboarding/presentation/widgets/hilo/pasos_preguntas.dart
+- sed -n 200,230p lib/features/routes/domain/usecases/generate_route.dart
