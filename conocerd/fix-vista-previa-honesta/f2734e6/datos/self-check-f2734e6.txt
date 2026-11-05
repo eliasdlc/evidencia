@@ -1,0 +1,57 @@
+Self-check at f2734e6 (delivery-reviewer, capture mode)
+
+R1 matches 01-previa-dia1-dia.png: day list scrolled to the end of day 1 in the light theme, Maraca 11:36 AM with Almuerza aquí, two Santo Domingo parks, then Vuelves al inicio 5:04 PM with no Duermes en or dinner row, days 2 and 3 folded as 2 paradas with their hour windows
+R1 matches 01-previa-dia1-noche.png: the same list and scroll in the dark theme, same stops, same 5:04 PM return and the same two folded day cards with hours, nothing clipped
+R1 matches 02-previa-dia2-dia.png: day 2 open in the light theme with Piscinas naturales 9:46 AM, Los Haitises 12:47 PM, Cena por Samaná 7:00 PM Sugerida and an orange Duermes en Samaná, Noche 1 de 1 card, day 1 folded as 5 paradas and day 3 as 2 paradas
+R1 matches 02-previa-dia2-noche.png: the dark copy of the day 2 list with the same four rows in the same order, the night card in orange, same folded days 1 and 3
+R2 matches 03-en-viaje-dia1-dia.png: day 1 open as in the preview, but the folded day 2 card reads Abre cuando termines el día 1 and day 3 reads Abre cuando termines el día 2 where the preview showed hours, and the word Bloqueado appears nowhere
+R2 matches 03-en-viaje-dia1-noche.png: dark copy of the in-trip list with the same two Abre cuando termines lines under 2 paradas, no Bloqueado
+R2 matches 03-intereses.png: wizard step 3 of 4 on the question of what moves you, only the Playa and Naturaleza tiles filled light and the other five outlined and dark, Siguiente active, status bar 9:50
+R2 matches 05-dias.png: route sheet scrolled to the day rail with Iniciar Día 1 still on the button, day 1 ending Cena por Monte Plata 7:00 PM and Duermes en Monte Plata, Noche 1 de 1, and days 2 and 3 folded showing 3 paradas 10:02 AM a 6:55 PM and 3 paradas 9:03 AM a 3:52 PM with no Bloqueado
+R3 matches 04-titulo.png: route sheet header reading El Sendero Esmeralda over the plain description Ruta generada según tus preferencias, with the facts card showing 9 paradas and 1 noche for the route, and Iniciar Día 1 below
+
+Scope: the render rows R1 and R2 (six 430x748 PNGs, text scale 100 percent, day and night) and the native rows R2 and R3 (three 1080x2316 adb screencaps). R1, R2, R3, R4 and R5 on `test` have no capture; capture mode does not read them. Receipt opened: datos/recibo-f2734e6.txt. Large text scale is not looked for, by Elias's decision of 4 Nov 2026.
+
+Detail of the render frames
+- R1 render, 01: the row says "Maraca 11:36 AM, Sugerida, Almuerza aquí, two parks in Santo Domingo, Vuelves al inicio 5:04 PM, no Duermes en and no dinner". All on screen (Los Tres Ojos 1:12 PM, Submarino 3:08 PM, return 5:04 PM). The top of day 1 is cut off, so the first two stops and the day header are not in the frame; the day 1 window 8:45 AM a 5:04 PM is read from frame 02, where day 1 is folded as 5 paradas.
+- R1 render, 02: "Cena por Samaná 7:00 PM Sugerida" and "Duermes en Samaná, Noche 1 de 1" are there. The row's "night keeps the same list" holds: 01 and 02 dark copies carry the same rows as the light ones.
+- Observation, not claimed by the row: day 2 folded reads 9:46 AM a 2:33 PM in 01 while the same day open in 02 carries a dinner at 7:00 PM and a night. The window stops at the last stop and leaves out the suggested dinner. It is not a Bloqueado or home-night claim, so it is not a mismatch.
+- R2 render, 03: the frames show the Abre cuando termines text, but nothing visible marks the trip as started (no active or visited stop in the part of day 1 on screen). What makes the trip started is the active stop of the harness, which the unit test pins (itinerary_day_list.dart:601 to 604, 1002 to 1003) and not the pixels.
+- The PR says the renders were re-rendered at this head and are byte identical to the first run. I did not re-run test/render/vista_previa_honesta.dart, so that stays a claim.
+
+Detail of the native frames
+- 03-intereses.png: Paso 3 / 4, Planifica tu aventura, seven tiles; Playa (right, first row) and Naturaleza (left, last row) are light-filled, which is the selected style, Experiencia, Montaña, Cultura, Gastro and Aventura are outlined. Matches "interests Playa and Naturaleza (step 3 captured)".
+- 05-dias.png: map at the top edge, sheet scrolled; day 1 open with Piscinas naturales (1:39 PM, Hato Mayor), a 12 min 998 m walk, Parque Nacional Los H... (4:51 PM, Samaná), Cena por Monte Plata 7:00 PM, Duermes en Monte Pla... Noche 1 de 1, then day 2 (10:02 AM a 6:55 PM) and day 3 (9:03 AM a 3:52 PM) folded, each 3 paradas. The button reads Iniciar Día 1, which is the not-started state, so days 2 and 3 showing hours and not Bloqueado is the preview case the row names. The Seen cell matches line by line.
+- 04-titulo.png: the title El Sendero Esmeralda is one of the templates with no place phrase (route_name_generator.dart:71 and :82 to :83), so it claims no region, as the row says. The facts card reads 423 km, 9 paradas, 1 noche, which is the count 3+3+3 of 05 and awayNightsOf(3, keys) with one home key (overnight.dart:138 to 146; mutation-R5.log shows the test failing with 2 when every night is counted). The map area of this frame is blank dark with only the Mapbox logo: the map had not drawn yet; the row does not claim anything on it.
+- Wrong visible, not claimed: in 05 the thumbnail of Piscinas naturales is a photo of a stone building with roofs, not a pool. It is catalog data, not the change.
+
+Build identity
+- Head is f2734e6eca01ae988f340dfb4b22ae8a1e517bc6, equal to the PR headRefOid, worktree /home/decruce/dev/wt/app/vista-previa-honesta clean (git status --short empty). HEAD committed 2026-11-05 05:40:40 local.
+- Receipt: sha f2734e6, package com.conocerd.app.review, versionName 0.17.0-vista-previa-honesta.f2734e6e (carries the sha, so it ties the build to the commit), versionCode 123 (the build the row claims), worktree clean, base.apk sha256 5860eb46...5491, which equals sha256sum app-review.apk in the folder. apkanalyzer on that APK reads versionCode 123, the same versionName and package.
+- Order in time (local): commit 05:40:40, APK written 06:24:41, installed 06:25:05, frames at 9:50 and 9:51 by the status bar, receipt recorded 2026-11-05T13:51:46Z which is 09:51:46 local, after the frames. The mtimes of the three native frames (09:51:43) read as copy time.
+- The sha7 in the capture path (f2734e6) is the head. The PR was opened 2026-11-05T06:22:08Z, after 27 Oct, so this is the one capture read of the PR.
+- The three native frames are 1080x2316, taken on the main screen, no dock or overlay on them.
+- The receipt's recorded time (about 3 h 26 min after the install) is fine for the row: the build identity is the installed APK, and its hash equals the file written after the commit.
+
+Could not verify from the frames
+- Native R3, "the card reads 1 noche for a 3 day circuit whose other night is at home": 1 noche and Noche 1 de 1 are on screen; that the other night is a home night is not. Day 2 is folded in 05 and no frame shows its Vuelves al inicio. The channel that would settle it is the same build 123 with day 2 open in one frame, or the route's nightBaseProvinceKeys printed (a casa key). The claim that build 119 showed 2 noches (the reason for f2734e6e) has no capture in this folder.
+- Native R2, the wizard answers other than the interests (whole country from Distrito Nacional, 3 days, balanced, 9:00, circuit): not in the frames. 04 shows 9 paradas and 1 noche, consistent with 3 days; the origin, balanced and 9:00 do not show (day 1 hours are not visible in 05).
+- The during-trip text on the phone (Abre cuando termines el día N): only in the render rows; no native frame of a started trip.
+- Logcat: none linked.
+
+Verdict
+- R1 (render): confirmed by 01 and 02, light and dark.
+- R2 (render): confirmed by 03, light and dark; the started state is not visible in the pixels, only in the test.
+- R2 (native): confirmed by 03-intereses.png and 05-dias.png; the Seen cell matches the frame.
+- R3 (native): the title half is confirmed by 04-titulo.png; the "other night is at home" half is not verifiable from the frames (day 2 folded).
+- Build identity: confirmed against the head (sha, versionName, versionCode 123, sha256 of the APK, clean worktree, receipt after the frames).
+
+Commands run
+- gh pr view 260 --json body,headRefOid,createdAt
+- git -C /home/decruce/dev/wt/app/vista-previa-honesta rev-parse HEAD; git status --short; git log -1 --format='%H %cd' --date=iso-local
+- sha256sum *.png app-review.apk (in the evidence folder); apkanalyzer manifest print app-review.apk | grep -E "versionCode|versionName|package="
+- ls -l --time-style=full-iso on the evidence folder and datos/; file *.png
+- sed -n 595,625p and 995,1015p lib/features/routes/presentation/widgets/itinerary_day_list.dart
+- sed -n 100,175p lib/features/routes/domain/overnight.dart; sed -n 935,955p lib/features/routes/presentation/screens/route_detail_screen.dart
+- grep -rn "Caribe" lib/features/routes; grep -n "dominantRegionShare|stopRegions|Sendero|Esmeralda" lib/features/routes/domain/usecases/route_name_generator.dart
+- tail datos/mutation-R5.log
