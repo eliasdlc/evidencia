@@ -1,0 +1,51 @@
+Self-check at 926c74a (delivery-reviewer, capture mode), round 1  [agents evidence scrubbed U+00B7 x1 as "."]
+
+Scope: the one row on a channel above test, R7 (native). R1 to R6 are `test` rows with no capture; capture mode does not read them. Capture opened: 05-comidas.png (the only one the row links), plus a 2x crop of its top edge. Receipt opened: datos/recibo-926c74a.txt.
+
+R7 matches 05-comidas.png: itinerary sheet on a dark theme over the map, scrolled to the end of day 1. Top bar: back arrow, pencil, "Compartir", bookmark. Map pills "Orden original 2 h 4 min" (selected) and "Orden sugerido -13 min". Rows, top to bottom: the tail of a stop with a stairway photo (hour cut by the sheet edge, reads like "11:52 AM", "Distrito Nacional"); a 7 min walk of 636 m with an orange star; "Maraca" at 1:29 PM, "Sugerida", an X, a gray placeholder tile and the line "Almuerza aquí"; a 16 min car leg of 6.0 km; "Parque Nacional Los Tres ..." (cave photo) at 3:15 PM, "Santo Domingo"; a 16 min car leg of 5.9 km; "Buche Perico" at 7:00 PM, "Sugerida", an X, a restaurant photo (plants and lights) and the line "Cena aquí"; then a night row with a moon icon, "Duermes en Distrito Naci..." (ellipsis from the width) and "Noche 1 de 1" in orange. Below it a "Día" label on the rail and a card "4 paradas" cut by the bottom button, which reads "Iniciar Día 1".
+
+Row claim against the frame
+- Named lunch: "Maraca at 1:29 PM labeled Sugerida, Almuerza aquí". Matches: name, hour, tag and line are all on screen.
+- Named dinner before the night row: "Buche Perico at 7:00 PM labeled Sugerida, Cena aquí, before the night row". Matches: the dinner row sits directly above the moon row.
+- "the night reads Duermes en Distrito Nacional": the frame shows the text cut at "Distrito Naci...". The full zone comes from `sleepsIn(locale, closing.zone)` (itinerary_day_list.dart:1320) and `zone: night?.name` (:252), so the claim is true in the code; the frame alone does not show the last letters.
+- "Tres Ojos reads 3:15 PM": matches (3:15 PM, "Santo Domingo").
+- "after its 3:00 PM entry": not in this frame. The stored schedule is not drawn anywhere in the capture, so 3:00 PM cannot be read from it. See Could not verify.
+- "the screen redraws hours with balanced couple stays instead of the stored schedule": consistent with the code and the frame. itinerary_day_list.dart:314 to 320 and :388 to 391 read `ItineraryTiming.dwellMinutesForPlace` (the balanced, couple stay). Maraca 1:29 PM to Tres Ojos 3:15 PM is 106 min, minus the 16 min leg is 90, the restaurante stay row. This is the same screen behavior the check of #258 (cbc8059) named, and it is not in this PR's diff for the stays; the diff of itinerary_day_list.dart against cbc8059 is 19 insertions and 7 deletions (the meal lines and the dinner clock).
+
+How the route screen labels a meal stop and a dinner (code, itinerary_day_list.dart)
+- `_mealLine(SuggestedStop)` at :1119 to 1135: lunch with a place reads S.mealLunchHere ("Almuerza aquí"); lunch with no place and a zone reads S.mealLunchLooseIn(zone) ("Almuerza por <zona>"); with no zone S.mealLunchLoose. Dinner with a place reads S.mealDinnerHere ("Cena aquí"); with no place and a zone S.mealDinnerLooseIn(zone) ("Cena por <zona>"); with no zone S.mealDinnerLoose ("Cena por la zona"). Snack reads S.mealSnackHere ("Merienda aquí"). The strings are at strings.dart:2448 to 2455 and :3377 to 3394. The same switch is repeated in onboarding/presentation/widgets/hilo/paso_ruta.dart:323 to 335, so the wizard preview and the route screen agree.
+- A meal with a place is a stop card (:1040 to 1115): the facts line shows the arrival hour and S.mealSuggested ("Sugerida") in place of the province, and `_mealLine` goes in the third line. That is Maraca and Buche Perico in the frame. A meal with no place is its own card (`_TarjetaComida`, :1137 onward) with a restaurant icon, the `_mealLine` as title and "<hora> . Sugerida" under it; its hour comes from `looseMealStarts` (:360 to 397), where a dinner takes the planner's hour when that is later than the end of the previous stop (:396).
+- The dinner hour of a dinner with a place: `mealNotBefore(day.meals)` (meal_planner.dart:208 to 211, only `hasPlace && kind == dinner`) is passed as `notBefore` to `arrivalMinutes` (:660), so the card waits for the dinner hour. The frame agrees: Tres Ojos 3:15 PM plus its 90 min stay is 4:45 PM, plus the 16 min leg is 5:01 PM, and the card reads 7:00 PM (the dinner start, `MealClock.dinnerStart`). A 7:00 PM arrival that is not tied to the previous stop is therefore the clock's wait and not a stale value.
+- `DayClosing` for the night row: `kind: night != null ? DayClosingKind.night : ...` (:244 to 252) with `isLastDay ? null : nights[dayNumber]` (:232), so day 1 of a 2-day circuit gets the night row and "Noche 1 de 1" is `nightIndex` 1 of `nightTotal` 1. Matches the frame.
+- The "4 paradas" card under the night row is the folded day 2 (`S.stopCountLabel(locale, day.stops.length)`, :997), which is why the "Día" label sits below the night row. It is not part of day 1.
+
+Build identity
+- Head is 926c74ab92a6c45407cd3d95bbe2a8448b8c14b3 and the PR headRefOid is the same. Worktree /home/decruce/dev/wt/app/comidas-con-nombre: `git status --short` is empty, as the receipt says. HEAD committed 01:37:25 local.
+- Receipt datos/recibo-926c74a.txt: sha 926c74a, package com.conocerd.app.review, versionName 0.17.0-comidas-con-nombre.926c74ab (carries the sha, so it ties the build), versionCode 118 (the build the row claims), worktree clean, base.apk sha256 1fac71b3...37b4, which equals `sha256sum app-review-118.apk` in the folder. apkanalyzer on that APK reads versionCode 118, versionName 0.17.0-comidas-con-nombre.926c74ab, package com.conocerd.app.review.
+- Order in time: APK written 02:12:04, after the HEAD commit (01:37); installed on the phone 02:12:31 (lastUpdateTime); frame 02:14:41; receipt recorded 02:14:43 local (06:14:43Z), two seconds after the frame, so the receipt was taken with the run and not before it.
+- The sha7 in the capture path (926c74a) is the head. The PR was opened 5 Nov 2026, after 27 Oct, so this is the one capture read of the PR.
+- The system dock at the bottom of the frame (apps, recents, home, back) is the expected artifact of the virtual display; "Iniciar Día 1" sits above it with no overlap.
+
+Visible in the frame, not in the Seen cell, or limits of what it shows
+- The frame starts mid-list: the first rows of day 1 are above the sheet edge, and the top stop's name and first digit of the hour are cut. The row does not claim them. What the frame cannot tell is how many visits day 1 holds.
+- A two-hour stretch with no card: the dinner waits from about 5:01 PM to 7:00 PM and nothing on the screen marks that wait (no gap, no label). It follows from `notBefore`, it is not claimed by the row, and it is a design choice the PR states ("waits for its hour"). Named so nobody reads the 7:00 PM as a travel time.
+- Maraca carries a gray placeholder tile (no photo) and an X, as every suggested stop does; Buche Perico carries a photo and an X. Not part of the claim. The 7 min walk leg carries an orange star at the right, as in the frames of #258; not part of the claim.
+- The frame shows no lunch that says a zone ("Almuerza por ...") and no dinner card without a place ("Cena por ..."). R2 and the zone branch of R3 are `test` rows; the phone run does not exercise them, and the row does not claim them.
+- Neither the wizard answers (whole country from Distrito Nacional, 2 days, balanced, 9:00, circuit, beach and nature) nor the origin show in the frame. "Noche 1 de 1" and a folded day 2 are consistent with 2 days, and the night in Distrito Nacional is consistent with an origin there, but balanced and 9:00 are in the Evidence cell only.
+- Large text scale is not looked for, by Elias's decision of 4 Nov 2026.
+
+Could not verify from the frame
+- "Tres Ojos reads 3:15 PM, after its 3:00 PM entry": the 3:00 PM is the stored schedule's hour and no linked capture or log shows it. The channel that would settle it is the same native build 118 with a frame of the stored schedule (or a printed plan arrival from the build), or a unit test that prints the planner's arrival for that route. Without it the 3:15 PM half is confirmed and the 3:00 PM half is the PR's own claim.
+- The balanced pace, the 9:00 departure, "beach and nature" and the origin: same channel (native, build 118) with a frame of the wizard summary or the route header would settle it.
+- That the night row's "Distrito Nacional" is the traveler's own city and that it drops the dinner under CO1-T734: the frame shows the zone name only; the ticket is not in this PR.
+- Logcat: none linked.
+
+Commands run
+- gh pr view 259 --json body,headRefOid,createdAt
+- git -C /home/decruce/dev/wt/app/comidas-con-nombre rev-parse HEAD; git status --short; git log -1 --format='%H %cd' --date=iso-local
+- sha256sum app-review-118.apk; apkanalyzer manifest print app-review-118.apk | grep -E "versionCode|versionName|package="
+- ls -l --time-style=full-iso on the evidence folder and datos/recibo-926c74a.txt
+- sed -n 1040,1200p lib/features/routes/presentation/widgets/itinerary_day_list.dart; sed -n 330,420p (same file); sed -n 640,680p (same file)
+- grep -n "mealNotBefore" -A22 lib/features/routes/domain/meal_planner.dart
+- sed -n 2445,2460p and 3370,3400p lib/core/l10n/strings.dart
+- git diff cbc8059 HEAD --stat -- lib/features/routes/presentation/widgets/itinerary_day_list.dart
