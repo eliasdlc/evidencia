@@ -1,0 +1,77 @@
+Mutation: lib/features/routes/domain/usecases/generate_route.dart:244, the route does not carry unmetInterests
+Command: flutter test test/features/routes/usecases/generate_route_test.dart
+00:00 +0: loading /home/decruce/dev/wt/app/intereses-pedidos/test/features/routes/usecases/generate_route_test.dart
+00:00 +0: GenerateRouteUseCase partition invariant holds: sum(stopsPerDay) == stops
+00:00 +1: GenerateRouteUseCase no day exceeds the pace maximum (balanced = 4, soft at 3)
+00:00 +2: GenerateRouteUseCase filters out destinations above the budget tier
+00:00 +3: GenerateRouteUseCase wizard type playa ya empareja playa de verdad
+00:00 +4: GenerateRouteUseCase multi-categoría: un destino entra por cualquiera de sus categorías
+00:00 +5: GenerateRouteUseCase montana sigue mapeando a naturaleza: no es una categoría
+00:00 +6: GenerateRouteUseCase returns Left when no candidate matches
+00:00 +7: GenerateRouteUseCase shortens the trip when candidates run out
+00:00 +8: GenerateRouteUseCase mustInclude is always in the route, even off-category/over-budget
+00:00 +9: GenerateRouteUseCase mustInclude alone still yields a one-stop route when nothing matches
+00:00 +10: GenerateRouteUseCase first stop comes from the region nearest the start
+00:00 +11: el eje funcional filtra qué puede ser parada los servicios no entran al itinerario aunque sean los más cercanos
+00:00 +12: el eje funcional filtra qué puede ser parada lo que el import no supo clasificar tampoco ancla un día
+00:00 +13: el eje funcional filtra qué puede ser parada un destino curado sin tipo sigue entrando
+00:00 +14: el eje funcional filtra qué puede ser parada sin nada que visitar, el generador lo dice en vez de inventar
+00:00 +15: el eje funcional filtra qué puede ser parada el destino ancla entra aunque sea un servicio
+00:00 +16: el catálogo mínimo nunca es destino de una ruta un mínimo se descarta aunque su tipo funcional sea visitable
+00:00 +17: el catálogo mínimo nunca es destino de una ruta con curados y mínimos mezclados, solo entran los curados
+00:00 +18: el catálogo mínimo nunca es destino de una ruta el tier legacy (sin campo) sigue siendo candidato
+00:00 +19: alcance geográfico pedir una provincia no devuelve paradas de otra
+00:00 +20: alcance geográfico pedir una región trae sus provincias y solo esas
+00:00 +21: alcance geográfico "cerca de mí" acota por radio, no por frontera provincial
+00:00 +22: alcance geográfico una provincia sin nada del catálogo no inventa paradas de al lado
+00:00 +23: alcance geográfico un destino cuya provincia no resuelve queda fuera de todo alcance que no sea el país
+00:00 +24: alcance de salida: un día no abre con un salto de 300 km con un solo día, lo que no da tiempo de alcanzar no entra
+00:00 +25: alcance de salida: un día no abre con un salto de 300 km con días de sobra, el mismo lugar sí es alcanzable
+00:00 +26: alcance de salida: un día no abre con un salto de 300 km si acotar deja el pool vacío, se prefiere la parada lejos al error
+00:00 +27: calidad, variedad y anti-repetición a igual distancia, gana el mejor valorado
+00:00 +28: calidad, variedad y anti-repetición dos rutas generadas seguidas no son la misma lista
+00:00 +29: calidad, variedad y anti-repetición un lugar ya visitado se propone menos que su gemelo sin visitar
+00:00 +30: calidad, variedad y anti-repetición visitado desprioriza, no excluye: si es lo único que hay, entra
+00:00 +31: calidad, variedad y anti-repetición un lugar guardado se propone más que su gemelo sin guardar
+00:00 +32: calidad, variedad y anti-repetición la tercera playa del día vale menos que la primera
+00:00 +33: escenarios a escala provincia densa: 21 candidatos, ruta dentro de la provincia y distinta cada vez
+00:00 +34: escenarios a escala provincia con 3 destinos: los usa todos y acorta el viaje
+00:00 +35: escenarios a escala país entero: no devuelve solo el Distrito Nacional
+00:00 +36: la noche es parte del itinerario un viaje de N días trae N-1 noches, con su zona
+00:00 +37: la noche es parte del itinerario una salida de un día no tiene noches
+00:00 +38: la noche es parte del itinerario the title names the region the stops are in, not one asked for (CO1-T734)
+00:00 +39: la noche es parte del itinerario un circuito que vuelve a casa no duerme en su propia ciudad (CO1-T734)
+00:00 +40: la noche es parte del itinerario un viaje punta a punta duerme donde termina el día, también en su ciudad (CO1-T734)
+00:00 +41: la noche es parte del itinerario una noche fuera cena fuera, y la última noche vuelve a casa
+00:00 +42: la noche es parte del itinerario ningún día empieza lejísimos de donde se durmió
+00:00 +43: la noche es parte del itinerario el circuito cierra cerca del punto de partida
+00:00 +44: la noche es parte del itinerario la forma pedida se guarda con la ruta
+00:00 +45: la noche es parte del itinerario el presupuesto cobra las noches donde caen
+00:00 +46: meals (CO1-T735) every day of a one way trip of two days or more has a dinner
+00:00 +47: meals (CO1-T735) a round trip that sleeps at home has no dinner out (CO1-T734)
+00:00 +48: meals (CO1-T735) a named dinner is a restaurant of the catalog, at dinner time
+00:00 +49: meals (CO1-T735) with no restaurant in the catalog the dinner says where
+00:00 +50: meals (CO1-T735) a one way day trip has dinner with a medium or high budget only
+00:00 +51: meals (CO1-T735) a day trip that returns to its start never has dinner
+00:00 +52: meals (CO1-T735) a lunch that names a restaurant names one of the catalog
+00:00 +53: meals (CO1-T735) a lunch with no restaurant says where, not only "on the way"
+00:00 +54: meals (CO1-T735) with children, no lunch is later than one o'clock
+00:00 +55: lo que el viajero pide sale en su ruta (CO1-T733) a two day trip carries the beach that was asked for, on every seed
+00:01 +56: lo que el viajero pide sale en su ruta (CO1-T733) an interest the catalog cannot serve is said, not dropped
+00:01 +56 -1: lo que el viajero pide sale en su ruta (CO1-T733) an interest the catalog cannot serve is said, not dropped [E]
+  Expected: ['playa']
+    Actual: []
+     Which: at location [0] is [] which shorter than expected
+  
+  package:matcher                                                expect
+  package:flutter_test/src/widget_tester.dart 473:18             expect
+  test/features/routes/usecases/generate_route_test.dart 1266:7  main.<fn>.<fn>
+  
+00:01 +56 -1: lo que el viajero pide sale en su ruta (CO1-T733) a route that carries everything says nothing extra
+00:01 +57 -1: lo que el viajero pide sale en su ruta (CO1-T733) a one day trip promises nothing and lists nothing
+00:01 +58 -1: lo que el viajero pide sale en su ruta (CO1-T733) every interest of a three day trip is carried when each can be
+00:01 +59 -1: lo que el viajero pide sale en su ruta (CO1-T733) the line names what is missing, in both languages
+00:01 +60 -1: Some tests failed.
+
+Failing tests:
+  /home/decruce/dev/wt/app/intereses-pedidos/test/features/routes/usecases/generate_route_test.dart: lo que el viajero pide sale en su ruta (CO1-T733) an interest the catalog cannot serve is said, not dropped
