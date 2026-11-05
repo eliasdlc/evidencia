@@ -1,0 +1,25 @@
+Self-check at 039ad44 (delivery-reviewer, capture mode)
+
+R1 matches 05-itinerario.png: itinerary list scrolled to the stops of day 1 on a dark theme, Alcázar de Colón (title half clipped at the top) at 9:00 AM, a 15 min car leg of 5.6 km, a cave photo card titled "Parque Nacional Los Tr…" at 10:45 AM, a 15 min car leg of 5.8 km, Maraca marked Sugerida with "Almuerzo aquí" and no photo at 12:30 PM, a 3 min walk of 234 m, Zona Colonial at 2:03 PM, and "Vuelves al inicio" at 3:26 PM, above the Iniciar Ruta button
+
+Arithmetic of the frame against the row's claim
+- Alcázar 9:00 AM to Tres Ojos 10:45 AM is 105 min; minus the 15 min leg leaves a 90 min stay. Matches the row ("was 60" is the old museo value in the table comment at dwell_model.dart:147-151; museo is 90 for a balanced couple, factor 1.00 x 1.00).
+- Tres Ojos 10:45 AM to Maraca 12:30 PM is 105 min; minus the 15 min leg leaves a 90 min stay. Matches the row (cueva 90, dwell_model.dart:140).
+- Back at 3:26 PM is on screen as the "Vuelves al inicio" row.
+- Not claimed by the row, only observed: Maraca 12:30 PM to Zona Colonial 2:03 PM is 93 min, minus the 3 min walk is 90 min, consistent with the restaurante row (dwell_model.dart:93). Zona Colonial 2:03 PM to 3:26 PM is 83 min and holds the last stay plus the drive home; no leg row is drawn before "Vuelves al inicio", so that last stay cannot be derived from the frame.
+
+Build identity
+- Head is 039ad4464c68..., committed 2026-11-04 19:41 AST. The receipt datos/recibo-039ad44.txt says sha 039ad44, versionName 0.17.0-estancia-realista.039ad446 (the head's first 8 characters), versionCode 114 (the build the row claims), package com.conocerd.app.review, lastUpdateTime 2026-11-04 22:32:00, worktree clean, build line "base.apk equals app-review-114.apk, written after the HEAD commit".
+- The status bar of the capture reads 10:33 and the receipt was recorded at 2026-11-05T02:33:52Z, which is 22:33 AST: the frame was taken on that install, one minute after it.
+- The wizard capture 03-presupuesto.png in the same folder (not linked by the PR body) shows $$ Medio, Pareja, 2 personas, the same time 10:33; it agrees with the row's wizard inputs "$$, couple". The frame cannot show the other inputs the row lists (balanced pace, 9:00 start from Distrito Nacional, 1 day, beach and nature), except that the 9:00 start is visible on the first stop.
+
+Things visible in the frame the Seen cell does not say
+- The Tres Ojos card is truncated to "Parque Nacional Los Tr…" and the Alcázar title is cut at the scroll edge, so the names "Alcázar" and "Tres Ojos" are identified by the photos and the times, not read in full. This is a scroll position and an ellipsis, not a mismatch.
+- Maraca shows a gray placeholder tile instead of a photo (a suggested stop). Not part of the row.
+- Zona Colonial uses a photo of the same stairway as the Alcázar card. Not part of the row.
+- The route holds Alcázar, Tres Ojos and the Zona Colonial for a beach and nature request; the PR body already says so under "Seen on the phone, outside this ticket".
+- Large text scale is not looked for, by Elias's decision of 4 Nov 2026.
+
+Could not verify from the frame
+- That the stays were 60 min before this change on the same inputs: the frame has no before; that rests on the table comments (was 60) and the benchmark, not on this capture.
+- "logcat clean of Flutter errors": no logcat is linked, so it is a claim of the row, not something a capture shows.
