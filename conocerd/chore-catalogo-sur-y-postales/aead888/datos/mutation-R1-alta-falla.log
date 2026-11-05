@@ -1,0 +1,72 @@
+Mutation: planCreate never reports conflicts (line 101 filter replaced by () => false)
+Command: node --test alta_destinos.test.js
+✔ the ten southern places exist in the editorial seed and build a queryable document (3.095554ms)
+✔ each southern place has an integer desirability in 0..100 (0.125009ms)
+✔ the six landmark ids carry localLandmark in the desirability seed (0.099354ms)
+✔ ped-bahia-aguilas is costLevel 2 in the seed (0.089585ms)
+✔ refuses ids that are not in the seed, repeated, or with an unresolved province (0.488694ms)
+✖ planCreate reports conflicts with existing documents (1.100504ms)
+✔ create dry run reads but writes nothing (1.35442ms)
+✔ create apply uses create(), never set() on a destination, and refreshes catalog/meta (0.485551ms)
+✖ create refuses when any id already exists and writes nothing (0.859407ms)
+✔ metaFor mirrors the seed rule (0.233008ms)
+✔ update-fields only accepts costLevel and never a backend-owned field (0.378431ms)
+✔ costLevel update writes only costLevel and derives no query field from it (0.268411ms)
+✔ update refuses a missing document and is a no-op when the value already matches (0.250959ms)
+✔ update apply sends one update() with only costLevel and keeps backend fields out of it (0.516609ms)
+✔ update dry run writes nothing (0.283904ms)
+✔ parseArgs (0.236846ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 14
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 65.946653
+
+✖ failing tests:
+
+test at alta_destinos.test.js:116:1
+✖ planCreate reports conflicts with existing documents (1.100504ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   'bar-museo-larimar'
+  - ]
+  
+      at TestContext.<anonymous> (/home/decruce/dev/wt/app/catalogo-sur/scripts/alta_destinos.test.js:118:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ 'bar-museo-larimar' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at alta_destinos.test.js:147:1
+✖ create refuses when any id already exists and writes nothing (0.859407ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/home/decruce/dev/wt/app/catalogo-sur/scripts/alta_destinos.test.js:149:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ya existen/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+Result (from the node summary above): 2 failed, 14 passed
+
+Failing tests (from the ✖ lines above):
+FAIL alta_destinos.test.js: create refuses when any id already exists and writes nothing
+FAIL alta_destinos.test.js: planCreate reports conflicts with existing documents
