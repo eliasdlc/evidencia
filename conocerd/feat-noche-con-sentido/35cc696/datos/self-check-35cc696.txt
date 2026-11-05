@@ -1,0 +1,49 @@
+Self-check at 35cc696 (delivery-reviewer, capture mode), round 1
+
+R3 matches 03-intereses.png: wizard step 3 of 4 on the interests question, with only the Playa and Naturaleza tiles filled light and the other five tiles outlined and dark
+R3 matches 05-dia2.png: route list with day 2 open, Playa de Boca Chica at 9:53 AM, a lunch row, a 21 min leg, Playa Juan Dolio at 2:44 PM, then Cena por Juan Dolio at 7:00 PM and a moon card reading Duermes en Juan Dolio, Noche 1 de 1, with day 3 folded below as 2 paradas
+
+Scope: the one row on a channel above test, R3 (native). R1, R2, R3 and R4 on `test` and the mutation rows have no capture; capture mode does not read them. Captures opened: 03-intereses.png and 05-dia2.png (the two the row links). Receipt opened: datos/recibo-35cc696.txt. Round 1: no previous head, and the PR was opened 2026-11-05, after 27 Oct, so this is its one capture read.
+
+Detail of 03-intereses.png: "Paso 3 / 4", "Planifica tu aventura", question "¿Qué te mueve?", "Toma todos los que te llamen.". Seven tiles in two columns: Experiencia, Playa, Montaña, Cultura, Gastro, Aventura, Naturaleza. Playa (right column, first row) and Naturaleza (left column, last row) are filled light gray with dark icon and text; the other five are dark with an outline. Cultura is off, so the selection is Playa plus Naturaleza and nothing else, as the row says. The selected look is the one checked in the earlier check of this component (hilo_marco.dart `elegido` paints `selectedFill` with no border); this PR does not touch it. Orange "Siguiente" is active at the bottom. Status bar 9:59, 91 percent.
+
+Detail of 05-dia2.png: dark theme, map at the top edge, sheet scrolled to the day rail. Day 2: "Playa de Boca Chica" with a beach photo, 9:53 AM, Santo Domingo; "Almuerza por Santo Domingo" 1:23 PM, Sugerida; car leg "21 min, 23 km"; "Playa Juan Dolio" with a beach photo, 2:44 PM, San Pedro de Macorís; "Cena por Juan Dolio" 7:00 PM, Sugerida; a moon card "Duermes en Juan Dolio" with "Noche 1 de 1" in orange. Day 3 below is folded: "2 paradas", "10:51 AM a 5:14 PM". Bottom button "Completa el día anterior primero" with a lock, above the gesture bar with no overlap. The Seen cell matches: Boca Chica 9:53 AM, Juan Dolio 2:44 PM, Cena por Juan Dolio 7:00 PM, Duermes en Juan Dolio, Noche 1 de 1.
+
+Code against the claim (the row's R3 and R4)
+- overnight_towns.dart: Juan Dolio is a known overnight town (key juan-dolio, 18.4231, -69.4217, province san-pedro-de-macoris, kind beach), so it is a candidate. `overnightTownFor` takes the known place within 75 minutes of the day's center with the lowest minutes after a 30 minute bonus for the kind the trip asked for. The day's stops are Boca Chica and Juan Dolio, so the center sits close to Juan Dolio, and the trip asked for Playa, so the beach bonus applies to Juan Dolio and not to Distrito Nacional (city). Juan Dolio winning is what the code gives, and the frame agrees.
+- generate_route.dart:175 passes `wantsBeach: types.contains('playa')`, and :421 feeds it to `nightPlaceKeyFor` (overnight.dart:85), which also turns on the beach when half the day's stops are `playa`. The producer, the consumer and the effect are on the real cycle, not only in a test.
+- meal_planner.dart:413 to 420 and :470: the dinner's zone is `_nightBaseName(night)`, which is `nightPlaceByKey(night)?.name` (:829), so it is "Juan Dolio", not the last stop's province ("San Pedro de Macorís"). The frame shows "Cena por Juan Dolio" with the last stop in San Pedro de Macorís, so the zone is the night town and not the province, which is what R4 claims. The dinner has no restaurant (a suggestion with a zone), which is the code path `place == null`.
+- "Noche 1 de 1" on a 3 day trip: overnight.dart:157 to 168 and `nightBasesFrom` skip the home key `casa`, so a day that closes at the origin takes no night number. Day 1 is not in the frame, so that the first night was a home night is read from the numbering, not seen.
+
+Build identity
+- Head is 35cc69668cb96e780bc14ea85fade5e1c816e96f, the same as the PR headRefOid. Worktree /home/decruce/dev/wt/app/noche-con-sentido: `git status --short` is empty, as the receipt says. HEAD committed 2026-11-05 07:03:31 local.
+- Receipt datos/recibo-35cc696.txt: sha 35cc696, package com.conocerd.app.review, versionName 0.17.0-noche-con-sentido.35cc6966 (the sha7 plus one digit, so it ties the build to the commit), versionCode 125 (the build the row claims), worktree clean, base.apk sha256 879d1f11...4787, which equals `sha256sum app-review-125.apk` in the folder. apkanalyzer on that APK reads versionCode 125, versionName 0.17.0-noche-con-sentido.35cc6966, package com.conocerd.app.review.
+- Order in time (local): commit 07:03, APK written 09:57:41, installed 09:58:05 (lastUpdateTime), frames at 9:59 by the status bar, receipt recorded 10:00:08 (14:00:08Z), after the frames. The frame files carry mtime 10:00:05, a copy time later than their status bars, not a retake.
+- The sha7 in the capture path (35cc696) is the head. The three raw URLs of the row (03, 05, recibo) answer 200.
+- Both frames are 1080x2316, taken with adb screencap on the main screen, as the row says. Large text scale is not looked for, by Elias's decision of 4 Nov 2026.
+
+Visible in the frames, not in the Seen cell, or limits of what they show
+- The "Orden original" and "Orden sugerido" pills are cut in half by the top edge of the sheet in 05-dia2.png. This PR changes nothing in navigation or route widgets (the files it changes under lib/ are primera_ruta.dart, onboarding_screen.dart, aeropuertos.dart, meal_planner.dart, overnight.dart and generate_route.dart, since the merge of T739), so it is not a defect of the change and the row does not claim it. It is a sheet position in a scrolled frame.
+- Day 2 has Almuerza por Santo Domingo at 1:23 PM and Playa Juan Dolio at 2:44 PM after a 21 min leg: 1:23 PM plus about an hour plus 21 min reads as 2:44 PM. Consistent; the row claims nothing about lunch.
+- Dinner at 7:00 PM after a 2:44 PM arrival at the beach: the dinner hour is the usual one, and it is not the 6:30 PM early dinner because the day arrives late at the night base. Not claimed by the row.
+
+Could not verify from the frames
+- Naturaleza: the row's wizard answer lists Playa and Naturaleza, and 03 shows both selected. No frame shows a nature stop by name; day 2 is two beaches. The row claims only the night and the dinner, not that Naturaleza was served, so this is not a mismatch.
+- The wizard answers other than the interests (whole country from Distrito Nacional, 3 days, balanced, 9:00, circuit) are in the Evidence cell only. 03 shows step 3 of 4; 05 shows a Día 3 after day 2, so at least 3 days. Balanced, 9:00, circuit and the origin do not show.
+- "The same inputs on build 124 (T739, without this PR) slept in San Pedro de Macorís": no capture, log or receipt of build 124 is linked. It stays a claim until a frame of build 124 is added. It is plausible from the code (the old base was the seat of the nearest province), and the unit tests of the row pin it, but it is not seen.
+- Day 1 and day 3 are not open, so where day 1 slept and where day 3 starts is not seen.
+- The save: that the route stored the key juan-dolio (and not san-pedro-de-macoris) is read from the card text; no stored route is shown.
+- Logcat: none linked.
+
+Verdict
+- R3 (native): the Seen cell matches both captures, and the code produces Juan Dolio as the night and the dinner zone for these inputs. Confirmed on the two claims the frames carry. The build 124 comparison is not verifiable from these captures.
+- Build identity: confirmed against the head (sha, versionName, versionCode 125, sha256 of the APK, clean worktree, receipt after the frames).
+- No counterexample.
+
+Commands run
+- gh pr view 265 --json body,headRefOid,createdAt
+- git -C /home/decruce/dev/wt/app/noche-con-sentido rev-parse HEAD; git status --short; git log -1 --format='%H %cd' --date=iso-local; git diff --name-only c04b3fa5..HEAD
+- sha256sum app-review-125.apk 03-intereses.png 05-dia2.png; apkanalyzer manifest print app-review-125.apk | grep -E "versionCode|versionName|package="
+- ls -l --time-style=full-iso on the evidence folder and datos/recibo-35cc696.txt; file on the two PNGs
+- curl -s -o /dev/null -w "%{http_code}" -L on the three raw URLs of the row
+- Read lib/features/routes/domain/overnight_towns.dart, overnight.dart; sed -n 735,830p and 300,335p and 395,490p lib/features/routes/domain/meal_planner.dart; sed -n 165,185p and 405,470p lib/features/routes/domain/usecases/generate_route.dart; sed -n 2480,2520p lib/core/l10n/strings.dart
