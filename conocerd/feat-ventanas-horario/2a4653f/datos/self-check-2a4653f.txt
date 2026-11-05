@@ -1,0 +1,38 @@
+Self-check at 2a4653f (delivery-reviewer, capture mode)
+
+R4 matches 05-itinerario.png: route summary sheet over the map, title "El Sendero Gran", 13 km and "5 paradas", a stop strip with five nodes running from "Catedral Primada de Améri..." to "Alcázar de Colón" with two 6 km legs, "RD$ 7,375 - 11,800", "En carro 36 min", and the Iniciar Ruta button; the map shows the line between a museum pin in Ciudad Nueva and a mountain pin to the east. The frame carries no times, so it supports only the stop count of the row.
+R4 matches 07-itinerario-3.png: itinerary list on a dark theme, Zona Colonial at 9:42 AM, a 15 min car leg of 5.9 km, a cave photo card "Parque Nacional Los Tres ..." at 11:12 AM, a 15 min car leg of 5.8 km, Maraca with a gray placeholder tile marked "Sugerida" and "Almuerza aquí" at 12:57 PM, an 8 min walk of 636 m, Alcázar de Colón at 2:35 PM, and "Vuelves al inicio" at 4:13 PM, above the Iniciar Ruta button
+
+Row claim against the frame
+- Tres Ojos at 11:12 AM: on screen. Cave arrival window is 8:00 to 15:00 (kCaveHard, time_windows.dart:112), the row's "entry until 3:00 PM". Inside, 3 h 48 min before the close.
+- Maraca labeled "Almuerza aquí" at 12:57 PM: on screen, text identical. Inside the lunch slot 12:00 to 14:00 (LunchHours.slotEarliest and slotLatest, time_windows.dart:521 and 525; kLunchPreferred, line 189) and inside the restaurant lunch hard window 11:30 to 15:00 (kRestaurantLunchHard, line 134).
+- Alcázar at 2:35 PM: on screen. Museum arrival window is 9:00 to 16:30 (kMuseumHard, line 117), the row's "entry until 4:30 PM". Inside, 1 h 55 min before the close.
+- Back at 4:13 PM: on screen as the "Vuelves al inicio" row.
+- 5 stops: "5 paradas" in 05-itinerario.png. The five are Catedral Primada, Zona Colonial, Tres Ojos, Maraca and Alcázar (the first two are in 06-itinerario-2.png, which the PR does not link: Catedral at 9:00 AM, a 2 min walk of 150 m, Zona Colonial at 9:42 AM). Maraca is counted in the five; the PR says meals do not count against the soft stop maximum, which is a planner rule, not a claim about this number.
+- "against 3:26 PM and 4 stops on build 114": not on these frames. It matches the frame of build 114 read in self-check-039ad44.txt (Alcázar, Tres Ojos, Maraca, Zona Colonial, back at 3:26 PM), which is a different folder.
+
+Arithmetic of the frame
+- Catedral 9:00 AM to Zona Colonial 9:42 AM is 42 min; minus the 2 min walk leaves a 40 min stay: monumento 40 (dwell_model.dart:152). Catedral Primada is a monumento in test/fixtures/route_benchmark/catalog_2026-11-02.json.
+- Zona Colonial 9:42 AM to Tres Ojos 11:12 AM is 90 min; minus the 15 min leg leaves a 75 min stay. Zona Colonial is an atraccion in that catalog; its row in dwell_model.dart was not traced, so this stay is observed, not checked.
+- Tres Ojos 11:12 AM to Maraca 12:57 PM is 105 min; minus the 15 min leg leaves 90 min: cueva 90 (dwell_model.dart:140).
+- Maraca 12:57 PM to Alcázar 2:35 PM is 98 min; minus the 8 min walk leaves 90 min: restaurante 90 (dwell_model.dart:93).
+- Alcázar 2:35 PM to 4:13 PM is 98 min and holds the last stay plus the drive home. No leg row is drawn before "Vuelves al inicio", so that stay cannot be derived from the frame. (Car time on the summary is 36 min against 30 min of the two legs visible, leaving 6 min for the return; with a 90 min museum stay that would give 96 min, 2 min short of 98, so the return leg or the stay differs by rounding. Not claimed by the row.)
+- No arrival on screen is outside the hard window of its type, and none is outside the last light (the latest, Alcázar at 2:35 PM, is long before the earliest sunset of the year, 18:07).
+
+Build identity
+- Head is 2a4653f70d0760b0b74fddc16fb5502841beabbb, a merge commit of origin/dev (PR #254) dated 2026-11-04 23:11:54 -0400. The worktree is clean. The receipt datos/recibo-2a4653f.txt says sha 2a4653f, versionName 0.17.0-ventanas-horario.2a4653f7 (the first 8 characters of the head), versionCode 115 (the build the row claims), package com.conocerd.app.review, lastUpdateTime 2026-11-04 23:41:03, worktree clean, build line "base.apk equals app-review-115.apk, written after the HEAD commit".
+- Re-run on the APK in the folder: sha256sum app-review-115.apk gives aa2fc6ae7b03...0dc428, the receipt's base.apk sha256; apkanalyzer manifest version-name gives 0.17.0-ventanas-horario.2a4653f7, version-code 115, application-id com.conocerd.app.review. The file is dated 23:40:40, after the head commit (23:11:54) and before the install (23:41:03).
+- The frames carry no status bar (hidden virtual display), so the clock of the phone cannot tie them to the install as in the earlier self-check. The file times do: 00-inicio.png 23:42:27, 04-ruta.png 23:50:00, 05-itinerario.png and 07-itinerario-3.png 23:51:37, all after the install, and the receipt was recorded at 03:51:41Z (23:51:41 -0400), four seconds after the last two. File times are weak evidence (the frames were extracted from a recording); the version identity above is what ties the build.
+- The system dock at the bottom of every frame is the expected artifact of the virtual display; the Iniciar Ruta button sits above it with no overlap.
+
+Visible in the frames, not in the Seen cell
+- The route for "beach and nature" holds Catedral Primada, Zona Colonial, Alcázar (colonial city) plus Tres Ojos; no beach. The row claims windows and the clock, not preference fit, and the PR does not claim it. Maraca has no photo (suggested stop placeholder).
+- Zona Colonial and Alcázar de Colón use the same stairway photo.
+- Tres Ojos is shown as "Parque Nacional Los Tres ..." (ellipsis), identified by name prefix and photo; Catedral and Tres Ojos titles are ellipsized in the summary and list. Not a mismatch.
+- The route drives 5.9 km out to Tres Ojos and 5.8 km back to the Zona Colonial for the last stop, so the day crosses the river twice; the windows hold, the order is not a claim of this row.
+- Large text scale is not looked for, by Elias's decision of 4 Nov 2026.
+
+Could not verify from the frames
+- "logcat clean of Flutter errors": no logcat is linked, so it is a claim of the row.
+- That the hard windows applied here came from the type table and not from structured hours: the benchmark catalog has no hours for these five places, but the app reads live data and the frames do not show it. The result is inside both readings only for the types of the table.
+- The 4:13 PM end and the 3:26 PM of build 114 as a before/after on the same inputs: the second rests on a different folder.
