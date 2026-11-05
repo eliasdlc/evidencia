@@ -1,0 +1,35 @@
+Mutation: lib/features/routes/presentation/widgets/itinerary_day_list.dart:270, the route screen prints every day at the route's one hour (departureByDay ignored)
+Command: flutter test test/features/routes/presentation/itinerary_day_list_test.dart
+00:00 +0: loading /home/decruce/dev/wt/app/salida-por-dia/test/features/routes/presentation/itinerary_day_list_test.dart
+00:00 +0: arrivalMinutes arranca a las 9:00 y acumula estancia y tramo
+00:00 +1: arrivalMinutes el trayecto de la mañana corre el día entero
+00:00 +2: arrivalMinutes sale a la hora de salida de la ruta, no a las 9:00
+00:00 +3: arrivalMinutes un almuerzo sin lugar corre las paradas que vienen detrás
+00:00 +4: arrivalMinutes un tramo sin duración apaga las horas que vienen detrás
+00:00 +5: closingMinutes cuenta la estancia de la última parada y el trayecto de después
+00:00 +6: closingMinutes el almuerzo sin lugar que va al terminar retrasa la vuelta
+00:00 +7: closingMinutes una comida entre paradas no se cuenta dos veces en la vuelta
+00:00 +8: closingMinutes sin la última hora no hay cierre que prometer
+00:00 +9: looseMealStarts el almuerzo al terminar empieza al irse de la última parada y la vuelta sale después de comer
+00:00 +10: looseMealStarts el almuerzo entre paradas va al salir de la anterior y la siguiente llega después de comer y manejar
+00:00 +11: looseMealStarts el desayuno antes de la primera parada va a la hora de salir
+00:00 +12: buildItineraryDays parte por el desglose y salta el tramo que cruza la noche
+00:00 +13: buildItineraryDays el día 1 cuenta el trayecto desde el origen y cada día sale a su hora
+00:00 +13 -1: buildItineraryDays el día 1 cuenta el trayecto desde el origen y cada día sale a su hora [E]
+  Expected: [510, 465]
+    Actual: MappedListIterable<ItineraryDay, int>:[540, 540]
+     Which: at location [0] is <540> instead of <510>
+  
+  package:matcher                                                       expect
+  package:flutter_test/src/widget_tester.dart 473:18                    expect
+  test/features/routes/presentation/itinerary_day_list_test.dart 330:7  main.<fn>.<fn>
+  
+00:00 +13 -1: buildItineraryDays el día que cierra con noche la nombra una sola vez
+00:00 +14 -1: buildItineraryDays un viaje punta a punta termina donde termina, sin prometer vuelta
+00:00 +15 -1: buildItineraryDays el día 2 queda bloqueado hasta completar el 1
+00:00 +16 -1: buildItineraryDays sin conexión el día no tiene horas que enseñar
+00:00 +17 -1: buildItineraryDays sin pernoctación el día sale de la última parada de ayer
+00:00 +18 -1: Some tests failed.
+
+Failing tests:
+  /home/decruce/dev/wt/app/salida-por-dia/test/features/routes/presentation/itinerary_day_list_test.dart: buildItineraryDays el día 1 cuenta el trayecto desde el origen y cada día sale a su hora
