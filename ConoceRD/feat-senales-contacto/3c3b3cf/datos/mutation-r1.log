@@ -1,0 +1,107 @@
+# R1 at 3c3b3cf, with m-r1.patch applied
+# $ firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm exec vitest run test/contact-signals.test.ts -t R1"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/contact-signals.test.ts -t R1
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/senales-contacto
+
+ ❯ test/contact-signals.test.ts (15 tests | 3 failed | 9 skipped) 1523ms
+   ✓ R1: cuerpo de /signals/contact > acepta los cinco canales y una excursión opcional 4ms
+   ✓ R1: cuerpo de /signals/contact > rechaza canal desconocido, campos de más, excursión mal formada y la reservada "general" 2ms
+   ✓ R1: cuerpo de /signals/contact > la clave separa canal, excursión y el cubo general 0ms
+   ↓ señales de contacto contra el emulador > R2: el primer toque cuenta, el segundo del mismo día no, y el del día siguiente sí
+   ↓ señales de contacto contra el emulador > R2: el mismo día del mes siguiente no queda bloqueado por el marcador
+   ↓ señales de contacto contra el emulador > R5: los cinco canales cuentan y el reparto por excursión suma el total de cada canal
+   ↓ señales de contacto contra el emulador > R3: un dueño del destino no cuenta, un destino ausente es not_curated y ninguno escribe
+   ↓ señales de contacto contra el emulador > R4: N cuentas distintas a la vez suman exactamente N, y una cuenta repetida a la vez suma 1
+   ↓ señales de contacto contra el emulador > R2: una cuenta no guarda más claves por día que el tope y no deja entrar más
+   ↓ señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > un contacto deja intactos los campos de visitas y una visita deja intactos los de contactos
+   ↓ señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > la reconstrucción de visitas deja intactos los contactos, también en un mes que solo tiene contactos
+   × señales de contacto contra el emulador > HTTP > R1: 200 con el resultado, y la segunda llamada del día lo dice 1003ms
+     → expected 403 to be 200 // Object.is equality
+   × señales de contacto contra el emulador > HTTP > R1: 401 sin token y 422 con un cuerpo mal formado, sin escribir nada 47ms
+     → expected 403 to be 422 // Object.is equality
+   ↓ señales de contacto contra el emulador > HTTP > R3: el dueño con el claim biz recibe owner por HTTP
+   × señales de contacto contra el emulador > HTTP > R1: App Check se observa y no se exige hasta activar CONTACT_SIGNALS_REQUIRE_APP_CHECK 37ms
+     → expected 403 to be 200 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/contact-signals.test.ts > señales de contacto contra el emulador > HTTP > R1: 200 con el resultado, y la segunda llamada del día lo dice
+AssertionError: expected 403 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 403[39m
+
+ ❯ test/contact-signals.test.ts:209:28
+    207|     it('R1: 200 con el resultado, y la segunda llamada del día lo dice…
+    208|       const first = await api.POST(request({destinationId: place, kind…
+    209|       expect(first.status).toBe(200);
+       |                            ^
+    210|       expect(await first.json()).toEqual({counted: true, reason: 'coun…
+    211|       const second = await api.POST(request({destinationId: place, kin…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/contact-signals.test.ts > señales de contacto contra el emulador > HTTP > R1: 401 sin token y 422 con un cuerpo mal formado, sin escribir nada
+AssertionError: expected 403 to be 422 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 422[39m
+[31m+ 403[39m
+
+ ❯ test/contact-signals.test.ts:217:87
+    215|     it('R1: 401 sin token y 422 con un cuerpo mal formado, sin escribi…
+    216|       expect((await api.POST(request({destinationId: place, kind: 'cal…
+    217|       expect((await api.POST(request({destinationId: place, kind: 'sha…
+       |                                                                                       ^
+    218|       expect((await api.POST(request({destinationId: place, kind: 'cal…
+    219|       expect((await api.POST(request({kind: 'call'}))).status).toBe(42…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/contact-signals.test.ts > señales de contacto contra el emulador > HTTP > R1: App Check se observa y no se exige hasta activar CONTACT_SIGNALS_REQUIRE_APP_CHECK
+AssertionError: expected 403 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 403[39m
+
+ ❯ test/contact-signals.test.ts:228:86
+    226|     });
+    227|     it('R1: App Check se observa y no se exige hasta activar CONTACT_S…
+    228|       expect((await api.POST(request({destinationId: place, kind: 'vie…
+       |                                                                                      ^
+    229|       process.env.CONTACT_SIGNALS_REQUIRE_APP_CHECK = 'true';
+    230|       const rejected = await api.POST(request({destinationId: place, k…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 3 passed | 9 skipped (15)
+   Start at  21:55:57
+   Duration  2.13s (transform 208ms, setup 0ms, collect 232ms, tests 1.52s, environment 0ms, prepare 98ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/contact-signals.test.ts -t R1" exited with code 1
