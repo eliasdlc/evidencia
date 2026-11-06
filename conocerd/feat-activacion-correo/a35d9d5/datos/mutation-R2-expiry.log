@@ -1,0 +1,128 @@
+# mutation-R2-expiry at a35d9d5: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts"
+# exit 1
+diff --git i/src/lib/invitations.ts w/src/lib/invitations.ts
+index e5f8942..9ac8147 100644
+--- i/src/lib/invitations.ts
++++ w/src/lib/invitations.ts
+@@ -132,7 +132,7 @@ export function checkInvitationToken(
+     return { ok: false, code: 'invalid_token' };
+   }
+   if (record.usedAt) return { ok: false, code: 'token_used' };
+-  if (issued.expiresAt.getTime() <= now.getTime()) return { ok: false, code: 'token_expired' };
++  
+   return { ok: true };
+ }
+ 
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (31 tests | 3 failed) 6000ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 2ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 1ms
+   ✓ token de invitación > una firma alterada, otro secreto, otra cuenta u otro vencimiento no abren nada 1ms
+   ✓ token de invitación > un token reemplazado por un reenvío ya no abre, aunque la firma sea buena 0ms
+   × token de invitación > un token pendiente abre con su propio vencimiento, junto al vigente 7ms
+     → expected { ok: true } to deeply equal { ok: false, code: 'token_expired' }
+   ✓ token de invitación > sirve una sola vez 0ms
+   × token de invitación > vence a su hora exacta 1ms
+     → expected { ok: true } to deeply equal { ok: false, code: 'token_expired' }
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 1ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  824ms
+   ✓ activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 137ms
+   ✓ activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 105ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3316ms
+   × activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 81ms
+     → expected 200 to be 410 // Object.is equality
+   ✓ activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 65ms
+   ✓ activación contra el emulador > reenviar manda un enlace nuevo con 7 días y deja muerto el anterior 94ms
+   ✓ activación contra el emulador > un reenvío que no sale no mata el enlace que la persona ya tenía 70ms
+   ✓ activación contra el emulador > reenviar exige admin 73ms
+   ✓ activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño 72ms
+   ✓ activación contra el emulador > si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false 76ms
+   ✓ activación contra el emulador > si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false 93ms
+   ✓ activación contra el emulador > si el proveedor acepta el reenvío y la escritura de después falla, el enlace enviado sirve y la respuesta es sent: true 92ms
+   ✓ activación contra el emulador > si el proveedor acepta la primera invitación y la escritura de después falla, dice sent: true y el enlace sirve 78ms
+   ✓ activación contra el emulador > con dos reenvíos a la vez, el último correo aceptado lleva el enlace que sirve 183ms
+   ✓ activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada 89ms
+   ✓ activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y la marca de uso se quita 59ms
+   ✓ activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable 33ms
+   ✓ activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada 44ms
+   ✓ activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña 35ms
+   ✓ activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 32ms
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 32ms
+   ✓ activación contra el emulador > revocar avisa por correo con el nombre del negocio 50ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 28 passed (31)
+   Start at  09:50:24
+   Duration  6.47s (transform 151ms, setup 10ms, collect 295ms, tests 6.00s, environment 0ms, prepare 46ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > token de invitación > un token pendiente abre con su propio vencimiento, junto al vigente
+AssertionError: expected { ok: true } to deeply equal { ok: false, code: 'token_expired' }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "code": "token_expired",[39m
+[32m-   "ok": false,[39m
+[31m+   "ok": true,[39m
+[2m  }[22m
+
+ ❯ test/activation-route.test.ts:82:75
+     80|     expect(checkInvitationToken(SECRET, pendingToken, ID, record, BEFO…
+     81|     expect(checkInvitationToken(SECRET, token, ID, record, BEFORE)).to…
+     82|     expect(checkInvitationToken(SECRET, pendingToken, ID, record, late…
+       |                                                                           ^
+     83|     expect(checkInvitationToken(SECRET, pendingToken, ID, recordFor(to…
+     84|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/activation-route.test.ts > token de invitación > vence a su hora exacta
+AssertionError: expected { ok: true } to deeply equal { ok: false, code: 'token_expired' }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "code": "token_expired",[39m
+[32m-   "ok": false,[39m
+[31m+   "ok": true,[39m
+[2m  }[22m
+
+ ❯ test/activation-route.test.ts:95:80
+     93|   it('vence a su hora exacta', () => {
+     94|     expect(checkInvitationToken(SECRET, token, ID, recordFor(token), n…
+     95|     expect(checkInvitationToken(SECRET, token, ID, recordFor(token), E…
+       |                                                                                ^
+     96|   });
+     97| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo
+AssertionError: expected 200 to be 410 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 410[39m
+[31m+ 200[39m
+
+ ❯ test/activation-route.test.ts:282:29
+    280|     });
+    281|     const response = await activate(tokenIn(outbox[0]));
+    282|     expect(response.status).toBe(410);
+       |                             ^
+    283|     await expect(response.json()).resolves.toMatchObject({ error: 'tok…
+    284|     expect((await firebase.adminAuth().getUser(body.uid)).emailVerifie…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
