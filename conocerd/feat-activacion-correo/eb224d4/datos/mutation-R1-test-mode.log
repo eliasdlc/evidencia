@@ -1,0 +1,63 @@
+# mutation-R1-test-mode at eb224d4: pnpm vitest run --silent=true src/lib/email/resend.test.ts
+# exit 1
+diff --git i/src/lib/email/resend.ts w/src/lib/email/resend.ts
+index 4927b99..cf53a4b 100644
+--- i/src/lib/email/resend.ts
++++ w/src/lib/email/resend.ts
+@@ -90,7 +90,7 @@ export async function sendEmail(message: EmailMessage, deps: EmailDeps = {}): Pr
+   const test = config.mode === 'test';
+   if (test && !config.testRecipient) return { sent: false, reason: 'no_test_recipient' };
+ 
+-  const to = test ? (config.testRecipient as string) : message.to;
++  const to = message.to;
+   const subject = test ? `[PRUEBA] ${message.subject}` : message.subject;
+   const text = test ? `Correo de prueba. En vivo iría a ${message.to}.\n\n${message.text}` : message.text;
+ 
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ src/lib/email/resend.test.ts (8 tests | 1 failed) 43ms
+   ✓ configuración del correo > sin EMAIL_MODE es modo prueba, y el remitente es siempre el de negocios 4ms
+   ✓ sendEmail > en vivo manda a Resend con la clave, el remitente, texto plano e Idempotency-Key 8ms
+   × sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave 22ms
+     → expected { sent: true, id: 'email_123', …(2) } to match object { sent: true, …(2) }
+(1 matching property omitted from actual)
+   ✓ sendEmail > en modo prueba sin buzón de prueba no llama a nadie 3ms
+   ✓ sendEmail > sin clave no llama a nadie 1ms
+   ✓ sendEmail > un rechazo de Resend es sent: false con el código, sin lanzar 1ms
+   ✓ sendEmail con la red caída > es sent: false sin lanzar y sin poner el error en el log 1ms
+   ✓ idempotencyKey > es estable por hecho, distinta entre hechos y corta aunque las partes no lo sean 2ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  10:01:55
+   Duration  747ms (transform 146ms, setup 31ms, collect 121ms, tests 43ms, environment 0ms, prepare 140ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave
+AssertionError: expected { sent: true, id: 'email_123', …(2) } to match object { sent: true, …(2) }
+(1 matching property omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "sent": true,[22m
+[2m    "test": true,[22m
+[32m-   "to": "<email-1>",[39m
+[31m+   "to": "<email-2>",[39m
+[2m  }[22m
+
+ ❯ src/lib/email/resend.test.ts:82:20
+     80|     });
+     81| 
+     82|     expect(result).toMatchObject({ sent: true, to: '<email-1>'…
+       |                    ^
+     83|     const { headers, body } = sentRequest(fetch);
+     84|     expect(body.to).toEqual(['<email-1>']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
