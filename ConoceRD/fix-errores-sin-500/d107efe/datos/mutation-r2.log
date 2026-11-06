@@ -1,0 +1,55 @@
+# R2 at d107efe, with mutate-h2.patch applied
+# $ pnpm vitest run test/http-errors.test.ts -t "H2"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/errores-sin-500
+
+ ❯ test/http-errors.test.ts (23 tests | 1 failed | 21 skipped) 22ms
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > constructor como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > toString como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > valueOf como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > hasOwnProperty como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > isPrototypeOf como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > propertyIsEnumerable como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > toLocaleString como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > __defineGetter__ como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > __lookupGetter__ como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > __proto__ como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > un error a mano con la clave en el path tampoco lanza
+   × errorResponse > H2: la forma del 422 de un cuerpo ordinario no cambia > es idéntica a la de z.treeifyError, byte a byte 20ms
+     → expected '{"error":"invalid_body","issues":{"er…' to be '{"error":"invalid_body","issues":{"er…' // Object.is equality
+   ✓ errorResponse > H2: la forma del 422 de un cuerpo ordinario no cambia > un error en la raíz va en errors 1ms
+   ↓ errorResponse > H3: por una ruta real con readJson > constructor como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > toString como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > valueOf como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > hasOwnProperty como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > isPrototypeOf como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > propertyIsEnumerable como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > toLocaleString como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > __defineGetter__ como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > __lookupGetter__ como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > un cuerpo válido con esa clave sigue pasando
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/http-errors.test.ts > errorResponse > H2: la forma del 422 de un cuerpo ordinario no cambia > es idéntica a la de z.treeifyError, byte a byte
+AssertionError: expected '{"error":"invalid_body","issues":{"er…' to be '{"error":"invalid_body","issues":{"er…' // Object.is equality
+
+Expected: [32m"{"error":"invalid_body","issues":{"errors":[],"properties":{"name":{"errors":["T[7moo small: expected string to have >=2 characters"]},"tags":{"errors":["Too big: expected array to have <=1 items"],"items":[null,{"errors":["Invalid input: expected string, received number[27m"]}]},"nested":{"errors":[],"properties":{"n":{"errors":["I[7mnvalid input: expected number, received string[27m"]}}},"mode":{"errors":["I[7mnvalid input: expected[27m \"[7ma[27m\"","I[7mnvalid input: expected[27m \"[7mb[27m\""]},"dias":{"errors":[],"properties":{"lunes":{"errors":["I[7mnvalid input: expected number, received string[27m"]}}}}}}"[39m
+Received: [31m"{"error":"invalid_body","issues":{"errors":[],"properties":{"name":{"errors":["T[7mOO SMALL: EXPECTED STRING TO HAVE >=2 CHARACTERS"]},"tags":{"errors":["TOO BIG: EXPECTED ARRAY TO HAVE <=1 ITEMS"],"items":[null,{"errors":["INVALID INPUT: EXPECTED STRING, RECEIVED NUMBER[27m"]}]},"nested":{"errors":[],"properties":{"n":{"errors":["I[7mNVALID INPUT: EXPECTED NUMBER, RECEIVED STRING[27m"]}}},"mode":{"errors":["I[7mNVALID INPUT: EXPECTED[27m \"[7mA[27m\"","I[7mNVALID INPUT: EXPECTED[27m \"[7mB[27m\""]},"dias":{"errors":[],"properties":{"lunes":{"errors":["I[7mNVALID INPUT: EXPECTED NUMBER, RECEIVED STRING[27m"]}}}}}}"[39m
+
+ ❯ test/http-errors.test.ts:86:20
+     84|       expect(response.status).toBe(422);
+     85|       const text = await response.text();
+     86|       expect(text).toBe(JSON.stringify({ error: 'invalid_body', issues…
+       |                    ^
+     87|       // Anclada a la forma concreta: errors, properties e items.
+     88|       const issues = (JSON.parse(text) as { issues: Record<string, unk…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed | 21 skipped (23)
+   Start at  14:08:28
+   Duration  312ms (transform 42ms, setup 0ms, collect 107ms, tests 22ms, environment 0ms, prepare 58ms)
+
