@@ -1,0 +1,80 @@
+# pnpm test:emulator at eb224d4 (same command on private ports: firebase emulators:exec --config <scratch firebase.json with auth 19099, firestore 18080> --only auth,firestore --project demo-conocerd "vitest run")
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ✓ test/visit-stats.test.ts (14 tests) 14344ms
+   ✓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore  1408ms
+   ✓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script rechaza un host de emulador remoto aun con las dos banderas y dice cuál es  1300ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento  1078ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística  340ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada  408ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco no abre transacciones y avisa del alcance antes de leer por destino  330ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > la CLI sin --write no escribe nada y con --write escribe, y repetir no cambia nada  5440ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > un mes con solo campos de contactos, sin visitas ni periodo, queda intacto con --write  2843ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > --all lee cada recibo una sola vez en seco; con --write los relee dentro de la transacción  396ms
+ ✓ test/firebase-admin-emulator-host.test.ts (2 tests) 251ms
+ ✓ src/lib/visits.test.ts (49 tests) 17ms
+ ✓ src/lib/tester-feedback.test.ts (18 tests) 26ms
+ ✓ src/lib/mapbox-proxy.test.ts (10 tests) 24ms
+ ✓ test/geocoding-contract.test.ts (10 tests) 26ms
+ ✓ test/geocoding.test.ts (12 tests) 18ms
+ ✓ src/lib/mapbox-handler.test.ts (6 tests) 23ms
+ ✓ test/cors-proxy.test.ts (12 tests) 24ms
+ ✓ src/lib/reviews.test.ts (19 tests) 9ms
+ ✓ src/lib/stats-policy.test.ts (54 tests) 12ms
+ ✓ src/lib/email/resend.test.ts (8 tests) 11ms
+ ✓ src/lib/cors.test.ts (60 tests) 12ms
+ ✓ src/lib/email/oob.test.ts (4 tests) 7ms
+ ✓ src/lib/problem-reports.test.ts (11 tests) 8ms
+ ✓ src/lib/review-photos.test.ts (11 tests) 6ms
+ ✓ src/lib/claims.test.ts (17 tests) 7ms
+ ✓ test/activation-route.test.ts (32 tests) 5311ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3296ms
+ ✓ src/lib/published-routes.test.ts (6 tests) 10ms
+ ✓ test/owner-service.test.ts (28 tests) 2390ms
+   ✓ owner-service contra el emulador > C2: la reconciliación termina una revocación a medias en vez de pedir volver a conceder  1240ms
+ ✓ src/lib/email/templates.test.ts (12 tests) 7ms
+ ✓ src/lib/account-deletion.test.ts (3 tests) 4ms
+ ✓ src/lib/storage-url.test.ts (6 tests) 3ms
+ ✓ src/lib/auth.test.ts (3 tests) 2ms
+ ✓ src/lib/country-fields.test.ts (2 tests) 3ms
+ ✓ test/email-env.test.ts (2 tests) 2ms
+ ✓ src/lib/app-check.test.ts (2 tests) 2ms
+ ✓ test/password-link-route.test.ts (15 tests) 1876ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  303ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1134ms
+ ✓ test/business-me-route.test.ts (18 tests) 1975ms
+   ✓ panel de negocios contra el emulador > GET /business/me > un token revocado responde 401 aunque no haya caducado  1116ms
+ ✓ test/account-delete-route.test.ts (7 tests) 2093ms
+   ✓ borrado de cuenta contra el emulador > una sesión vieja no puede borrar la cuenta sin volver a identificarse  1121ms
+ ✓ test/admin-owners-route.test.ts (14 tests) 2140ms
+   ✓ rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401  1172ms
+ ↓ test/budget.test.ts (1 test | 1 skipped)
+ ✓ test/claims-route.test.ts (13 tests) 1572ms
+   ✓ rutas de claims contra el emulador > revocar invalida el token que la cuenta ya tenía en la mano  1117ms
+ ✓ test/counter-reconciliation.test.ts (7 tests) 639ms
+ ✓ test/geocoding-route.test.ts (4 tests) 689ms
+   ✓ geocodificación protegida contra los emuladores > limita cada cuenta a 30 consultas por minuto mediante transacciones  362ms
+ ✓ test/moderation-route.test.ts (16 tests) 1373ms
+ ✓ test/published-routes-route.test.ts (13 tests) 788ms
+ ✓ test/reviews-route.test.ts (21 tests) 7289ms
+   ✓ reseñas contra el emulador > borrar resta una sola reseña y preserva XP, incluso con replay concurrente  3013ms
+   ✓ reseñas contra el emulador > dos personas suman a los mismos contadores sin pisarse  2953ms
+ ✓ test/stats-authority.test.ts (12 tests | 2 skipped) 9974ms
+   ✓ typed stats authority against Auth and Firestore > review source commits 40 XP plus first stamp once even with concurrent retries  3584ms
+   ✓ typed stats authority against Auth and Firestore > diary source unions known destination with zero base XP and idempotent receipt  2673ms
+   ✓ typed stats authority against Auth and Firestore > trip derives known catalog axes, fixed XP and receipt idempotence  2937ms
+ ✓ test/users-route.test.ts (13 tests) 563ms
+ ✓ test/visits-route.test.ts (17 tests | 2 skipped) 10936ms
+   ✓ visitas verificadas Auth/Firestore emulator > reintentos simultáneos del mismo evento cuentan una vez  3508ms
+   ✓ visitas verificadas Auth/Firestore emulator > llegada no default de catálogo valida y reintentos concurrentes conservan un único recibo  3469ms
+   ✓ visitas verificadas Auth/Firestore emulator > dos eventos simultáneos del mismo lugar producen un validado y un rechazo  3093ms
+ ✓ src/lib/mapbox-quota.emulator.test.ts (1 test) 3317ms
+   ✓ Mapbox durable quota against demo emulator > allows only two of five simultaneous requests when user count is28  3317ms
+
+ Test Files  41 passed | 1 skipped (42)
+      Tests  580 passed | 5 skipped (585)
+   Start at  10:10:26
+   Duration  78.51s (transform 716ms, setup 67ms, collect 4.26s, tests 67.78s, environment 6ms, prepare 1.90s)
+
+# exit 0
