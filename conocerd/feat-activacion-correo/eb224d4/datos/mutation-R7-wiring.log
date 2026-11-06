@@ -1,0 +1,371 @@
+# mutation-R7-wiring at eb224d4: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts"
+# exit 1
+diff --git i/src/lib/owner-service.ts w/src/lib/owner-service.ts
+index 9843995..9c3bc16 100644
+--- i/src/lib/owner-service.ts
++++ w/src/lib/owner-service.ts
+@@ -298,7 +298,7 @@ export const pendingOwnerMailer: OwnerMailer = {
+ };
+ 
+ /** El que usan las rutas: Resend, o el correo de Firebase sin clave (ver `owner-mailer`). */
+-export const defaultOwnerMailer: OwnerMailer = ownerMailer();
++export const defaultOwnerMailer: OwnerMailer = pendingOwnerMailer;
+ 
+ async function sendSafely(send: () => Promise<{ readonly sent: boolean }>): Promise<boolean> {
+   try {
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (32 tests | 19 failed) 2228ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 1ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 1ms
+   ✓ token de invitación > una firma alterada, otro secreto, otra cuenta u otro vencimiento no abren nada 1ms
+   ✓ token de invitación > un token reemplazado por un reenvío ya no abre, aunque la firma sea buena 0ms
+   ✓ token de invitación > un token pendiente abre con su propio vencimiento, junto al vigente 0ms
+   ✓ token de invitación > sirve una sola vez 0ms
+   ✓ token de invitación > vence a su hora exacta 0ms
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 1ms
+   × activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token 656ms
+     → expected false to be true // Object.is equality
+   × activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 56ms
+     → El correo no trae enlace de activación
+   × activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 63ms
+     → El correo no trae enlace de activación
+   × activación contra el emulador > dos clics a la vez sacan un solo código 61ms
+     → El correo no trae enlace de activación
+   ✓ activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 102ms
+   × activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 42ms
+     → El correo no trae enlace de activación
+   × activación contra el emulador > reenviar manda un enlace nuevo con 7 días y deja muerto el anterior 35ms
+     → El correo no trae enlace de activación
+   × activación contra el emulador > un reenvío que no sale no mata el enlace que la persona ya tenía 40ms
+     → El correo no trae enlace de activación
+   ✓ activación contra el emulador > reenviar exige admin 47ms
+   × activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño 43ms
+     → expected [] to have a length of 1 but got +0
+   × activación contra el emulador > si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false 48ms
+     → El correo no trae enlace de activación
+   × activación contra el emulador > si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false 56ms
+     → El correo no trae enlace de activación
+   × activación contra el emulador > si el proveedor acepta el reenvío y la escritura de después falla, el enlace enviado sirve y la respuesta es sent: true 154ms
+     → expected [ { …(5) } ] to have a length of 2 but got 1
+   × activación contra el emulador > si el proveedor acepta la primera invitación y la escritura de después falla, dice sent: true y el enlace sirve 59ms
+     → expected false to be true // Object.is equality
+   × activación contra el emulador > un reenvío que sí se fija mata también el pendiente que dejó una escritura fallida 104ms
+     → expected [ { …(5) }, { …(5) } ] to have a length of 3 but got 2
+   ✓ activación contra el emulador > con dos reenvíos a la vez, el último correo aceptado lleva el enlace que sirve 163ms
+   × activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada 36ms
+     → El correo no trae enlace de activación
+   × activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y la marca de uso se quita 36ms
+     → El correo no trae enlace de activación
+   × activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable 33ms
+     → expected 0 to be greater than 0
+   × activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada 34ms
+     → expected { …(4) } to match object { Object (created, invitation) }
+(4 matching properties omitted from actual)
+   ✓ activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña 39ms
+   × activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 38ms
+     → expected false to be true // Object.is equality
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 37ms
+   × activación contra el emulador > revocar avisa por correo con el nombre del negocio 54ms
+     → expected false to be true // Object.is equality
+
+ Test Files  1 failed (1)
+      Tests  19 failed | 13 passed (32)
+   Start at  10:08:28
+   Duration  2.69s (transform 141ms, setup 10ms, collect 290ms, tests 2.23s, environment 0ms, prepare 47ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/activation-route.test.ts:210:34
+    208|   it('invitar manda por Resend el enlace de activación y guarda solo e…
+    209|     const { email, body } = await invited();
+    210|     expect(body.invitation.sent).toBe(true);
+       |                                  ^
+    211|     expect(outbox).toHaveLength(1);
+    212|     const [sent] = outbox;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña
+Error: El correo no trae enlace de activación
+ ❯ tokenIn test/activation-route.test.ts:195:28
+    193|   const tokenIn = (email: Outgoing | undefined): string => {
+    194|     const match = email?.text.match(/\/activar\?t=([A-Za-z0-9]+\.[A-Za…
+    195|     if (!match?.[1]) throw new Error('El correo no trae enlace de acti…
+       |                            ^
+    196|     return match[1];
+    197|   };
+ ❯ test/activation-route.test.ts:226:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used
+Error: El correo no trae enlace de activación
+ ❯ tokenIn test/activation-route.test.ts:195:28
+    193|   const tokenIn = (email: Outgoing | undefined): string => {
+    194|     const match = email?.text.match(/\/activar\?t=([A-Za-z0-9]+\.[A-Za…
+    195|     if (!match?.[1]) throw new Error('El correo no trae enlace de acti…
+       |                            ^
+    196|     return match[1];
+    197|   };
+ ❯ test/activation-route.test.ts:255:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > dos clics a la vez sacan un solo código
+Error: El correo no trae enlace de activación
+ ❯ tokenIn test/activation-route.test.ts:195:28
+    193|   const tokenIn = (email: Outgoing | undefined): string => {
+    194|     const match = email?.text.match(/\/activar\?t=([A-Za-z0-9]+\.[A-Za…
+    195|     if (!match?.[1]) throw new Error('El correo no trae enlace de acti…
+       |                            ^
+    196|     return match[1];
+    197|   };
+ ❯ test/activation-route.test.ts:264:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > un token alterado o sin forma responde 400 invalid_token
+Error: El correo no trae enlace de activación
+ ❯ tokenIn test/activation-route.test.ts:195:28
+    193|   const tokenIn = (email: Outgoing | undefined): string => {
+    194|     const match = email?.text.match(/\/activar\?t=([A-Za-z0-9]+\.[A-Za…
+    195|     if (!match?.[1]) throw new Error('El correo no trae enlace de acti…
+       |                            ^
+    196|     return match[1];
+    197|   };
+ ❯ test/activation-route.test.ts:289:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > reenviar manda un enlace nuevo con 7 días y deja muerto el anterior
+Error: El correo no trae enlace de activación
+ ❯ tokenIn test/activation-route.test.ts:195:28
+    193|   const tokenIn = (email: Outgoing | undefined): string => {
+    194|     const match = email?.text.match(/\/activar\?t=([A-Za-z0-9]+\.[A-Za…
+    195|     if (!match?.[1]) throw new Error('El correo no trae enlace de acti…
+       |                            ^
+    196|     return match[1];
+    197|   };
+ ❯ test/activation-route.test.ts:300:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > un reenvío que no sale no mata el enlace que la persona ya tenía
+Error: El correo no trae enlace de activación
+ ❯ tokenIn test/activation-route.test.ts:195:28
+    193|   const tokenIn = (email: Outgoing | undefined): string => {
+    194|     const match = email?.text.match(/\/activar\?t=([A-Za-z0-9]+\.[A-Za…
+    195|     if (!match?.[1]) throw new Error('El correo no trae enlace de acti…
+       |                            ^
+    196|     return match[1];
+    197|   };
+ ❯ test/activation-route.test.ts:322:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño
+AssertionError: expected [] to have a length of 1 but got +0
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 0[39m
+
+ ❯ test/activation-route.test.ts:346:20
+    344|     const { email, body } = await invited();
+    345|     expect(body.invitation.sent).toBe(false);
+    346|     expect(outbox).toHaveLength(1);
+       |                    ^
+    347|     expect(outbox[0]?.to).toEqual(['<email-1>']);
+    348|     expect(outbox[0]?.subject.startsWith('[PRUEBA] ')).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false
+ FAIL  test/activation-route.test.ts > activación contra el emulador > si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false
+Error: El correo no trae enlace de activación
+ ❯ tokenIn test/activation-route.test.ts:195:28
+    193|   const tokenIn = (email: Outgoing | undefined): string => {
+    194|     const match = email?.text.match(/\/activar\?t=([A-Za-z0-9]+\.[A-Za…
+    195|     if (!match?.[1]) throw new Error('El correo no trae enlace de acti…
+       |                            ^
+    196|     return match[1];
+    197|   };
+ ❯ test/activation-route.test.ts:370:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > si el proveedor acepta el reenvío y la escritura de después falla, el enlace enviado sirve y la respuesta es sent: true
+AssertionError: expected [ { …(5) } ] to have a length of 2 but got 1
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 2[39m
+[31m+ 1[39m
+
+ ❯ test/activation-route.test.ts:409:20
+    407|     expect(response.status).toBe(200);
+    408|     await expect(response.json()).resolves.toMatchObject({ invitation:…
+    409|     expect(outbox).toHaveLength(2);
+       |                    ^
+    410|     expect((await activate(tokenIn(outbox[1]))).status).toBe(200);
+    411|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > si el proveedor acepta la primera invitación y la escritura de después falla, dice sent: true y el enlace sirve
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/activation-route.test.ts:417:34
+    415|     failNextTokenWrite();
+    416|     const { body } = await invited();
+    417|     expect(body.invitation.sent).toBe(true);
+       |                                  ^
+    418|     expect(outbox).toHaveLength(1);
+    419|     expect((await activate(tokenIn(outbox[0]))).status).toBe(200);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > un reenvío que sí se fija mata también el pendiente que dejó una escritura fallida
+AssertionError: expected [ { …(5) }, { …(5) } ] to have a length of 3 but got 2
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 3[39m
+[31m+ 2[39m
+
+ ❯ test/activation-route.test.ts:428:20
+    426|     expect((await resendOf(body.invitation.id)).status).toBe(200);
+    427|     expect((await resendOf(body.invitation.id)).status).toBe(200);
+    428|     expect(outbox).toHaveLength(3);
+       |                    ^
+    429| 
+    430|     const record = (await firebase.adminDb().collection('ownerInvitati…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada
+Error: El correo no trae enlace de activación
+ ❯ tokenIn test/activation-route.test.ts:195:28
+    193|   const tokenIn = (email: Outgoing | undefined): string => {
+    194|     const match = email?.text.match(/\/activar\?t=([A-Za-z0-9]+\.[A-Za…
+    195|     if (!match?.[1]) throw new Error('El correo no trae enlace de acti…
+       |                            ^
+    196|     return match[1];
+    197|   };
+ ❯ test/activation-route.test.ts:455:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y la marca de uso se quita
+Error: El correo no trae enlace de activación
+ ❯ tokenIn test/activation-route.test.ts:195:28
+    193|   const tokenIn = (email: Outgoing | undefined): string => {
+    194|     const match = email?.text.match(/\/activar\?t=([A-Za-z0-9]+\.[A-Za…
+    195|     if (!match?.[1]) throw new Error('El correo no trae enlace de acti…
+       |                            ^
+    196|     return match[1];
+    197|   };
+ ❯ test/activation-route.test.ts:474:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable
+AssertionError: expected 0 to be greater than 0
+ ❯ test/activation-route.test.ts:495:38
+    493|     expect(response.status).toBe(503);
+    494|     await expect(response.json()).resolves.toMatchObject({ error: 'not…
+    495|     expect(errors.mock.calls.length).toBeGreaterThan(0);
+       |                                      ^
+    496|     for (const call of errors.mock.calls) {
+    497|       expect(call).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada
+AssertionError: expected { …(4) } to match object { Object (created, invitation) }
+(4 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "created": false,[22m
+[2m    "invitation": {[22m
+[32m-     "sent": true,[39m
+[31m+     "sent": false,[39m
+[2m    },[22m
+[2m  }[22m
+
+ ❯ test/activation-route.test.ts:519:18
+    517|     const response = await invite.POST(post(INVITE, { email, destinati…
+    518|     const body = (await response.json()) as InvitationResult;
+    519|     expect(body).toMatchObject({ created: false, invitation: { sent: t…
+       |                  ^
+    520|     expect(outbox[0]?.subject).toBe('Ya puedes ver Cunae en tu panel d…
+    521|     expect(outbox[0]?.text).not.toContain('/activar');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/activation-route.test.ts:544:34
+    542|     delete process.env.RESEND_API_KEY;
+    543|     const { email, body } = await invited();
+    544|     expect(body.invitation.sent).toBe(true);
+       |                                  ^
+    545|     expect(outbox).toHaveLength(0);
+    546| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/19]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > revocar avisa por correo con el nombre del negocio
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/activation-route.test.ts:576:29
+    574|       note: 'Prueba',
+    575|     });
+    576|     expect(result.notified).toBe(true);
+       |                             ^
+    577|     expect(outbox).toHaveLength(1);
+    578|     expect(outbox[0]).toMatchObject({ to: [email], subject: 'Tu acceso…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/19]⎯
+
