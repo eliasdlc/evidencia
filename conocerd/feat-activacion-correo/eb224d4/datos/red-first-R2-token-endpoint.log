@@ -1,0 +1,39 @@
+# red-first-R2-token-endpoint at eb224d4: product files restored to abee197 (before the round 2 fixes), tests of eb224d4; fixture UUIDs and emails replaced
+# pnpm vitest run --silent=true src/lib/email/oob.test.ts
+# exit 1
+# reverted:
+ src/lib/email/oob.ts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ src/lib/email/oob.test.ts (4 tests | 1 failed) 32ms
+   ✓ sendPasswordResetEmail, el correo de Firebase sin clave de Resend > pide a Identity Toolkit el correo de contraseña en español, con la credencial del servicio 11ms
+   ✓ sendPasswordResetEmail, el correo de Firebase sin clave de Resend > contra el emulador usa su host y la credencial owner, sin pedir token 2ms
+   × sendPasswordResetEmail, el correo de Firebase sin clave de Resend > si no se puede pedir el token de acceso, es sent: false y no llama a Identity Toolkit 14ms
+     → getaddrinfo ENOTFOUND oauth2.googleapis.com
+   ✓ sendPasswordResetEmail, el correo de Firebase sin clave de Resend > un rechazo de Firebase es sent: false con el código 1ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  10:01:51
+   Duration  967ms (transform 216ms, setup 39ms, collect 177ms, tests 32ms, environment 6ms, prepare 227ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/oob.test.ts > sendPasswordResetEmail, el correo de Firebase sin clave de Resend > si no se puede pedir el token de acceso, es sent: false y no llama a Identity Toolkit
+TypeError: getaddrinfo ENOTFOUND oauth2.googleapis.com
+ ❯ accessToken src/lib/email/oob.test.ts:60:15
+     58|       fetch,
+     59|       accessToken: async () => {
+     60|         throw new TypeError('getaddrinfo ENOTFOUND oauth2.googleapis.c…
+       |               ^
+     61|       },
+     62|       projectId: 'p',
+ ❯ sendPasswordResetEmail src/lib/email/oob.ts:42:69
+ ❯ src/lib/email/oob.test.ts:57:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
