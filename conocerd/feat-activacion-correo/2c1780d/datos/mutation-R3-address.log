@@ -1,0 +1,134 @@
+# mutation-R3-address at 2c1780d: pnpm vitest run --silent=true src/lib/email/templates.test.ts (fixture emails replaced by <email-N>)
+# exit 1
+diff --git i/src/lib/email/templates/common.ts w/src/lib/email/templates/common.ts
+index d1d4e5a..6db0c02 100644
+--- i/src/lib/email/templates/common.ts
++++ w/src/lib/email/templates/common.ts
+@@ -40,7 +40,7 @@ export function helpLine(replyTo: string | null): string {
+ }
+ 
+ export function addressLine(email: string): string {
+-  return `Este correo llegó a ${email}.`;
++  return '';
+ }
+ 
+ export const SIGNATURE = 'El equipo de ConoceRD';
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ src/lib/email/templates.test.ts (12 tests | 5 failed) 33ms
+   × correos a dueños > activation dice a qué correo llegó y no habla de Chrome ni de los tres puntos 18ms
+     → expected 'Hola, Doña Rosa:\n\nYa tienes acceso …' to contain 'Este correo llegó a <email-1>.'
+   × correos a dueños > signIn dice a qué correo llegó y no habla de Chrome ni de los tres puntos 2ms
+     → expected 'Hola, Doña Rosa:\n\nYa tienes acceso …' to contain 'Este correo llegó a <email-1>.'
+   × correos a dueños > approval dice a qué correo llegó y no habla de Chrome ni de los tres puntos 2ms
+     → expected 'Hola, Doña Rosa:\n\nRevisamos tu soli…' to contain 'Este correo llegó a <email-1>.'
+   × correos a dueños > rejection dice a qué correo llegó y no habla de Chrome ni de los tres puntos 2ms
+     → expected 'Hola, Doña Rosa:\n\nRevisamos tu soli…' to contain 'Este correo llegó a <email-1>.'
+   × correos a dueños > revocation dice a qué correo llegó y no habla de Chrome ni de los tres puntos 2ms
+     → expected 'Hola, Doña Rosa:\n\nDesde hoy ya no e…' to contain 'Este correo llegó a <email-1>.'
+   ✓ correos a dueños > la invitación por activar trae su único enlace, el vencimiento en Santo Domingo y dónde se entra después 2ms
+   ✓ correos a dueños > la invitación a quien ya entra no trae enlace de activación y nombra Google como el consejo pidió 1ms
+   ✓ correos a dueños > el rechazo dice el motivo en palabras del dueño, para cada código, y la nota si la hay 1ms
+   ✓ correos a dueños > con buzón de respuesta, la ayuda lo nombra 0ms
+   ✓ correos a dueños > sin saludo con nombre si la cuenta no tiene uno 0ms
+   ✓ piezas comunes > lista los negocios como se dice en español 0ms
+   ✓ piezas comunes > el panel vive en negocios.conocerd.app salvo que PANEL_BASE_URL diga otra cosa 0ms
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 7 passed (12)
+   Start at  22:05:48
+   Duration  435ms (transform 81ms, setup 0ms, collect 115ms, tests 33ms, environment 0ms, prepare 94ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/templates.test.ts > correos a dueños > activation dice a qué correo llegó y no habla de Chrome ni de los tres puntos
+ FAIL  src/lib/email/templates.test.ts > correos a dueños > signIn dice a qué correo llegó y no habla de Chrome ni de los tres puntos
+AssertionError: expected 'Hola, Doña Rosa:\n\nYa tienes acceso …' to contain 'Este correo llegó a <email-1>.'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Este correo llegó a <email-1>.[39m
+[31m+ Hola, Doña Rosa:[39m
+[31m+[39m
+[31m+ Ya tienes acceso al panel de ConoceRD para El rinconcito del café. Ahí ves cuántas personas te encontraron en la app, lees y contestas tus reseñas y arreglas lo que sale de tu negocio.[39m
+[31m+[39m
+[31m+ Para entrar la primera vez, toca este enlace y pon una contraseña que solo sepas tú:[39m
+[31m+[39m
+[31m+ https://negocios.conocerd.app/activar?t=abc.def[39m
+[31m+[39m
+[31m+ El enlace sirve una sola vez y vence el 12 de noviembre. Si se vence, avísale a la persona de ConoceRD que te atendió y te mandamos otro.[39m
+[31m+[39m
+[31m+ Después entras en https://negocios.conocerd.app/entrar con este correo, <email-1>, y tu contraseña.[39m
+[31m+[39m
+[31m+  Si no esperabas este correo, no toques el enlace y avísale a la persona de ConoceRD que te atendió.[39m
+[31m+[39m
+[31m+ El equipo de ConoceRD[39m
+[31m+[39m
+
+ ❯ src/lib/email/templates.test.ts:30:24
+     28| describe('correos a dueños', () => {
+     29|   it.each(Object.entries(all))('%s dice a qué correo llegó y no habla …
+     30|     expect(email.text).toContain('Este correo llegó a <email-1>…
+       |                        ^
+     31|     expect(email.text).toMatch(/^Hola, Doña Rosa:/);
+     32|     expect(email.text.trimEnd().endsWith('El equipo de ConoceRD')).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/lib/email/templates.test.ts > correos a dueños > approval dice a qué correo llegó y no habla de Chrome ni de los tres puntos
+ FAIL  src/lib/email/templates.test.ts > correos a dueños > rejection dice a qué correo llegó y no habla de Chrome ni de los tres puntos
+AssertionError: expected 'Hola, Doña Rosa:\n\nRevisamos tu soli…' to contain 'Este correo llegó a <email-1>.'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Este correo llegó a <email-1>.[39m
+[31m+ Hola, Doña Rosa:[39m
+[31m+[39m
+[31m+ Revisamos tu solicitud y ya manejas Cunae en ConoceRD.[39m
+[31m+[39m
+[31m+ Entra en https://negocios.conocerd.app/entrar con la misma cuenta con la que hiciste la solicitud, la de este correo: <email-1>.[39m
+[31m+[39m
+[31m+ El equipo de ConoceRD[39m
+[31m+[39m
+
+ ❯ src/lib/email/templates.test.ts:30:24
+     28| describe('correos a dueños', () => {
+     29|   it.each(Object.entries(all))('%s dice a qué correo llegó y no habla …
+     30|     expect(email.text).toContain('Este correo llegó a <email-1>…
+       |                        ^
+     31|     expect(email.text).toMatch(/^Hola, Doña Rosa:/);
+     32|     expect(email.text.trimEnd().endsWith('El equipo de ConoceRD')).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/lib/email/templates.test.ts > correos a dueños > revocation dice a qué correo llegó y no habla de Chrome ni de los tres puntos
+AssertionError: expected 'Hola, Doña Rosa:\n\nDesde hoy ya no e…' to contain 'Este correo llegó a <email-1>.'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Este correo llegó a <email-1>.[39m
+[31m+ Hola, Doña Rosa:[39m
+[31m+[39m
+[31m+ Desde hoy ya no entras al panel de ConoceRD para SFM. El negocio sigue en la app; lo que cambia es que ya no lo manejas tú desde el panel.[39m
+[31m+[39m
+[31m+ Si crees que es un error, avísale a la persona de ConoceRD que te atendió.[39m
+[31m+[39m
+[31m+ El equipo de ConoceRD[39m
+[31m+[39m
+
+ ❯ src/lib/email/templates.test.ts:30:24
+     28| describe('correos a dueños', () => {
+     29|   it.each(Object.entries(all))('%s dice a qué correo llegó y no habla …
+     30|     expect(email.text).toContain('Este correo llegó a <email-1>…
+       |                        ^
+     31|     expect(email.text).toMatch(/^Hola, Doña Rosa:/);
+     32|     expect(email.text.trimEnd().endsWith('El equipo de ConoceRD')).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
