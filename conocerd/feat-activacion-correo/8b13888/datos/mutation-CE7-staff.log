@@ -1,0 +1,98 @@
+# mutation-CE7-staff at 8b13888: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index a0d81f4..5aae73d 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -67,7 +67,7 @@ function parseToken(token: string): { uid: string } | null {
+ function refusalFor(user: UserRecord): ApiError | null {
+   // Antes que el `biz`: una cuenta de personal no recupera su acceso por WhatsApp
+   // aunque además tenga un destino, porque ese enlace abriría el panel interno.
+-  if (isStaff(user.customClaims)) {
++  if (false && isStaff(user.customClaims)) {
+     return new ApiError(409, 'staff_account', 'Esa cuenta es de personal interno; su contraseña no se cambia por aquí');
+   }
+   if ((parseClaims(user.customClaims).biz ?? []).length === 0) {
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (25 tests | 3 failed) 6142ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 1ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide al menos 8 caracteres, con un error en español y un ejemplo 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  864ms
+   ✓ enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo 76ms
+   ✓ enlace de contraseña contra el emulador > vence a la hora exacta, con el reloj inyectado 61ms
+   ✓ enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error 116ms
+   ✓ enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace 43ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1146ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token 33ms
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 89ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 16ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir 36ms
+   × enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 33ms
+     → expected 200 to be 409 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 15ms
+   ✓ enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra  3015ms
+   × enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser personal (admin, con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 42ms
+     → expected 200 to be 400 // Object.is equality
+   × enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser agente (con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 44ms
+     → expected 200 to be 400 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta pierde todos sus destinos después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 33ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta se deshabilita después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 23ms
+   ✓ enlace de contraseña contra el emulador > P4: el secreto de A con el uid de B no abre nada; B no cambia y el token de A sigue sirviendo para A 62ms
+   ✓ enlace de contraseña contra el emulador > P5: el canje 11 desde la misma IP en un minuto responde 429 sin gastar el token, y pasado el minuto sirve 57ms
+   ✓ enlace de contraseña contra el emulador > P6: si poner la contraseña falla, responde 500, no cambia nada, el token vuelve a servir y nada del token ni de la contraseña sale en el log 66ms
+   ✓ enlace de contraseña contra el emulador > P7: canjear llama a revokeRefreshTokens con el uid de la cuenta 38ms
+   ✓ enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo 67ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 17ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 22 passed (25)
+   Start at  10:57:20
+   Duration  6.72s (transform 138ms, setup 12ms, collect 385ms, tests 6.14s, environment 0ms, prepare 54ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account
+AssertionError: expected 200 to be 409 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 200[39m
+
+ ❯ test/password-link-route.test.ts:256:31
+    254|       const staff = await newUser(firebase, claims);
+    255|       const response = await linkFor({ uid: staff.uid, confirmedByPhon…
+    256|       expect(response.status).toBe(409);
+       |                               ^
+    257|       await expect(response.json()).resolves.toMatchObject({ error: 's…
+    258|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser personal (admin, con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser agente (con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+AssertionError: expected 200 to be 400 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 400[39m
+[31m+ 200[39m
+
+ ❯ test/password-link-route.test.ts:302:29
+    300| 
+    301|     const response = await redeemWith(tokenOf(link.link), 'Intruso2026…
+    302|     expect(response.status).toBe(400);
+       |                             ^
+    303|     await expect(response.json()).resolves.toMatchObject({ error: 'inv…
+    304|     if (change !== 'disabled') expect((await signInWithPassword(owner.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
