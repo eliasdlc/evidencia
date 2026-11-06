@@ -1,0 +1,42 @@
+# red-first-CE9 at abee197: product files restored to 2c1780d (before the round 1 fixes), tests of abee197; fixture UUIDs and emails replaced
+# RESEND_API_KEY=re_exportada_en_la_maquina EMAIL_MODE=live EMAIL_TEST_RECIPIENT=buzon-de-prueba pnpm vitest run --silent=true test/email-env.test.ts
+# exit 1
+# reverted:
+ vitest.config.ts | 2 --
+ 1 file changed, 2 deletions(-)
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/email-env.test.ts (2 tests | 1 failed) 53ms
+   × aislamiento del correo en las pruebas > ningún fichero de prueba ve clave, modo ni buzón de Resend 24ms
+     → expected 're_exportada_en_la_maquina' to be undefined
+   ✓ aislamiento del correo en las pruebas > el borrado quita lo que haya, venga de donde venga 25ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  22:36:24
+   Duration  529ms (transform 121ms, setup 0ms, collect 116ms, tests 53ms, environment 0ms, prepare 119ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/email-env.test.ts > aislamiento del correo en las pruebas > ningún fichero de prueba ve clave, modo ni buzón de Resend
+AssertionError: expected 're_exportada_en_la_maquina' to be undefined
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+"re_exportada_en_la_maquina"
+
+ ❯ test/email-env.test.ts:14:32
+     12|   it('ningún fichero de prueba ve clave, modo ni buzón de Resend', () …
+     13|     for (const key of ['RESEND_API_KEY', 'EMAIL_MODE', 'EMAIL_TEST_REC…
+     14|       expect(process.env[key]).toBeUndefined();
+       |                                ^
+     15|     }
+     16|     expect(emailConfigFromEnv()).toMatchObject({ apiKey: null, mode: '…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
