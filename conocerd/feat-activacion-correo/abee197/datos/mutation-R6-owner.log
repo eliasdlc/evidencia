@@ -1,0 +1,62 @@
+# mutation-R6-owner at abee197: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index db41d96..4ca9b11 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -70,7 +70,7 @@ export async function generateOwnerPasswordLink(input: {
+   if (isStaff(user.customClaims)) {
+     throw new ApiError(409, 'staff_account', 'Esa cuenta es de personal interno; su contraseña no se cambia por aquí');
+   }
+-  if ((parseClaims(user.customClaims).biz ?? []).length === 0) {
++  if (false && parseClaims(user.customClaims)) {
+     throw new ApiError(409, 'not_owner', 'Esa cuenta no es dueña de ningún destino');
+   }
+   if (user.disabled) throw new ApiError(409, 'account_disabled', 'Esa cuenta está deshabilitada');
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (11 tests | 1 failed) 1993ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 1ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide la página de Firebase en español 0ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le da un enlace que pone contraseña sin cambiar uid ni biz, y sirve una vez  1207ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el enlace 103ms
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 173ms
+   × enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 40ms
+     → expected 200 to be 409 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled 32ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 76ms
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 29ms
+   ✓ enlace de contraseña contra el emulador > en el emulador, generar un segundo enlace no mata el primero: los dos códigos sirven hasta usarse 68ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 41ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  22:44:30
+   Duration  2.98s (transform 194ms, setup 20ms, collect 613ms, tests 1.99s, environment 0ms, prepare 82ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner
+AssertionError: expected 200 to be 409 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 200[39m
+
+ ❯ test/password-link-route.test.ts:145:29
+    143|     const traveler = await newUser(firebase);
+    144|     const response = await linkFor({ uid: traveler.uid, confirmedByPho…
+    145|     expect(response.status).toBe(409);
+       |                             ^
+    146|     await expect(response.json()).resolves.toMatchObject({ error: 'not…
+    147|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
