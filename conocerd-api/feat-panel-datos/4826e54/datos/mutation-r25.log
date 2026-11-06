@@ -1,0 +1,728 @@
+# R25 at 4826e54, with m11-recursive.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-panel-datos/emu.sh test/business-data-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/business-data-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-datos
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > el dueño de A nunca ve nada de B, ni sus cifras ni sus ids
+[app-check] ausente /business/destino-032f4234/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > byDay es null debajo de k y trae el desglose desde k, para visitas y para toques
+[app-check] ausente /business/destino-a4e7e44d/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > byDay es null debajo de k y trae el desglose desde k, para visitas y para toques
+[app-check] ausente /business/destino-df39d12d/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > los totales son la suma de sus partes y sin teléfono no hay llamadas
+[app-check] ausente /business/destino-1ba35318/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > un mes con solo vistas y cómo llegar tiene contacto 0, y esas cifras salen aparte
+[app-check] ausente /business/destino-3c9acc44/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > con teléfono la cifra de llamadas aparece
+[app-check] ausente /business/destino-ed904912/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > lo que falta excluye lo ya puesto
+[app-check] ausente /business/destino-e58eecbe/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > compara con el mes anterior y entrega los guardados al cierre de un mes pasado
+[app-check] ausente /business/destino-e7f1ee76/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > compara con el mes anterior y entrega los guardados al cierre de un mes pasado
+[app-check] ausente /business/destino-e7f1ee76/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > un mes sin agregado da ceros, no un error
+[app-check] ausente /business/destino-dd7606c1/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > cuenta las reseñas nuevas del periodo y las que no tienen respuesta
+[app-check] ausente /business/destino-20648c08/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > rechaza sin token, a quien no es dueño, a un plan minimal y un periodo malo
+[app-check] ausente /business/destino-6d248446/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > rechaza sin token, a quien no es dueño, a un plan minimal y un periodo malo
+[app-check] ausente /business/destino-4a1c32e3/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > rechaza sin token, a quien no es dueño, a un plan minimal y un periodo malo
+[app-check] ausente /business/destino-c081aff7/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > pagina de la más nueva a la más vieja con un cursor, sin repetir ni saltar
+[app-check] ausente /business/destino-a2183bb4/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > pagina de la más nueva a la más vieja con un cursor, sin repetir ni saltar
+[app-check] ausente /business/destino-a2183bb4/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > pagina de la más nueva a la más vieja con un cursor, sin repetir ni saltar
+[app-check] ausente /business/destino-a2183bb4/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > no trae reseñas retiradas ni de otro negocio, y trae la respuesta
+[app-check] ausente /business/destino-2ae1c425/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token
+[app-check] ausente /business/destino-6756b3b2/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token
+[app-check] ausente /business/destino-6756b3b2/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token
+[app-check] ausente /business/destino-6756b3b2/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token
+[app-check] ausente /business/destino-6756b3b2/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token
+[app-check] ausente /business/destino-27abaf04/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > lee la ficha con lo que hay y vacíos donde no hay
+[app-check] ausente /business/destino-b46d7796/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > escribe el destino y su línea de bitácora, con el antes y el después
+[app-check] ausente /business/destino-848e9682/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un número nuevo exige la confirmación de contacto público y la deja anotada
+[app-check] ausente /business/destino-e5e5e958/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un número nuevo exige la confirmación de contacto público y la deja anotada
+[app-check] ausente /business/destino-e5e5e958/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > repetir lo que ya hay no escribe nada ni deja bitácora
+[app-check] ausente /business/destino-5cd82800/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un campo desconocido con 422 y no escribe nada
+[app-check] ausente /business/destino-774887a3/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un campo desconocido junto a uno válido con 422 y no escribe nada
+[app-check] ausente /business/destino-da90b4f4/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un cuerpo vacío con 422 y no escribe nada
+[app-check] ausente /business/destino-4ebe190e/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un idioma que no existe con 422 y no escribe nada
+[app-check] ausente /business/destino-d6b9c2d6/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un número corto con 422 y no escribe nada
+[app-check] ausente /business/destino-0667c100/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un sitio sin https con 422 y no escribe nada
+[app-check] ausente /business/destino-c9b9ada0/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza imágenes con 422 y no escribe nada
+[app-check] ausente /business/destino-654bcb5a/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > If-Match con un updatedAt viejo responde 409 y no escribe
+[app-check] ausente /business/destino-9b627aab/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > If-Match con un updatedAt viejo responde 409 y no escribe
+[app-check] ausente /business/destino-9b627aab/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > If-Match con un updatedAt viejo responde 409 y no escribe
+[app-check] ausente /business/destino-9b627aab/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un dueño ajeno recibe 403 y su edición no toca el otro negocio
+[app-check] ausente /business/destino-33985ce8/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un dueño ajeno recibe 403 y su edición no toca el otro negocio
+[app-check] ausente /business/destino-33985ce8/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > exige correo verificado para escribir, no para leer
+[app-check] ausente /business/destino-dfd41020/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > exige correo verificado para escribir, no para leer
+[app-check] ausente /business/destino-dfd41020/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza sin token y un cuerpo que no es JSON
+[app-check] ausente /business/destino-ffbf6b82/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > el resumen lee lo que PR 47 escribe: la parte general sale de contactsByItem.general
+[app-check] ausente /business/destino-c869d1f0/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > visits.updatedAt es null siempre, debajo de k y desde k
+[app-check] ausente /business/destino-60be4110/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > visits.updatedAt es null siempre, debajo de k y desde k
+[app-check] ausente /business/destino-10b5131c/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un token revocado recibe 401 en los cuatro verbos y no escribe
+[app-check] ausente /business/destino-2f6bf8aa/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > el plan minimal recibe 403 dashboard_not_included en reseñas y en la ficha, al leer y al escribir
+[app-check] ausente /business/destino-d98ae3f0/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > el plan minimal recibe 403 dashboard_not_included en reseñas y en la ficha, al leer y al escribir
+[app-check] ausente /business/destino-d98ae3f0/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > el plan minimal recibe 403 dashboard_not_included en reseñas y en la ficha, al leer y al escribir
+[app-check] ausente /business/destino-d98ae3f0/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/a/b/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/a/b/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/a/b/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/a/b/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/__x__/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/__x__/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/__x__/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/__x__/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725%2F/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725%2F/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725%2F/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725%2F/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/%20/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/%20/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/%20/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/%20/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a%20/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a%20/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a%20/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a%20/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a%00/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a%00/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a%00/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-9653ca5a%00/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio
+[app-check] ausente /business/destino-f7553725/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > tres PATCH en paralelo con el mismo If-Match: uno gana, los otros 409 y la bitácora cuenta una línea
+[app-check] ausente /business/destino-acf9eda7/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > tres PATCH en paralelo con el mismo If-Match: uno gana, los otros 409 y la bitácora cuenta una línea
+[app-check] ausente /business/destino-acf9eda7/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > tres PATCH en paralelo con el mismo If-Match: uno gana, los otros 409 y la bitácora cuenta una línea
+[app-check] ausente /business/destino-acf9eda7/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > tres PATCH en paralelo con el mismo If-Match: uno gana, los otros 409 y la bitácora cuenta una línea
+[app-check] ausente /business/destino-acf9eda7/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > números de otro país: sin prefijo 422 con el mensaje en español, con prefijo se guardan completos
+[app-check] ausente /business/destino-543b8a58/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > números de otro país: sin prefijo 422 con el mensaje en español, con prefijo se guardan completos
+[app-check] ausente /business/destino-543b8a58/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > números de otro país: sin prefijo 422 con el mensaje en español, con prefijo se guardan completos
+[app-check] ausente /business/destino-543b8a58/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > números de otro país: sin prefijo 422 con el mensaje en español, con prefijo se guardan completos
+[app-check] ausente /business/destino-543b8a58/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > números de otro país: sin prefijo 422 con el mensaje en español, con prefijo se guardan completos
+[app-check] ausente /business/destino-543b8a58/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > números de otro país: sin prefijo 422 con el mensaje en español, con prefijo se guardan completos
+[app-check] ausente /business/destino-543b8a58/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > números de otro país: sin prefijo 422 con el mensaje en español, con prefijo se guardan completos
+[app-check] ausente /business/destino-543b8a58/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > el viaje de ida y vuelta: GET da +dígitos, PATCH lo acepta igual y no cambia nada, también con un número extranjero
+[app-check] ausente /business/destino-7e723ecf/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > el viaje de ida y vuelta: GET da +dígitos, PATCH lo acepta igual y no cambia nada, también con un número extranjero
+[app-check] ausente /business/destino-7e723ecf/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > el viaje de ida y vuelta: GET da +dígitos, PATCH lo acepta igual y no cambia nada, también con un número extranjero
+[app-check] ausente /business/destino-7e723ecf/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > __proto__ junto a un campo válido da 422 y no escribe nada
+[app-check] ausente /business/destino-df2224d5/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > constructor junto a un campo válido da 422 y no escribe nada
+[app-check] ausente /business/destino-43fe8ad9/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > prototype junto a un campo válido da 422 y no escribe nada
+[app-check] ausente /business/destino-de125680/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio
+[app-check] ausente /business/destino-6722c47a/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > ninguna hora de las estadísticas sale en el resumen: visitas 6 y un toque real de contacto
+[app-check] ausente /business/destino-4ae9c7a9/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (un objeto, 5000) da 422 y no escribe
+[app-check] ausente /business/destino-d423565a/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (una lista, 5000) da 422 y no escribe
+[app-check] ausente /business/destino-03fe7008/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (un objeto, 100000) da 422 y no escribe
+[app-check] ausente /business/destino-a5d4169d/profile
+
+stderr | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (un objeto, 100000) da 422 y no escribe
+[conocerd-api] error no controlado RangeError: Maximum call stack size exceeded
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:284:17[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (una lista, 100000) da 422 y no escribe
+[app-check] ausente /business/destino-ee207adb/profile
+
+stderr | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (una lista, 100000) da 422 y no escribe
+[conocerd-api] error no controlado RangeError: Maximum call stack size exceeded
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:284:17[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+    at badShape [90m(/home/decruce/dev/wt/conocerd-api/feat/panel-datos/[39msrc/lib/profile.ts:292:21[90m)[39m
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "0018095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-f2bc1243/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "0018095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-f2bc1243/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "0018095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-f2bc1243/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "123456789012345" > GET lo muestra como "123456789012345" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-7c1fa8d9/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "123456789012345" > GET lo muestra como "123456789012345" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-7c1fa8d9/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-280df183/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-280df183/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-280df183/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8295550100" > GET lo muestra como "+18295550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-b81be5c4/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8295550100" > GET lo muestra como "+18295550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-b81be5c4/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8295550100" > GET lo muestra como "+18295550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-b81be5c4/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8495550100" > GET lo muestra como "+18495550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-a0d38d93/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8495550100" > GET lo muestra como "+18495550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-a0d38d93/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8495550100" > GET lo muestra como "+18495550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-a0d38d93/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "809-555-0100" > GET lo muestra como "809-555-0100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-3ed5946a/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "809-555-0100" > GET lo muestra como "809-555-0100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-3ed5946a/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "+18095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-0b01860a/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "+18095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-0b01860a/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como " 18095550100 " > GET lo muestra como " 18095550100 " y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-98f8f653/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como " 18095550100 " > GET lo muestra como " 18095550100 " y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-98f8f653/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "18095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-8ee0091e/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "18095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-8ee0091e/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "18095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-8ee0091e/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "34612345678" > GET lo muestra como "+34612345678" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-d0611e90/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "34612345678" > GET lo muestra como "+34612345678" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-d0611e90/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "34612345678" > GET lo muestra como "+34612345678" y PATCH con el guardado o con lo mostrado no cambia nada
+[app-check] ausente /business/destino-d0611e90/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id de reseña de más de 150 caracteres (destino más autor) sigue paginando
+[app-check] ausente /business/destino-846cbf3e/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un id de reseña de más de 150 caracteres (destino más autor) sigue paginando
+[app-check] ausente /business/destino-846cbf3e/reviews
+
+ ❯ test/business-data-route.test.ts (130 tests | 3 failed) 9104ms
+   ✓ contactSummary > lee la parte general de contactsByItem.general y nunca la lista como excursión (forma de PR 47) 4ms
+   ✓ contactSummary > todo en general no deja excursiones y el total sigue siendo el guardado 0ms
+   ✓ contactSummary > la parte general sale del cubo general, no de restar: si el cubo y la resta no coinciden manda el cubo 0ms
+   ✓ contactSummary > el total de cada tipo es su parte general más la suma de sus excursiones 1ms
+   ✓ contactSummary > toques solo en excursiones no inventan una parte general negativa 0ms
+   ✓ contactSummary > si las excursiones suman más que el total guardado, manda lo que se puede mostrar 0ms
+   ✓ contactSummary > sin teléfono no hay cifra de llamadas en ningún lado 0ms
+   ✓ contactSummary > contacto es WhatsApp y llamadas: cómo llegar, reservar y ver van aparte y no suman 0ms
+   ✓ contactSummary > un campo ausente o torcido cuenta cero 0ms
+   ✓ contactSummary > el desglose por día es null debajo de k y existe en k 0ms
+   ✓ resolvePeriod > usa el mes en curso de Santo Domingo, aun cuando en UTC ya es otro 0ms
+   ✓ resolvePeriod > acepta hasta 12 meses atrás y rechaza el futuro, el formato roto y lo más viejo 1ms
+   ✓ resolvePeriod > el mes anterior de enero es diciembre 0ms
+   ✓ profile > normaliza el número: dígitos, con el 1 dominicano, de 8 a 15 0ms
+   ✓ profile > guarda 809-555-0100 como 18095550100, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda 829 555 0100 como 18295550100, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda 849.555.0100 como 18495550100, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda (849)5550100 como 18495550100, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda 8095550100  como 18095550100, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda 18095550100 como 18095550100, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda 1 (809) 555-0100 como 18095550100, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda +1 809 555 0100 como 18095550100, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda +1 212 555 0100 como 12125550100, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda +34 612 345 678 como 34612345678, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda 0034612345678 como 34612345678, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda 00 34 612 345 678 como 34612345678, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda 011 34 612345678 como 34612345678, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > guarda +44 20 7946 0958 como 442079460958, un número que marca bien en tel:+<dígitos> 0ms
+   ✓ profile > rechaza diez cifras de otro país sin prefijo con un mensaje en español 2ms
+   ✓ profile > rechaza diez cifras de otro país con paréntesis con un mensaje en español 0ms
+   ✓ profile > rechaza España sin prefijo con un mensaje en español 0ms
+   ✓ profile > rechaza España con el código pero sin prefijo con un mensaje en español 0ms
+   ✓ profile > rechaza una extensión con ext con un mensaje en español 0ms
+   ✓ profile > rechaza una extensión con x con un mensaje en español 0ms
+   ✓ profile > rechaza una extensión con almohadilla con un mensaje en español 0ms
+   ✓ profile > rechaza una extensión con coma con un mensaje en español 0ms
+   ✓ profile > rechaza letras con un mensaje en español 0ms
+   ✓ profile > rechaza muy corto sin prefijo con un mensaje en español 0ms
+   ✓ profile > rechaza demasiado largo con prefijo con un mensaje en español 0ms
+   ✓ profile > rechaza demasiado largo en el mundo con un mensaje en español 0ms
+   ✓ profile > rechaza corto con prefijo con un mensaje en español 0ms
+   ✓ profile > rechaza un país que empieza en 0 con un mensaje en español 0ms
+   ✓ profile > rechaza un 00 con país en 0 con un mensaje en español 0ms
+   ✓ profile > rechaza un más en medio con un mensaje en español 0ms
+   ✓ profile > rechaza solo el más con un mensaje en español 0ms
+   ✓ profile > lo que falta sale de los datos y nunca incluye un campo ya puesto 1ms
+   ✓ profile > un WhatsApp o teléfono nuevo es contacto público; vaciarlo o repetirlo no 0ms
+   ✓ profile > rechaza campo desconocido 0ms
+   ✓ profile > rechaza sin campos de la ficha 0ms
+   ✓ profile > rechaza idioma que no existe 0ms
+   ✓ profile > rechaza descripción larga 0ms
+   ✓ profile > rechaza tarifa larga 0ms
+   ✓ profile > rechaza número corto 0ms
+   ✓ profile > rechaza número largo 0ms
+   ✓ profile > rechaza instagram largo 0ms
+   ✓ profile > rechaza sitio sin https 0ms
+   ✓ profile > rechaza sitio largo 0ms
+   ✓ profile > rechaza demasiados servicios 0ms
+   ✓ profile > rechaza horario con forma rota 1ms
+   ✓ profile > rechaza horario largo 0ms
+   ✓ profile > rechaza imágenes 0ms
+   ✓ profile > __proto__ junto a un campo válido es un 422 y no se descarta en silencio 0ms
+   ✓ profile > constructor junto a un campo válido es un 422 y no se descarta en silencio 0ms
+   ✓ profile > prototype junto a un campo válido es un 422 y no se descarta en silencio 0ms
+   ✓ profile > __proto__ anidado en dias es un 422 y los otros dos nombres también 3ms
+   ✓ profile > __proto__ anidado en un rango es un 422 y los otros dos nombres también 0ms
+   ✓ profile > __proto__ anidado en una excepción es un 422 y los otros dos nombres también 1ms
+   ✓ profile > __proto__ anidado en el motivo de una excepción es un 422 y los otros dos nombres también 0ms
+   ✓ profile > __proto__ anidado en la nota del horario es un 422 y los otros dos nombres también 0ms
+   ✓ profile > __proto__ anidado en un elemento de una lista es un 422 y los otros dos nombres también 0ms
+   × profile > la guarda corta a los 20 niveles: 20 pasa, 21 no, y mide objetos y listas 6ms
+     → expected null to deeply equal StringContaining "niveles"
+   ✓ profile > un cuerpo con más de 20 niveles es un 422 sin recursión, y uno de 5000 no revienta 3ms
+   ✓ profile > acepta null para vaciar y limpia espacios 1ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > el dueño de A nunca ve nada de B, ni sus cifras ni sus ids  822ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > byDay es null debajo de k y trae el desglose desde k, para visitas y para toques 121ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > los totales son la suma de sus partes y sin teléfono no hay llamadas 52ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > un mes con solo vistas y cómo llegar tiene contacto 0, y esas cifras salen aparte 57ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > con teléfono la cifra de llamadas aparece 36ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > lo que falta excluye lo ya puesto 26ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > compara con el mes anterior y entrega los guardados al cierre de un mes pasado 57ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > un mes sin agregado da ceros, no un error 27ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > cuenta las reseñas nuevas del periodo y las que no tienen respuesta 47ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > rechaza sin token, a quien no es dueño, a un plan minimal y un periodo malo 38ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/reviews > pagina de la más nueva a la más vieja con un cursor, sin repetir ni saltar 112ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/reviews > no trae reseñas retiradas ni de otro negocio, y trae la respuesta 59ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token 37ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > lee la ficha con lo que hay y vacíos donde no hay 27ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > escribe el destino y su línea de bitácora, con el antes y el después 83ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > es atómico: si la bitácora no entra, el destino tampoco cambia 59ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un número nuevo exige la confirmación de contacto público y la deja anotada 72ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > repetir lo que ya hay no escribe nada ni deja bitácora 44ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un campo desconocido con 422 y no escribe nada 31ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un campo desconocido junto a uno válido con 422 y no escribe nada 30ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un cuerpo vacío con 422 y no escribe nada 35ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un idioma que no existe con 422 y no escribe nada 34ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un número corto con 422 y no escribe nada 25ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un sitio sin https con 422 y no escribe nada 24ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza imágenes con 422 y no escribe nada 27ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > If-Match con un updatedAt viejo responde 409 y no escribe 76ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un dueño ajeno recibe 403 y su edición no toca el otro negocio 20ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > exige correo verificado para escribir, no para leer 17ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza sin token y un cuerpo que no es JSON 15ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > el resumen lee lo que PR 47 escribe: la parte general sale de contactsByItem.general 30ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > visits.updatedAt es null siempre, debajo de k y desde k 62ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un token revocado recibe 401 en los cuatro verbos y no escribe  2245ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > el plan minimal recibe 403 dashboard_not_included en reseñas y en la ficha, al leer y al escribir 39ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio 99ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > tres PATCH en paralelo con el mismo If-Match: uno gana, los otros 409 y la bitácora cuenta una línea  3333ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > números de otro país: sin prefijo 422 con el mensaje en español, con prefijo se guardan completos 76ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > el viaje de ida y vuelta: GET da +dígitos, PATCH lo acepta igual y no cambia nada, también con un número extranjero 58ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > __proto__ junto a un campo válido da 422 y no escribe nada 20ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > constructor junto a un campo válido da 422 y no escribe nada 37ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > prototype junto a un campo válido da 422 y no escribe nada 29ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un cursor falsificado da 422 invalid_cursor al instante y no filtra reseñas de otro negocio 110ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > ninguna hora de las estadísticas sale en el resumen: visitas 6 y un toque real de contacto 58ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (un objeto, 5000) da 422 y no escribe 26ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (una lista, 5000) da 422 y no escribe 23ms
+   × datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (un objeto, 100000) da 422 y no escribe 36ms
+     → expected 500 to be 422 // Object.is equality
+   × datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (una lista, 100000) da 422 y no escribe 37ms
+     → expected 500 to be 422 // Object.is equality
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "0018095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada 51ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "123456789012345" > GET lo muestra como "123456789012345" y PATCH con el guardado o con lo mostrado no cambia nada 38ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada 64ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8295550100" > GET lo muestra como "+18295550100" y PATCH con el guardado o con lo mostrado no cambia nada 61ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "8495550100" > GET lo muestra como "+18495550100" y PATCH con el guardado o con lo mostrado no cambia nada 50ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "809-555-0100" > GET lo muestra como "809-555-0100" y PATCH con el guardado o con lo mostrado no cambia nada 35ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "+18095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada 38ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como " 18095550100 " > GET lo muestra como " 18095550100 " y PATCH con el guardado o con lo mostrado no cambia nada 40ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "18095550100" > GET lo muestra como "+18095550100" y PATCH con el guardado o con lo mostrado no cambia nada 60ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un número guardado como "34612345678" > GET lo muestra como "+34612345678" y PATCH con el guardado o con lo mostrado no cambia nada 48ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un id de reseña de más de 150 caracteres (destino más autor) sigue paginando 39ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/business-data-route.test.ts > profile > la guarda corta a los 20 niveles: 20 pasa, 21 no, y mide objetos y listas
+AssertionError: expected null to deeply equal StringContaining "niveles"
+
+[32m- Expected:[39m 
+StringContaining "niveles"
+
+[31m+ Received:[39m 
+null
+
+ ❯ test/business-data-route.test.ts:304:59
+    302|     for (const wrap of [(inner: unknown) => ({ a: inner }), (inner: un…
+    303|       expect(badShape(nest(MAX_BODY_DEPTH - 1, 1, wrap))).toBeNull();
+    304|       expect(badShape(nest(MAX_BODY_DEPTH + 1, 1, wrap))).toEqual(expe…
+       |                                                           ^
+    305|     }
+    306|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (un objeto, 100000) da 422 y no escribe
+ FAIL  test/business-data-route.test.ts > datos del panel de negocios contra el emulador > casos de la primera revisión > un cuerpo de muchos niveles (una lista, 100000) da 422 y no escribe
+AssertionError: expected 500 to be 422 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 422[39m
+[31m+ 500[39m
+
+ ❯ test/business-data-route.test.ts:1072:29
+    1070|       const owner = await newUser({ biz: [id] });
+    1071|       const result = await write(id, owner.token, build(levels));
+    1072|       expect(result.status).toBe(422);
+       |                             ^
+    1073|       expect(await editsOf(id)).toHaveLength(0);
+    1074|       expect((await db.collection('destinations').doc(id).get()).data(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 127 passed (130)
+   Start at  13:36:21
+   Duration  9.67s (transform 166ms, setup 0ms, collect 383ms, tests 9.10s, environment 0ms, prepare 45ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/business-data-route.test.ts" exited with code 1
