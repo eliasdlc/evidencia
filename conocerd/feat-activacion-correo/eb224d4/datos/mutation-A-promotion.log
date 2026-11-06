@@ -1,0 +1,103 @@
+# mutation-A-promotion at eb224d4: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts"
+# exit 1
+diff --git i/src/lib/email/owner-mailer.ts w/src/lib/email/owner-mailer.ts
+index 48b8511..e2f643f 100644
+--- i/src/lib/email/owner-mailer.ts
++++ w/src/lib/email/owner-mailer.ts
+@@ -145,7 +145,7 @@ export async function sendInvitationEmail(
+ 
+   // Antes de enviar: el token nuevo ya abre, junto con el vigente.
+   try {
+-    await ref.update({ pendingTokens: FieldValue.arrayUnion(pending) });
++    void pending;
+   } catch {
+     console.error('[conocerd-api] no se pudo guardar el token pendiente: la invitación no sale');
+     return { sent: false };
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (32 tests | 2 failed) 7177ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 2ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 1ms
+   ✓ token de invitación > una firma alterada, otro secreto, otra cuenta u otro vencimiento no abren nada 1ms
+   ✓ token de invitación > un token reemplazado por un reenvío ya no abre, aunque la firma sea buena 0ms
+   ✓ token de invitación > un token pendiente abre con su propio vencimiento, junto al vigente 0ms
+   ✓ token de invitación > sirve una sola vez 0ms
+   ✓ token de invitación > vence a su hora exacta 0ms
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 1ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  955ms
+   ✓ activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 163ms
+   ✓ activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 123ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3619ms
+   ✓ activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 104ms
+   ✓ activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 82ms
+   ✓ activación contra el emulador > reenviar manda un enlace nuevo con 7 días y deja muerto el anterior 131ms
+   ✓ activación contra el emulador > un reenvío que no sale no mata el enlace que la persona ya tenía 115ms
+   ✓ activación contra el emulador > reenviar exige admin 138ms
+   ✓ activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño 109ms
+   ✓ activación contra el emulador > si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false 100ms
+   ✓ activación contra el emulador > si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false 103ms
+   × activación contra el emulador > si el proveedor acepta el reenvío y la escritura de después falla, el enlace enviado sirve y la respuesta es sent: true 106ms
+     → expected 400 to be 200 // Object.is equality
+   × activación contra el emulador > si el proveedor acepta la primera invitación y la escritura de después falla, dice sent: true y el enlace sirve 73ms
+     → expected 400 to be 200 // Object.is equality
+   ✓ activación contra el emulador > un reenvío que sí se fija mata también el pendiente que dejó una escritura fallida 145ms
+   ✓ activación contra el emulador > con dos reenvíos a la vez, el último correo aceptado lleva el enlace que sirve 186ms
+   ✓ activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada 185ms
+   ✓ activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y la marca de uso se quita 110ms
+   ✓ activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable 51ms
+   ✓ activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada 62ms
+   ✓ activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña 50ms
+   ✓ activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 48ms
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 47ms
+   ✓ activación contra el emulador > revocar avisa por correo con el nombre del negocio 80ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 30 passed (32)
+   Start at  10:06:53
+   Duration  7.71s (transform 166ms, setup 9ms, collect 352ms, tests 7.18s, environment 0ms, prepare 48ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > si el proveedor acepta el reenvío y la escritura de después falla, el enlace enviado sirve y la respuesta es sent: true
+AssertionError: expected 400 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 400[39m
+
+ ❯ test/activation-route.test.ts:410:57
+    408|     await expect(response.json()).resolves.toMatchObject({ invitation:…
+    409|     expect(outbox).toHaveLength(2);
+    410|     expect((await activate(tokenIn(outbox[1]))).status).toBe(200);
+       |                                                         ^
+    411|   });
+    412| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > si el proveedor acepta la primera invitación y la escritura de después falla, dice sent: true y el enlace sirve
+AssertionError: expected 400 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 400[39m
+
+ ❯ test/activation-route.test.ts:419:57
+    417|     expect(body.invitation.sent).toBe(true);
+    418|     expect(outbox).toHaveLength(1);
+    419|     expect((await activate(tokenIn(outbox[0]))).status).toBe(200);
+       |                                                         ^
+    420|   });
+    421| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
