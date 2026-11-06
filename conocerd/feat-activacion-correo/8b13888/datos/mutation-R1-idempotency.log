@@ -1,0 +1,80 @@
+# mutation-R1-idempotency at 8b13888: pnpm vitest run --silent=true src/lib/email/resend.test.ts
+# exit 1
+diff --git i/src/lib/email/resend.ts w/src/lib/email/resend.ts
+index 4927b99..71f55f6 100644
+--- i/src/lib/email/resend.ts
++++ w/src/lib/email/resend.ts
+@@ -101,7 +101,7 @@ export async function sendEmail(message: EmailMessage, deps: EmailDeps = {}): Pr
+       headers: {
+         authorization: `Bearer ${config.apiKey}`,
+         'content-type': 'application/json',
+-        'idempotency-key': test ? `test:${message.idempotencyKey}` : message.idempotencyKey,
++        
+       },
+       body: JSON.stringify({
+         from: config.from,
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ src/lib/email/resend.test.ts (8 tests | 2 failed) 21ms
+   ✓ configuración del correo > sin EMAIL_MODE es modo prueba, y el remitente es siempre el de negocios 2ms
+   × sendEmail > en vivo manda a Resend con la clave, el remitente, texto plano e Idempotency-Key 12ms
+     → expected { …(2) } to match object { …(3) }
+   × sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave 2ms
+     → expected undefined to be 'test:owner-invitation/abc' // Object.is equality
+   ✓ sendEmail > en modo prueba sin buzón de prueba no llama a nadie 1ms
+   ✓ sendEmail > sin clave no llama a nadie 0ms
+   ✓ sendEmail > un rechazo de Resend es sent: false con el código, sin lanzar 1ms
+   ✓ sendEmail con la red caída > es sent: false sin lanzar y sin poner el error en el log 1ms
+   ✓ idempotencyKey > es estable por hecho, distinta entre hechos y corta aunque las partes no lo sean 1ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed (8)
+   Start at  10:46:19
+   Duration  288ms (transform 48ms, setup 14ms, collect 36ms, tests 21ms, environment 0ms, prepare 75ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > en vivo manda a Resend con la clave, el remitente, texto plano e Idempotency-Key
+AssertionError: expected { …(2) } to match object { …(3) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "authorization": "Bearer re_de_prueba",[22m
+[2m    "content-type": "application/json",[22m
+[32m-   "idempotency-key": "owner-invitation/abc",[39m
+[2m  }[22m
+
+ ❯ src/lib/email/resend.test.ts:61:21
+     59|     const { url, headers, body } = sentRequest(fetch);
+     60|     expect(url).toBe(RESEND_ENDPOINT);
+     61|     expect(headers).toMatchObject({
+       |                     ^
+     62|       authorization: 'Bearer re_de_prueba',
+     63|       'content-type': 'application/json',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave
+AssertionError: expected undefined to be 'test:owner-invitation/abc' // Object.is equality
+
+[32m- Expected:[39m 
+"test:owner-invitation/abc"
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ src/lib/email/resend.test.ts:88:40
+     86|     expect(body.text.startsWith('Correo de prueba. En vivo iría a duen…
+     87|     expect(body).not.toHaveProperty('reply_to');
+     88|     expect(headers['idempotency-key']).toBe('test:owner-invitation/abc…
+       |                                        ^
+     89|   });
+     90| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
