@@ -1,0 +1,86 @@
+# mutation-B-superseded at a35d9d5: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index a0d81f4..90edf07 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -195,7 +195,7 @@ export async function redeemPasswordLink(input: {
+     const given = hashOf(input.token);
+     const matches = stored.length === given.length && timingSafeEqual(stored, given);
+     const expiresAt = data?.expiresAt instanceof Timestamp ? data.expiresAt.toMillis() : 0;
+-    if (!matches || data?.usedAt || expiresAt <= now.getTime()) throw invalidLink();
++    if (data?.usedAt || expiresAt <= now.getTime()) throw invalidLink();
+     tx.update(ref, { usedAt: FieldValue.serverTimestamp() });
+   });
+ 
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (15 tests | 2 failed) 2436ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 1ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide al menos 8 caracteres, con un error en español y un ejemplo 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  709ms
+   × enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo 69ms
+     → expected 200 to be 400 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > vence a la hora exacta, con el reloj inyectado 54ms
+   × enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error 84ms
+     → expected 200 to be 400 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace 36ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1144ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token 32ms
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 86ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 12ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir 30ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 32ms
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 19ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 30ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 13 passed (15)
+   Start at  09:52:47
+   Duration  2.99s (transform 114ms, setup 12ms, collect 370ms, tests 2.44s, environment 0ms, prepare 53ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo
+AssertionError: expected 200 to be 400 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 400[39m
+[31m+ 200[39m
+
+ ❯ test/password-link-route.test.ts:146:76
+    144|     const second = await issue(owner.uid);
+    145| 
+    146|     expect((await redeemWith(tokenOf(first.link), 'Intruso2026!')).sta…
+       |                                                                            ^
+    147|     expect((await redeemWith(tokenOf(second.link), 'Duena2026!')).stat…
+    148|     expect((await redeemWith(tokenOf(first.link), 'Intruso2026!')).sta…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error
+AssertionError: expected 200 to be 400 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 400[39m
+[31m+ 200[39m
+
+ ❯ test/password-link-route.test.ts:178:31
+    176|     for (const candidate of [tokenOf(replaced.link), tokenOf(used.link…
+    177|       const response = await redeemWith(candidate);
+    178|       expect(response.status).toBe(400);
+       |                               ^
+    179|       bodies.push(await response.json());
+    180|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
