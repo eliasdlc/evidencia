@@ -1,0 +1,103 @@
+# mutation-P1-no-transaction at 8b13888: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index a0d81f4..2d910c7 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -189,7 +189,7 @@ export async function redeemPasswordLink(input: {
+   const now = input.now ?? new Date();
+   const db = adminDb();
+   const ref = db.collection(PASSWORD_LINKS).doc(user.uid);
+-  await db.runTransaction(async (tx) => {
++  await (async (fn: (tx: any) => Promise<void>) => fn({ get: (r: any) => r.get(), update: (r: any, d: any) => r.update(d) }))(async (tx) => {
+     const data = (await tx.get(ref)).data();
+     const stored = typeof data?.tokenHash === 'string' ? Buffer.from(data.tokenHash, 'hex') : Buffer.alloc(0);
+     const given = hashOf(input.token);
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (25 tests | 2 failed) 2776ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 1ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide al menos 8 caracteres, con un error en español y un ejemplo 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  707ms
+   ✓ enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo 65ms
+   ✓ enlace de contraseña contra el emulador > vence a la hora exacta, con el reloj inyectado 38ms
+   ✓ enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error 92ms
+   ✓ enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace 31ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1139ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token 28ms
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 68ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 13ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir 34ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 29ms
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 15ms
+   × enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra 60ms
+     → expected [ 200, 200, 200, 400, 400 ] to deeply equal [ 200, 400, 400, 400, 400 ]
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser personal (admin, con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 29ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser agente (con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 25ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta pierde todos sus destinos después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 27ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta se deshabilita después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 22ms
+   ✓ enlace de contraseña contra el emulador > P4: el secreto de A con el uid de B no abre nada; B no cambia y el token de A sigue sirviendo para A 53ms
+   ✓ enlace de contraseña contra el emulador > P5: el canje 11 desde la misma IP en un minuto responde 429 sin gastar el token, y pasado el minuto sirve 41ms
+   ✓ enlace de contraseña contra el emulador > P6: si poner la contraseña falla, responde 500, no cambia nada, el token vuelve a servir y nada del token ni de la contraseña sale en el log 64ms
+   ✓ enlace de contraseña contra el emulador > P7: canjear llama a revokeRefreshTokens con el uid de la cuenta 26ms
+   × enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo 27ms
+     → expected 400 to be 200 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 15ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 23 passed (25)
+   Start at  10:58:56
+   Duration  3.35s (transform 127ms, setup 9ms, collect 387ms, tests 2.78s, environment 0ms, prepare 57ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra
+AssertionError: expected [ 200, 200, 200, 400, 400 ] to deeply equal [ 200, 400, 400, 400, 400 ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    200,[22m
+[32m-   400,[39m
+[32m-   400,[39m
+[31m+   200,[39m
+[31m+   200,[39m
+[2m    400,[22m
+[2m    400,[22m
+[2m  ][22m
+
+ ❯ test/password-link-route.test.ts:280:34
+    278|     const passwords = ['Uno2026!!', 'Dos2026!!', 'Tres2026!', 'Cuatro2…
+    279|     const statuses = (await Promise.all(passwords.map((p) => redeemWit…
+    280|     expect([...statuses].sort()).toEqual([200, 400, 400, 400, 400]);
+       |                                  ^
+    281|     const winner = passwords[statuses.indexOf(200)] as string;
+    282|     for (const password of passwords) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo
+AssertionError: expected 400 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 400[39m
+
+ ❯ test/password-link-route.test.ts:386:76
+    384|     const [oldRedeem, renewed] = await Promise.all([redeemWith(tokenOf…
+    385|     expect([200, 400]).toContain(oldRedeem.status);
+    386|     expect((await redeemWith(tokenOf(renewed.link), 'Nuevo2026!')).sta…
+       |                                                                            ^
+    387|     expect((await signInWithPassword(owner.email, 'Nuevo2026!')).statu…
+    388|     expect((await signInWithPassword(owner.email, 'Viejo2026!')).statu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
