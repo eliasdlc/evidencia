@@ -1,0 +1,46 @@
+# red-first-CE1-network at 8b13888: product files restored to 2c1780d (before the round 1 fixes), tests of 8b13888; fixture UUIDs and emails replaced
+# pnpm vitest run --silent=true src/lib/email/resend.test.ts
+# exit 1
+# reverted:
+ src/lib/email/resend.ts | 40 ++++++++++++++++------------------------
+ 1 file changed, 16 insertions(+), 24 deletions(-)
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ src/lib/email/resend.test.ts (8 tests | 1 failed) 23ms
+   ✓ configuración del correo > sin EMAIL_MODE es modo prueba, y el remitente es siempre el de negocios 4ms
+   ✓ sendEmail > en vivo manda a Resend con la clave, el remitente, texto plano e Idempotency-Key 5ms
+   ✓ sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave 1ms
+   ✓ sendEmail > en modo prueba sin buzón de prueba no llama a nadie 1ms
+   ✓ sendEmail > sin clave no llama a nadie 0ms
+   ✓ sendEmail > un rechazo de Resend es sent: false con el código, sin lanzar 1ms
+   × sendEmail con la red caída > es sent: false sin lanzar y sin poner el error en el log 7ms
+     → promise rejected "TypeError: fetch failed https://api.resen…" instead of resolving
+   ✓ idempotencyKey > es estable por hecho, distinta entre hechos y corta aunque las partes no lo sean 1ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  11:00:27
+   Duration  231ms (transform 44ms, setup 13ms, collect 33ms, tests 23ms, environment 0ms, prepare 51ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail con la red caída > es sent: false sin lanzar y sin poner el error en el log
+AssertionError: promise rejected "TypeError: fetch failed https://api.resen…" instead of resolving
+ ❯ src/lib/email/resend.test.ts:126:61
+    124|       throw new TypeError('fetch failed https://api.resend.com/emails …
+    125|     });
+    126|     await expect(sendEmail(message, { config: live, fetch })).resolves…
+       |                                                             ^
+    127|     expect(JSON.stringify(errors.mock.calls)).not.toContain('dueno@eje…
+    128|   });
+
+Caused by: TypeError: fetch failed https://api.resend.com/emails <email-1>
+ ❯ src/lib/email/resend.test.ts:124:13
+ ❯ sendEmail src/lib/email/resend.ts:96:41
+ ❯ src/lib/email/resend.test.ts:126:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
