@@ -1,0 +1,66 @@
+# mutation-R6-confirmation at eb224d4: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index a0d81f4..a62e8bc 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -99,7 +99,7 @@ export async function generateOwnerPasswordLink(input: {
+   readonly confirmedByPhone: boolean;
+   readonly now?: Date;
+ }): Promise<PasswordLinkResult> {
+-  if (input.confirmedByPhone !== true) {
++  if (false) {
+     throw new ApiError(
+       422,
+       'phone_confirmation_required',
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (15 tests | 1 failed) 3066ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 1ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide al menos 8 caracteres, con un error en español y un ejemplo 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  964ms
+   ✓ enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo 231ms
+   ✓ enlace de contraseña contra el emulador > vence a la hora exacta, con el reloj inyectado 92ms
+   ✓ enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error 158ms
+   ✓ enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace 62ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1159ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token 39ms
+   × enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 29ms
+     → expected 200 to be 422 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 10ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir 27ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 24ms
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 16ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 26ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 passed (15)
+   Start at  10:04:19
+   Duration  3.73s (transform 150ms, setup 17ms, collect 436ms, tests 3.07s, environment 0ms, prepare 62ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora
+AssertionError: expected 200 to be 422 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 422[39m
+[31m+ 200[39m
+
+ ❯ test/password-link-route.test.ts:226:31
+    224|     for (const body of [{ uid: owner.uid }, { uid: owner.uid, confirme…
+    225|       const response = await linkFor(body);
+    226|       expect(response.status).toBe(422);
+       |                               ^
+    227|       await expect(response.json()).resolves.toMatchObject({ error: 'p…
+    228|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
