@@ -1,0 +1,53 @@
+# R2 at fe3c4a7, with src/lib/http.ts back at 1795298
+# $ pnpm exec vitest run test/ill-formed-text.test.ts -t "100 000"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/texto-mal-formado
+
+ ❯ test/ill-formed-text.test.ts (18 tests | 1 failed | 17 skipped) 25ms
+   ↓ readJson rechaza texto mal formado con 422 > \ud800 como valor
+   ↓ readJson rechaza texto mal formado con 422 > \udc00 como valor
+   ↓ readJson rechaza texto mal formado con 422 > a\ud800 como valor
+   ↓ readJson rechaza texto mal formado con 422 > \udbff\udbff como valor
+   ↓ readJson rechaza texto mal formado con 422 > \udc00\ud800 como valor
+   ↓ readJson rechaza texto mal formado con 422 > \ud800 como elemento de un arreglo anidado
+   ↓ readJson rechaza texto mal formado con 422 > \udc00 como elemento de un arreglo anidado
+   ↓ readJson rechaza texto mal formado con 422 > a\ud800 como elemento de un arreglo anidado
+   ↓ readJson rechaza texto mal formado con 422 > \udbff\udbff como elemento de un arreglo anidado
+   ↓ readJson rechaza texto mal formado con 422 > \udc00\ud800 como elemento de un arreglo anidado
+   ↓ readJson rechaza texto mal formado con 422 > \ud800 como clave
+   ↓ readJson rechaza texto mal formado con 422 > \udc00 como clave
+   ↓ readJson rechaza texto mal formado con 422 > a\ud800 como clave
+   ↓ readJson rechaza texto mal formado con 422 > \udbff\udbff como clave
+   ↓ readJson rechaza texto mal formado con 422 > \udc00\ud800 como clave
+   ↓ readJson rechaza texto mal formado con 422 > un emoji (par sustituto válido) pasa
+   × readJson rechaza texto mal formado con 422 > un cuerpo de 100 000 niveles con el sustituto abajo da 422, sin desbordar la pila 24ms
+     → expected 200 to be 422 // Object.is equality
+   ↓ readJson rechaza texto mal formado con 422 > el 422 de esquema conserva su forma
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > un cuerpo de 100 000 niveles con el sustituto abajo da 422, sin desbordar la pila
+AssertionError: expected 200 to be 422 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 422[39m
+[31m+ 200[39m
+
+ ❯ test/ill-formed-text.test.ts:43:29
+     41|     expect(spy).not.toHaveBeenCalled();
+     42|     spy.mockRestore();
+     43|     expect(response.status).toBe(422);
+       |                             ^
+     44|   });
+     45|   it('el 422 de esquema conserva su forma', async () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 skipped (18)
+   Start at  15:41:02
+   Duration  316ms (transform 47ms, setup 0ms, collect 99ms, tests 25ms, environment 0ms, prepare 52ms)
+
