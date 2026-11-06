@@ -1,0 +1,62 @@
+# mutation-CE8-no-email at abee197: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index db41d96..e2bff09 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -74,7 +74,7 @@ export async function generateOwnerPasswordLink(input: {
+     throw new ApiError(409, 'not_owner', 'Esa cuenta no es dueña de ningún destino');
+   }
+   if (user.disabled) throw new ApiError(409, 'account_disabled', 'Esa cuenta está deshabilitada');
+-  if (!user.email) throw new ApiError(422, 'no_email', 'Esa cuenta no tiene correo');
++  
+ 
+   const link = inSpanish(await adminAuth().generatePasswordResetLink(user.email));
+ 
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (11 tests | 1 failed) 1767ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 2ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide la página de Firebase en español 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le da un enlace que pone contraseña sin cambiar uid ni biz, y sirve una vez  1073ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el enlace 58ms
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 118ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 13ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled 31ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 59ms
+   × enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 34ms
+     → expected 500 to be 422 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > en el emulador, generar un segundo enlace no mata el primero: los dos códigos sirven hasta usarse 64ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 32ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  22:45:36
+   Duration  2.58s (transform 176ms, setup 22ms, collect 538ms, tests 1.77s, environment 0ms, prepare 70ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email
+AssertionError: expected 500 to be 422 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 422[39m
+[31m+ 500[39m
+
+ ❯ test/password-link-route.test.ts:174:29
+    172|     await firebase.adminAuth().setCustomUserClaims(phoneOnly.uid, { bi…
+    173|     const response = await linkFor({ uid: phoneOnly.uid, confirmedByPh…
+    174|     expect(response.status).toBe(422);
+       |                             ^
+    175|     await expect(response.json()).resolves.toMatchObject({ error: 'no_…
+    176|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
