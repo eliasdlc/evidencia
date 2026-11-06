@@ -1,0 +1,71 @@
+# R3 at d107efe, with src/lib/http.ts back at 2387dd1
+# $ pnpm vitest run test/http-errors.test.ts -t "H3"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/errores-sin-500
+
+ ❯ test/http-errors.test.ts (23 tests | 9 failed | 13 skipped) 21ms
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > constructor como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > toString como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > valueOf como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > hasOwnProperty como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > isPrototypeOf como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > propertyIsEnumerable como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > toLocaleString como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > __defineGetter__ como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > __lookupGetter__ como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > __proto__ como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > un error a mano con la clave en el path tampoco lanza
+   ↓ errorResponse > H2: la forma del 422 de un cuerpo ordinario no cambia > es idéntica a la de z.treeifyError, byte a byte
+   ↓ errorResponse > H2: la forma del 422 de un cuerpo ordinario no cambia > un error en la raíz va en errors
+   × errorResponse > H3: por una ruta real con readJson > constructor como clave del cuerpo da 422 12ms
+     → Cannot read properties of undefined (reading 'push')
+   × errorResponse > H3: por una ruta real con readJson > toString como clave del cuerpo da 422 2ms
+     → Cannot read properties of undefined (reading 'push')
+   × errorResponse > H3: por una ruta real con readJson > valueOf como clave del cuerpo da 422 1ms
+     → Cannot read properties of undefined (reading 'push')
+   × errorResponse > H3: por una ruta real con readJson > hasOwnProperty como clave del cuerpo da 422 1ms
+     → Cannot read properties of undefined (reading 'push')
+   × errorResponse > H3: por una ruta real con readJson > isPrototypeOf como clave del cuerpo da 422 1ms
+     → Cannot read properties of undefined (reading 'push')
+   × errorResponse > H3: por una ruta real con readJson > propertyIsEnumerable como clave del cuerpo da 422 1ms
+     → Cannot read properties of undefined (reading 'push')
+   × errorResponse > H3: por una ruta real con readJson > toLocaleString como clave del cuerpo da 422 1ms
+     → Cannot read properties of undefined (reading 'push')
+   × errorResponse > H3: por una ruta real con readJson > __defineGetter__ como clave del cuerpo da 422 1ms
+     → Cannot read properties of undefined (reading 'push')
+   × errorResponse > H3: por una ruta real con readJson > __lookupGetter__ como clave del cuerpo da 422 1ms
+     → Cannot read properties of undefined (reading 'push')
+   ✓ errorResponse > H3: por una ruta real con readJson > un cuerpo válido con esa clave sigue pasando 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/http-errors.test.ts > errorResponse > H3: por una ruta real con readJson > constructor como clave del cuerpo da 422
+ FAIL  test/http-errors.test.ts > errorResponse > H3: por una ruta real con readJson > toString como clave del cuerpo da 422
+ FAIL  test/http-errors.test.ts > errorResponse > H3: por una ruta real con readJson > valueOf como clave del cuerpo da 422
+ FAIL  test/http-errors.test.ts > errorResponse > H3: por una ruta real con readJson > hasOwnProperty como clave del cuerpo da 422
+ FAIL  test/http-errors.test.ts > errorResponse > H3: por una ruta real con readJson > isPrototypeOf como clave del cuerpo da 422
+ FAIL  test/http-errors.test.ts > errorResponse > H3: por una ruta real con readJson > propertyIsEnumerable como clave del cuerpo da 422
+ FAIL  test/http-errors.test.ts > errorResponse > H3: por una ruta real con readJson > toLocaleString como clave del cuerpo da 422
+ FAIL  test/http-errors.test.ts > errorResponse > H3: por una ruta real con readJson > __defineGetter__ como clave del cuerpo da 422
+ FAIL  test/http-errors.test.ts > errorResponse > H3: por una ruta real con readJson > __lookupGetter__ como clave del cuerpo da 422
+TypeError: Cannot read properties of undefined (reading 'push')
+ ❯ processError node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/errors.js:113:37
+ ❯ Module.treeifyError node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/errors.js:120:5
+ ❯ errorResponse src/lib/http.ts:15:65
+     13|   }
+     14|   if (error instanceof z.ZodError) {
+     15|     return NextResponse.json({ error: 'invalid_body', issues: z.treeif…
+       |                                                                 ^
+     16|   }
+     17|   // Un error inesperado no se le cuenta al caller: puede llevar dentr…
+ ❯ src/lib/http.ts:31:14
+ ❯ test/http-errors.test.ts:117:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed | 1 passed | 13 skipped (23)
+   Start at  14:08:35
+   Duration  274ms (transform 40ms, setup 0ms, collect 92ms, tests 21ms, environment 0ms, prepare 54ms)
+
