@@ -1,0 +1,104 @@
+# mutation-CE5-rollback at abee197: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts"
+# exit 1
+diff --git i/src/lib/invitations.ts w/src/lib/invitations.ts
+index b37af31..6d9be71 100644
+--- i/src/lib/invitations.ts
++++ w/src/lib/invitations.ts
+@@ -220,7 +220,7 @@ export async function activateInvitation(
+ 
+     return { email, oobCode, businessNames: await destinationNames(stillOwned) };
+   } catch (error) {
+-    await ref.update({ usedAt: null }).catch(() => undefined);
++    
+     throw error;
+   }
+ }
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (27 tests | 2 failed) 7960ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 2ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 1ms
+   ✓ token de invitación > una firma alterada, otro secreto, otra cuenta u otro vencimiento no abren nada 1ms
+   ✓ token de invitación > un token reemplazado por un reenvío ya no abre, aunque la firma sea buena 0ms
+   ✓ token de invitación > sirve una sola vez 0ms
+   ✓ token de invitación > vence a su hora exacta 0ms
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 1ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  1557ms
+   ✓ activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 198ms
+   ✓ activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 170ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3390ms
+   ✓ activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 171ms
+   ✓ activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 160ms
+   ✓ activación contra el emulador > reenviar manda un enlace nuevo con 7 días y deja muerto el anterior 291ms
+   ✓ activación contra el emulador > un reenvío que no sale no mata el enlace que la persona ya tenía 178ms
+   ✓ activación contra el emulador > reenviar exige admin 129ms
+   ✓ activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño 180ms
+   ✓ activación contra el emulador > si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false 150ms
+   ✓ activación contra el emulador > si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false 152ms
+   × activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada 176ms
+     → expected Timestamp{ _seconds: 1793933123, …(1) } to be null
+   × activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y la marca de uso se quita 120ms
+     → expected Timestamp{ _seconds: 1793933123, …(1) } to be null
+   ✓ activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable 86ms
+   ✓ activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada 146ms
+   ✓ activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña 72ms
+   ✓ activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 72ms
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 57ms
+   ✓ activación contra el emulador > revocar avisa por correo con el nombre del negocio 126ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 25 passed (27)
+   Start at  22:45:15
+   Duration  8.80s (transform 280ms, setup 22ms, collect 552ms, tests 7.96s, environment 0ms, prepare 70ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada
+AssertionError: expected Timestamp{ _seconds: 1793933123, …(1) } to be null
+
+[32m- Expected:[39m 
+null
+
+[31m+ Received:[39m 
+Timestamp {
+  "_nanoseconds": 826000000,
+  "_seconds": 1793933123,
+}
+
+ ❯ test/activation-route.test.ts:382:28
+    380|     expect((await firebase.adminAuth().getUser(body.uid)).emailVerifie…
+    381|     const record = (await firebase.adminDb().collection('ownerInvitati…
+    382|     expect(record?.usedAt).toBeNull();
+       |                            ^
+    383|   });
+    384| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y la marca de uso se quita
+AssertionError: expected Timestamp{ _seconds: 1793933123, …(1) } to be null
+
+[32m- Expected:[39m 
+null
+
+[31m+ Received:[39m 
+Timestamp {
+  "_nanoseconds": 948000000,
+  "_seconds": 1793933123,
+}
+
+ ❯ test/activation-route.test.ts:394:28
+    392|     await expect(response.json()).resolves.toMatchObject({ error: 'acc…
+    393|     const record = (await firebase.adminDb().collection('ownerInvitati…
+    394|     expect(record?.usedAt).toBeNull();
+       |                            ^
+    395|     expect((await firebase.adminAuth().getUser(body.uid)).emailVerifie…
+    396|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
