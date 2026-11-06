@@ -1,0 +1,105 @@
+# R1 at 26101dd, with src/lib/cors.ts back at 2387dd1
+# $ pnpm vitest run src/lib/cors.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/cors-negocios
+
+stderr | src/lib/cors.test.ts > PANEL_PREVIEW_ORIGINS > una lista vacía o un comodín no abren nada
+[conocerd-api] PANEL_PREVIEW_ORIGINS descarta lo que no es un origen https exacto: *
+
+ ❯ src/lib/cors.test.ts (67 tests | 1 failed) 31ms
+   ✓ isAllowedOrigin > acepta producción con cualquier NODE_ENV 3ms
+   × isAllowedOrigin > acepta el panel en su host nuevo con cualquier NODE_ENV 9ms
+     → production: expected false to be true // Object.is equality
+   ✓ isAllowedOrigin > rechaza sin Origin 0ms
+   ✓ isAllowedOrigin > rechaza Origin vacío 0ms
+   ✓ isAllowedOrigin > rechaza el literal null de un iframe aislado 0ms
+   ✓ isAllowedOrigin > rechaza producción por http 0ms
+   ✓ isAllowedOrigin > rechaza producción con puerto 0ms
+   ✓ isAllowedOrigin > rechaza producción con barra final 0ms
+   ✓ isAllowedOrigin > rechaza un sufijo que imita producción 0ms
+   ✓ isAllowedOrigin > rechaza el host nuevo por http 0ms
+   ✓ isAllowedOrigin > rechaza el host nuevo con puerto 0ms
+   ✓ isAllowedOrigin > rechaza el host nuevo con barra final 0ms
+   ✓ isAllowedOrigin > rechaza un sufijo que imita el host nuevo 0ms
+   ✓ isAllowedOrigin > rechaza un prefijo que imita el host nuevo 0ms
+   ✓ isAllowedOrigin > rechaza un vercel.app que imita el host nuevo 0ms
+   ✓ isAllowedOrigin > rechaza un prefijo que imita producción 0ms
+   ✓ isAllowedOrigin > rechaza otro subdominio propio 0ms
+   ✓ isAllowedOrigin > rechaza el sitio público 0ms
+   ✓ isAllowedOrigin > rechaza un vercel.app ajeno 0ms
+   ✓ isAllowedOrigin > rechaza el mismo proyecto en otro equipo 0ms
+   ✓ isAllowedOrigin > rechaza otro proyecto del mismo equipo 0ms
+   ✓ isAllowedOrigin > rechaza un hash de deployment corto 0ms
+   ✓ isAllowedOrigin > rechaza un preview seguido de otro dominio 0ms
+   ✓ isAllowedOrigin > rechaza un preview por http 0ms
+   ✓ isAllowedOrigin > rechaza un preview con prefijo 0ms
+   ✓ isAllowedOrigin > rechaza una rama con mayúsculas 0ms
+   ✓ isAllowedOrigin > rechaza una rama vacía 0ms
+   ✓ isAllowedOrigin > rechaza un localhost en otro puerto 0ms
+   ✓ isAllowedOrigin > rechaza un localhost por https 0ms
+   ✓ isAllowedOrigin > rechaza un deployment propio que no está en la lista 0ms
+   ✓ isAllowedOrigin > rechaza el alias de rama de un equipo con el mismo sufijo 0ms
+   ✓ isAllowedOrigin > rechaza un alias de rama propio 0ms
+   ✓ isAllowedOrigin > rechaza un deployment de un equipo con el mismo sufijo 0ms
+   ✓ isAllowedOrigin > rechaza un proyecto con sufijo extra 0ms
+   ✓ isAllowedOrigin > rechaza un proyecto con sufijo extra que imita una rama 0ms
+   ✓ isAllowedOrigin > http://localhost:5173 solo pasa con NODE_ENV development o test 0ms
+   ✓ isAllowedOrigin > http://localhost:5173 no pasa si NODE_ENV está mal escrito o es production 0ms
+   ✓ isAllowedOrigin > http://localhost:5173 no pasa si NODE_ENV falta 0ms
+   ✓ isAllowedOrigin > http://127.0.0.1:5173 solo pasa con NODE_ENV development o test 0ms
+   ✓ isAllowedOrigin > http://127.0.0.1:5173 no pasa si NODE_ENV está mal escrito o es production 0ms
+   ✓ isAllowedOrigin > http://127.0.0.1:5173 no pasa si NODE_ENV falta 0ms
+   ✓ PANEL_PREVIEW_ORIGINS > acepta un origen de la lista exacta, también en producción 2ms
+   ✓ PANEL_PREVIEW_ORIGINS > no acepta nada que no sea idéntico a una entrada 1ms
+   ✓ PANEL_PREVIEW_ORIGINS > un preview de Vercel pasa solo si está escrito tal cual en la lista 0ms
+   ✓ PANEL_PREVIEW_ORIGINS > una lista vacía o un comodín no abren nada 1ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con http 2ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con host con mayúsculas 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con barra final 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con ruta 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con query 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con credenciales 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con puerto por defecto escrito 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con el literal null 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con localhost 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con un subdominio de localhost 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con 127.0.0.1 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con otra dirección de loopback 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con loopback IPv6 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con localhost por http 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con un comodín 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con un comodín de subdominio 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > descarta una entrada con sin esquema 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > una entrada con mayúsculas no se normaliza: se descarta 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > las entradas válidas siguen sirviendo junto a las descartadas 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > avisa una sola vez, nombrando solo las entradas descartadas 0ms
+   ✓ validación de PANEL_PREVIEW_ORIGINS > una lista válida no avisa 0ms
+   ✓ CORS > anuncia los métodos del panel y solo las cabeceras Authorization, Content-Type e If-Match 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/cors.test.ts > isAllowedOrigin > acepta el panel en su host nuevo con cualquier NODE_ENV
+AssertionError: production: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ src/lib/cors.test.ts:20:98
+     18|   for (const [label, origin] of allowedEverywhere) {
+     19|     it(`acepta ${label} con cualquier NODE_ENV`, () => {
+     20|       for (const nodeEnv of NODE_ENVS) expect(isAllowedOrigin(origin, …
+       |                                                                                                  ^
+     21|     });
+     22|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 66 passed (67)
+   Start at  10:36:47
+   Duration  291ms (transform 59ms, setup 0ms, collect 64ms, tests 31ms, environment 0ms, prepare 57ms)
+
