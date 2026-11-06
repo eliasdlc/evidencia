@@ -1,0 +1,95 @@
+# R3 at 3c3b3cf, with m-r3.patch applied
+# $ firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm exec vitest run test/contact-signals.test.ts -t R3"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/contact-signals.test.ts -t R3
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/senales-contacto
+
+ ❯ test/contact-signals.test.ts (15 tests | 2 failed | 13 skipped) 1669ms
+   ↓ R1: cuerpo de /signals/contact > acepta los cinco canales y una excursión opcional
+   ↓ R1: cuerpo de /signals/contact > rechaza canal desconocido, campos de más, excursión mal formada y la reservada "general"
+   ↓ R1: cuerpo de /signals/contact > la clave separa canal, excursión y el cubo general
+   ↓ señales de contacto contra el emulador > R2: el primer toque cuenta, el segundo del mismo día no, y el del día siguiente sí
+   ↓ señales de contacto contra el emulador > R2: el mismo día del mes siguiente no queda bloqueado por el marcador
+   ↓ señales de contacto contra el emulador > R5: los cinco canales cuentan y el reparto por excursión suma el total de cada canal
+   × señales de contacto contra el emulador > R3: un dueño del destino no cuenta, un destino ausente es not_curated y ninguno escribe 1052ms
+     → expected { counted: true, reason: 'counted' } to deeply equal { counted: false, reason: 'owner' }
+   ↓ señales de contacto contra el emulador > R4: N cuentas distintas a la vez suman exactamente N, y una cuenta repetida a la vez suma 1
+   ↓ señales de contacto contra el emulador > R2: una cuenta no guarda más claves por día que el tope y no deja entrar más
+   ↓ señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > un contacto deja intactos los campos de visitas y una visita deja intactos los de contactos
+   ↓ señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > la reconstrucción de visitas deja intactos los contactos, también en un mes que solo tiene contactos
+   ↓ señales de contacto contra el emulador > HTTP > R1: 200 con el resultado, y la segunda llamada del día lo dice
+   ↓ señales de contacto contra el emulador > HTTP > R1: 401 sin token y 422 con un cuerpo mal formado, sin escribir nada
+   × señales de contacto contra el emulador > HTTP > R3: el dueño con el claim biz recibe owner por HTTP 152ms
+     → expected { counted: true, reason: 'counted' } to deeply equal { counted: false, reason: 'owner' }
+   ↓ señales de contacto contra el emulador > HTTP > R1: App Check se observa y no se exige hasta activar CONTACT_SIGNALS_REQUIRE_APP_CHECK
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/contact-signals.test.ts > señales de contacto contra el emulador > R3: un dueño del destino no cuenta, un destino ausente es not_curated y ninguno escribe
+AssertionError: expected { counted: true, reason: 'counted' } to deeply equal { counted: false, reason: 'owner' }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "counted": false,[39m
+[32m-   "reason": "owner",[39m
+[31m+   "counted": true,[39m
+[31m+   "reason": "counted",[39m
+[2m  }[22m
+
+ ❯ test/contact-signals.test.ts:117:8
+    115|     const owner = account();
+    116|     expect(await service.recordContact(owner, {biz: [place]}, {destina…
+    117|       .toEqual({counted: false, reason: 'owner'});
+       |        ^
+    118|     expect(await service.recordContact(owner, {biz: ['otro']}, {destin…
+    119|       .toEqual({counted: true, reason: 'counted'});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/contact-signals.test.ts > señales de contacto contra el emulador > HTTP > R3: el dueño con el claim biz recibe owner por HTTP
+AssertionError: expected { counted: true, reason: 'counted' } to deeply equal { counted: false, reason: 'owner' }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "counted": false,[39m
+[32m-   "reason": "owner",[39m
+[31m+   "counted": true,[39m
+[31m+   "reason": "counted",[39m
+[2m  }[22m
+
+ ❯ test/contact-signals.test.ts:225:37
+    223|       await signIn({biz: [place]});
+    224|       const response = await api.POST(request({destinationId: place, k…
+    225|       expect(await response.json()).toEqual({counted: false, reason: '…
+       |                                     ^
+    226|     });
+    227|     it('R1: App Check se observa y no se exige hasta activar CONTACT_S…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 13 skipped (15)
+   Start at  21:57:08
+   Duration  2.12s (transform 188ms, setup 0ms, collect 193ms, tests 1.67s, environment 0ms, prepare 72ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/contact-signals.test.ts -t R3" exited with code 1
