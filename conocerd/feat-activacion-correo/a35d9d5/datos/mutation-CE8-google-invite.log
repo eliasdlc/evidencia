@@ -1,0 +1,79 @@
+# mutation-CE8-google-invite at a35d9d5: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts"
+# exit 1
+diff --git i/src/lib/email/owner-mailer.ts w/src/lib/email/owner-mailer.ts
+index d1bd3f9..3cd98ea 100644
+--- i/src/lib/email/owner-mailer.ts
++++ w/src/lib/email/owner-mailer.ts
+@@ -108,7 +108,7 @@ export async function sendInvitationEmail(
+   const businessNames = await destinationNames(input.destinationIds);
+   const common = { email: input.email, displayName: input.displayName, businessNames, panelUrl, replyTo: config.replyTo };
+ 
+-  if (input.hasSignInMethod) {
++  if (false) {
+     const result = await sendEmail(
+       {
+         to: input.email,
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (31 tests | 1 failed) 6446ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 1ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 1ms
+   ✓ token de invitación > una firma alterada, otro secreto, otra cuenta u otro vencimiento no abren nada 1ms
+   ✓ token de invitación > un token reemplazado por un reenvío ya no abre, aunque la firma sea buena 0ms
+   ✓ token de invitación > un token pendiente abre con su propio vencimiento, junto al vigente 0ms
+   ✓ token de invitación > sirve una sola vez 0ms
+   ✓ token de invitación > vence a su hora exacta 0ms
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 1ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  903ms
+   ✓ activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 169ms
+   ✓ activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 129ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3436ms
+   ✓ activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 92ms
+   ✓ activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 71ms
+   ✓ activación contra el emulador > reenviar manda un enlace nuevo con 7 días y deja muerto el anterior 114ms
+   ✓ activación contra el emulador > un reenvío que no sale no mata el enlace que la persona ya tenía 94ms
+   ✓ activación contra el emulador > reenviar exige admin 71ms
+   ✓ activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño 95ms
+   ✓ activación contra el emulador > si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false 101ms
+   ✓ activación contra el emulador > si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false 121ms
+   ✓ activación contra el emulador > si el proveedor acepta el reenvío y la escritura de después falla, el enlace enviado sirve y la respuesta es sent: true 97ms
+   ✓ activación contra el emulador > si el proveedor acepta la primera invitación y la escritura de después falla, dice sent: true y el enlace sirve 63ms
+   ✓ activación contra el emulador > con dos reenvíos a la vez, el último correo aceptado lleva el enlace que sirve 173ms
+   ✓ activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada 106ms
+   ✓ activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y la marca de uso se quita 77ms
+   ✓ activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable 46ms
+   × activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada 57ms
+     → expected 'Tu panel de Cunae en ConoceRD' to be 'Ya puedes ver Cunae en tu panel de Co…' // Object.is equality
+   ✓ activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña 46ms
+   ✓ activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 42ms
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 38ms
+   ✓ activación contra el emulador > revocar avisa por correo con el nombre del negocio 67ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 30 passed (31)
+   Start at  09:54:39
+   Duration  7.03s (transform 166ms, setup 13ms, collect 368ms, tests 6.45s, environment 0ms, prepare 61ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada
+AssertionError: expected 'Tu panel de Cunae en ConoceRD' to be 'Ya puedes ver Cunae en tu panel de Co…' // Object.is equality
+
+Expected: [32m"[7mYa puedes ver Cunae en tu panel de[27m ConoceRD"[39m
+Received: [31m"[7mTu panel de Cunae en[27m ConoceRD"[39m
+
+ ❯ test/activation-route.test.ts:502:32
+    500|     const body = (await response.json()) as InvitationResult;
+    501|     expect(body).toMatchObject({ created: false, invitation: { sent: t…
+    502|     expect(outbox[0]?.subject).toBe('Ya puedes ver Cunae en tu panel d…
+       |                                ^
+    503|     expect(outbox[0]?.text).not.toContain('/activar');
+    504|     const record = (await firebase.adminDb().collection('ownerInvitati…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
