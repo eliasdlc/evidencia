@@ -1,0 +1,117 @@
+# R1 at b60f961, with src/lib/http.ts back at 1795298
+# $ pnpm exec vitest run test/ill-formed-text.test.ts -t "como"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/texto-mal-formado
+
+ ❯ test/ill-formed-text.test.ts (18 tests | 15 failed | 3 skipped) 22ms
+   × readJson rechaza texto mal formado con 422 > \ud800 como valor 12ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \udc00 como valor 1ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > a\ud800 como valor 1ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \udbff\udbff como valor 1ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \udc00\ud800 como valor 1ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \ud800 como elemento de un arreglo anidado 1ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \udc00 como elemento de un arreglo anidado 1ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > a\ud800 como elemento de un arreglo anidado 1ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \udbff\udbff como elemento de un arreglo anidado 1ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \udc00\ud800 como elemento de un arreglo anidado 1ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \ud800 como clave 0ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \udc00 como clave 0ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > a\ud800 como clave 0ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \udbff\udbff como clave 0ms
+     → expected 200 to be 422 // Object.is equality
+   × readJson rechaza texto mal formado con 422 > \udc00\ud800 como clave 0ms
+     → expected 200 to be 422 // Object.is equality
+   ↓ readJson rechaza texto mal formado con 422 > un emoji (par sustituto válido) pasa
+   ↓ readJson rechaza texto mal formado con 422 > un cuerpo de 100 000 niveles con el sustituto abajo da 422, sin desbordar la pila
+   ↓ readJson rechaza texto mal formado con 422 > el 422 de esquema conserva su forma
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 15 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \ud800 como valor
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \udc00 como valor
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > a\ud800 como valor
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \udbff\udbff como valor
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \udc00\ud800 como valor
+AssertionError: expected 200 to be 422 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 422[39m
+[31m+ 200[39m
+
+ ❯ test/ill-formed-text.test.ts:22:29
+     20|   it.each(LONE)('%s como valor', async (s) => {
+     21|     const response = await post(`{"a":"${s}"}`);
+     22|     expect(response.status).toBe(422);
+       |                             ^
+     23|     expect(await response.json()).toMatchObject({ error: 'invalid_body…
+     24|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/15]⎯
+
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \ud800 como elemento de un arreglo anidado
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \udc00 como elemento de un arreglo anidado
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > a\ud800 como elemento de un arreglo anidado
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \udbff\udbff como elemento de un arreglo anidado
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \udc00\ud800 como elemento de un arreglo anidado
+AssertionError: expected 200 to be 422 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 422[39m
+[31m+ 200[39m
+
+ ❯ test/ill-formed-text.test.ts:26:63
+     24|   });
+     25|   it.each(LONE)('%s como elemento de un arreglo anidado', async (s) =>…
+     26|     expect((await post(`{"a":[[1,{"b":["${s}"]}]]}`)).status).toBe(422…
+       |                                                               ^
+     27|   });
+     28|   it.each(LONE)('%s como clave', async (s) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/15]⎯
+
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \ud800 como clave
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \udc00 como clave
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > a\ud800 como clave
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \udbff\udbff como clave
+ FAIL  test/ill-formed-text.test.ts > readJson rechaza texto mal formado con 422 > \udc00\ud800 como clave
+AssertionError: expected 200 to be 422 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 422[39m
+[31m+ 200[39m
+
+ ❯ test/ill-formed-text.test.ts:29:47
+     27|   });
+     28|   it.each(LONE)('%s como clave', async (s) => {
+     29|     expect((await post(`{"${s}":1}`)).status).toBe(422);
+       |                                               ^
+     30|     expect((await post(`{"a":{"${s}":1}}`)).status).toBe(422);
+     31|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/15]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  15 failed | 3 skipped (18)
+   Start at  15:51:51
+   Duration  304ms (transform 44ms, setup 0ms, collect 96ms, tests 22ms, environment 0ms, prepare 58ms)
+
