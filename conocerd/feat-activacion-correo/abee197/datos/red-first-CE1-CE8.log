@@ -1,0 +1,219 @@
+# red-first-CE1-CE8 at abee197: product files restored to 2c1780d (before the round 1 fixes), tests of abee197; fixture UUIDs and emails replaced
+# /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts test/password-link-route.test.ts"
+# exit 1
+# reverted:
+ src/lib/email/oob.ts          | 24 +++++--------
+ src/lib/email/owner-mailer.ts | 80 +++++++++++--------------------------------
+ src/lib/email/resend.ts       | 40 +++++++++-------------
+ src/lib/invitations.ts        | 21 ++++--------
+ src/lib/password-link.ts      |  6 ----
+ 5 files changed, 51 insertions(+), 120 deletions(-)
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (27 tests | 6 failed) 7902ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 3ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 2ms
+   ✓ token de invitación > una firma alterada, otro secreto, otra cuenta u otro vencimiento no abren nada 2ms
+   ✓ token de invitación > un token reemplazado por un reenvío ya no abre, aunque la firma sea buena 1ms
+   ✓ token de invitación > sirve una sola vez 0ms
+   ✓ token de invitación > vence a su hora exacta 0ms
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 2ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  1351ms
+   ✓ activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 207ms
+   ✓ activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 155ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3469ms
+   ✓ activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 156ms
+   ✓ activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 154ms
+   ✓ activación contra el emulador > reenviar manda un enlace nuevo con 7 días y deja muerto el anterior 217ms
+   ✓ activación contra el emulador > un reenvío que no sale no mata el enlace que la persona ya tenía 139ms
+   ✓ activación contra el emulador > reenviar exige admin 122ms
+   × activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño 101ms
+     → expected true to be false // Object.is equality
+   × activación contra el emulador > si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false 140ms
+     → expected { invitation: { …(3) } } to match object { invitation: { sent: false, …(1) } }
+(1 matching property omitted from actual)
+   × activación contra el emulador > si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false 121ms
+     → expected 500 to be 200 // Object.is equality
+   × activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada 203ms
+     → expected 200 to be 409 // Object.is equality
+   ✓ activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y la marca de uso se quita 133ms
+   × activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable 77ms
+     → expected 500 to be 503 // Object.is equality
+   ✓ activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada 99ms
+   × activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña 152ms
+     → expected { …(4) } to match object { Object (created, invitation) }
+(4 matching properties omitted from actual)
+   ✓ activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 89ms
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 75ms
+   ✓ activación contra el emulador > revocar avisa por correo con el nombre del negocio 113ms
+ ❯ test/password-link-route.test.ts (11 tests | 1 failed) 1127ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 4ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide la página de Firebase en español 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le da un enlace que pone contraseña sin cambiar uid ni biz, y sirve una vez  415ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el enlace 58ms
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 83ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 36ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled 59ms
+   × enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 94ms
+     → expected 200 to be 409 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 40ms
+   ✓ enlace de contraseña contra el emulador > en el emulador, generar un segundo enlace no mata el primero: los dos códigos sirven hasta usarse 104ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 59ms
+
+ Test Files  2 failed (2)
+      Tests  7 failed | 31 passed (38)
+   Start at  22:36:08
+   Duration  11.15s (transform 402ms, setup 41ms, collect 1.23s, tests 9.03s, environment 1ms, prepare 268ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ test/activation-route.test.ts:329:34
+    327|     process.env.EMAIL_TEST_RECIPIENT = '<email-3>';
+    328|     const { email, body } = await invited();
+    329|     expect(body.invitation.sent).toBe(false);
+       |                                  ^
+    330|     expect(outbox).toHaveLength(1);
+    331|     expect(outbox[0]?.to).toEqual(['<email-3>']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false
+AssertionError: expected { invitation: { …(3) } } to match object { invitation: { sent: false, …(1) } }
+(1 matching property omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "invitation": {[22m
+[32m-     "expiresAt": "2026-11-13T02:36:16.287Z",[39m
+[31m+     "expiresAt": "2026-11-13T02:36:16.328Z",[39m
+[2m      "sent": false,[22m
+[2m    },[22m
+[2m  }[22m
+
+ ❯ test/activation-route.test.ts:359:5
+    357|     const response = await resendOf(body.invitation.id);
+    358|     expect(response.status).toBe(200);
+    359|     await expect(response.json()).resolves.toMatchObject({
+       |     ^
+    360|       invitation: { sent: false, expiresAt: body.invitation.expiresAt …
+    361|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false
+AssertionError: expected 500 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 500[39m
+
+ ❯ test/activation-route.test.ts:358:29
+    356| 
+    357|     const response = await resendOf(body.invitation.id);
+    358|     expect(response.status).toBe(200);
+       |                             ^
+    359|     await expect(response.json()).resolves.toMatchObject({
+    360|       invitation: { sent: false, expiresAt: body.invitation.expiresAt …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada
+AssertionError: expected 200 to be 409 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 200[39m
+
+ ❯ test/activation-route.test.ts:378:29
+    376| 
+    377|     const response = await activate(token);
+    378|     expect(response.status).toBe(409);
+       |                             ^
+    379|     await expect(response.json()).resolves.toMatchObject({ error: 'not…
+    380|     expect((await firebase.adminAuth().getUser(body.uid)).emailVerifie…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable
+AssertionError: expected 500 to be 503 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 503[39m
+[31m+ 500[39m
+
+ ❯ test/activation-route.test.ts:406:29
+    404| 
+    405|     const response = await activate(`${body.invitation.id}.${'a'.repea…
+    406|     expect(response.status).toBe(503);
+       |                             ^
+    407|     await expect(response.json()).resolves.toMatchObject({ error: 'not…
+    408|     expect(errors.mock.calls.length).toBeGreaterThan(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña
+AssertionError: expected { …(4) } to match object { Object (created, invitation) }
+(4 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "created": false,[22m
+[2m    "invitation": {[22m
+[32m-     "sent": false,[39m
+[31m+     "sent": true,[39m
+[2m    },[22m
+[2m  }[22m
+
+ ❯ test/activation-route.test.ts:446:5
+    444| 
+    445|     const response = await invite.POST(post(INVITE, { email, destinati…
+    446|     await expect(response.json()).resolves.toMatchObject({ created: fa…
+       |     ^
+    447|     const codes = await realFetch(
+    448|       `http://${process.env.FIREBASE_AUTH_EMULATOR_HOST}/emulator/v1/p…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account
+AssertionError: expected 200 to be 409 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 200[39m
+
+ ❯ test/password-link-route.test.ts:162:31
+    160|       const staff = await newUser(firebase, claims);
+    161|       const response = await linkFor({ uid: staff.uid, confirmedByPhon…
+    162|       expect(response.status).toBe(409);
+       |                               ^
+    163|       await expect(response.json()).resolves.toMatchObject({ error: 's…
+    164|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
