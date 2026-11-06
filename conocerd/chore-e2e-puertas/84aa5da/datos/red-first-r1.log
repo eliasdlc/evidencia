@@ -1,0 +1,48 @@
+# R1 at 84aa5da, with package.json, src/lib/firebase.ts back at c5dd6e2
+# $ pnpm vitest run src/lib/firebase.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/chore-e2e-puertas
+
+ ❯ src/lib/firebase.test.ts (4 tests | 1 failed) 31ms
+   ❯ the Auth emulator switch (4)
+     × connects to the emulator URL the environment names, so parallel runs keep their own port 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/firebase.test.ts > the Auth emulator switch > connects to the emulator URL the environment names, so parallel runs keep their own port
+AssertionError: expected "vi.fn()" to be called once with arguments: [ { languageCode: 'es' }, …(2) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+    {
+      "languageCode": "es",
+    },
+-   "http://127.0.0.1:19103",
++   "http://127.0.0.1:9099",
+    {
+      "disableWarnings": true,
+    },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/lib/firebase.test.ts:45:33
+     43|     vi.stubEnv('VITE_AUTH_EMULATOR_URL', 'http://127.0.0.1:19103');
+     44|     const { auth } = await load({ dev: true, emulators: 'true' });
+     45|     expect(connectAuthEmulator).toHaveBeenCalledExactlyOnceWith(auth, …
+       |                                 ^
+     46|       disableWarnings: true,
+     47|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  19:52:36
+   Duration  122ms (tests 73%, import 15%, transform 6%, worker 6%)
+
