@@ -1,0 +1,79 @@
+# R6 at a895a92, with mutate-keyel.patch applied
+# $ pnpm vitest run test/http-errors.test.ts -t "con clave"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/errores-sin-500
+
+ ❯ test/http-errors.test.ts (28 tests | 2 failed | 26 skipped) 13ms
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > constructor como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > toString como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > valueOf como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > hasOwnProperty como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > isPrototypeOf como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > propertyIsEnumerable como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > toLocaleString como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > __defineGetter__ como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > __lookupGetter__ como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > __proto__ como clave de un record
+   ↓ errorResponse > H1: una clave heredada de Object.prototype da 422, no 500 > un error a mano con la clave en el path tampoco lanza
+   ↓ errorResponse > H2: la forma del 422 de un cuerpo ordinario no cambia > es idéntica a la de z.treeifyError, byte a byte
+   ↓ errorResponse > H2: la forma del 422 de un cuerpo ordinario no cambia > un error en la raíz va en errors
+   ↓ errorResponse > H2: ramas del árbol que el cuerpo ordinario no toca > dos elementos malos de un array llenan items en orden
+   ↓ errorResponse > H2: ramas del árbol que el cuerpo ordinario no toca > una unión discriminada con discriminador malo (invalid_union sin errors)
+   × errorResponse > H2: ramas del árbol que el cuerpo ordinario no toca > un Map con clave y valor malos (invalid_key e invalid_element) 10ms
+     → expected '{"error":"invalid_body","issues":{"er…' to be '{"error":"invalid_body","issues":{"er…' // Object.is equality
+   × errorResponse > H2: ramas del árbol que el cuerpo ordinario no toca > un record con clave mala (invalid_key) 2ms
+     → expected '{"error":"invalid_body","issues":{"er…' to be '{"error":"invalid_body","issues":{"er…' // Object.is equality
+   ↓ errorResponse > H1: un nombre heredado como segmento intermedio > conserva los errores de las dos claves y no toca los globales
+   ↓ errorResponse > H3: por una ruta real con readJson > constructor como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > toString como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > valueOf como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > hasOwnProperty como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > isPrototypeOf como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > propertyIsEnumerable como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > toLocaleString como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > __defineGetter__ como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > __lookupGetter__ como clave del cuerpo da 422
+   ↓ errorResponse > H3: por una ruta real con readJson > un cuerpo válido con esa clave sigue pasando
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/http-errors.test.ts > errorResponse > H2: ramas del árbol que el cuerpo ordinario no toca > un Map con clave y valor malos (invalid_key e invalid_element)
+AssertionError: expected '{"error":"invalid_body","issues":{"er…' to be '{"error":"invalid_body","issues":{"er…' // Object.is equality
+
+Expected: [32m"{"error":"invalid_body","issues":{"errors":[],"properties":{"mm":{"errors":["Invalid [7minput: expected number, received string"],"properties":{"a":{"errors":["Invalid input: expected string, received number"]}}[27m}}}}"[39m
+Received: [31m"{"error":"invalid_body","issues":{"errors":[],"properties":{"mm":{"errors":["Invalid [7mkey in map","Invalid value in map"][27m}}}}"[39m
+
+ ❯ sameAsZod test/http-errors.test.ts:109:37
+    107|       const response = errorResponse(error);
+    108|       expect(response.status).toBe(422);
+    109|       expect(await response.text()).toBe(
+       |                                     ^
+    110|         JSON.stringify({ error: 'invalid_body', issues: z.treeifyError…
+    111|       );
+ ❯ test/http-errors.test.ts:138:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/http-errors.test.ts > errorResponse > H2: ramas del árbol que el cuerpo ordinario no toca > un record con clave mala (invalid_key)
+AssertionError: expected '{"error":"invalid_body","issues":{"er…' to be '{"error":"invalid_body","issues":{"er…' // Object.is equality
+
+Expected: [32m"{"error":"invalid_body","issues":{"errors":[],"properties":{"r":{"errors":[],"properties":{"x":{"errors":["[7mToo small: expected string to have >=3 characters[27m"]}}}}}}"[39m
+Received: [31m"{"error":"invalid_body","issues":{"errors":[],"properties":{"r":{"errors":[],"properties":{"x":{"errors":["[7mInvalid key in record[27m"]}}}}}}"[39m
+
+ ❯ sameAsZod test/http-errors.test.ts:109:37
+    107|       const response = errorResponse(error);
+    108|       expect(response.status).toBe(422);
+    109|       expect(await response.text()).toBe(
+       |                                     ^
+    110|         JSON.stringify({ error: 'invalid_body', issues: z.treeifyError…
+    111|       );
+ ❯ test/http-errors.test.ts:145:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 26 skipped (28)
+   Start at  14:23:38
+   Duration  220ms (transform 36ms, setup 0ms, collect 74ms, tests 13ms, environment 0ms, prepare 42ms)
+
