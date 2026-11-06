@@ -1,0 +1,98 @@
+# R9 at 911691c, with m-r9.patch applied
+# $ firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm exec vitest run test/contact-signals.test.ts -t R9"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/contact-signals.test.ts -t R9
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/senales-contacto
+
+ ❯ test/contact-signals.test.ts (33 tests | 2 failed | 31 skipped) 6578ms
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId . es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId .. es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId __a__ es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId __name__ es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId ____ es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId a/b es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > itemId __a__ es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > itemId __name__ es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > itemId .. es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > itemId . es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > itemId a/b es inválido
+   ↓ R8: ids que Firestore no admite se rechazan antes de tocarlo > los ids normales, incluso con guiones bajos sueltos, siguen valiendo
+   ↓ R1: cuerpo de /signals/contact > acepta los cinco canales y una excursión opcional
+   ↓ R1: cuerpo de /signals/contact > rechaza canal desconocido, campos de más, excursión mal formada y la reservada "general"
+   ↓ R1: cuerpo de /signals/contact > la clave separa canal, excursión y el cubo general
+   ↓ señales de contacto contra el emulador > R2: el primer toque cuenta, el segundo del mismo día no, y el del día siguiente sí
+   ↓ señales de contacto contra el emulador > R2: el mismo día del mes siguiente no queda bloqueado por el marcador
+   ↓ señales de contacto contra el emulador > R5: los cinco canales cuentan y el reparto por excursión suma el total de cada canal
+   ↓ señales de contacto contra el emulador > R3: un dueño del destino no cuenta, un destino ausente es not_curated y ninguno escribe
+   ↓ señales de contacto contra el emulador > R4: N cuentas distintas a la vez suman exactamente N, y una cuenta repetida a la vez suma 1
+   ↓ señales de contacto contra el emulador > R7: 60 aperturas de ficha no gastan el presupuesto de los toques, y cada uno tiene su tope
+   ↓ señales de contacto contra el emulador > R7: los toques tienen su propio tope por día y el día siguiente empieza de cero
+   ↓ señales de contacto contra el emulador > R7: 62 ids inventados por una cuenta dan exactamente 1 toque en general y ningún cubo nuevo
+   ↓ señales de contacto contra el emulador > R7: un id que el destino declara tiene su propio cubo, una vez por canal y día
+   × señales de contacto contra el emulador > R9: el día de Santo Domingo sale de receivedAt > R9: 19:59 y 20:01 de Santo Domingo son el mismo día aunque UTC cambie de día: un solo toque 1038ms
+     → expected '2026-11-05' to be '2026-03-01' // Object.is equality
+   × señales de contacto contra el emulador > R9: el día de Santo Domingo sale de receivedAt > R9: tras reintentos de la transacción el día sigue siendo el de receivedAt, no el del reloj 5015ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   ↓ señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > un contacto deja intactos los campos de visitas y una visita deja intactos los de contactos
+   ↓ señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > la reconstrucción de visitas deja intactos los contactos, también en un mes que solo tiene contactos
+   ↓ señales de contacto contra el emulador > HTTP > R1: 200 con el resultado, y la segunda llamada del día lo dice
+   ↓ señales de contacto contra el emulador > HTTP > R1: 401 sin token y 422 con un cuerpo mal formado, sin escribir nada
+   ↓ señales de contacto contra el emulador > HTTP > R8: HTTP responde 422 a los ids reservados sin tocar Firestore, y un INVALID_ARGUMENT que se cuele también es 422
+   ↓ señales de contacto contra el emulador > HTTP > R3: el dueño con el claim biz recibe owner por HTTP
+   ↓ señales de contacto contra el emulador > HTTP > R1: App Check se observa y no se exige hasta activar CONTACT_SIGNALS_REQUIRE_APP_CHECK
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/contact-signals.test.ts > señales de contacto contra el emulador > R9: el día de Santo Domingo sale de receivedAt > R9: 19:59 y 20:01 de Santo Domingo son el mismo día aunque UTC cambie de día: un solo toque
+AssertionError: expected '2026-11-05' to be '2026-03-01' // Object.is equality
+
+Expected: [32m"2026-[7m03[27m-0[7m1[27m"[39m
+Received: [31m"2026-[7m11[27m-0[7m5[27m"[39m
+
+ ❯ test/contact-signals.test.ts:209:87
+    207|       const doc = await stats.statsRef(db, place, '2026-03').get();
+    208|       expect(doc.data()).toMatchObject({contacts: {call: 1}, contactsB…
+    209|       expect((await db.doc(`users/${uid}/contactSignals/current`).get(…
+       |                                                                                       ^
+    210|     });
+    211| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/contact-signals.test.ts > señales de contacto contra el emulador > R9: el día de Santo Domingo sale de receivedAt > R9: tras reintentos de la transacción el día sigue siendo el de receivedAt, no el del reloj
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/contact-signals.test.ts:212:5
+    210|     });
+    211| 
+    212|     it('R9: tras reintentos de la transacción el día sigue siendo el d…
+       |     ^
+    213|       const uid = account();
+    214|       const late = Date.UTC(2026, 2, 1, 3, 30); // 23:30 del 28 de feb…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 31 skipped (33)
+   Start at  22:55:15
+   Duration  7.10s (transform 225ms, setup 0ms, collect 229ms, tests 6.58s, environment 0ms, prepare 75ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/contact-signals.test.ts -t R9" exited with code 1
