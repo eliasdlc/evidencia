@@ -1,0 +1,71 @@
+# mutation-R3-revocation at 2c1780d: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts"
+# exit 1
+diff --git i/src/lib/email/owner-mailer.ts w/src/lib/email/owner-mailer.ts
+index 3517f62..850174a 100644
+--- i/src/lib/email/owner-mailer.ts
++++ w/src/lib/email/owner-mailer.ts
+@@ -119,7 +119,7 @@ export async function sendRevocationEmail(
+   input: RevocationEmail & { readonly displayName?: string | null },
+   deps: MailerDeps = {},
+ ): Promise<{ readonly sent: boolean }> {
+-  if (!input.email || deliveryFor(deps) !== 'resend') return { sent: false };
++  return { sent: false };
+   const rendered = revocationEmail({
+     email: input.email,
+     displayName: input.displayName ?? null,
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (20 tests | 1 failed) 6748ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 3ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 2ms
+   ✓ token de invitación > una firma alterada, otro secreto, otra cuenta u otro vencimiento no abren nada 2ms
+   ✓ token de invitación > un token reemplazado por un reenvío ya no abre, aunque la firma sea buena 1ms
+   ✓ token de invitación > sirve una sola vez 0ms
+   ✓ token de invitación > vence a su hora exacta 1ms
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 2ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  1277ms
+   ✓ activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 191ms
+   ✓ activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 206ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3201ms
+   ✓ activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 184ms
+   ✓ activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 177ms
+   ✓ activación contra el emulador > reenviar manda un enlace nuevo con 7 días y deja muerto el anterior  302ms
+   ✓ activación contra el emulador > un reenvío que no sale no mata el enlace que la persona ya tenía 193ms
+   ✓ activación contra el emulador > reenviar exige admin 145ms
+   ✓ activación contra el emulador > en modo prueba la invitación solo va al buzón de prueba, marcada 120ms
+   ✓ activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 113ms
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 94ms
+   × activación contra el emulador > revocar avisa por correo con el nombre del negocio 174ms
+     → expected false to be true // Object.is equality
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  22:05:59
+   Duration  7.60s (transform 259ms, setup 0ms, collect 564ms, tests 6.75s, environment 0ms, prepare 88ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > revocar avisa por correo con el nombre del negocio
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/activation-route.test.ts:365:29
+    363|       note: 'Prueba',
+    364|     });
+    365|     expect(result.notified).toBe(true);
+       |                             ^
+    366|     expect(outbox).toHaveLength(1);
+    367|     expect(outbox[0]).toMatchObject({ to: [email], subject: 'Tu acceso…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
