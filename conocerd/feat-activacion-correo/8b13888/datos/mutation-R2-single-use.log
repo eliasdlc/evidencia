@@ -1,0 +1,205 @@
+# mutation-R2-single-use at 8b13888: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts"
+# exit 1
+diff --git i/src/lib/invitations.ts w/src/lib/invitations.ts
+index 4f71652..3d64aaf 100644
+--- i/src/lib/invitations.ts
++++ w/src/lib/invitations.ts
+@@ -146,7 +146,7 @@ export function checkInvitationToken(
+   if (expected.length !== presented.length || !timingSafeEqual(expected, presented)) {
+     return { ok: false, code: 'invalid_token' };
+   }
+-  if (record.usedAt) return { ok: false, code: 'token_used' };
++  
+   if (issued.expiresAt.getTime() <= now.getTime()) return { ok: false, code: 'token_expired' };
+   return { ok: true };
+ }
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (44 tests | 7 failed) 14185ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 1ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 1ms
+   ✓ token de invitación > una firma alterada, otro secreto, otra cuenta u otro correo no abren nada 1ms
+   ✓ token de invitación > un token que no está entre los emitidos no abre, aunque la firma sea buena 0ms
+   ✓ token de invitación > T9: cada token vence a su propia hora aunque haya otro emitido que venza después 0ms
+   × token de invitación > T11: usar la invitación gasta todos sus enlaces 8ms
+     → expected { ok: true } to deeply equal { ok: false, code: 'token_used' }
+   ✓ token de invitación > vence a su hora exacta 0ms
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 1ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  1446ms
+   ✓ activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 190ms
+   × activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 185ms
+     → expected 200 to be 410 // Object.is equality
+   × activación contra el emulador > dos clics a la vez sacan un solo código 2934ms
+     → expected [ 200, 200, 200 ] to deeply equal [ 200, 410, 410 ]
+   ✓ activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 108ms
+   ✓ activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 80ms
+   × activación contra el emulador > T12: reenviar manda un enlace nuevo con 7 días y el anterior sigue sirviendo 128ms
+     → expected 200 to be 410 // Object.is equality
+   ✓ activación contra el emulador > reenviar exige admin 81ms
+   ✓ activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño 115ms
+   ✓ activación contra el emulador > T1: si el proveedor recibe la primera invitación y la respuesta se pierde, el enlace entregado activa 106ms
+   ✓ activación contra el emulador > T1: si el proveedor recibe la reenvío y la respuesta se pierde, el enlace entregado activa 144ms
+   ✓ activación contra el emulador > T2: si el proveedor recibe el correo y contesta 500, el enlace entregado activa 123ms
+   ✓ activación contra el emulador > T2: si el proveedor recibe el correo y contesta 503, el enlace entregado activa 120ms
+   ✓ activación contra el emulador > T3: si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false 112ms
+   ✓ activación contra el emulador > T3: si al reenviar Resend responde 422, el enlace anterior sigue sirviendo y la respuesta es sent: false 113ms
+   ✓ activación contra el emulador > T3: si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false 116ms
+   × activación contra el emulador > T4: con dos reenvíos a la vez, soltando primero la respuesta del segundo, todo enlace entregado abre y el primero que se usa gasta la invitación 2859ms
+     → expected 200 to be 410 // Object.is equality
+   × activación contra el emulador > T4: con dos reenvíos a la vez, soltando las respuestas en el orden de envío, todo enlace entregado abre y el primero que se usa gasta la invitación 3524ms
+     → expected 200 to be 410 // Object.is equality
+   ✓ activación contra el emulador > T5: con el resultado accept, nada se escribe en la invitación después de llamar a Resend 71ms
+   ✓ activación contra el emulador > T5: con el resultado reject:429, nada se escribe en la invitación después de llamar a Resend 73ms
+   ✓ activación contra el emulador > T5: con el resultado lost, nada se escribe en la invitación después de llamar a Resend 78ms
+   ✓ activación contra el emulador > T6: si la escritura de antes del envío falla, no sale ningún correo y el enlace anterior sigue sirviendo 94ms
+   ✓ activación contra el emulador > T7: el envío revisa en su transacción que la invitación no se haya usado: 409 invitation_used y no sale nada 88ms
+   ✓ activación contra el emulador > T8: si la cuenta cambia de correo, el enlace a la dirección anterior no abre y el reenviado a la nueva sí 109ms
+   ✓ activación contra el emulador > T10: un reenvío ocho días después deja en issuedTokens solo las entradas vivas 74ms
+   × activación contra el emulador > T11: con dos enlaces vivos, usar uno gasta el otro 108ms
+     → expected 200 to be 410 // Object.is equality
+   ✓ activación contra el emulador > un reenvío que no sale no toca el enlace que la persona ya tenía 100ms
+   ✓ activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada 97ms
+   ✓ activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y no queda marca de uso 62ms
+   ✓ activación contra el emulador > si Firebase falla después de marcar la invitación, la marca se quita y el mismo enlace sirve al reintentar 97ms
+   ✓ activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable 54ms
+   ✓ activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada 50ms
+   ✓ activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña 47ms
+   ✓ activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 34ms
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 50ms
+   ✓ activación contra el emulador > revocar avisa por correo con el nombre del negocio 74ms
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 37 passed (44)
+   Start at  10:46:27
+   Duration  14.78s (transform 177ms, setup 11ms, collect 400ms, tests 14.19s, environment 0ms, prepare 55ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > token de invitación > T11: usar la invitación gasta todos sus enlaces
+AssertionError: expected { ok: true } to deeply equal { ok: false, code: 'token_used' }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "code": "token_used",[39m
+[32m-   "ok": false,[39m
+[31m+   "ok": true,[39m
+[2m  }[22m
+
+ ❯ test/activation-route.test.ts:97:74
+     95|       { usedAt: BEFORE },
+     96|     );
+     97|     expect(checkInvitationToken(SECRET, token, ID, used, EMAIL, BEFORE…
+       |                                                                          ^
+     98|     expect(checkInvitationToken(SECRET, newer, ID, used, EMAIL, BEFORE…
+     99|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used
+AssertionError: expected 200 to be 410 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 410[39m
+[31m+ 200[39m
+
+ ❯ test/activation-route.test.ts:310:26
+    308|     expect((await activate(token)).status).toBe(200);
+    309|     const again = await activate(token);
+    310|     expect(again.status).toBe(410);
+       |                          ^
+    311|     await expect(again.json()).resolves.toMatchObject({ error: 'token_…
+    312|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > dos clics a la vez sacan un solo código
+AssertionError: expected [ 200, 200, 200 ] to deeply equal [ 200, 410, 410 ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    200,[22m
+[32m-   410,[39m
+[32m-   410,[39m
+[31m+   200,[39m
+[31m+   200,[39m
+[2m  ][22m
+
+ ❯ test/activation-route.test.ts:318:22
+    316|     const token = tokenIn(outbox[0]);
+    317|     const statuses = (await Promise.all([activate(token), activate(tok…
+    318|     expect(statuses).toEqual([200, 410, 410]);
+       |                      ^
+    319|   });
+    320| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > T12: reenviar manda un enlace nuevo con 7 días y el anterior sigue sirviendo
+AssertionError: expected 200 to be 410 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 410[39m
+[31m+ 200[39m
+
+ ❯ test/activation-route.test.ts:364:26
+    362|     expect((await activate(first)).status).toBe(200);
+    363|     const spent = await activate(second);
+    364|     expect(spent.status).toBe(410);
+       |                          ^
+    365|     await expect(spent.json()).resolves.toMatchObject({ error: 'token_…
+    366| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > T4: con dos reenvíos a la vez, soltando primero la respuesta del segundo, todo enlace entregado abre y el primero que se usa gasta la invitación
+ FAIL  test/activation-route.test.ts > activación contra el emulador > T4: con dos reenvíos a la vez, soltando las respuestas en el orden de envío, todo enlace entregado abre y el primero que se usa gasta la invitación
+AssertionError: expected 200 to be 410 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 410[39m
+[31m+ 200[39m
+
+ ❯ test/activation-route.test.ts:478:26
+    476|     expect((await activate(tokenIn(outbox[1]))).status).toBe(200);
+    477|     const other = await activate(tokenIn(outbox[0]));
+    478|     expect(other.status).toBe(410);
+       |                          ^
+    479|     await expect(other.json()).resolves.toMatchObject({ error: 'token_…
+    480|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > T11: con dos enlaces vivos, usar uno gasta el otro
+AssertionError: expected 200 to be 410 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 410[39m
+[31m+ 200[39m
+
+ ❯ test/activation-route.test.ts:566:26
+    564|     expect((await activate(tokenIn(outbox[0]))).status).toBe(200);
+    565|     const other = await activate(tokenIn(outbox[1]));
+    566|     expect(other.status).toBe(410);
+       |                          ^
+    567|     await expect(other.json()).resolves.toMatchObject({ error: 'token_…
+    568|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
