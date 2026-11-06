@@ -1,0 +1,71 @@
+# mutation-R2-email-verified at 2c1780d: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts"
+# exit 1
+diff --git i/src/lib/invitations.ts w/src/lib/invitations.ts
+index 0535e2c..7398362 100644
+--- i/src/lib/invitations.ts
++++ w/src/lib/invitations.ts
+@@ -205,7 +205,7 @@ export async function activateInvitation(
+     const oobCode = new URL(link).searchParams.get('oobCode');
+     if (!oobCode) throw new Error('Firebase devolvió un enlace sin oobCode');
+     // Tocar el enlace del correo prueba que la persona controla ese buzón.
+-    await adminAuth().updateUser(user.uid, { emailVerified: true });
++    
+ 
+     const owned = new Set(parseClaims(user.customClaims).biz ?? []);
+     const businessNames = await destinationNames(record.destinationIds.filter((d) => owned.has(d)));
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (20 tests | 1 failed) 6922ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 3ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 2ms
+   ✓ token de invitación > una firma alterada, otro secreto, otra cuenta u otro vencimiento no abren nada 2ms
+   ✓ token de invitación > un token reemplazado por un reenvío ya no abre, aunque la firma sea buena 1ms
+   ✓ token de invitación > sirve una sola vez 0ms
+   ✓ token de invitación > vence a su hora exacta 0ms
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 2ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  1175ms
+   × activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 180ms
+     → expected false to be true // Object.is equality
+   ✓ activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 218ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3434ms
+   ✓ activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 188ms
+   ✓ activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 168ms
+   ✓ activación contra el emulador > reenviar manda un enlace nuevo con 7 días y deja muerto el anterior 269ms
+   ✓ activación contra el emulador > un reenvío que no sale no mata el enlace que la persona ya tenía 211ms
+   ✓ activación contra el emulador > reenviar exige admin 184ms
+   ✓ activación contra el emulador > en modo prueba la invitación solo va al buzón de prueba, marcada 121ms
+   ✓ activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 107ms
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 106ms
+   ✓ activación contra el emulador > revocar avisa por correo con el nombre del negocio 181ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  22:05:37
+   Duration  7.76s (transform 254ms, setup 0ms, collect 552ms, tests 6.92s, environment 0ms, prepare 74ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/activation-route.test.ts:213:74
+    211|     expect(result.oobCode.length).toBeGreaterThan(10);
+    212| 
+    213|     expect((await firebase.adminAuth().getUser(body.uid)).emailVerifie…
+       |                                                                          ^
+    214|     const record = (await firebase.adminDb().collection('ownerInvitati…
+    215|     expect(record?.usedAt).not.toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
