@@ -1,0 +1,96 @@
+# R6 at 3c3b3cf, with m-r6.patch applied
+# $ firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm exec vitest run test/contact-signals.test.ts -t R6"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/contact-signals.test.ts -t R6
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/senales-contacto
+
+ ❯ test/contact-signals.test.ts (15 tests | 2 failed | 13 skipped) 2145ms
+   ↓ R1: cuerpo de /signals/contact > acepta los cinco canales y una excursión opcional
+   ↓ R1: cuerpo de /signals/contact > rechaza canal desconocido, campos de más, excursión mal formada y la reservada "general"
+   ↓ R1: cuerpo de /signals/contact > la clave separa canal, excursión y el cubo general
+   ↓ señales de contacto contra el emulador > R2: el primer toque cuenta, el segundo del mismo día no, y el del día siguiente sí
+   ↓ señales de contacto contra el emulador > R2: el mismo día del mes siguiente no queda bloqueado por el marcador
+   ↓ señales de contacto contra el emulador > R5: los cinco canales cuentan y el reparto por excursión suma el total de cada canal
+   ↓ señales de contacto contra el emulador > R3: un dueño del destino no cuenta, un destino ausente es not_curated y ninguno escribe
+   ↓ señales de contacto contra el emulador > R4: N cuentas distintas a la vez suman exactamente N, y una cuenta repetida a la vez suma 1
+   ↓ señales de contacto contra el emulador > R2: una cuenta no guarda más claves por día que el tope y no deja entrar más
+   × señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > un contacto deja intactos los campos de visitas y una visita deja intactos los de contactos 1290ms
+     → expected { period: '2026-02', …(2) } to deeply equal { period: '2026-02', visits: 1, …(1) }
+   × señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > la reconstrucción de visitas deja intactos los contactos, también en un mes que solo tiene contactos 295ms
+     → expected { call: 1 } to deeply equal { whatsapp: 1, call: 1 }
+   ↓ señales de contacto contra el emulador > HTTP > R1: 200 con el resultado, y la segunda llamada del día lo dice
+   ↓ señales de contacto contra el emulador > HTTP > R1: 401 sin token y 422 con un cuerpo mal formado, sin escribir nada
+   ↓ señales de contacto contra el emulador > HTTP > R3: el dueño con el claim biz recibe owner por HTTP
+   ↓ señales de contacto contra el emulador > HTTP > R1: App Check se observa y no se exige hasta activar CONTACT_SIGNALS_REQUIRE_APP_CHECK
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/contact-signals.test.ts > señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > un contacto deja intactos los campos de visitas y una visita deja intactos los de contactos
+AssertionError: expected { period: '2026-02', …(2) } to deeply equal { period: '2026-02', visits: 1, …(1) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "period": "2026-02",[22m
+[32m-   "visits": 1,[39m
+[32m-   "visitsByDay": {[39m
+[32m-     "28": 1,[39m
+[32m-   },[39m
+[31m+   "visits": undefined,[39m
+[31m+   "visitsByDay": undefined,[39m
+[2m  }[22m
+
+ ❯ test/contact-signals.test.ts:166:51
+    164|       expect(visitsBefore).toEqual({period: '2026-02', visits: 1, visi…
+    165|       await tap(account(), 'whatsapp', now, 'cayo');
+    166|       expect(visitFields(await month('2026-02'))).toEqual(visitsBefore…
+       |                                                   ^
+    167|       const contactsBefore = contactFields(await month('2026-02'));
+    168|       expect((await visits.recordVisit(account(), visit(now), now)).st…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/contact-signals.test.ts > señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > la reconstrucción de visitas deja intactos los contactos, también en un mes que solo tiene contactos
+AssertionError: expected { call: 1 } to deeply equal { whatsapp: 1, call: 1 }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "call": 1,[22m
+[32m-   "whatsapp": 1,[39m
+[2m  }[22m
+
+ ❯ test/contact-signals.test.ts:182:35
+    180|       await statsDoc('2026-02').set({visits: 99, visitsByDay: {'28': 1…
+    181|       const before = {feb: contactFields(await month('2026-02')), apr:…
+    182|       expect(before.feb.contacts).toEqual({whatsapp: 1, call: 1});
+       |                                   ^
+    183|       const result = await stats.rebuildVisitStats(db, {destinationId:…
+    184|       expect(result.diffs.map(diff => diff.period)).toEqual(['2026-02'…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 13 skipped (15)
+   Start at  21:58:51
+   Duration  2.69s (transform 224ms, setup 0ms, collect 232ms, tests 2.14s, environment 0ms, prepare 78ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/contact-signals.test.ts -t R6" exited with code 1
