@@ -1,0 +1,66 @@
+# mutation-R6-disabled at eb224d4: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index a0d81f4..1a30abd 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -73,7 +73,7 @@ function refusalFor(user: UserRecord): ApiError | null {
+   if ((parseClaims(user.customClaims).biz ?? []).length === 0) {
+     return new ApiError(409, 'not_owner', 'Esa cuenta no es dueña de ningún destino');
+   }
+-  if (user.disabled) return new ApiError(409, 'account_disabled', 'Esa cuenta está deshabilitada');
++  
+   if (!user.email) return new ApiError(422, 'no_email', 'Esa cuenta no tiene correo');
+   return null;
+ }
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (15 tests | 1 failed) 4208ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 1ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide al menos 8 caracteres, con un error en español y un ejemplo 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  1789ms
+   ✓ enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo 251ms
+   ✓ enlace de contraseña contra el emulador > vence a la hora exacta, con el reloj inyectado 90ms
+   ✓ enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error 127ms
+   ✓ enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace 49ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1169ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token 60ms
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 254ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 17ms
+   × enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir 50ms
+     → expected 200 to be 409 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 45ms
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 25ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 33ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 passed (15)
+   Start at  10:04:55
+   Duration  5.82s (transform 281ms, setup 20ms, collect 1.28s, tests 4.21s, environment 0ms, prepare 115ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir
+AssertionError: expected 200 to be 409 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 200[39m
+
+ ❯ test/password-link-route.test.ts:246:29
+    244|     await firebase.adminAuth().updateUser(owner.uid, { disabled: true …
+    245|     const response = await linkFor({ uid: owner.uid, confirmedByPhone:…
+    246|     expect(response.status).toBe(409);
+       |                             ^
+    247|     await expect(response.json()).resolves.toMatchObject({ error: 'acc…
+    248|     expect((await redeemWith(tokenOf(link.link))).status).toBe(400);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
