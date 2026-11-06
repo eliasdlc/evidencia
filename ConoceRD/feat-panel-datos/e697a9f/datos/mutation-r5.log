@@ -1,0 +1,277 @@
+# R5 at e697a9f, with r4-call.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-panel-datos/emu.sh test/business-data-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9301.
+i  Running script: pnpm exec vitest run test/business-data-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-datos
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > el dueño de A nunca ve nada de B, ni sus cifras ni sus ids
+[app-check] ausente /business/destino-73ec4627/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > byDay es null debajo de k y trae el desglose desde k, para visitas y para toques
+[app-check] ausente /business/destino-d9f2450c/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > byDay es null debajo de k y trae el desglose desde k, para visitas y para toques
+[app-check] ausente /business/destino-03ebd87e/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > los totales son la suma de sus partes y sin teléfono no hay llamadas
+[app-check] ausente /business/destino-7b7f144a/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > un mes con solo vistas y cómo llegar tiene contacto 0, y esas cifras salen aparte
+[app-check] ausente /business/destino-43fa4dc1/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > con teléfono la cifra de llamadas aparece
+[app-check] ausente /business/destino-c0e7a724/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > lo que falta excluye lo ya puesto
+[app-check] ausente /business/destino-df9326f4/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > compara con el mes anterior y entrega los guardados al cierre de un mes pasado
+[app-check] ausente /business/destino-67cba175/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > compara con el mes anterior y entrega los guardados al cierre de un mes pasado
+[app-check] ausente /business/destino-67cba175/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > un mes sin agregado da ceros, no un error
+[app-check] ausente /business/destino-1b135123/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > cuenta las reseñas nuevas del periodo y las que no tienen respuesta
+[app-check] ausente /business/destino-8829a78f/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > rechaza sin token, a quien no es dueño, a un plan minimal y un periodo malo
+[app-check] ausente /business/destino-d6ffe56a/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > rechaza sin token, a quien no es dueño, a un plan minimal y un periodo malo
+[app-check] ausente /business/destino-67c1f251/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > rechaza sin token, a quien no es dueño, a un plan minimal y un periodo malo
+[app-check] ausente /business/destino-8a796125/overview
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > pagina de la más nueva a la más vieja con un cursor, sin repetir ni saltar
+[app-check] ausente /business/destino-131844d4/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > pagina de la más nueva a la más vieja con un cursor, sin repetir ni saltar
+[app-check] ausente /business/destino-131844d4/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > pagina de la más nueva a la más vieja con un cursor, sin repetir ni saltar
+[app-check] ausente /business/destino-131844d4/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > no trae reseñas retiradas ni de otro negocio, y trae la respuesta
+[app-check] ausente /business/destino-f5569385/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token
+[app-check] ausente /business/destino-4237a95c/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token
+[app-check] ausente /business/destino-4237a95c/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token
+[app-check] ausente /business/destino-4237a95c/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token
+[app-check] ausente /business/destino-4237a95c/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token
+[app-check] ausente /business/destino-e092f5a8/reviews
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > lee la ficha con lo que hay y vacíos donde no hay
+[app-check] ausente /business/destino-f62ff937/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > escribe el destino y su línea de bitácora, con el antes y el después
+[app-check] ausente /business/destino-8e7f859b/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un número nuevo exige la confirmación de contacto público y la deja anotada
+[app-check] ausente /business/destino-a775058f/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un número nuevo exige la confirmación de contacto público y la deja anotada
+[app-check] ausente /business/destino-a775058f/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > repetir lo que ya hay no escribe nada ni deja bitácora
+[app-check] ausente /business/destino-a2a48633/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un campo desconocido con 422 y no escribe nada
+[app-check] ausente /business/destino-1e1628de/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un campo desconocido junto a uno válido con 422 y no escribe nada
+[app-check] ausente /business/destino-a6143e3e/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un cuerpo vacío con 422 y no escribe nada
+[app-check] ausente /business/destino-dfd7f622/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un idioma que no existe con 422 y no escribe nada
+[app-check] ausente /business/destino-d3689d8b/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un número corto con 422 y no escribe nada
+[app-check] ausente /business/destino-524beb7f/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un sitio sin https con 422 y no escribe nada
+[app-check] ausente /business/destino-876fae07/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza imágenes con 422 y no escribe nada
+[app-check] ausente /business/destino-7442a3f5/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > If-Match con un updatedAt viejo responde 409 y no escribe
+[app-check] ausente /business/destino-003ec3e7/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > If-Match con un updatedAt viejo responde 409 y no escribe
+[app-check] ausente /business/destino-003ec3e7/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > If-Match con un updatedAt viejo responde 409 y no escribe
+[app-check] ausente /business/destino-003ec3e7/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un dueño ajeno recibe 403 y su edición no toca el otro negocio
+[app-check] ausente /business/destino-54ed6438/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un dueño ajeno recibe 403 y su edición no toca el otro negocio
+[app-check] ausente /business/destino-54ed6438/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > exige correo verificado para escribir, no para leer
+[app-check] ausente /business/destino-6017a0b9/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > exige correo verificado para escribir, no para leer
+[app-check] ausente /business/destino-6017a0b9/profile
+
+stdout | test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza sin token y un cuerpo que no es JSON
+[app-check] ausente /business/destino-d764fc05/profile
+
+ ❯ test/business-data-route.test.ts (57 tests | 2 failed) 4020ms
+   ✓ contactSummary > el total de cada tipo es su parte general más la suma de sus excursiones 6ms
+   ✓ contactSummary > toques solo en excursiones no inventan una parte general negativa 0ms
+   ✓ contactSummary > si las excursiones suman más que el total guardado, manda lo que se puede mostrar 0ms
+   × contactSummary > sin teléfono no hay cifra de llamadas en ningún lado 17ms
+     → expected { total: 4, general: 3, …(1) } to be undefined
+   ✓ contactSummary > contacto es WhatsApp y llamadas: cómo llegar, reservar y ver van aparte y no suman 1ms
+   ✓ contactSummary > un campo ausente o torcido cuenta cero 1ms
+   ✓ contactSummary > el desglose por día es null debajo de k y existe en k 1ms
+   ✓ resolvePeriod > usa el mes en curso de Santo Domingo, aun cuando en UTC ya es otro 1ms
+   ✓ resolvePeriod > acepta hasta 12 meses atrás y rechaza el futuro, el formato roto y lo más viejo 3ms
+   ✓ resolvePeriod > el mes anterior de enero es diciembre 0ms
+   ✓ profile > normaliza el número: dígitos, con el 1 dominicano, de 8 a 15 1ms
+   ✓ profile > lo que falta sale de los datos y nunca incluye un campo ya puesto 3ms
+   ✓ profile > un WhatsApp o teléfono nuevo es contacto público; vaciarlo o repetirlo no 1ms
+   ✓ profile > rechaza campo desconocido 5ms
+   ✓ profile > rechaza sin campos de la ficha 1ms
+   ✓ profile > rechaza idioma que no existe 1ms
+   ✓ profile > rechaza descripción larga 1ms
+   ✓ profile > rechaza tarifa larga 0ms
+   ✓ profile > rechaza número corto 0ms
+   ✓ profile > rechaza número largo 0ms
+   ✓ profile > rechaza instagram largo 0ms
+   ✓ profile > rechaza sitio sin https 0ms
+   ✓ profile > rechaza sitio largo 0ms
+   ✓ profile > rechaza demasiados servicios 0ms
+   ✓ profile > rechaza horario con forma rota 2ms
+   ✓ profile > rechaza horario largo 0ms
+   ✓ profile > rechaza imágenes 0ms
+   ✓ profile > acepta null para vaciar y limpia espacios 1ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > el dueño de A nunca ve nada de B, ni sus cifras ni sus ids  1640ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > byDay es null debajo de k y trae el desglose desde k, para visitas y para toques 186ms
+   × datos del panel de negocios contra el emulador > GET /business/{id}/overview > los totales son la suma de sus partes y sin teléfono no hay llamadas 81ms
+     → expected { total: 4, general: 3, …(1) } to be undefined
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > un mes con solo vistas y cómo llegar tiene contacto 0, y esas cifras salen aparte 114ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > con teléfono la cifra de llamadas aparece 80ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > lo que falta excluye lo ya puesto 61ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > compara con el mes anterior y entrega los guardados al cierre de un mes pasado 107ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > un mes sin agregado da ceros, no un error 68ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > cuenta las reseñas nuevas del periodo y las que no tienen respuesta 95ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > rechaza sin token, a quien no es dueño, a un plan minimal y un periodo malo 63ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/reviews > pagina de la más nueva a la más vieja con un cursor, sin repetir ni saltar 163ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/reviews > no trae reseñas retiradas ni de otro negocio, y trae la respuesta 74ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/reviews > responde 422 a un limit o un cursor malos, 403 a un ajeno y 401 sin token 63ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > lee la ficha con lo que hay y vacíos donde no hay 38ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > escribe el destino y su línea de bitácora, con el antes y el después 105ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > es atómico: si la bitácora no entra, el destino tampoco cambia 74ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un número nuevo exige la confirmación de contacto público y la deja anotada 103ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > repetir lo que ya hay no escribe nada ni deja bitácora 88ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un campo desconocido con 422 y no escribe nada 47ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un campo desconocido junto a uno válido con 422 y no escribe nada 39ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un cuerpo vacío con 422 y no escribe nada 41ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un idioma que no existe con 422 y no escribe nada 45ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un número corto con 422 y no escribe nada 47ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza un sitio sin https con 422 y no escribe nada 46ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza imágenes con 422 y no escribe nada 44ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > If-Match con un updatedAt viejo responde 409 y no escribe 125ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > un dueño ajeno recibe 403 y su edición no toca el otro negocio 52ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > exige correo verificado para escribir, no para leer 32ms
+   ✓ datos del panel de negocios contra el emulador > GET y PATCH /business/{id}/profile > rechaza sin token y un cuerpo que no es JSON 31ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/business-data-route.test.ts > contactSummary > sin teléfono no hay cifra de llamadas en ningún lado
+AssertionError: expected { total: 4, general: 3, …(1) } to be undefined
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+{
+  "general": 3,
+  "items": [
+    {
+      "count": 1,
+      "itemId": "tour-ballenas",
+    },
+  ],
+  "total": 4,
+}
+
+ ❯ test/business-data-route.test.ts:57:33
+     55|   it('sin teléfono no hay cifra de llamadas en ningún lado', () => {
+     56|     const summary = contactSummary(stats, false, true);
+     57|     expect(summary.byKind.call).toBeUndefined();
+       |                                 ^
+     58|     expect(JSON.stringify(summary)).not.toContain('"call"');
+     59|     expect(summary.total).toBe(10);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/business-data-route.test.ts > datos del panel de negocios contra el emulador > GET /business/{id}/overview > los totales son la suma de sus partes y sin teléfono no hay llamadas
+AssertionError: expected { total: 4, general: 3, …(1) } to be undefined
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+{
+  "general": 3,
+  "items": [
+    {
+      "count": 1,
+      "itemId": "tour-a",
+    },
+  ],
+  "total": 4,
+}
+
+ ❯ test/business-data-route.test.ts:345:41
+    343|       const { body } = await getOverview(noPhone, owner.token);
+    344|       expect(body.listing.hasPhone).toBe(false);
+    345|       expect(body.contacts.byKind.call).toBeUndefined();
+       |                                         ^
+    346|       expect(JSON.stringify(body.contacts)).not.toContain('call');
+    347|       const sum = Object.values(body.contacts.byKind as Record<string,…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 55 passed (57)
+   Start at  22:53:05
+   Duration  4.93s (transform 263ms, setup 0ms, collect 632ms, tests 4.02s, environment 0ms, prepare 77ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/business-data-route.test.ts" exited with code 1
