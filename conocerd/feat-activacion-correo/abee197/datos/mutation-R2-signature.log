@@ -1,0 +1,82 @@
+# mutation-R2-signature at abee197: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts"
+# exit 1
+diff --git i/src/lib/invitations.ts w/src/lib/invitations.ts
+index b37af31..9711aca 100644
+--- i/src/lib/invitations.ts
++++ w/src/lib/invitations.ts
+@@ -93,7 +93,7 @@ export function checkInvitationToken(
+   if (!record || !record.tokenHash) return { ok: false, code: 'invalid_token' };
+   const expected = Buffer.from(mintInvitationToken(secret, { id, uid: record.uid, expiresAt: record.expiresAt }));
+   const given = Buffer.from(token);
+-  if (expected.length !== given.length || !timingSafeEqual(expected, given)) return { ok: false, code: 'invalid_token' };
++  
+   if (hashInvitationToken(token) !== record.tokenHash) return { ok: false, code: 'invalid_token' };
+   if (record.usedAt) return { ok: false, code: 'token_used' };
+   if (record.expiresAt.getTime() <= now.getTime()) return { ok: false, code: 'token_expired' };
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (27 tests | 1 failed) 8704ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 2ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 1ms
+   × token de invitación > una firma alterada, otro secreto, otra cuenta u otro vencimiento no abren nada 23ms
+     → expected { ok: true } to match object { code: 'invalid_token' }
+(1 matching property omitted from actual)
+   ✓ token de invitación > un token reemplazado por un reenvío ya no abre, aunque la firma sea buena 2ms
+   ✓ token de invitación > sirve una sola vez 1ms
+   ✓ token de invitación > vence a su hora exacta 1ms
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 2ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  1824ms
+   ✓ activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 269ms
+   ✓ activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 203ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3404ms
+   ✓ activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 153ms
+   ✓ activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 127ms
+   ✓ activación contra el emulador > reenviar manda un enlace nuevo con 7 días y deja muerto el anterior 252ms
+   ✓ activación contra el emulador > un reenvío que no sale no mata el enlace que la persona ya tenía 166ms
+   ✓ activación contra el emulador > reenviar exige admin 142ms
+   ✓ activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño 195ms
+   ✓ activación contra el emulador > si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false 182ms
+   ✓ activación contra el emulador > si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false 172ms
+   ✓ activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada 236ms
+   ✓ activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y la marca de uso se quita 155ms
+   ✓ activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable 86ms
+   ✓ activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada 102ms
+   ✓ activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña 85ms
+   ✓ activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 87ms
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 74ms
+   ✓ activación contra el emulador > revocar avisa por correo con el nombre del negocio 126ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 26 passed (27)
+   Start at  22:42:10
+   Duration  9.91s (transform 355ms, setup 32ms, collect 766ms, tests 8.70s, environment 0ms, prepare 133ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > token de invitación > una firma alterada, otro secreto, otra cuenta u otro vencimiento no abren nada
+AssertionError: expected { ok: true } to match object { code: 'invalid_token' }
+(1 matching property omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "code": "invalid_token",[39m
+[31m+   "ok": true,[39m
+[2m  }[22m
+
+ ❯ test/activation-route.test.ts:56:87
+     54|     const tampered = `${token.slice(0, -1)}${token.endsWith('A') ? 'B'…
+     55|     expect(checkInvitationToken(SECRET, tampered, ID, recordFor(token)…
+     56|     expect(checkInvitationToken('otro-secreto', token, ID, recordFor(t…
+       |                                                                                       ^
+     57|     expect(checkInvitationToken(SECRET, token, ID, recordFor(token, { …
+     58|       code: 'invalid_token',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
