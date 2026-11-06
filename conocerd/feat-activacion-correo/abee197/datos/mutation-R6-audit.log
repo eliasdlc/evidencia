@@ -1,0 +1,66 @@
+# mutation-R6-audit at abee197: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index db41d96..3bf33e5 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -79,7 +79,7 @@ export async function generateOwnerPasswordLink(input: {
+   const link = inSpanish(await adminAuth().generatePasswordResetLink(user.email));
+ 
+   const audit = adminDb().collection(PASSWORD_LINK_AUDITS).doc();
+-  await audit.set({
++  void ({
+     actorUid: input.actorUid,
+     targetUid: user.uid,
+     confirmedByPhone: true,
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (11 tests | 1 failed) 1856ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 3ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide la página de Firebase en español 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le da un enlace que pone contraseña sin cambiar uid ni biz, y sirve una vez  1159ms
+   × enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el enlace 61ms
+     → expected undefined to match object { …(3) }
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 122ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 13ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled 23ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 44ms
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 30ms
+   ✓ enlace de contraseña contra el emulador > en el emulador, generar un segundo enlace no mata el primero: los dos códigos sirven hasta usarse 56ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 34ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  22:45:01
+   Duration  2.71s (transform 178ms, setup 20ms, collect 526ms, tests 1.86s, environment 0ms, prepare 75ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el enlace
+AssertionError: expected undefined to match object { …(3) }
+
+[32m- Expected:[39m 
+{
+  "actorUid": "qC2m5BN8bxFr8p2EykMsg3B39SoT",
+  "confirmedByPhone": true,
+  "targetUid": "dNDth5ZdGMuQ3XS2TZ4LY5pC9Ihy",
+}
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/password-link-route.test.ts:125:19
+    123| 
+    124|     const audit = (await firebase.adminDb().collection('passwordLinkAu…
+    125|     expect(audit).toMatchObject({ actorUid: admin.uid, targetUid: owne…
+       |                   ^
+    126|     expect(audit?.at.toMillis()).toBeGreaterThanOrEqual(startedAt - 20…
+    127|     expect(JSON.stringify(audit)).not.toContain(oobCodeOf(body.link));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
