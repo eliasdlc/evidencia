@@ -1,0 +1,70 @@
+# mutation-R6-audit at eb224d4: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index a0d81f4..1319f38 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -123,7 +123,7 @@ export async function generateOwnerPasswordLink(input: {
+     createdBy: input.actorUid,
+     createdAt: FieldValue.serverTimestamp(),
+   });
+-  batch.set(audit, {
++  void ({
+     actorUid: input.actorUid,
+     targetUid: user.uid,
+     confirmedByPhone: true,
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (15 tests | 1 failed) 4018ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 1ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide al menos 8 caracteres, con un error en español y un ejemplo 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  1718ms
+   ✓ enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo 148ms
+   ✓ enlace de contraseña contra el emulador > vence a la hora exacta, con el reloj inyectado 84ms
+   ✓ enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error 183ms
+   ✓ enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace 65ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1170ms
+   × enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token 54ms
+     → expected undefined to match object { …(3) }
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 144ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 17ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir 58ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 57ms
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 31ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 44ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 passed (15)
+   Start at  10:05:12
+   Duration  5.03s (transform 156ms, setup 15ms, collect 759ms, tests 4.02s, environment 0ms, prepare 77ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token
+AssertionError: expected undefined to match object { …(3) }
+
+[32m- Expected:[39m 
+{
+  "actorUid": "2ZCRDDsOCQcUoVs85XkShs1pKfNg",
+  "confirmedByPhone": true,
+  "targetUid": "KJzyvIZAzVW0qAHSIfsi9Fpb096s",
+}
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/password-link-route.test.ts:213:19
+    211| 
+    212|     const audit = (await firebase.adminDb().collection('passwordLinkAu…
+    213|     expect(audit).toMatchObject({ actorUid: admin.uid, targetUid: owne…
+       |                   ^
+    214|     expect(audit?.at.toMillis()).toBeGreaterThanOrEqual(startedAt - 20…
+    215|     const secret = tokenOf(body.link).split('.').pop() as string;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
