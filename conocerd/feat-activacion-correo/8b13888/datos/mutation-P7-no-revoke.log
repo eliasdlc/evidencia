@@ -1,0 +1,74 @@
+# mutation-P7-no-revoke at 8b13888: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index a0d81f4..ca49496 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -206,6 +206,6 @@ export async function redeemPasswordLink(input: {
+     throw error;
+   }
+   // Quien tuviera una sesión abierta con la contraseña anterior la pierde.
+-  await adminAuth().revokeRefreshTokens(user.uid);
++  
+   return { email: user.email as string };
+ }
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (25 tests | 1 failed) 6211ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 1ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide al menos 8 caracteres, con un error en español y un ejemplo 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  689ms
+   ✓ enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo 80ms
+   ✓ enlace de contraseña contra el emulador > vence a la hora exacta, con el reloj inyectado 39ms
+   ✓ enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error 91ms
+   ✓ enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace 40ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1138ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token 32ms
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 68ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 14ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir 39ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 31ms
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 18ms
+   ✓ enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra  3452ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser personal (admin, con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 32ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser agente (con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 29ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta pierde todos sus destinos después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 28ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta se deshabilita después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 25ms
+   ✓ enlace de contraseña contra el emulador > P4: el secreto de A con el uid de B no abre nada; B no cambia y el token de A sigue sirviendo para A 56ms
+   ✓ enlace de contraseña contra el emulador > P5: el canje 11 desde la misma IP en un minuto responde 429 sin gastar el token, y pasado el minuto sirve 46ms
+   ✓ enlace de contraseña contra el emulador > P6: si poner la contraseña falla, responde 500, no cambia nada, el token vuelve a servir y nada del token ni de la contraseña sale en el log 55ms
+   × enlace de contraseña contra el emulador > P7: canjear llama a revokeRefreshTokens con el uid de la cuenta 39ms
+     → expected "revokeRefreshTokens" to be called with arguments: [ 'HAgtDjafmmLGFhmmHoNMVFRkcSvb' ][90m
+
+Number of calls: [1m0[22m
+[39m
+   ✓ enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo 62ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 18ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 24 passed (25)
+   Start at  11:00:12
+   Duration  6.77s (transform 119ms, setup 10ms, collect 379ms, tests 6.21s, environment 0ms, prepare 47ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P7: canjear llama a revokeRefreshTokens con el uid de la cuenta
+AssertionError: expected "revokeRefreshTokens" to be called with arguments: [ 'HAgtDjafmmLGFhmmHoNMVFRkcSvb' ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ test/password-link-route.test.ts:378:20
+    376|     const revoke = vi.spyOn(authProto, 'revokeRefreshTokens');
+    377|     expect((await redeemWith(tokenOf(link.link))).status).toBe(200);
+    378|     expect(revoke).toHaveBeenCalledWith(owner.uid);
+       |                    ^
+    379|   });
+    380| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
