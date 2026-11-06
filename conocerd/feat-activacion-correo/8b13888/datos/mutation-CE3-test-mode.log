@@ -1,0 +1,112 @@
+# mutation-CE3-test-mode at 8b13888: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/activation-route.test.ts"
+# exit 1
+diff --git i/src/lib/email/owner-mailer.ts w/src/lib/email/owner-mailer.ts
+index 56d9446..582e05a 100644
+--- i/src/lib/email/owner-mailer.ts
++++ w/src/lib/email/owner-mailer.ts
+@@ -120,7 +120,7 @@ export async function sendInvitationEmail(
+     return { sent: reachedOwner(result) };
+   }
+ 
+-  if (config.mode === 'test') {
++  if (false) {
+     await sendEmail(
+       {
+         to: input.email,
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/activation-route.test.ts (44 tests | 1 failed) 13529ms
+   ✓ token de invitación > tiene la forma <id>.<firma> y el id se lee de vuelta 1ms
+   ✓ token de invitación > abre su invitación antes de vencer y sin usar 1ms
+   ✓ token de invitación > una firma alterada, otro secreto, otra cuenta u otro correo no abren nada 1ms
+   ✓ token de invitación > un token que no está entre los emitidos no abre, aunque la firma sea buena 0ms
+   ✓ token de invitación > T9: cada token vence a su propia hora aunque haya otro emitido que venza después 0ms
+   ✓ token de invitación > T11: usar la invitación gasta todos sus enlaces 0ms
+   ✓ token de invitación > vence a su hora exacta 0ms
+   ✓ token de invitación > el techo por IP deja diez intentos por minuto 1ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  812ms
+   ✓ activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña 160ms
+   ✓ activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used 103ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3591ms
+   ✓ activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo 79ms
+   ✓ activación contra el emulador > un token alterado o sin forma responde 400 invalid_token 68ms
+   ✓ activación contra el emulador > T12: reenviar manda un enlace nuevo con 7 días y el anterior sigue sirviendo 115ms
+   ✓ activación contra el emulador > reenviar exige admin 80ms
+   × activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño 68ms
+     → expected 'Correo de prueba. En vivo iría a 2983…' to contain '/activar?t=muestra-sin-credencial'
+   ✓ activación contra el emulador > T1: si el proveedor recibe la primera invitación y la respuesta se pierde, el enlace entregado activa 80ms
+   ✓ activación contra el emulador > T1: si el proveedor recibe la reenvío y la respuesta se pierde, el enlace entregado activa 133ms
+   ✓ activación contra el emulador > T2: si el proveedor recibe el correo y contesta 500, el enlace entregado activa 114ms
+   ✓ activación contra el emulador > T2: si el proveedor recibe el correo y contesta 503, el enlace entregado activa 133ms
+   ✓ activación contra el emulador > T3: si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false 98ms
+   ✓ activación contra el emulador > T3: si al reenviar Resend responde 422, el enlace anterior sigue sirviendo y la respuesta es sent: false 93ms
+   ✓ activación contra el emulador > T3: si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false 108ms
+   ✓ activación contra el emulador > T4: con dos reenvíos a la vez, soltando primero la respuesta del segundo, todo enlace entregado abre y el primero que se usa gasta la invitación  3343ms
+   ✓ activación contra el emulador > T4: con dos reenvíos a la vez, soltando las respuestas en el orden de envío, todo enlace entregado abre y el primero que se usa gasta la invitación  2890ms
+   ✓ activación contra el emulador > T5: con el resultado accept, nada se escribe en la invitación después de llamar a Resend 67ms
+   ✓ activación contra el emulador > T5: con el resultado reject:429, nada se escribe en la invitación después de llamar a Resend 58ms
+   ✓ activación contra el emulador > T5: con el resultado lost, nada se escribe en la invitación después de llamar a Resend 55ms
+   ✓ activación contra el emulador > T6: si la escritura de antes del envío falla, no sale ningún correo y el enlace anterior sigue sirviendo 82ms
+   ✓ activación contra el emulador > T7: el envío revisa en su transacción que la invitación no se haya usado: 409 invitation_used y no sale nada 94ms
+   ✓ activación contra el emulador > T8: si la cuenta cambia de correo, el enlace a la dirección anterior no abre y el reenviado a la nueva sí 107ms
+   ✓ activación contra el emulador > T10: un reenvío ocho días después deja en issuedTokens solo las entradas vivas 74ms
+   ✓ activación contra el emulador > T11: con dos enlaces vivos, usar uno gasta el otro 77ms
+   ✓ activación contra el emulador > un reenvío que no sale no toca el enlace que la persona ya tenía 78ms
+   ✓ activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada 90ms
+   ✓ activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y no queda marca de uso 77ms
+   ✓ activación contra el emulador > si Firebase falla después de marcar la invitación, la marca se quita y el mismo enlace sirve al reintentar 106ms
+   ✓ activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable 34ms
+   ✓ activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada 47ms
+   ✓ activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña 39ms
+   ✓ activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase 32ms
+   ✓ activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño 31ms
+   ✓ activación contra el emulador > revocar avisa por correo con el nombre del negocio 66ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 43 passed (44)
+   Start at  10:49:57
+   Duration  14.08s (transform 157ms, setup 11ms, collect 375ms, tests 13.53s, environment 0ms, prepare 48ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/activation-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-route.test.ts > activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño
+AssertionError: expected 'Correo de prueba. En vivo iría a 2983…' to contain '/activar?t=muestra-sin-credencial'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- /activar?t=muestra-sin-credencial[39m
+[31m+ Correo de prueba. En vivo iría a <email-3>.[39m
+[31m+[39m
+[31m+ Hola:[39m
+[31m+[39m
+[31m+ Ya tienes acceso al panel de ConoceRD para El rinconcito del café. Ahí ves cuántas personas te encontraron en la app, lees y contestas tus reseñas y arreglas lo que sale de tu negocio.[39m
+[31m+[39m
+[31m+ Para entrar la primera vez, toca este enlace y pon una contraseña que solo sepas tú:[39m
+[31m+[39m
+[31m+ https://negocios.conocerd.app/activar?t=IbEwL3qazEaDSz6siruC.HQ2CAi9okenYFogSzh3XoTwxP4yQDRZp2pTtDu7Ng0c[39m
+[31m+[39m
+[31m+ El enlace sirve una sola vez y vence el 13 de noviembre. Si se vence, avísale a la persona de ConoceRD que te atendió y te mandamos otro.[39m
+[31m+[39m
+[31m+ Después entras en https://negocios.conocerd.app/entrar con este correo, <email-3>, y tu contraseña.[39m
+[31m+[39m
+[31m+ Este correo llegó a <email-3>. Si no esperabas este correo, no toques el enlace y avísale a la persona de ConoceRD que te atendió.[39m
+[31m+[39m
+[31m+ El equipo de ConoceRD[39m
+[31m+[39m
+
+ ❯ test/activation-route.test.ts:388:29
+    386|     expect(outbox[0]?.subject.startsWith('[PRUEBA] ')).toBe(true);
+    387|     expect(outbox[0]?.text).toContain(`En vivo iría a ${email}.`);
+    388|     expect(outbox[0]?.text).toContain('/activar?t=muestra-sin-credenci…
+       |                             ^
+    389|     expect(outbox[0]?.text).not.toMatch(/\/activar\?t=[A-Za-z0-9]+\.[A…
+    390|     expect((await activate('muestra-sin-credencial')).status).toBe(400…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
