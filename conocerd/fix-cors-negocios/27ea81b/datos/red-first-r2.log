@@ -1,0 +1,69 @@
+# R2 at 27ea81b, with src/lib/cors.ts back at 2387dd1
+# $ pnpm vitest run test/cors-proxy.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/cors-negocios
+
+ ❯ test/cors-proxy.test.ts (14 tests | 2 failed) 24ms
+   ✓ preflight > a un origen permitido le responde 204 con métodos, cabeceras y max-age 5ms
+   × preflight > a negocios le responde el eco del origen en las rutas /business/* 4ms
+     → /business/activation: expected null to be 'https://negocios.conocerd.app' // Object.is equality
+   ✓ preflight > permite If-Match, que el PATCH del perfil manda para no pisar una edición ajena 1ms
+   ✓ preflight > el alias de rama de un equipo con el mismo sufijo no recibe permiso 0ms
+   ✓ preflight > un origen de PANEL_PREVIEW_ORIGINS recibe permiso 1ms
+   ✓ preflight > un preview del panel recibe permiso solo si está en PANEL_PREVIEW_ORIGINS 1ms
+   ✓ preflight > a un origen ajeno le responde sin ninguna cabecera de permiso 1ms
+   ✓ preflight > localhost pasa solo con NODE_ENV development, y falla cerrado sin él 1ms
+   × peticiones normales > a negocios le deja pasar con ACAO y Vary en una petición real, sin credenciales 1ms
+     → /business/activation: expected null to be 'https://negocios.conocerd.app' // Object.is equality
+   ✓ peticiones normales > a un origen permitido le deja pasar con ACAO y Vary 0ms
+   ✓ peticiones normales > a un origen ajeno le deja pasar sin ACAO: el navegador es quien bloquea 0ms
+   ✓ peticiones normales > la app, que no manda Origin, pasa igual que antes 0ms
+   ✓ matcher > cubre las rutas que el panel llama desde el navegador 6ms
+   ✓ matcher > deja fuera las rutas de la app y del admin 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cors-proxy.test.ts > preflight > a negocios le responde el eco del origen en las rutas /business/*
+AssertionError: /business/activation: expected null to be 'https://negocios.conocerd.app' // Object.is equality
+
+[32m- Expected:[39m 
+"https://negocios.conocerd.app"
+
+[31m+ Received:[39m 
+null
+
+ ❯ test/cors-proxy.test.ts:45:99
+     44|     expect(response.headers.get('access-control-max-age')).toBe('600');
+     45|     expect(response.headers.get('vary')).toContain('Origin');
+     46|     // Bearer, no cookies: con credenciales un origen permitido podría…
+       |                                     ^
+     47|     // una sesión que el dueño no eligió mandar.
+     48|     expect(response.headers.get('access-control-allow-credentials')).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/cors-proxy.test.ts > peticiones normales > a negocios le deja pasar con ACAO y Vary en una petición real, sin credenciales
+AssertionError: /business/activation: expected null to be 'https://negocios.conocerd.app' // Object.is equality
+
+[32m- Expected:[39m 
+"https://negocios.conocerd.app"
+
+[31m+ Received:[39m 
+null
+
+ ❯ test/cors-proxy.test.ts:123:99
+    124| 
+    125|   it('localhost pasa solo con NODE_ENV development, y falla cerrado si…
+    126|     const local = () => proxy(preflight('/business/me', 'http://localh…
+       | ^
+    127| 
+    128|     vi.stubEnv('NODE_ENV', 'production');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 12 passed (14)
+   Start at  10:44:29
+   Duration  379ms (transform 49ms, setup 0ms, collect 181ms, tests 24ms, environment 0ms, prepare 51ms)
+
