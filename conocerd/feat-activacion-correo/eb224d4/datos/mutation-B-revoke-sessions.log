@@ -1,0 +1,27 @@
+# mutation-B-revoke-sessions at eb224d4: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 0
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index a0d81f4..ca49496 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -206,6 +206,6 @@ export async function redeemPasswordLink(input: {
+     throw error;
+   }
+   // Quien tuviera una sesión abierta con la contraseña anterior la pierde.
+-  await adminAuth().revokeRefreshTokens(user.uid);
++  
+   return { email: user.email as string };
+ }
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ✓ test/password-link-route.test.ts (15 tests) 2581ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  732ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1150ms
+
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  10:06:41
+   Duration  3.29s (transform 150ms, setup 14ms, collect 401ms, tests 2.58s, environment 0ms, prepare 80ms)
+
