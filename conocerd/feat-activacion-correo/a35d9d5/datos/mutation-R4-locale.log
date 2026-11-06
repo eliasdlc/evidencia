@@ -1,0 +1,57 @@
+# mutation-R4-locale at a35d9d5: pnpm vitest run --silent=true src/lib/email/oob.test.ts
+# exit 1
+diff --git i/src/lib/email/oob.ts w/src/lib/email/oob.ts
+index a9ffe13..4d5124a 100644
+--- i/src/lib/email/oob.ts
++++ w/src/lib/email/oob.ts
+@@ -48,7 +48,7 @@ export async function sendPasswordResetEmail(
+       headers: {
+         authorization: `Bearer ${token}`,
+         'content-type': 'application/json',
+-        'x-firebase-locale': 'es',
++        
+       },
+       body: JSON.stringify({ requestType: 'PASSWORD_RESET', email, continueUrl }),
+     });
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ src/lib/email/oob.test.ts (4 tests | 1 failed) 11ms
+   × sendPasswordResetEmail, el correo de Firebase sin clave de Resend > pide a Identity Toolkit el correo de contraseña en español, con la credencial del servicio 9ms
+     → expected { …(2) } to match object { …(2) }
+(1 matching property omitted from actual)
+   ✓ sendPasswordResetEmail, el correo de Firebase sin clave de Resend > contra el emulador usa su host y la credencial owner, sin pedir token 1ms
+   ✓ sendPasswordResetEmail, el correo de Firebase sin clave de Resend > si no se puede pedir el token de acceso, es sent: false y no llama a Identity Toolkit 1ms
+   ✓ sendPasswordResetEmail, el correo de Firebase sin clave de Resend > un rechazo de Firebase es sent: false con el código 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  09:51:29
+   Duration  189ms (transform 36ms, setup 11ms, collect 26ms, tests 11ms, environment 0ms, prepare 42ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/oob.test.ts > sendPasswordResetEmail, el correo de Firebase sin clave de Resend > pide a Identity Toolkit el correo de contraseña en español, con la credencial del servicio
+AssertionError: expected { …(2) } to match object { …(2) }
+(1 matching property omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "authorization": "Bearer ya29.token",[22m
+[32m-   "x-firebase-locale": "es",[39m
+[2m  }[22m
+
+ ❯ src/lib/email/oob.test.ts:31:26
+     29|     const [url, init] = fetch.mock.calls[0] as [string, RequestInit];
+     30|     expect(url).toBe('https://identitytoolkit.googleapis.com/v1/projec…
+     31|     expect(init.headers).toMatchObject({ authorization: 'Bearer ya29.t…
+       |                          ^
+     32|     expect(JSON.parse(String(init.body))).toEqual({
+     33|       requestType: 'PASSWORD_RESET',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
