@@ -1,0 +1,76 @@
+# mutation-CE8-no-email at 8b13888: /home/decruce/.cache/conocerd-api/feat-activacion-correo/emu.sh "pnpm vitest run --silent=true test/password-link-route.test.ts"
+# exit 1
+diff --git i/src/lib/password-link.ts w/src/lib/password-link.ts
+index a0d81f4..9e7d18d 100644
+--- i/src/lib/password-link.ts
++++ w/src/lib/password-link.ts
+@@ -74,7 +74,7 @@ function refusalFor(user: UserRecord): ApiError | null {
+     return new ApiError(409, 'not_owner', 'Esa cuenta no es dueña de ningún destino');
+   }
+   if (user.disabled) return new ApiError(409, 'account_disabled', 'Esa cuenta está deshabilitada');
+-  if (!user.email) return new ApiError(422, 'no_email', 'Esa cuenta no tiene correo');
++  
+   return null;
+ }
+ 
+
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/password-link-route.test.ts (25 tests | 1 failed) 6540ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > es la instrucción aprobada y, debajo, el enlace 1ms
+   ✓ mensaje de WhatsApp del enlace de contraseña > pide al menos 8 caracteres, con un error en español y un ejemplo 1ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  939ms
+   ✓ enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo 109ms
+   ✓ enlace de contraseña contra el emulador > vence a la hora exacta, con el reloj inyectado 56ms
+   ✓ enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error 107ms
+   ✓ enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace 44ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1152ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token 37ms
+   ✓ enlace de contraseña contra el emulador > sin confirmedByPhone: true responde 422 y no genera enlace ni bitácora 81ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 11ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir 29ms
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 27ms
+   × enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 23ms
+     → expected 200 to be 422 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra  3330ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser personal (admin, con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 31ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser agente (con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 36ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta pierde todos sus destinos después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 31ms
+   ✓ enlace de contraseña contra el emulador > P2, P3: si la cuenta se deshabilita después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 32ms
+   ✓ enlace de contraseña contra el emulador > P4: el secreto de A con el uid de B no abre nada; B no cambia y el token de A sigue sirviendo para A 65ms
+   ✓ enlace de contraseña contra el emulador > P5: el canje 11 desde la misma IP en un minuto responde 429 sin gastar el token, y pasado el minuto sirve 53ms
+   ✓ enlace de contraseña contra el emulador > P6: si poner la contraseña falla, responde 500, no cambia nada, el token vuelve a servir y nada del token ni de la contraseña sale en el log 62ms
+   ✓ enlace de contraseña contra el emulador > P7: canjear llama a revokeRefreshTokens con el uid de la cuenta 32ms
+   ✓ enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo 54ms
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 28ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 24 passed (25)
+   Start at  10:57:36
+   Duration  7.13s (transform 155ms, setup 15ms, collect 398ms, tests 6.54s, environment 0ms, prepare 56ms)
+
+
+Error: Script "pnpm vitest run --silent=true test/password-link-route.test.ts" exited with code 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email
+AssertionError: expected 200 to be 422 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 422[39m
+[31m+ 200[39m
+
+ ❯ test/password-link-route.test.ts:268:29
+    266|     await firebase.adminAuth().setCustomUserClaims(phoneOnly.uid, { bi…
+    267|     const response = await linkFor({ uid: phoneOnly.uid, confirmedByPh…
+    268|     expect(response.status).toBe(422);
+       |                             ^
+    269|     await expect(response.json()).resolves.toMatchObject({ error: 'no_…
+    270|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
