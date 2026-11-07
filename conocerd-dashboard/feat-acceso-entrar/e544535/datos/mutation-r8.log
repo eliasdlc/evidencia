@@ -1,0 +1,63 @@
+# R8 at e544535, with google.patch applied
+# $ pnpm exec vitest run src/lib/google.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar
+
+DOMException [NotSupportedError]: Failed to load script "https://accounts.google.com/gsi/client". JavaScript file loading is disabled.
+    at HTMLScriptElement.#loadScript (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/html-script-element/HTMLScriptElement.js:549:31)
+    at HTMLScriptElement.[connectedToDocument] (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/html-script-element/HTMLScriptElement.js:315:33)
+    at HTMLScriptElement.[connectedToNode] (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLHeadElement.[appendChild] (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/node/Node.js:421:45)
+    at HTMLHeadElement.[appendChild] (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/element/Element.js:1102:62)
+    at HTMLHeadElement.appendChild (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/node/Node.js:314:48)
+    at /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/src/lib/google.ts:89:19
+    at new Promise (<anonymous>)
+    at loadGis (/home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/src/lib/google.ts:70:13)
+    at Module.googleSource (/home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/src/lib/google.ts:100:20)
+DOMException [NotSupportedError]: Failed to load script "https://accounts.google.com/gsi/client". JavaScript file loading is disabled.
+    at HTMLScriptElement.#loadScript (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/html-script-element/HTMLScriptElement.js:549:31)
+    at HTMLScriptElement.[connectedToDocument] (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/html-script-element/HTMLScriptElement.js:315:33)
+    at HTMLScriptElement.[connectedToNode] (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLHeadElement.[appendChild] (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/node/Node.js:421:45)
+    at HTMLHeadElement.[appendChild] (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/element/Element.js:1102:62)
+    at HTMLHeadElement.appendChild (file:///home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/node/Node.js:314:48)
+    at /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/src/lib/google.ts:89:19
+    at new Promise (<anonymous>)
+    at loadGis (/home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/src/lib/google.ts:70:13)
+    at Module.googleSource (/home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar/src/lib/google.ts:100:20)
+ ❯ src/lib/google.test.ts (5 tests | 1 failed) 24ms
+   ❯ Google Identity Services (5)
+     × offers no button and asks Google for nothing when the build has no client id 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/google.test.ts > Google Identity Services > offers no button and asks Google for nothing when the build has no client id
+AssertionError: promise rejected "Error: gis_blocked" instead of resolving
+ ❯ src/lib/google.test.ts:28:40
+     26|
+     27|     expect(google.googleConfigured).toBe(false);
+     28|     await expect(google.googleSource()).resolves.toBeNull();
+       |                                        ^
+     29|     expect(gisScripts()).toHaveLength(0);
+     30|   });
+
+Caused by: Error: gis_blocked
+ ❯ script.onerror src/lib/google.ts:88:33
+ ❯ HTMLScriptElement.#callDispatchEventListeners node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/event/EventTarget.js:308:25
+ ❯ HTMLScriptElement.dispatchEvent node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/event/EventTarget.js:117:41
+ ❯ HTMLScriptElement.#goThroughDispatchEventPhases node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/event/EventTarget.js:177:38
+ ❯ HTMLScriptElement.dispatchEvent node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/event/EventTarget.js:113:47
+ ❯ HTMLScriptElement.#loadScript node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/html-script-element/HTMLScriptElement.js:551:22
+ ❯ HTMLScriptElement.[connectedToDocument] node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/html-script-element/HTMLScriptElement.js:315:33
+ ❯ HTMLScriptElement.[connectedToNode] node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/node/Node.js:801:53
+ ❯ HTMLHeadElement.[appendChild] node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/node/Node.js:421:45
+ ❯ HTMLHeadElement.[appendChild] node_modules/.pnpm/happy-dom@21.0.4/node_modules/happy-dom/lib/nodes/element/Element.js:1102:62
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  21:17:30
+   Duration  354ms (environment 83%, tests 9%, transform 3%, import 3%, worker 1%)
+
