@@ -1,0 +1,88 @@
+# R1 at fb04c17, with r1-test-mode-idempotency-network.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-activacion-correo/scrub.sh pnpm exec vitest run src/lib/email/resend.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ src/lib/email/resend.test.ts (8 tests | 3 failed) 16ms
+   ✓ configuración del correo > sin EMAIL_MODE es modo prueba, y el remitente es siempre el de negocios 1ms
+   × sendEmail > en vivo manda a Resend con la clave, el remitente, texto plano e Idempotency-Key 10ms
+     → expected { …(2) } to match object { …(3) }
+   × sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave 1ms
+     → expected { sent: true, id: 'email_123', …(2) } to match object { sent: true, …(2) }
+(1 matching property omitted from actual)
+   ✓ sendEmail > en modo prueba sin buzón de prueba no llama a nadie 1ms
+   ✓ sendEmail > sin clave no llama a nadie 0ms
+   ✓ sendEmail > un rechazo de Resend es sent: false con el código, sin lanzar 0ms
+   × sendEmail con la red caída > es sent: false sin lanzar y sin poner el error en el log 1ms
+     → promise rejected "Error: no se pudo llegar a Resend" instead of resolving
+   ✓ idempotencyKey > es estable por hecho, distinta entre hechos y corta aunque las partes no lo sean 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > en vivo manda a Resend con la clave, el remitente, texto plano e Idempotency-Key
+AssertionError: expected { …(2) } to match object { …(3) }
+
+- Expected
++ Received
+
+  {
+    "authorization": "Bearer re_de_prueba",
+    "content-type": "application/json",
+-   "idempotency-key": "owner-invitation/abc",
+  }
+
+ ❯ src/lib/email/resend.test.ts:61:21
+     59|     const { url, headers, body } = sentRequest(fetch);
+     60|     expect(url).toBe(RESEND_ENDPOINT);
+     61|     expect(headers).toMatchObject({
+       |                     ^
+     62|       authorization: 'Bearer re_de_prueba',
+     63|       'content-type': 'application/json',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave
+AssertionError: expected { sent: true, id: 'email_123', …(2) } to match object { sent: true, …(2) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "sent": true,
+    "test": true,
+-   "to": "<email>",
++   "to": "<email>",
+  }
+
+ ❯ src/lib/email/resend.test.ts:82:20
+     80|     });
+     81| 
+     82|     expect(result).toMatchObject({ sent: true, to: '<email>'…
+       |                    ^
+     83|     const { headers, body } = sentRequest(fetch);
+     84|     expect(body.to).toEqual(['<email>']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail con la red caída > es sent: false sin lanzar y sin poner el error en el log
+AssertionError: promise rejected "Error: no se pudo llegar a Resend" instead of resolving
+ ❯ src/lib/email/resend.test.ts:126:61
+    124|       throw new TypeError('fetch failed https://api.resend.com/emails …
+    125|     });
+    126|     await expect(sendEmail(message, { config: live, fetch })).resolves…
+       |                                                             ^
+    127|     expect(JSON.stringify(errors.mock.calls)).not.toContain('dueno@eje…
+    128|   });
+
+Caused by: Error: no se pudo llegar a Resend
+ ❯ sendEmail src/lib/email/resend.ts:115:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 5 passed (8)
+   Start at  23:44:25
+   Duration  199ms (transform 33ms, setup 11ms, collect 24ms, tests 16ms, environment 0ms, prepare 46ms)
+
