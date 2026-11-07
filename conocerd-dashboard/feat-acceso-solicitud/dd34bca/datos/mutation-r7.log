@@ -1,0 +1,78 @@
+# R7 at dd34bca, with rule.patch applied
+# $ firebase emulators:exec --config node_modules/.cache/firebase.e2e.json --project demo-conocerd --only auth "pnpm exec playwright test e2e/solicitudes.spec.ts -g R1"
+i  emulators: Starting emulators: auth
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  Running script: pnpm exec playwright test e2e/solicitudes.spec.ts -g R1
+
+Running 2 tests using 1 worker
+
+[WebServer] 10:55:54 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+i  To verify the email address nueva-1794020154830-6pmdy3@conocerd.test, follow this link: http://127.0.0.1:19103/emulator/action?mode=verifyEmail&lang=en&oobCode=GYX7Inqj6YA1UvlF2Mxqwc23pLnl2bappSzIMCeHIWSsRbAMMPeJUc&apiKey=fake-api-key&continueUrl=http%3A%2F%2F127.0.0.1%3A5183%2Fsolicitudes%2Fnueva
+  ✘  1 [emulator-phone] › e2e/solicitudes.spec.ts:77:3 › /registro › creates the account, sends the confirmation and lands on the request gate (R1) (5.6s)
+FAIL [emulator-phone] e2e/solicitudes.spec.ts > creates the account, sends the confirmation and lands on the request gate (R1) (failed)
+[WebServer] 10:56:01 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+i  To verify the email address nueva-1794020161632-kku026@conocerd.test, follow this link: http://127.0.0.1:19103/emulator/action?mode=verifyEmail&lang=en&oobCode=zZZdACOlEPdhl0P9hm8Uc1hFRv2_kJkkLv6rhuFbpMWOM-PlxbOoN-&apiKey=fake-api-key&continueUrl=http%3A%2F%2F127.0.0.1%3A5183%2Fsolicitudes%2Fnueva
+  ✘  2 [emulator-desktop] › e2e/solicitudes.spec.ts:77:3 › /registro › creates the account, sends the confirmation and lands on the request gate (R1) (6.0s)
+FAIL [emulator-desktop] e2e/solicitudes.spec.ts > creates the account, sends the confirmation and lands on the request gate (R1) (failed)
+
+
+  1) [emulator-phone] › e2e/solicitudes.spec.ts:77:3 › /registro › creates the account, sends the confirmation and lands on the request gate (R1) 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Necesita por lo menos 8 letras o números.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Necesita por lo menos 8 letras o números.') with timeout 5000ms
+      - waiting for getByText('Necesita por lo menos 8 letras o números.')
+
+
+      88 |     await page.getByLabel('Crea una contraseña').fill('1234567');
+      89 |     await page.getByRole('button', { name: 'Crear mi cuenta' }).click();
+    > 90 |     await expect(page.getByText('Necesita por lo menos 8 letras o números.')).toBeVisible();
+         |                                                                               ^
+      91 |     expect(signUps()).toBe(0);
+      92 |
+      93 |     await page.getByLabel('Crea una contraseña').fill('cacao-pedernales-1');
+        at /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-solicitud/e2e/solicitudes.spec.ts:90:79
+
+    Error Context: node_modules/.cache/playwright/solicitudes--registro-crea-85a76-nds-on-the-request-gate-R1--emulator-phone/error-context.md
+
+  2) [emulator-desktop] › e2e/solicitudes.spec.ts:77:3 › /registro › creates the account, sends the confirmation and lands on the request gate (R1) 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Necesita por lo menos 8 letras o números.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Necesita por lo menos 8 letras o números.') with timeout 5000ms
+      - waiting for getByText('Necesita por lo menos 8 letras o números.')
+
+
+      88 |     await page.getByLabel('Crea una contraseña').fill('1234567');
+      89 |     await page.getByRole('button', { name: 'Crear mi cuenta' }).click();
+    > 90 |     await expect(page.getByText('Necesita por lo menos 8 letras o números.')).toBeVisible();
+         |                                                                               ^
+      91 |     expect(signUps()).toBe(0);
+      92 |
+      93 |     await page.getByLabel('Crea una contraseña').fill('cacao-pedernales-1');
+        at /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-solicitud/e2e/solicitudes.spec.ts:90:79
+
+    Error Context: node_modules/.cache/playwright/solicitudes--registro-crea-85a76-nds-on-the-request-gate-R1--emulator-desktop/error-context.md
+
+  2 failed
+    [emulator-phone] › e2e/solicitudes.spec.ts:77:3 › /registro › creates the account, sends the confirmation and lands on the request gate (R1) 
+    [emulator-desktop] › e2e/solicitudes.spec.ts:77:3 › /registro › creates the account, sends the confirmation and lands on the request gate (R1) 
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec playwright test e2e/solicitudes.spec.ts -g R1" exited with code 1
