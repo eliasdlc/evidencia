@@ -1,0 +1,33 @@
+# R9 at 5350ac5, with copy.patch applied
+# $ pnpm exec vitest run src/lib/links.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-enlaces
+
+ ❯ src/lib/links.test.ts (21 tests | 1 failed) 10ms
+   ❯ the copy for email links (13)
+     × maps token_used to the panel words 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/links.test.ts > the copy for email links > maps token_used to the panel words
+AssertionError: expected 'Este enlace venció: servía 7 días.' to be 'Este enlace ya se usó. Si ya pusiste …' // Object.is equality
+
+Expected: "Este enlace ya se usó. Si ya pusiste tu contraseña, entra. Si no, pide una nueva por correo."
+Received: "Este enlace venció: servía 7 días."
+
+ ❯ src/lib/links.test.ts:51:74
+     49|     ['network', 0, COPY.network],
+     50|   ])('maps %s to the panel words', (code, status, copy) => {
+     51|     expect(apiCopyFor(new ApiError(status, code, 'texto del servidor')…
+       |                                                                          ^
+     52|   });
+     53|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  22:06:03
+   Duration  164ms (import 64%, transform 16%, tests 15%, worker 4%)
+
