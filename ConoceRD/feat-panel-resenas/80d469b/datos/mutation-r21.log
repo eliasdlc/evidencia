@@ -1,0 +1,67 @@
+# R21 at 80d469b, with m1.patch applied  [agents evidence scrubbed U+2014 x1 as "-"]
+# $ pnpm exec vitest run src/features/negocio/resenas/ResenasPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-resenas
+
+stderr | src/features/negocio/resenas/ResenasPage.test.tsx > the list > asks for ten at a time and appends the next page without repeats
+Encountered two children with the same key, `b`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted - the behavior is unsupported and could change in a future version.
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx (36 tests | 2 failed) 266ms
+   ❯ the list (5)
+     × asks for ten at a time and appends the next page without repeats 22ms
+     × merges pages by author 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/resenas/ResenasPage.test.tsx > the list > asks for ten at a time and appends the next page without repeats
+AssertionError: expected [ 'Reseña de Carla', …(3) ] to deeply equal [ 'Reseña de Carla', …(2) ]
+
+- Expected
++ Received
+
+  [
+    "Reseña de Carla",
+    "Reseña de Rosa D.",
++   "Reseña de Rosa D.",
+    "Reseña de Pablo N.",
+  ]
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx:218:21
+    216|     await click(find('Cargar más'));
+    217|     expect(gets[1]).toBe('/business/biz-1/reviews?limit=10&cursor=c2');
+    218|     expect(names()).toEqual(['Reseña de Carla', 'Reseña de Rosa D.', '…
+       |                     ^
+    219|     expect(find('Cargar más')).toBeUndefined();
+    220|     expect(text()).toContain('Esas son todas.');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/resenas/ResenasPage.test.tsx > the list > merges pages by author
+AssertionError: expected [ 'a', 'a', 'z', 'z' ] to deeply equal [ 'a', 'z' ]
+
+- Expected
++ Received
+
+  [
+    "a",
++   "a",
++   "z",
+    "z",
+  ]
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx:225:49
+    223|   it('merges pages by author', () => {
+    224|     const merged = mergePage([review('a', 'Carla')], [review('a', 'Car…
+    225|     expect(merged.map((item) => item.authorId)).toEqual(['a', 'z']);
+       |                                                 ^
+    226|     expect(merged[0]?.authorName).toBe('Carla');
+    227|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 34 passed (36)
+   Start at  20:39:22
+   Duration  620ms (tests 50%, environment 31%, import 14%, transform 5%, worker 1%)
+
