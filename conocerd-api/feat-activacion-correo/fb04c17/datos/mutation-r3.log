@@ -1,0 +1,120 @@
+# R3 at fb04c17, with r3-address-line.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-activacion-correo/scrub.sh pnpm exec vitest run src/lib/email/templates.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ src/lib/email/templates.test.ts (12 tests | 5 failed) 12ms
+   × correos a dueños > activation dice a qué correo llegó y no habla de Chrome ni de los tres puntos 6ms
+     → expected 'Hola, Doña Rosa:\n\nYa tienes acceso …' to contain 'Este correo llegó a <email>.'
+   × correos a dueños > signIn dice a qué correo llegó y no habla de Chrome ni de los tres puntos 1ms
+     → expected 'Hola, Doña Rosa:\n\nYa tienes acceso …' to contain 'Este correo llegó a <email>.'
+   × correos a dueños > approval dice a qué correo llegó y no habla de Chrome ni de los tres puntos 1ms
+     → expected 'Hola, Doña Rosa:\n\nRevisamos tu soli…' to contain 'Este correo llegó a <email>.'
+   × correos a dueños > rejection dice a qué correo llegó y no habla de Chrome ni de los tres puntos 1ms
+     → expected 'Hola, Doña Rosa:\n\nRevisamos tu soli…' to contain 'Este correo llegó a <email>.'
+   × correos a dueños > revocation dice a qué correo llegó y no habla de Chrome ni de los tres puntos 1ms
+     → expected 'Hola, Doña Rosa:\n\nDesde hoy ya no e…' to contain 'Este correo llegó a <email>.'
+   ✓ correos a dueños > la invitación por activar trae su único enlace, el vencimiento en Santo Domingo y dónde se entra después 1ms
+   ✓ correos a dueños > la invitación a quien ya entra no trae enlace de activación y nombra Google como el consejo pidió 0ms
+   ✓ correos a dueños > el rechazo dice el motivo en palabras del dueño, para cada código, y la nota si la hay 0ms
+   ✓ correos a dueños > con buzón de respuesta, la ayuda lo nombra 0ms
+   ✓ correos a dueños > sin saludo con nombre si la cuenta no tiene uno 0ms
+   ✓ piezas comunes > lista los negocios como se dice en español 0ms
+   ✓ piezas comunes > el panel vive en negocios.conocerd.app salvo que PANEL_BASE_URL diga otra cosa 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/templates.test.ts > correos a dueños > activation dice a qué correo llegó y no habla de Chrome ni de los tres puntos
+ FAIL  src/lib/email/templates.test.ts > correos a dueños > signIn dice a qué correo llegó y no habla de Chrome ni de los tres puntos
+AssertionError: expected 'Hola, Doña Rosa:\n\nYa tienes acceso …' to contain 'Este correo llegó a <email>.'
+
+- Expected
++ Received
+
+- Este correo llegó a <email>.
++ Hola, Doña Rosa:
++
++ Ya tienes acceso al panel de ConoceRD para El rinconcito del café. Ahí ves cuántas personas te encontraron en la app, lees y contestas tus reseñas y arreglas lo que sale de tu negocio.
++
++ Para entrar la primera vez, toca este enlace y pon una contraseña que solo sepas tú:
++
++ https://negocios.conocerd.app/activar?t=abc.def
++
++ El enlace sirve una sola vez y vence el 12 de noviembre. Si se vence, avísale a la persona de ConoceRD que te atendió y te mandamos otro.
++
++ Después entras en https://negocios.conocerd.app/entrar con este correo, <email>, y tu contraseña.
++
++  Si no esperabas este correo, no toques el enlace y avísale a la persona de ConoceRD que te atendió.
++
++ El equipo de ConoceRD
++
+
+ ❯ src/lib/email/templates.test.ts:30:24
+     28| describe('correos a dueños', () => {
+     29|   it.each(Object.entries(all))('%s dice a qué correo llegó y no habla …
+     30|     expect(email.text).toContain('Este correo llegó a <email>…
+       |                        ^
+     31|     expect(email.text).toMatch(/^Hola, Doña Rosa:/);
+     32|     expect(email.text.trimEnd().endsWith('El equipo de ConoceRD')).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/lib/email/templates.test.ts > correos a dueños > approval dice a qué correo llegó y no habla de Chrome ni de los tres puntos
+ FAIL  src/lib/email/templates.test.ts > correos a dueños > rejection dice a qué correo llegó y no habla de Chrome ni de los tres puntos
+AssertionError: expected 'Hola, Doña Rosa:\n\nRevisamos tu soli…' to contain 'Este correo llegó a <email>.'
+
+- Expected
++ Received
+
+- Este correo llegó a <email>.
++ Hola, Doña Rosa:
++
++ Revisamos tu solicitud y ya manejas Cunae en ConoceRD.
++
++ Entra en https://negocios.conocerd.app/entrar con la misma cuenta con la que hiciste la solicitud, la de este correo: <email>.
++
++ El equipo de ConoceRD
++
+
+ ❯ src/lib/email/templates.test.ts:30:24
+     28| describe('correos a dueños', () => {
+     29|   it.each(Object.entries(all))('%s dice a qué correo llegó y no habla …
+     30|     expect(email.text).toContain('Este correo llegó a <email>…
+       |                        ^
+     31|     expect(email.text).toMatch(/^Hola, Doña Rosa:/);
+     32|     expect(email.text.trimEnd().endsWith('El equipo de ConoceRD')).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/lib/email/templates.test.ts > correos a dueños > revocation dice a qué correo llegó y no habla de Chrome ni de los tres puntos
+AssertionError: expected 'Hola, Doña Rosa:\n\nDesde hoy ya no e…' to contain 'Este correo llegó a <email>.'
+
+- Expected
++ Received
+
+- Este correo llegó a <email>.
++ Hola, Doña Rosa:
++
++ Desde hoy ya no entras al panel de ConoceRD para SFM. El negocio sigue en la app; lo que cambia es que ya no lo manejas tú desde el panel.
++
++ Si crees que es un error, avísale a la persona de ConoceRD que te atendió.
++
++ El equipo de ConoceRD
++
+
+ ❯ src/lib/email/templates.test.ts:30:24
+     28| describe('correos a dueños', () => {
+     29|   it.each(Object.entries(all))('%s dice a qué correo llegó y no habla …
+     30|     expect(email.text).toContain('Este correo llegó a <email>…
+       |                        ^
+     31|     expect(email.text).toMatch(/^Hola, Doña Rosa:/);
+     32|     expect(email.text.trimEnd().endsWith('El equipo de ConoceRD')).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 7 passed (12)
+   Start at  23:45:12
+   Duration  257ms (transform 46ms, setup 13ms, collect 54ms, tests 12ms, environment 0ms, prepare 60ms)
+
