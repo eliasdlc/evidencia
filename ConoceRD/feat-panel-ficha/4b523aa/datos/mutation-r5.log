@@ -1,0 +1,51 @@
+# R5 at 4b523aa, with m3.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/FichaPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx (37 tests | 2 failed) 3471ms
+   ❯ leaving a part with unsaved changes (4)
+     × blocks a move inside the app while dirty, and lets it through on "Salir sin guardar" 82ms
+   ❯ another business (2)
+     × a switch while a part is dirty asks first, and drops the typed text on leaving 70ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/FichaPage.test.tsx > leaving a part with unsaved changes > blocks a move inside the app while dirty, and lets it through on "Salir sin guardar"
+AssertionError: expected ' Volver a lo que ve la genteCambiar e…' to contain '¿Salir sin guardar tu Instagram?'
+
+Expected: "¿Salir sin guardar tu Instagram?"
+Received: " Volver a lo que ve la genteCambiar el InstagramComedor de pruebaSale en la app apenas guardes.Tu usuario de InstagramSin espacios, hasta 30 letras.Sale en la app apenas guardes.Guardar mi Instagram"
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx:591:20
+    589|     await settle();
+    590|     expect(router.state.location.pathname).toBe('/ficha');
+    591|     expect(body()).toContain('¿Salir sin guardar tu Instagram?');
+       |                    ^
+    592|     await click(button('Seguir editando'));
+    593|     expect(router.state.location.pathname).toBe('/ficha');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/ficha/FichaPage.test.tsx > another business > a switch while a part is dirty asks first, and drops the typed text on leaving
+AssertionError: expected 'Lo que ve la genteOleaga CentroOleaga…' to contain '¿Salir sin guardar tu Instagram?'
+
+Expected: "¿Salir sin guardar tu Instagram?"
+Received: "Lo que ve la genteOleaga CentroOleaga PlayaEs lo que ve el viajero de tu negocio en la app. Toca «Cambiar» en lo que quieras: cada parte tiene su botón Guardar y sale en la app apenas guardas.WhatsApp del negocioCambiar+18095550142Teléfono para llamarCambiar+18095550177Tu horarioCambiarMartes y sábado, de 11:00 de la mañana a 10:00 de la noche. Lunes, miércoles, jueves, viernes y domingo cerrados.Qué te hace especialCambiarTrucha frita frente al ríoTambién está en inglés.Cuánto cuesta entrarCambiarFalta Todavía no dice nada.Cómo llegarCambiarSube carro normalMejor hora para irCambiarFalta Todavía no dice nada.Qué hay y qué avisosCambiarHay: Parqueo. Avisos: Los últimos 2 km son de tierra.InstagramCambiardeLaPlayaSitio webCambiarhttps://comedor.exampleEsto lo cambia el equipoEl nombre, el tipo de negocio y dónde sale en el mapa. Si algo está mal, escríbele al equipo de ConoceRD y lo corregimos contigo."
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx:641:20
+    639|     await type(field('Tu usuario de Instagram'), 'escritoParaCentro');
+    640|     await click(button(/Oleaga Playa/));
+    641|     expect(body()).toContain('¿Salir sin guardar tu Instagram?');
+       |                    ^
+    642|     expect(router.state.location.search).toContain('biz-1');
+    643|     await click(button('Salir sin guardar'));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 35 passed (37)
+   Start at  21:05:05
+   Duration  4.42s (tests 81%, environment 14%, import 4%, transform 1%)
+
