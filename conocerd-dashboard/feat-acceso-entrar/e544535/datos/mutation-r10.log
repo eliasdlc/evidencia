@@ -1,0 +1,33 @@
+# R10 at e544535, with sessionend.patch applied
+# $ pnpm exec vitest run src/lib/access.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar
+
+ ❯ src/lib/access.test.ts (43 tests | 1 failed) 18ms
+   ❯ the copy map (13)
+     × says why a session ended in words for each reason, with the help mailbox for a suspension 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/access.test.ts > the copy map > says why a session ended in words for each reason, with the help mailbox for a suspension
+AssertionError: expected 'Tu acceso a este panel fue retirado.' to be 'Tu sesión se cerró. Entra otra vez; s…' // Object.is equality
+
+Expected: "Tu sesión se cerró. Entra otra vez; si cambiaste la contraseña, usa la nueva."
+Received: "Tu acceso a este panel fue retirado."
+
+ ❯ src/lib/access.test.ts:97:35
+     95|
+     96|   it('says why a session ended in words for each reason, with the help…
+     97|     expect(SESSION_ENDED.revoked).toBe('Tu sesión se cerró. Entra otra…
+       |                                   ^
+     98|     expect(SESSION_ENDED.suspended).toContain(HELP_EMAIL);
+     99|     expect(SESSION_ENDED.invalid).toBe('Tu sesión ya no es válida. Ent…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 42 passed (43)
+   Start at  21:17:42
+   Duration  358ms (environment 68%, import 16%, transform 8%, tests 7%, worker 1%)
+
