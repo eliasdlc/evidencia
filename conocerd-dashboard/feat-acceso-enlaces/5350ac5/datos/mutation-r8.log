@@ -1,0 +1,83 @@
+# R8 at 5350ac5, with email.patch applied
+# $ firebase emulators:exec --config node_modules/.cache/firebase.e2e.json --project demo-conocerd --only auth "pnpm exec playwright test e2e/enlaces.spec.ts -g I13"
+i  emulators: Starting emulators: auth
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  Running script: pnpm exec playwright test e2e/enlaces.spec.ts -g I13
+
+Running 4 tests using 1 worker
+
+i  To reset the password for invitado-google-1794017144651-nhvtc7@conocerd.test, follow this link: http://127.0.0.1:19103/emulator/action?mode=resetPassword&lang=en&oobCode=ZWadIK2S9p-t8O7QKlrP24guxtBreOqa9mcVXkWggaQDRqCjrwFmw0&apiKey=fake-api-key&newPassword=NEW_PASSWORD_HERE
+[WebServer] 10:05:45 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✓  1 [emulator-phone] › e2e/enlaces.spec.ts:116:3 › /activar › Google with the invited Gmail signs in as the invited account (I13, V16) (574ms)
+[WebServer] 10:05:45 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✘  2 [emulator-phone] › e2e/enlaces.spec.ts:133:3 › /activar › Google with another Gmail signs nothing in and offers the password (I13, V17) (5.5s)
+FAIL [emulator-phone] e2e/enlaces.spec.ts > Google with another Gmail signs nothing in and offers the password (I13, V17) (failed)
+i  To reset the password for invitado-google-1794017151167-5bgxoa@conocerd.test, follow this link: http://127.0.0.1:19103/emulator/action?mode=resetPassword&lang=en&oobCode=GJGQ8b1gRk4vINTatQv7f-X4QovxW4f44JaLDNIpYDs2Ie0oV2c5_M&apiKey=fake-api-key&newPassword=NEW_PASSWORD_HERE
+[WebServer] 10:05:51 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✓  3 [emulator-desktop] › e2e/enlaces.spec.ts:116:3 › /activar › Google with the invited Gmail signs in as the invited account (I13, V16) (535ms)
+[WebServer] 10:05:51 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✘  4 [emulator-desktop] › e2e/enlaces.spec.ts:133:3 › /activar › Google with another Gmail signs nothing in and offers the password (I13, V17) (5.6s)
+FAIL [emulator-desktop] e2e/enlaces.spec.ts > Google with another Gmail signs nothing in and offers the password (I13, V17) (failed)
+
+
+  1) [emulator-phone] › e2e/enlaces.spec.ts:133:3 › /activar › Google with another Gmail signs nothing in and offers the password (I13, V17) 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Ese Gmail es otra.prueba@gmail.com. La invitación es para invitada@conocerd.test.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Ese Gmail es otra.prueba@gmail.com. La invitación es para invitada@conocerd.test.') with timeout 5000ms
+      - waiting for getByText('Ese Gmail es otra.prueba@gmail.com. La invitación es para invitada@conocerd.test.')
+
+
+      141 |     await page.getByRole('button', { name: 'Continuar con Google' }).click();
+      142 |
+    > 143 |     await expect(page.getByText('Ese Gmail es otra.prueba@gmail.com. La invitación es para invitada@conocerd.test.')).toBeVisible();
+          |                                                                                                                       ^
+      144 |     expect(firebaseCalls(seen, 'accounts:signInWithIdp')).toBe(0);
+      145 |     await page.mouse.move(5, 5);
+      146 |     await evidence('activar-otro-gmail');
+        at /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-enlaces/e2e/enlaces.spec.ts:143:119
+
+    Error Context: node_modules/.cache/playwright/enlaces--activar-Google-wi-3f548-ffers-the-password-I13-V17--emulator-phone/error-context.md
+
+  2) [emulator-desktop] › e2e/enlaces.spec.ts:133:3 › /activar › Google with another Gmail signs nothing in and offers the password (I13, V17) 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Ese Gmail es otra.prueba@gmail.com. La invitación es para invitada@conocerd.test.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Ese Gmail es otra.prueba@gmail.com. La invitación es para invitada@conocerd.test.') with timeout 5000ms
+      - waiting for getByText('Ese Gmail es otra.prueba@gmail.com. La invitación es para invitada@conocerd.test.')
+
+
+      141 |     await page.getByRole('button', { name: 'Continuar con Google' }).click();
+      142 |
+    > 143 |     await expect(page.getByText('Ese Gmail es otra.prueba@gmail.com. La invitación es para invitada@conocerd.test.')).toBeVisible();
+          |                                                                                                                       ^
+      144 |     expect(firebaseCalls(seen, 'accounts:signInWithIdp')).toBe(0);
+      145 |     await page.mouse.move(5, 5);
+      146 |     await evidence('activar-otro-gmail');
+        at /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-enlaces/e2e/enlaces.spec.ts:143:119
+
+    Error Context: node_modules/.cache/playwright/enlaces--activar-Google-wi-3f548-ffers-the-password-I13-V17--emulator-desktop/error-context.md
+
+  2 failed
+    [emulator-phone] › e2e/enlaces.spec.ts:133:3 › /activar › Google with another Gmail signs nothing in and offers the password (I13, V17) 
+    [emulator-desktop] › e2e/enlaces.spec.ts:133:3 › /activar › Google with another Gmail signs nothing in and offers the password (I13, V17) 
+  2 passed (14.3s)
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec playwright test e2e/enlaces.spec.ts -g I13" exited with code 1
