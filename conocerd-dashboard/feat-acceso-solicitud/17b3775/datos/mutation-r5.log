@@ -1,0 +1,36 @@
+# R5 at 17b3775, with number.patch applied
+# $ pnpm exec vitest run src/lib/evidence.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-solicitud
+
+ ❯ src/lib/evidence.test.ts (5 tests | 1 failed) 56ms
+   ❯ request photos (5)
+     × never reuse a number: a failed photo goes up again under the next one, and only arrivals are listed 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/evidence.test.ts > request photos > never reuse a number: a failed photo goes up again under the next one, and only arrivals are listed
+AssertionError: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/lib/evidence.test.ts:26:26
+     24|
+     25|     const first = await uploadMissing('uid-1', draft, photos, put);
+     26|     expect(first.failed).toBe(1);
+       |                          ^
+     27|     expect(first.paths).toEqual([`claims/uid-1/${draft.requestId}/1.jp…
+     28|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  22:38:11
+   Duration  205ms (tests 53%, transform 30%, import 12%, worker 4%)
+
