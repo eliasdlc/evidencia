@@ -1,0 +1,111 @@
+# R6 at 5350ac5, with onload.patch applied
+# $ firebase emulators:exec --config node_modules/.cache/firebase.e2e.json --project demo-conocerd --only auth "pnpm exec playwright test e2e/enlaces.spec.ts -g I3"
+i  emulators: Starting emulators: auth
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  Running script: pnpm exec playwright test e2e/enlaces.spec.ts -g I3
+
+Running 6 tests using 1 worker
+
+[WebServer] 10:04:58 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✘  1 [emulator-phone] › e2e/enlaces.spec.ts:44:5 › opening a link sends nothing (I3) and strips the token (I1) › /activar?t= mounts with zero calls and a clean URL (2.6s)
+FAIL [emulator-phone] e2e/enlaces.spec.ts > /activar?t= mounts with zero calls and a clean URL (failed)
+[WebServer] 10:05:01 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✓  2 [emulator-phone] › e2e/enlaces.spec.ts:44:5 › opening a link sends nothing (I3) and strips the token (I1) › /contrasena-nueva?t= mounts with zero calls and a clean URL (2.6s)
+[WebServer] 10:05:04 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✓  3 [emulator-phone] › e2e/enlaces.spec.ts:44:5 › opening a link sends nothing (I3) and strips the token (I1) › /correo/baja?t= mounts with zero calls and a clean URL (2.4s)
+[WebServer] 10:05:08 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✘  4 [emulator-desktop] › e2e/enlaces.spec.ts:44:5 › opening a link sends nothing (I3) and strips the token (I1) › /activar?t= mounts with zero calls and a clean URL (3.8s)
+FAIL [emulator-desktop] e2e/enlaces.spec.ts > /activar?t= mounts with zero calls and a clean URL (failed)
+[WebServer] 10:05:11 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✓  5 [emulator-desktop] › e2e/enlaces.spec.ts:44:5 › opening a link sends nothing (I3) and strips the token (I1) › /contrasena-nueva?t= mounts with zero calls and a clean URL (2.7s)
+[WebServer] 10:05:14 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✓  6 [emulator-desktop] › e2e/enlaces.spec.ts:44:5 › opening a link sends nothing (I3) and strips the token (I1) › /correo/baja?t= mounts with zero calls and a clean URL (3.4s)
+
+
+  1) [emulator-phone] › e2e/enlaces.spec.ts:44:5 › opening a link sends nothing (I3) and strips the token (I1) › /activar?t= mounts with zero calls and a clean URL 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "authorization": null,
+    +     "body": "{\"token\":\"tok-secreto-e2e-123\"}",
+    +     "method": "POST",
+    +     "path": "/business/activation",
+    +     "search": "",
+    +     "uid": null,
+    +   },
+    +   Object {
+    +     "authorization": null,
+    +     "body": "{\"token\":\"tok-secreto-e2e-123\"}",
+    +     "method": "POST",
+    +     "path": "/business/activation",
+    +     "search": "",
+    +     "uid": null,
+    +   },
+    + ]
+
+      48 |       await page.waitForTimeout(2000);
+      49 |
+    > 50 |       expect(api.calls).toEqual([]);
+         |                         ^
+      51 |       expect(firebaseCalls(seen, 'identitytoolkit')).toBe(0);
+      52 |       expect(page.url()).not.toContain(SECRET);
+      53 |       expect(await page.evaluate(() => window.location.search)).toBe('');
+        at /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-enlaces/e2e/enlaces.spec.ts:50:25
+
+    Error Context: node_modules/.cache/playwright/enlaces-opening-a-link-sen-6ed4a--zero-calls-and-a-clean-URL-emulator-phone/error-context.md
+
+  2) [emulator-desktop] › e2e/enlaces.spec.ts:44:5 › opening a link sends nothing (I3) and strips the token (I1) › /activar?t= mounts with zero calls and a clean URL 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "authorization": null,
+    +     "body": "{\"token\":\"tok-secreto-e2e-123\"}",
+    +     "method": "POST",
+    +     "path": "/business/activation",
+    +     "search": "",
+    +     "uid": null,
+    +   },
+    +   Object {
+    +     "authorization": null,
+    +     "body": "{\"token\":\"tok-secreto-e2e-123\"}",
+    +     "method": "POST",
+    +     "path": "/business/activation",
+    +     "search": "",
+    +     "uid": null,
+    +   },
+    + ]
+
+      48 |       await page.waitForTimeout(2000);
+      49 |
+    > 50 |       expect(api.calls).toEqual([]);
+         |                         ^
+      51 |       expect(firebaseCalls(seen, 'identitytoolkit')).toBe(0);
+      52 |       expect(page.url()).not.toContain(SECRET);
+      53 |       expect(await page.evaluate(() => window.location.search)).toBe('');
+        at /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-enlaces/e2e/enlaces.spec.ts:50:25
+
+    Error Context: node_modules/.cache/playwright/enlaces-opening-a-link-sen-6ed4a--zero-calls-and-a-clean-URL-emulator-desktop/error-context.md
+
+  2 failed
+    [emulator-phone] › e2e/enlaces.spec.ts:44:5 › opening a link sends nothing (I3) and strips the token (I1) › /activar?t= mounts with zero calls and a clean URL 
+    [emulator-desktop] › e2e/enlaces.spec.ts:44:5 › opening a link sends nothing (I3) and strips the token (I1) › /activar?t= mounts with zero calls and a clean URL 
+  4 passed (20.8s)
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec playwright test e2e/enlaces.spec.ts -g I3" exited with code 1
