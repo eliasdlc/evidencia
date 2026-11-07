@@ -1,0 +1,97 @@
+# R32 at cf1d88a, with m2.patch applied
+# $ pnpm exec vitest run src/features/negocio/resenas/ResenasPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-resenas
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx (36 tests | 4 failed) 2074ms
+   ❯ the filter (4)
+     × keeps only the reviews without a reply 63ms
+     × keeps loading by itself, up to a small cap, while no loaded page has one 56ms
+     × finds an unanswered review on a later page by itself 54ms
+     × says so when everything is answered 56ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/resenas/ResenasPage.test.tsx > the filter > keeps only the reviews without a reply
+AssertionError: expected [ 'Reseña de Rosa D.' ] to deeply equal [ 'Reseña de Carla' ]
+
+- Expected
++ Received
+
+  [
+-   "Reseña de Carla",
++   "Reseña de Rosa D.",
+  ]
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx:264:21
+    262|     await mount();
+    263|     await click(find('Sin responder'));
+    264|     expect(names()).toEqual(['Reseña de Carla']);
+       |                     ^
+    265|     expect(find('Sin responder')?.getAttribute('aria-pressed')).toBe('…
+    266|     await click(find('Todas'));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/features/negocio/resenas/ResenasPage.test.tsx > the filter > keeps loading by itself, up to a small cap, while no loaded page has one
+AssertionError: expected [ '/business/biz-1/reviews?limit=10' ] to have a length of 4 but got 1
+
+- Expected
++ Received
+
+- 4
++ 1
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx:278:18
+    276|     await settle();
+    277|     // The first page plus three automatic ones, then it stops and off…
+    278|     expect(gets).toHaveLength(4);
+       |                  ^
+    279|     expect(text()).toContain('Puede haber más sin responder');
+    280|     expect(find('Cargar más')).toBeDefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/features/negocio/resenas/ResenasPage.test.tsx > the filter > finds an unanswered review on a later page by itself
+AssertionError: expected [ 'Reseña de A' ] to deeply equal [ 'Reseña de Zoila' ]
+
+- Expected
++ Received
+
+  [
+-   "Reseña de Zoila",
++   "Reseña de A",
+  ]
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx:292:21
+    290|     await click(find('Sin responder'));
+    291|     await settle();
+    292|     expect(names()).toEqual(['Reseña de Zoila']);
+       |                     ^
+    293|   });
+    294|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/features/negocio/resenas/ResenasPage.test.tsx > the filter > says so when everything is answered
+AssertionError: expected 'ReseñasLos comentarios que te dejan e…' to contain 'No tienes reseñas sin responder'
+
+Expected: "No tienes reseñas sin responder"
+Received: "ReseñasLos comentarios que te dejan en la app, con sus estrellas.Comedor de pruebaTodasSin responderAAsábado 21 de noviembreTexto de ATu respuesta (domingo 22 de noviembre)Gracias, A EditarEsas son todas."
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx:299:20
+    297|     await mount();
+    298|     await click(find('Sin responder'));
+    299|     expect(text()).toContain('No tienes reseñas sin responder');
+       |                    ^
+    300|   });
+    301| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 32 passed (36)
+   Start at  20:49:21
+   Duration  2.46s (tests 88%, environment 8%, import 3%, transform 1%)
+
