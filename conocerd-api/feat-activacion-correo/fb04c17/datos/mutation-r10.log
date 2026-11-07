@@ -1,0 +1,392 @@
+# R10 at fb04c17, with r10-redeem-p1-p7.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-activacion-correo/scrub.sh bash /home/decruce/.cache/conocerd-s1/emu.sh test/password-link-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18111.
+i  Running script: pnpm exec vitest run test/password-link-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > sin confirmedOwner: true responde 422 y no genera token, ni bitácora, ni correo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > sin confirmedOwner: true responde 422 y no genera token, ni bitácora, ni correo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > sin confirmedOwner: true responde 422 y no genera token, ni bitácora, ni correo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > sin confirmedOwner: true responde 422 y no genera token, ni bitácora, ni correo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > manda un solo correo, a la dirección de la cuenta, con la clave de la bitácora y un enlace que se canjea; la respuesta no trae el enlace
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > si la escritura del token y la bitácora falla, no sale ningún correo y el enlace anterior sigue sirviendo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > si la escritura del token y la bitácora falla, no sale ningún correo y el enlace anterior sigue sirviendo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con el resultado accept, nada se escribe en Firestore después de llamar a Resend
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con el resultado reject:503, nada se escribe en Firestore después de llamar a Resend
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con el resultado network_down, nada se escribe en Firestore después de llamar a Resend
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con el resultado lost, nada se escribe en Firestore después de llamar a Resend
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con el resultado delivered:500, nada se escribe en Firestore después de llamar a Resend
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con reject:503 responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con delivered:503 responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con network_down responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con lost responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > generar otro después de un envío fallido manda un enlace nuevo y deja muerto el anterior
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > generar otro después de un envío fallido manda un enlace nuevo y deja muerto el anterior
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser personal (admin, con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser agente (con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pierde todos sus destinos después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta se deshabilita después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P4: el secreto de A con el uid de B no abre nada; B no cambia y el token de A sigue sirviendo para A
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P4: el secreto de A con el uid de B no abre nada; B no cambia y el token de A sigue sirviendo para A
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P5: el canje 11 desde la misma IP en un minuto responde 429 sin gastar el token, y pasado el minuto sirve
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P6: si poner la contraseña falla, responde 500, no cambia nada, el token vuelve a servir y nada del token ni de la contraseña sale en el log
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P7: canjear llama a revokeRefreshTokens con el uid de la cuenta
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404
+[app-check] ausente /admin/owners/password-link
+
+ ❯ test/password-link-route.test.ts (42 tests | 11 failed) 3347ms
+   ✓ correo del enlace de contraseña > es la instrucción aprobada, con el enlace debajo, el correo al que llegó y la firma 2ms
+   ✓ correo del enlace de contraseña > con buzón de respuesta la ayuda lo nombra, y nunca promete entrar sin contraseña 0ms
+   ✓ envío del enlace de contraseña > en vivo va al correo de la cuenta con la clave de idempotencia de la bitácora 3ms
+   ✓ envío del enlace de contraseña > un 5xx de Resend responde sent: false provider_error 1ms
+   ✓ envío del enlace de contraseña > en modo prueba el buzón de prueba recibe un enlace de muestra, nunca el real, y no cuenta como enviado 0ms
+   ✓ envío del enlace de contraseña > sin clave o sin buzón de prueba no llama a nadie 0ms
+   ✓ contraseña del enlace > pide al menos 8 caracteres, con un error en español y un ejemplo 0ms
+   ✓ enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez  846ms
+   ✓ enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo 79ms
+   ✓ enlace de contraseña contra el emulador > vence a la hora exacta, con el reloj inyectado 47ms
+   ✓ enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error 91ms
+   ✓ enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace 35ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1135ms
+   ✓ enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token 40ms
+   ✓ enlace de contraseña contra el emulador > sin confirmedOwner: true responde 422 y no genera token, ni bitácora, ni correo 37ms
+   ✓ enlace de contraseña contra el emulador > manda un solo correo, a la dirección de la cuenta, con la clave de la bitácora y un enlace que se canjea; la respuesta no trae el enlace 41ms
+   ✓ enlace de contraseña contra el emulador > si la escritura del token y la bitácora falla, no sale ningún correo y el enlace anterior sigue sirviendo 36ms
+   ✓ enlace de contraseña contra el emulador > con el resultado accept, nada se escribe en Firestore después de llamar a Resend 22ms
+   ✓ enlace de contraseña contra el emulador > con el resultado reject:503, nada se escribe en Firestore después de llamar a Resend 20ms
+   ✓ enlace de contraseña contra el emulador > con el resultado network_down, nada se escribe en Firestore después de llamar a Resend 20ms
+   ✓ enlace de contraseña contra el emulador > con el resultado lost, nada se escribe en Firestore después de llamar a Resend 20ms
+   ✓ enlace de contraseña contra el emulador > con el resultado delivered:500, nada se escribe en Firestore después de llamar a Resend 22ms
+   ✓ enlace de contraseña contra el emulador > con reject:503 responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora 46ms
+   ✓ enlace de contraseña contra el emulador > con delivered:503 responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora 42ms
+   ✓ enlace de contraseña contra el emulador > con network_down responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora 41ms
+   ✓ enlace de contraseña contra el emulador > con lost responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora 43ms
+   ✓ enlace de contraseña contra el emulador > generar otro después de un envío fallido manda un enlace nuevo y deja muerto el anterior 55ms
+   ✓ enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner 10ms
+   × enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir 46ms
+     → expected 200 to be 400 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account 29ms
+   ✓ enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email 14ms
+   × enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra 56ms
+     → expected [ 200, 200, 200, 200, 200 ] to deeply equal [ 200, 400, 400, 400, 400 ]
+   × enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser personal (admin, con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 33ms
+     → expected 200 to be 400 // Object.is equality
+   × enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser agente (con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 31ms
+     → expected 200 to be 400 // Object.is equality
+   × enlace de contraseña contra el emulador > P2, P3: si la cuenta pierde todos sus destinos después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 36ms
+     → expected 200 to be 400 // Object.is equality
+   × enlace de contraseña contra el emulador > P2, P3: si la cuenta se deshabilita después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token 35ms
+     → expected 200 to be 400 // Object.is equality
+   × enlace de contraseña contra el emulador > P4: el secreto de A con el uid de B no abre nada; B no cambia y el token de A sigue sirviendo para A 51ms
+     → expected 200 to be 400 // Object.is equality
+   × enlace de contraseña contra el emulador > P5: el canje 11 desde la misma IP en un minuto responde 429 sin gastar el token, y pasado el minuto sirve 40ms
+     → expected 200 to be 429 // Object.is equality
+   × enlace de contraseña contra el emulador > P6: si poner la contraseña falla, responde 500, no cambia nada, el token vuelve a servir y nada del token ni de la contraseña sale en el log 36ms
+     → expected Timestamp{ _seconds: 1794023497, …(1) } to be null
+   × enlace de contraseña contra el emulador > P7: canjear llama a revokeRefreshTokens con el uid de la cuenta 41ms
+     → expected "revokeRefreshTokens" to be called with arguments: [ 'uVlrsN4GMriNYw31MKWfII56V0hT' ]
+
+Number of calls: 0
+
+   × enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo 54ms
+     → expected 400 to be 200 // Object.is equality
+   ✓ enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404 22ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir
+AssertionError: expected 200 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 200
+
+ ❯ test/password-link-route.test.ts:528:59
+    526|     expect(response.status).toBe(409);
+    527|     await expect(response.json()).resolves.toMatchObject({ error: 'acc…
+    528|     expect((await redeemWith(tokenOf(link.link))).status).toBe(400);
+       |                                                           ^
+    529|   });
+    530| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra
+AssertionError: expected [ 200, 200, 200, 200, 200 ] to deeply equal [ 200, 400, 400, 400, 400 ]
+
+- Expected
++ Received
+
+  [
+    200,
+-   400,
+-   400,
+-   400,
+-   400,
++   200,
++   200,
++   200,
++   200,
+  ]
+
+ ❯ test/password-link-route.test.ts:560:34
+    558|     const passwords = ['Uno2026!!', 'Dos2026!!', 'Tres2026!', 'Cuatro2…
+    559|     const statuses = (await Promise.all(passwords.map((p) => redeemWit…
+    560|     expect([...statuses].sort()).toEqual([200, 400, 400, 400, 400]);
+       |                                  ^
+    561|     const winner = passwords[statuses.indexOf(200)] as string;
+    562|     for (const password of passwords) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser personal (admin, con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser agente (con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pierde todos sus destinos después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta se deshabilita después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+AssertionError: expected 200 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 200
+
+ ❯ test/password-link-route.test.ts:582:29
+    580| 
+    581|     const response = await redeemWith(tokenOf(link.link), 'Intruso2026…
+    582|     expect(response.status).toBe(400);
+       |                             ^
+    583|     await expect(response.json()).resolves.toMatchObject({ error: 'inv…
+    584|     if (change !== 'disabled') expect((await signInWithPassword(owner.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P4: el secreto de A con el uid de B no abre nada; B no cambia y el token de A sigue sirviendo para A
+AssertionError: expected 200 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 200
+
+ ❯ test/password-link-route.test.ts:596:28
+    594| 
+    595|     const swapped = await redeemWith(`${b.uid}.${secretA}`, 'Robo2026!…
+    596|     expect(swapped.status).toBe(400);
+       |                            ^
+    597|     expect((await signInWithPassword(b.email, 'Robo2026!!')).status).t…
+    598|     expect((await redeemWith(tokenOf(linkA.link), 'Duena2026!')).statu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P5: el canje 11 desde la misma IP en un minuto responde 429 sin gastar el token, y pasado el minuto sirve
+AssertionError: expected 200 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 200
+
+ ❯ test/password-link-route.test.ts:615:28
+    613|     for (let i = 0; i < 10; i++) expect((await fromSameIp(`no-existe.$…
+    614|     const limited = await fromSameIp(tokenOf(link.link));
+    615|     expect(limited.status).toBe(429);
+       |                            ^
+    616|     expect((await passwordLinkOf(owner.uid))?.usedAt).toBeNull();
+    617| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P6: si poner la contraseña falla, responde 500, no cambia nada, el token vuelve a servir y nada del token ni de la contraseña sale en el log
+AssertionError: expected Timestamp{ _seconds: 1794023497, …(1) } to be null
+
+- Expected: 
+null
+
++ Received: 
+Timestamp {
+  "_nanoseconds": 659000000,
+  "_seconds": 1794023497,
+}
+
+ ❯ test/password-link-route.test.ts:642:55
+    640|     const failed = await redeemWith(token, 'Secreta2026!');
+    641|     expect(failed.status).toBe(500);
+    642|     expect((await passwordLinkOf(owner.uid))?.usedAt).toBeNull();
+       |                                                       ^
+    643|     const text = JSON.stringify(logged, (_key, value) => (value instan…
+    644|     expect(text).not.toContain(token.split('.').pop() as string);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > P7: canjear llama a revokeRefreshTokens con el uid de la cuenta
+AssertionError: expected "revokeRefreshTokens" to be called with arguments: [ 'uVlrsN4GMriNYw31MKWfII56V0hT' ]
+
+Number of calls: 0
+
+ ❯ test/password-link-route.test.ts:658:20
+    656|     const revoke = vi.spyOn(authProto, 'revokeRefreshTokens');
+    657|     expect((await redeemWith(tokenOf(link.link))).status).toBe(200);
+    658|     expect(revoke).toHaveBeenCalledWith(owner.uid);
+       |                    ^
+    659|   });
+    660| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  test/password-link-route.test.ts > enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo
+AssertionError: expected 400 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 400
+
+ ❯ test/password-link-route.test.ts:666:76
+    664|     const [oldRedeem, renewed] = await Promise.all([redeemWith(tokenOf…
+    665|     expect([200, 400]).toContain(oldRedeem.status);
+    666|     expect((await redeemWith(tokenOf(renewed.link), 'Nuevo2026!')).sta…
+       |                                                                            ^
+    667|     expect((await signInWithPassword(owner.email, 'Nuevo2026!')).statu…
+    668|     expect((await signInWithPassword(owner.email, 'Viejo2026!')).statu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  11 failed | 31 passed (42)
+   Start at  23:51:33
+   Duration  3.87s (transform 125ms, setup 9ms, collect 354ms, tests 3.35s, environment 0ms, prepare 47ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/password-link-route.test.ts" exited with code 1
