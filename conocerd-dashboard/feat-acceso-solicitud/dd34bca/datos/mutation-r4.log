@@ -1,0 +1,89 @@
+# R4 at dd34bca, with gate.patch applied
+# $ firebase emulators:exec --config node_modules/.cache/firebase.e2e.json --project demo-conocerd --only auth "pnpm exec playwright test e2e/solicitudes.spec.ts -g I14"
+i  emulators: Starting emulators: auth
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  Running script: pnpm exec playwright test e2e/solicitudes.spec.ts -g I14
+
+Running 4 tests using 1 worker
+
+[WebServer] 10:55:03 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+[WebServer] 10:55:03 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✘  1 [emulator-phone] › e2e/solicitudes.spec.ts:117:3 › /solicitudes/nueva › an unconfirmed email reaches its businesses, and only the request waits for the confirmation (I14) (6.0s)
+FAIL [emulator-phone] e2e/solicitudes.spec.ts > an unconfirmed email reaches its businesses, and only the request waits for the confirmation (I14) (failed)
+[WebServer] 10:55:10 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+[WebServer] 10:55:10 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✓  2 [emulator-phone] › e2e/solicitudes.spec.ts:134:3 › /solicitudes/nueva › search, confirm, photo, send: one upload set and one request with a verified token (S2, S6, S13, I14, I15) (3.3s)
+[WebServer] 10:55:13 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+[WebServer] 10:55:13 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✘  3 [emulator-desktop] › e2e/solicitudes.spec.ts:117:3 › /solicitudes/nueva › an unconfirmed email reaches its businesses, and only the request waits for the confirmation (I14) (5.8s)
+FAIL [emulator-desktop] e2e/solicitudes.spec.ts > an unconfirmed email reaches its businesses, and only the request waits for the confirmation (I14) (failed)
+[WebServer] 10:55:19 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+[WebServer] 10:55:20 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✓  4 [emulator-desktop] › e2e/solicitudes.spec.ts:134:3 › /solicitudes/nueva › search, confirm, photo, send: one upload set and one request with a verified token (S2, S6, S13, I14, I15) (3.4s)
+
+
+  1) [emulator-phone] › e2e/solicitudes.spec.ts:117:3 › /solicitudes/nueva › an unconfirmed email reaches its businesses, and only the request waits for the confirmation (I14) 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  getByRole('heading', { level: 1 })
+    Expected: "Confirma tu correo"
+    Received: "Busca tu negocio"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" getByRole('heading', { level: 1 }) with timeout 5000ms
+      - waiting for getByRole('heading', { level: 1 })
+        14 × locator resolved to <h1 class="m-0 font-display text-feature leading-tight font-bold tracking-[-0.02em] text-ink">…</h1>
+           - unexpected value "Busca tu negocio"
+
+
+      123 |
+      124 |     await page.goto('/solicitudes/nueva');
+    > 125 |     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Confirma tu correo');
+          |                                                           ^
+      126 |     await page.getByRole('button', { name: 'Ya lo confirmé' }).click();
+      127 |     await expect(page.getByText('Todavía no está confirmado.', { exact: false })).toBeVisible();
+      128 |
+        at /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-solicitud/e2e/solicitudes.spec.ts:125:59
+
+    Error Context: node_modules/.cache/playwright/solicitudes--solicitudes-n-6fb7d-s-for-the-confirmation-I14--emulator-phone/error-context.md
+
+  2) [emulator-desktop] › e2e/solicitudes.spec.ts:117:3 › /solicitudes/nueva › an unconfirmed email reaches its businesses, and only the request waits for the confirmation (I14) 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  getByRole('heading', { level: 1 })
+    Expected: "Confirma tu correo"
+    Received: "Busca tu negocio"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" getByRole('heading', { level: 1 }) with timeout 5000ms
+      - waiting for getByRole('heading', { level: 1 })
+        14 × locator resolved to <h1 class="m-0 font-display text-feature leading-tight font-bold tracking-[-0.02em] text-ink">…</h1>
+           - unexpected value "Busca tu negocio"
+
+
+      123 |
+      124 |     await page.goto('/solicitudes/nueva');
+    > 125 |     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Confirma tu correo');
+          |                                                           ^
+      126 |     await page.getByRole('button', { name: 'Ya lo confirmé' }).click();
+      127 |     await expect(page.getByText('Todavía no está confirmado.', { exact: false })).toBeVisible();
+      128 |
+        at /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-solicitud/e2e/solicitudes.spec.ts:125:59
+
+    Error Context: node_modules/.cache/playwright/solicitudes--solicitudes-n-6fb7d-s-for-the-confirmation-I14--emulator-desktop/error-context.md
+
+  2 failed
+    [emulator-phone] › e2e/solicitudes.spec.ts:117:3 › /solicitudes/nueva › an unconfirmed email reaches its businesses, and only the request waits for the confirmation (I14) 
+    [emulator-desktop] › e2e/solicitudes.spec.ts:117:3 › /solicitudes/nueva › an unconfirmed email reaches its businesses, and only the request waits for the confirmation (I14) 
+  2 passed (22.5s)
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec playwright test e2e/solicitudes.spec.ts -g I14" exited with code 1
