@@ -1,0 +1,50 @@
+# R6 at 4b523aa, with m6.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/FichaPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx (37 tests | 2 failed) 3357ms
+   ❯ another business (2)
+     × after a switch shows nothing of the old one while the new one loads 97ms
+     × a switch while a part is dirty asks first, and drops the typed text on leaving 73ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/FichaPage.test.tsx > another business > after a switch shows nothing of the old one while the new one loads
+AssertionError: expected 'Lo que ve la genteOleaga CentroOleaga…' not to contain 'solodeCentro'
+
+Expected: "solodeCentro"
+Received: "Lo que ve la genteOleaga CentroOleaga PlayaEs lo que ve el viajero de tu negocio en la app. Toca «Cambiar» en lo que quieras: cada parte tiene su botón Guardar y sale en la app apenas guardas.WhatsApp del negocioCambiar+18095550142Teléfono para llamarCambiar+18095550177Tu horarioCambiarMartes y sábado, de 11:00 de la mañana a 10:00 de la noche. Lunes, miércoles, jueves, viernes y domingo cerrados.Qué te hace especialCambiarTrucha frita frente al ríoTambién está en inglés.Cuánto cuesta entrarCambiarFalta Todavía no dice nada.Cómo llegarCambiarSube carro normalMejor hora para irCambiarFalta Todavía no dice nada.Qué hay y qué avisosCambiarHay: Parqueo. Avisos: Los últimos 2 km son de tierra.InstagramCambiarsolodeCentroSitio webCambiarhttps://comedor.exampleEsto lo cambia el equipoEl nombre, el tipo de negocio y dónde sale en el mapa. Si algo está mal, escríbele al equipo de ConoceRD y lo corregimos contigo."
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx:629:24
+    627|     await click(button(/Oleaga Playa/));
+    628|     expect(router.state.location.search).toContain('biz-2');
+    629|     expect(text()).not.toContain('solodeCentro');
+       |                        ^
+    630|     expect(host?.querySelector('[aria-busy="true"]')).not.toBeNull();
+    631|     expect(calls().map((c) => c.path)).toContain('/business/biz-2/prof…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/ficha/FichaPage.test.tsx > another business > a switch while a part is dirty asks first, and drops the typed text on leaving
+AssertionError: expected ' Volver a lo que ve la genteCambiar e…' to contain 'deLaPlaya'
+
+Expected: "deLaPlaya"
+Received: " Volver a lo que ve la genteCambiar el InstagramOleaga CentroOleaga PlayaSale en la app apenas guardes.Tu usuario de InstagramSin espacios, hasta 30 letras.Sale en la app apenas guardes.Guardar mi Instagram"
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx:644:20
+    642|     expect(router.state.location.search).toContain('biz-1');
+    643|     await click(button('Salir sin guardar'));
+    644|     expect(text()).toContain('deLaPlaya');
+       |                    ^
+    645|     expect(text()).not.toContain('escritoParaCentro');
+    646|     expect(text()).not.toContain('solodeCentro');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 35 passed (37)
+   Start at  21:05:27
+   Duration  4.16s (tests 85%, environment 10%, import 4%, transform 1%)
+
