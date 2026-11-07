@@ -1,0 +1,541 @@
+# R1 at 4b523aa, with m1.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/FichaPage.test.tsx src/features/negocio/ficha/model.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha
+
+ ❯ src/features/negocio/ficha/model.test.ts (16 tests | 9 failed) 114ms
+   ❯ diffProfile (9)
+     × is empty when nothing changed, and never carries updatedAt 33ms
+     × keeps only the changed field, in the API shape 5ms
+     × empties a localized field with null and a list with [] 10ms
+     × sends only the filled languages 6ms
+     × does not see a change in a number written another way 5ms
+     × does not see a change in untrimmed text or repeated labels 6ms
+     × sees a reordered schedule as the same one 24ms
+     × limits the comparison to one part 6ms
+     × a part with two fields sends the one that changed 8ms
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx (37 tests | 5 failed) 3995ms
+   ❯ saving a part (12)
+     × Guardar is off until something changes, then sends only that field 118ms
+     × qué hay, a new service only saves alone and sends exactly its changed fields 127ms
+   ❯ phone and WhatsApp (5)
+     × the same number written another way is not a change 104ms
+   ❯ leaving a part with unsaved changes (4)
+     × leaves at once when nothing changed 75ms
+     × warns on closing the tab while dirty and not otherwise 79ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/FichaPage.test.tsx > saving a part > Guardar is off until something changes, then sends only that field
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx:244:50
+    242|     await mount();
+    243|     await openPart('Qué te hace especial');
+    244|     expect(button('Guardar mi texto')?.disabled).toBe(true);
+       |                                                  ^
+    245|     expect(text()).toContain('Todavía no cambiaste nada.');
+    246|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  src/features/negocio/ficha/FichaPage.test.tsx > saving a part > qué hay, a new service only saves alone and sends exactly its changed fields
+AssertionError: expected [ { …(2) } ] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+@@ -2,7 +2,10 @@
+    {
+      "services": [
+        "Parqueo",
+        "Baños",
+      ],
++     "warnings": [
++       "Los últimos 2 km son de tierra",
++     ],
+    },
+  ]
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx:327:44
+    325|       await part.edit();
+    326|       await click(button(part.save));
+    327|       expect(patches().map((c) => c.body)).toEqual([part.body]);
+       |                                            ^
+    328|       const sent = JSON.stringify(patches()[0]?.body);
+    329|       expect(sent).not.toContain('updatedAt');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  src/features/negocio/ficha/FichaPage.test.tsx > phone and WhatsApp > the same number written another way is not a change
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx:445:53
+    443|     await openPart('WhatsApp del negocio');
+    444|     await type(field('El WhatsApp de tu negocio'), '(809) 555-0142');
+    445|     expect(button('Guardar mi WhatsApp')?.disabled).toBe(true);
+       |                                                     ^
+    446|   });
+    447|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  src/features/negocio/ficha/FichaPage.test.tsx > leaving a part with unsaved changes > leaves at once when nothing changed
+AssertionError: expected ' Volver a lo que ve la genteCambiar e…' not to contain '¿Salir sin guardar'
+
+Expected: "¿Salir sin guardar"
+Received: " Volver a lo que ve la genteCambiar el InstagramComedor de pruebaSale en la app apenas guardes.Tu usuario de InstagramSin espacios, hasta 30 letras.Sale en la app apenas guardes.Guardar mi Instagram¿Salir sin guardar tu Instagram?Cambiaste algo. Si sales ahora, ese cambio se pierde y en la app sigue lo de antes.Seguir editandoSalir sin guardar"
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx:577:24
+    575|     await openPart('Instagram');
+    576|     await click(button('Volver a lo que ve la gente'));
+    577|     expect(body()).not.toContain('¿Salir sin guardar');
+       |                        ^
+    578|     expect(text()).toContain('Lo que ve la gente');
+    579|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  src/features/negocio/ficha/FichaPage.test.tsx > leaving a part with unsaved changes > warns on closing the tab while dirty and not otherwise
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx:614:20
+    612|     expect(fire()).toBe(false);
+    613|     await openPart('Instagram');
+    614|     expect(fire()).toBe(false);
+       |                    ^
+    615|     await type(field('Tu usuario de Instagram'), 'nuevousuario');
+    616|     expect(fire()).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  src/features/negocio/ficha/model.test.ts > diffProfile > is empty when nothing changed, and never carries updatedAt
+AssertionError: expected { description: { …(2) }, …(10) } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "bestTimeToVisit": null,
++   "description": {
++     "en": "Fried trout by the river",
++     "es": "Trucha frita frente al río",
++   },
++   "entryFee": null,
++   "howToGetThere": {
++     "es": "Sube carro normal",
++   },
++   "instagram": "comedorlaterraza",
++   "openingHours": {
++     "dias": {
++       "mar": [
++         {
++           "desde": "11:00",
++           "hasta": "22:00",
++         },
++       ],
++     },
++     "tipo": "semanal",
++   },
++   "phone": null,
++   "services": [
++     "Parqueo",
++     "Baños",
++   ],
++   "warnings": [
++     "Los últimos 2 km son de tierra",
++   ],
++   "website": "https://comedor.example",
++   "whatsapp": "+18095550142",
++ }
+
+ ❯ src/features/negocio/ficha/model.test.ts:36:51
+     34|   it('is empty when nothing changed, and never carries updatedAt', () …
+     35|     const current = profile();
+     36|     expect(diffProfile(current, toForm(current))).toEqual({});
+       |                                                   ^
+     37|   });
+     38|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  src/features/negocio/ficha/model.test.ts > diffProfile > keeps only the changed field, in the API shape
+AssertionError: expected { description: { …(2) }, …(10) } to deeply equal { description: { …(2) } }
+
+- Expected
++ Received
+
+  {
++   "bestTimeToVisit": null,
+    "description": {
+      "en": "Fried trout by the river",
+      "es": "Trucha frita y locrio",
++   },
++   "entryFee": null,
++   "howToGetThere": {
++     "es": "Sube carro normal",
++   },
++   "instagram": "comedorlaterraza",
++   "openingHours": {
++     "dias": {
++       "mar": [
++         {
++           "desde": "11:00",
++           "hasta": "22:00",
+          },
++       ],
++     },
++     "tipo": "semanal",
++   },
++   "phone": null,
++   "services": [
++     "Parqueo",
++     "Baños",
++   ],
++   "warnings": [
++     "Los últimos 2 km son de tierra",
++   ],
++   "website": "https://comedor.example",
++   "whatsapp": "+18095550142",
+  }
+
+ ❯ src/features/negocio/ficha/model.test.ts:43:40
+     41|     const form = toForm(current);
+     42|     form.description = { es: 'Trucha frita y locrio', en: 'Fried trout…
+     43|     expect(diffProfile(current, form)).toEqual({ description: { es: 'T…
+       |                                        ^
+     44|   });
+     45|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  src/features/negocio/ficha/model.test.ts > diffProfile > empties a localized field with null and a list with []
+AssertionError: expected { description: { …(2) }, …(10) } to deeply equal { howToGetThere: null, services: [] }
+
+- Expected
++ Received
+
+  {
++   "bestTimeToVisit": null,
++   "description": {
++     "en": "Fried trout by the river",
++     "es": "Trucha frita frente al río",
++   },
++   "entryFee": null,
+    "howToGetThere": null,
++   "instagram": "comedorlaterraza",
++   "openingHours": {
++     "dias": {
++       "mar": [
++         {
++           "desde": "11:00",
++           "hasta": "22:00",
++         },
++       ],
++     },
++     "tipo": "semanal",
++   },
++   "phone": null,
+    "services": [],
++   "warnings": [
++     "Los últimos 2 km son de tierra",
++   ],
++   "website": "https://comedor.example",
++   "whatsapp": "+18095550142",
+  }
+
+ ❯ src/features/negocio/ficha/model.test.ts:51:40
+     49|     form.howToGetThere = { es: '  ', en: '' };
+     50|     form.services = [];
+     51|     expect(diffProfile(current, form)).toEqual({ howToGetThere: null, …
+       |                                        ^
+     52|   });
+     53|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+ FAIL  src/features/negocio/ficha/model.test.ts > diffProfile > sends only the filled languages
+AssertionError: expected { description: { …(2) }, …(10) } to deeply equal { entryFee: { es: 'Gratis' } }
+
+- Expected
++ Received
+
+  {
++   "bestTimeToVisit": null,
++   "description": {
++     "en": "Fried trout by the river",
++     "es": "Trucha frita frente al río",
++   },
+    "entryFee": {
+      "es": "Gratis",
++   },
++   "howToGetThere": {
++     "es": "Sube carro normal",
++   },
++   "instagram": "comedorlaterraza",
++   "openingHours": {
++     "dias": {
++       "mar": [
++         {
++           "desde": "11:00",
++           "hasta": "22:00",
+          },
++       ],
++     },
++     "tipo": "semanal",
++   },
++   "phone": null,
++   "services": [
++     "Parqueo",
++     "Baños",
++   ],
++   "warnings": [
++     "Los últimos 2 km son de tierra",
++   ],
++   "website": "https://comedor.example",
++   "whatsapp": "+18095550142",
+  }
+
+ ❯ src/features/negocio/ficha/model.test.ts:58:40
+     56|     const form = toForm(current);
+     57|     form.entryFee = { es: 'Gratis', en: '' };
+     58|     expect(diffProfile(current, form)).toEqual({ entryFee: { es: 'Grat…
+       |                                        ^
+     59|   });
+     60|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯
+
+ FAIL  src/features/negocio/ficha/model.test.ts > diffProfile > does not see a change in a number written another way
+AssertionError: expected { description: { …(2) }, …(10) } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "bestTimeToVisit": null,
++   "description": {
++     "en": "Fried trout by the river",
++     "es": "Trucha frita frente al río",
++   },
++   "entryFee": null,
++   "howToGetThere": {
++     "es": "Sube carro normal",
++   },
++   "instagram": "comedorlaterraza",
++   "openingHours": {
++     "dias": {
++       "mar": [
++         {
++           "desde": "11:00",
++           "hasta": "22:00",
++         },
++       ],
++     },
++     "tipo": "semanal",
++   },
++   "phone": null,
++   "services": [
++     "Parqueo",
++     "Baños",
++   ],
++   "warnings": [
++     "Los últimos 2 km son de tierra",
++   ],
++   "website": "https://comedor.example",
++   "whatsapp": "+18095550142",
++ }
+
+ ❯ src/features/negocio/ficha/model.test.ts:65:40
+     63|     const form = toForm(current);
+     64|     form.whatsapp = '809 555 0142';
+     65|     expect(diffProfile(current, form)).toEqual({});
+       |                                        ^
+     66|     form.whatsapp = '(809) 555-0143';
+     67|     expect(diffProfile(current, form)).toEqual({ whatsapp: '+180955501…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯
+
+ FAIL  src/features/negocio/ficha/model.test.ts > diffProfile > does not see a change in untrimmed text or repeated labels
+AssertionError: expected { description: { …(2) }, …(10) } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "bestTimeToVisit": null,
++   "description": {
++     "en": "Fried trout by the river",
++     "es": "Trucha frita frente al río",
++   },
++   "entryFee": null,
++   "howToGetThere": {
++     "es": "Sube carro normal",
++   },
++   "instagram": "comedorlaterraza",
++   "openingHours": {
++     "dias": {
++       "mar": [
++         {
++           "desde": "11:00",
++           "hasta": "22:00",
++         },
++       ],
++     },
++     "tipo": "semanal",
++   },
++   "phone": null,
++   "services": [
++     "Parqueo",
++     "Baños",
++   ],
++   "warnings": [
++     "Los últimos 2 km son de tierra",
++   ],
++   "website": "https://comedor.example",
++   "whatsapp": "+18095550142",
++ }
+
+ ❯ src/features/negocio/ficha/model.test.ts:75:40
+     73|     form.instagram = ' comedorlaterraza ';
+     74|     form.services = ['Parqueo', ' Baños ', 'parqueo', ''];
+     75|     expect(diffProfile(current, form)).toEqual({});
+       |                                        ^
+     76|   });
+     77|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯
+
+ FAIL  src/features/negocio/ficha/model.test.ts > diffProfile > sees a reordered schedule as the same one
+AssertionError: expected { description: { …(2) }, …(10) } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "bestTimeToVisit": null,
++   "description": {
++     "en": "Fried trout by the river",
++     "es": "Trucha frita frente al río",
++   },
++   "entryFee": null,
++   "howToGetThere": {
++     "es": "Sube carro normal",
++   },
++   "instagram": "comedorlaterraza",
++   "openingHours": {
++     "dias": {
++       "lun": [
++         {
++           "desde": "08:00",
++           "hasta": "12:00",
++         },
++         {
++           "desde": "14:00",
++           "hasta": "18:00",
++         },
++       ],
++     },
++     "tipo": "semanal",
++   },
++   "phone": null,
++   "services": [
++     "Parqueo",
++     "Baños",
++   ],
++   "warnings": [
++     "Los últimos 2 km son de tierra",
++   ],
++   "website": "https://comedor.example",
++   "whatsapp": "+18095550142",
++ }
+
+ ❯ src/features/negocio/ficha/model.test.ts:80:51
+     78|   it('sees a reordered schedule as the same one', () => {
+     79|     const current = profile({ openingHours: { tipo: 'semanal', dias: {…
+     80|     expect(diffProfile(current, toForm(current))).toEqual({});
+       |                                                   ^
+     81|   });
+     82|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/14]⎯
+
+ FAIL  src/features/negocio/ficha/model.test.ts > diffProfile > limits the comparison to one part
+AssertionError: expected { description: { …(2) } } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "description": {
++     "en": "Fried trout by the river",
++     "es": "Trucha frita frente al río",
++   },
++ }
+
+ ❯ src/features/negocio/ficha/model.test.ts:90:52
+     88|     expect(diffPart(current, form, 'instagram')).toEqual({ instagram: …
+     89|     expect(diffPart(current, form, 'web')).toEqual({ website: 'https:/…
+     90|     expect(diffPart(current, form, 'descripcion')).toEqual({});
+       |                                                    ^
+     91|   });
+     92|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/14]⎯
+
+ FAIL  src/features/negocio/ficha/model.test.ts > diffProfile > a part with two fields sends the one that changed
+AssertionError: expected { …(2) } to deeply equal { warnings: [ …(2) ] }
+
+- Expected
++ Received
+
+  {
++   "services": [
++     "Parqueo",
++     "Baños",
++   ],
+    "warnings": [
+      "Los últimos 2 km son de tierra",
+      "Hay que reservar",
+    ],
+  }
+
+ ❯ src/features/negocio/ficha/model.test.ts:97:47
+     95|     const form = toForm(current);
+     96|     form.warnings = [...form.warnings, 'Hay que reservar'];
+     97|     expect(diffPart(current, form, 'queHay')).toEqual({ warnings: ['Lo…
+       |                                               ^
+     98|   });
+     99| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/14]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  14 failed | 39 passed (53)
+   Start at  21:03:37
+   Duration  5.92s (tests 72%, environment 20%, import 6%, transform 2%, worker 1%)
+
