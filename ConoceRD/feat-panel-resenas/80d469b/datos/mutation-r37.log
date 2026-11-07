@@ -1,0 +1,39 @@
+# R37 at 80d469b, with m6.patch applied
+# $ pnpm exec vitest run src/features/negocio/resenas/ResenasPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-resenas
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx (36 tests | 1 failed) 271ms
+   ❯ another business (1)
+     × never shows the old business reviews after a switch 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/resenas/ResenasPage.test.tsx > another business > never shows the old business reviews after a switch
+AssertionError: expected [ 'Reseña de Carla', …(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "Reseña de Carla",
++   "Reseña de Rosa D.",
++ ]
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx:564:21
+    562|     expect(names()).toHaveLength(2);
+    563|     await click(find(/Playa/));
+    564|     expect(names()).toEqual([]);
+       |                     ^
+    565|     expect(host?.querySelector('[aria-busy="true"]')).not.toBeNull();
+    566|     expect(text()).not.toContain('Carla');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 35 passed (36)
+   Start at  20:41:14
+   Duration  623ms (tests 51%, environment 32%, import 13%, transform 4%, worker 1%)
+
