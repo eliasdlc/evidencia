@@ -1,0 +1,36 @@
+# R11 at 5350ac5, with ttl.patch applied
+# $ pnpm exec vitest run src/lib/links.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-enlaces
+
+ ❯ src/lib/links.test.ts (21 tests | 1 failed) 9ms
+   ❯ claimToken (2)
+     × never hands an old token to a later visit without one 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/links.test.ts > claimToken > never hands an old token to a later visit without one
+AssertionError: expected 'secreto' to be null
+
+- Expected:
+null
+
++ Received:
+"secreto"
+
+ ❯ src/lib/links.test.ts:34:75
+     32|
+     33|     claimToken('/activar', 'secreto', 1_000, store);
+     34|     expect(claimToken('/activar', null, 1_000 + TAKEN_TTL_MS + 1, stor…
+       |                                                                           ^
+     35|     expect(store.size).toBe(0);
+     36|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  22:06:35
+   Duration  154ms (import 67%, transform 15%, tests 14%, worker 4%)
+
