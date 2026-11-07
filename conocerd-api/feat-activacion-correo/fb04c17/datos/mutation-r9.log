@@ -1,0 +1,59 @@
+# R9 at fb04c17, with r9-env-not-cleared.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-activacion-correo/scrub.sh env RESEND_API_KEY=re_falsa EMAIL_MODE=live pnpm exec vitest run test/email-env.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+ ❯ test/email-env.test.ts (2 tests | 2 failed) 18ms
+   × aislamiento del correo en las pruebas > ningún fichero de prueba ve clave, modo ni buzón de Resend 8ms
+     → expected 're_falsa' to be undefined
+   × aislamiento del correo en las pruebas > el borrado quita lo que haya, venga de donde venga 8ms
+     → expected { RESEND_API_KEY: 're_real', …(1) } to deeply equal { OTRA: 'se queda' }
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/email-env.test.ts > aislamiento del correo en las pruebas > ningún fichero de prueba ve clave, modo ni buzón de Resend
+AssertionError: expected 're_falsa' to be undefined
+
+- Expected: 
+undefined
+
++ Received: 
+"re_falsa"
+
+ ❯ test/email-env.test.ts:14:32
+     12|   it('ningún fichero de prueba ve clave, modo ni buzón de Resend', () …
+     13|     for (const key of ['RESEND_API_KEY', 'EMAIL_MODE', 'EMAIL_TEST_REC…
+     14|       expect(process.env[key]).toBeUndefined();
+       |                                ^
+     15|     }
+     16|     expect(emailConfigFromEnv()).toMatchObject({ apiKey: null, mode: '…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/email-env.test.ts > aislamiento del correo en las pruebas > el borrado quita lo que haya, venga de donde venga
+AssertionError: expected { RESEND_API_KEY: 're_real', …(1) } to deeply equal { OTRA: 'se queda' }
+
+- Expected
++ Received
+
+  {
+    "OTRA": "se queda",
++   "RESEND_API_KEY": "re_real",
+  }
+
+ ❯ test/email-env.test.ts:29:17
+     27|     };
+     28|     clearEmailEnv(env);
+     29|     expect(env).toEqual({ OTRA: 'se queda' });
+       |                 ^
+     30|   });
+     31| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  23:53:17
+   Duration  205ms (transform 32ms, setup 0ms, collect 28ms, tests 18ms, environment 0ms, prepare 52ms)
+
