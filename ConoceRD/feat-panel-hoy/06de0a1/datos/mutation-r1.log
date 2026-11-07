@@ -1,0 +1,50 @@
+# R1 at 06de0a1, with mutate-r1.patch applied
+# $ pnpm exec vitest run src/features/negocio/hoy/derive.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-hoy
+
+ ❯ src/features/negocio/hoy/derive.test.ts (17 tests | 2 failed) 13ms
+   ❯ deriveState (5)
+     × is modest once contacts or visits reach k 5ms
+     × follows the k the API sends, not a constant 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/hoy/derive.test.ts > deriveState > is modest once contacts or visits reach k
+AssertionError: expected 'little' to be 'modest' // Object.is equality
+
+Expected: "modest"
+Received: "little"
+
+ ❯ src/features/negocio/hoy/derive.test.ts:24:37
+     22|     expect(deriveState(modestWithPhone(PERIOD))).toBe('modest');
+     23|     const onlyVisits = makeOverview({ period: PERIOD, visitsByDay: { '…
+     24|     expect(deriveState(onlyVisits)).toBe('modest');
+       |                                     ^
+     25|   });
+     26|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/hoy/derive.test.ts > deriveState > follows the k the API sends, not a constant
+AssertionError: expected 'little' to be 'modest' // Object.is equality
+
+Expected: "modest"
+Received: "little"
+
+ ❯ src/features/negocio/hoy/derive.test.ts:33:35
+     31|   it('follows the k the API sends, not a constant', () => {
+     32|     const overview = makeOverview({ period: PERIOD, k: 2, figures: { w…
+     33|     expect(deriveState(overview)).toBe('modest');
+       |                                   ^
+     34|   });
+     35| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 15 passed (17)
+   Start at  20:08:37
+   Duration  137ms (transform 44%, tests 27%, import 22%, worker 6%)
+
