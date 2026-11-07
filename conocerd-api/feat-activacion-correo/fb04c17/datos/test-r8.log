@@ -1,0 +1,350 @@
+# R8 at fb04c17
+# $ bash /home/decruce/.cache/conocerd-api/feat-activacion-correo/scrub.sh bash /home/decruce/.cache/conocerd-s1/emu.sh test/activation-route.test.ts test/password-link-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18111.
+i  Running script: pnpm exec vitest run test/activation-route.test.ts test/password-link-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-correo
+
+stdout | test/activation-route.test.ts > activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > activar verifica el correo y devuelve un oobCode que el emulador de Auth acepta para poner contraseña
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > el mismo enlace no sirve dos veces: 410 token_used
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > dos clics a la vez sacan un solo código
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > un enlace vencido responde 410 token_expired y no verifica el correo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > un token alterado o sin forma responde 400 invalid_token
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T12: reenviar manda un enlace nuevo con 7 días y el anterior sigue sirviendo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T12: reenviar manda un enlace nuevo con 7 días y el anterior sigue sirviendo
+[app-check] ausente /admin/owner-invitations/8PZAOH0IGuJMgqvqXUh1/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T12: reenviar manda un enlace nuevo con 7 días y el anterior sigue sirviendo
+[app-check] ausente /admin/owner-invitations/8PZAOH0IGuJMgqvqXUh1/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > reenviar exige admin
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > reenviar exige admin
+[app-check] ausente /admin/owner-invitations/6f252ZwLgp1sbAJCyrJH/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > reenviar exige admin
+[app-check] ausente /admin/owner-invitations/noexiste/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > en modo prueba la copia no lleva credencial, la invitación queda sin enviar, y en vivo se reenvía al dueño
+[app-check] ausente /admin/owner-invitations/7R336bxIM79hNW0Rq8mr/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T1: si el proveedor recibe la primera invitación y la respuesta se pierde, el enlace entregado activa
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T1: si el proveedor recibe la reenvío y la respuesta se pierde, el enlace entregado activa
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T1: si el proveedor recibe la reenvío y la respuesta se pierde, el enlace entregado activa
+[app-check] ausente /admin/owner-invitations/YY5ZuPbVlJhmAbEYcZ47/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T2: si el proveedor recibe el correo y contesta 500, el enlace entregado activa
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T2: si el proveedor recibe el correo y contesta 500, el enlace entregado activa
+[app-check] ausente /admin/owner-invitations/N4cjYmzFmbHYjgo1bAeQ/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T2: si el proveedor recibe el correo y contesta 503, el enlace entregado activa
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T2: si el proveedor recibe el correo y contesta 503, el enlace entregado activa
+[app-check] ausente /admin/owner-invitations/ZVZYx92MPa4s4Cg6m3cy/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T3: si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T3: si al reenviar Resend responde 429, el enlace anterior sigue sirviendo y la respuesta es sent: false
+[app-check] ausente /admin/owner-invitations/S43B4rbfRkuH5FolWH2Y/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T3: si al reenviar Resend responde 422, el enlace anterior sigue sirviendo y la respuesta es sent: false
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T3: si al reenviar Resend responde 422, el enlace anterior sigue sirviendo y la respuesta es sent: false
+[app-check] ausente /admin/owner-invitations/j86xJWiu4MMEhsvgj5yL/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T3: si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T3: si al reenviar la red se cae, el enlace anterior sigue sirviendo y la respuesta es sent: false
+[app-check] ausente /admin/owner-invitations/4ZXEXuMqYcsfI2It7OmB/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T4: con dos reenvíos a la vez, soltando primero la respuesta del segundo, todo enlace entregado abre y el primero que se usa gasta la invitación
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T4: con dos reenvíos a la vez, soltando primero la respuesta del segundo, todo enlace entregado abre y el primero que se usa gasta la invitación
+[app-check] ausente /admin/owner-invitations/NB90GbPWmG4MMBMqGACd/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T4: con dos reenvíos a la vez, soltando primero la respuesta del segundo, todo enlace entregado abre y el primero que se usa gasta la invitación
+[app-check] ausente /admin/owner-invitations/NB90GbPWmG4MMBMqGACd/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T4: con dos reenvíos a la vez, soltando las respuestas en el orden de envío, todo enlace entregado abre y el primero que se usa gasta la invitación
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T4: con dos reenvíos a la vez, soltando las respuestas en el orden de envío, todo enlace entregado abre y el primero que se usa gasta la invitación
+[app-check] ausente /admin/owner-invitations/oAYubRyZBuTaBrfxmfpD/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T4: con dos reenvíos a la vez, soltando las respuestas en el orden de envío, todo enlace entregado abre y el primero que se usa gasta la invitación
+[app-check] ausente /admin/owner-invitations/oAYubRyZBuTaBrfxmfpD/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T5: con el resultado accept, nada se escribe en la invitación después de llamar a Resend
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T5: con el resultado accept, nada se escribe en la invitación después de llamar a Resend
+[app-check] ausente /admin/owner-invitations/yfaNGL0Zk6tuSKuretF8/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T5: con el resultado reject:429, nada se escribe en la invitación después de llamar a Resend
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T5: con el resultado reject:429, nada se escribe en la invitación después de llamar a Resend
+[app-check] ausente /admin/owner-invitations/HE4gkXHOlxbcsePjOtev/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T5: con el resultado lost, nada se escribe en la invitación después de llamar a Resend
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T5: con el resultado lost, nada se escribe en la invitación después de llamar a Resend
+[app-check] ausente /admin/owner-invitations/akSnneOQKzPTy0sLqdHZ/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T6: si la escritura de antes del envío falla, no sale ningún correo y el enlace anterior sigue sirviendo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T6: si la escritura de antes del envío falla, no sale ningún correo y el enlace anterior sigue sirviendo
+[app-check] ausente /admin/owner-invitations/yHzs4yygh7pr3a6nGBXG/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T7: el envío revisa en su transacción que la invitación no se haya usado: 409 invitation_used y no sale nada
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T8: si la cuenta cambia de correo, el enlace a la dirección anterior no abre y el reenviado a la nueva sí
+[app-check] ausente /admin/owner-invitations
+
+i  To reset your email address to <email>, follow this link: http://127.0.0.1:19101/emulator/action?mode=recoverEmail&lang=en&oobCode=Qx0wmQ4eYWNEEvSFajJ88nDsUg-u6UItQdp3rLqvIpU_VeIDD9zSJV&apiKey=fake-api-key
+stdout | test/activation-route.test.ts > activación contra el emulador > T8: si la cuenta cambia de correo, el enlace a la dirección anterior no abre y el reenviado a la nueva sí
+[app-check] ausente /admin/owner-invitations/hplOSXhQ9chJEuqUeAdv/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T10: un reenvío ocho días después deja en issuedTokens solo las entradas vivas
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T11: con dos enlaces vivos, usar uno gasta el otro
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > T11: con dos enlaces vivos, usar uno gasta el otro
+[app-check] ausente /admin/owner-invitations/SDXUz0mQbgVMi7USicqY/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > un reenvío que no sale no toca el enlace que la persona ya tenía
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > un reenvío que no sale no toca el enlace que la persona ya tenía
+[app-check] ausente /admin/owner-invitations/xU2JbTHvld7ppGNhn9Zk/resend
+
+stdout | test/activation-route.test.ts > activación contra el emulador > una cuenta a la que le revocaron los destinos no activa: 409 not_owner, y no se toca nada
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > una cuenta deshabilitada no activa: 403 account_disabled, y no queda marca de uso
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > si Firebase falla después de marcar la invitación, la marca se quita y el mismo enlace sirve al reintentar
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > sin INVITATION_SECRET no sale la invitación, la activación responde 503 y el log solo nombra la variable
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > invitar a un correo que ya entra con Google manda "ya puedes entrar", sin enlace que active nada
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > sin clave de Resend, a una cuenta que ya tiene contraseña no le llega un correo de poner contraseña
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > sin clave de Resend y en vivo, la invitación sale por el correo de Firebase
+[app-check] ausente /admin/owner-invitations
+
+i  To reset the password for <email>, follow this link: http://127.0.0.1:19101/emulator/action?mode=resetPassword&lang=en&oobCode=hI7szmVXr2ws2xIN9dNRApGmacYHwXSKgH9tLHprVrUxW5QqlP2X0l&apiKey=fake-api-key&continueUrl=https%3A%2F%2Fnegocios.conocerd.app%2Fentrar&newPassword=NEW_PASSWORD_HERE
+stdout | test/activation-route.test.ts > activación contra el emulador > sin clave y en modo prueba no sale nada: ni Resend ni Firebase le escriben al dueño
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-route.test.ts > activación contra el emulador > revocar avisa por correo con el nombre del negocio
+[app-check] ausente /admin/owner-invitations
+
+ ✓ test/activation-route.test.ts (44 tests) 9019ms
+   ✓ activación contra el emulador > invitar manda por Resend el enlace de activación y guarda solo el hash del token  693ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  2976ms
+   ✓ activación contra el emulador > T4: con dos reenvíos a la vez, soltando primero la respuesta del segundo, todo enlace entregado abre y el primero que se usa gasta la invitación  2710ms
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a un dueño que solo entraba con Google le pone contraseña sin cambiar uid ni biz, sin darle sesión, y sirve una vez
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > generar un segundo enlace mata el primero, también después de usar el segundo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > vencido, usado, reemplazado y alterado responden el mismo error
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > una contraseña corta responde 422 weak_password y no gasta el enlace
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > deja en la bitácora quién lo generó, para quién y cuándo, y nunca el token
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > sin confirmedOwner: true responde 422 y no genera token, ni bitácora, ni correo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > sin confirmedOwner: true responde 422 y no genera token, ni bitácora, ni correo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > sin confirmedOwner: true responde 422 y no genera token, ni bitácora, ni correo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > sin confirmedOwner: true responde 422 y no genera token, ni bitácora, ni correo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > manda un solo correo, a la dirección de la cuenta, con la clave de la bitácora y un enlace que se canjea; la respuesta no trae el enlace
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > si la escritura del token y la bitácora falla, no sale ningún correo y el enlace anterior sigue sirviendo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > si la escritura del token y la bitácora falla, no sale ningún correo y el enlace anterior sigue sirviendo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con el resultado accept, nada se escribe en Firestore después de llamar a Resend
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con el resultado reject:503, nada se escribe en Firestore después de llamar a Resend
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con el resultado network_down, nada se escribe en Firestore después de llamar a Resend
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con el resultado lost, nada se escribe en Firestore después de llamar a Resend
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con el resultado delivered:500, nada se escribe en Firestore después de llamar a Resend
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con reject:503 responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con delivered:503 responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con network_down responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > con lost responde sent: false provider_error, y el token que se intentó mandar sirve dentro de la hora
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > generar otro después de un envío fallido manda un enlace nuevo y deja muerto el anterior
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > generar otro después de un envío fallido manda un enlace nuevo y deja muerto el anterior
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a quien no es dueño responde 409 not_owner
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta deshabilitada responde 409 account_disabled, y un enlace previo deja de servir
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a una cuenta de personal que además tiene un destino responde 409 staff_account
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > a un dueño sin correo responde 422 no_email
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser personal (admin, con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pasa a ser agente (con biz) después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta pierde todos sus destinos después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P2, P3: si la cuenta se deshabilita después de emitir el enlace, el canje responde 400, no cambia la contraseña y no gasta el token
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P4: el secreto de A con el uid de B no abre nada; B no cambia y el token de A sigue sirviendo para A
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P4: el secreto de A con el uid de B no abre nada; B no cambia y el token de A sigue sirviendo para A
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P5: el canje 11 desde la misma IP en un minuto responde 429 sin gastar el token, y pasado el minuto sirve
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P6: si poner la contraseña falla, responde 500, no cambia nada, el token vuelve a servir y nada del token ni de la contraseña sale en el log
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > P7: canjear llama a revokeRefreshTokens con el uid de la cuenta
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > B2: un canje que compite con un enlace nuevo deja servir solo el enlace nuevo
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404
+[app-check] ausente /admin/owners/password-link
+
+stdout | test/password-link-route.test.ts > enlace de contraseña contra el emulador > exige admin, y una cuenta que no existe es 404
+[app-check] ausente /admin/owners/password-link
+
+ ✓ test/password-link-route.test.ts (42 tests) 5052ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1129ms
+   ✓ enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra  2921ms
+
+ Test Files  2 passed (2)
+      Tests  86 passed (86)
+   Start at  23:52:28
+   Duration  15.05s (transform 182ms, setup 11ms, collect 647ms, tests 14.07s, environment 0ms, prepare 98ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
