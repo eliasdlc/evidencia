@@ -1,0 +1,196 @@
+# R2 at 06de0a1, with mutate-r2.patch applied
+# $ pnpm exec vitest run src/features/negocio/format.test.ts src/features/negocio/hoy/HoyPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-hoy
+
+ ❯ src/features/negocio/format.test.ts (10 tests | 3 failed) 15ms
+   ❯ plural and counts (3)
+     × agrees the verb with the number 7ms
+     × says one person and many people 1ms
+   ❯ compareWithPrevious (1)
+     × says more, fewer or the same, with the verb of the earlier number 1ms
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx (23 tests | 7 failed) 323ms
+   ❯ the three states (3)
+     × modest: the sentence, the figures and "Ver todo tu mes" 58ms
+     × little: says there are too few to show by day, and no chart 24ms
+   ❯ Ver todo tu mes (4)
+     × keeps directions, bookings and views apart from the contact total 17ms
+   ❯ loading, error and offline (4)
+     × shows a plain retry when the call fails and nothing is cached 12ms
+     × offline with an earlier answer: keeps it and says it may be old 9ms
+   ❯ the business selector (6)
+     × shows a choice with two, and never renders the old business after switching 13ms
+   ❯ Escúchalo (2)
+     × reads the summary in Spanish with the browser voice 10ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/format.test.ts > plural and counts > agrees the verb with the number
+AssertionError: expected '0 tocó' to be '0 tocaron' // Object.is equality
+
+Expected: "0 tocaron"
+Received: "0 tocó"
+
+ ❯ src/features/negocio/format.test.ts:20:49
+     18| describe('plural and counts', () => {
+     19|   it('agrees the verb with the number', () => {
+     20|     expect(countWithVerb(0, 'tocó', 'tocaron')).toBe('0 tocaron');
+       |                                                 ^
+     21|     expect(countWithVerb(1, 'tocó', 'tocaron')).toBe('1 tocó');
+     22|     expect(countWithVerb(3, 'tocó', 'tocaron')).toBe('3 tocaron');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  src/features/negocio/format.test.ts > plural and counts > says one person and many people
+AssertionError: expected '1 personas' to be '1 persona' // Object.is equality
+
+Expected: "1 persona"
+Received: "1 personas"
+
+ ❯ src/features/negocio/format.test.ts:28:23
+     26|
+     27|   it('says one person and many people', () => {
+     28|     expect(people(1)).toBe('1 persona');
+       |                       ^
+     29|     expect(people(0)).toBe('0 personas');
+     30|     expect(people(12)).toBe('12 personas');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  src/features/negocio/format.test.ts > compareWithPrevious > says more, fewer or the same, with the verb of the earlier number
+AssertionError: expected '4 más que en noviembre, cuando fueron…' to be '4 más que en noviembre, cuando fue 1' // Object.is equality
+
+Expected: "4 más que en noviembre, cuando fue 1"
+Received: "4 más que en noviembre, cuando fueron 1"
+
+ ❯ src/features/negocio/format.test.ts:73:50
+     71|   it('says more, fewer or the same, with the verb of the earlier numbe…
+     72|     expect(compareWithPrevious(5, 3, '2026-11')).toBe('2 más que en no…
+     73|     expect(compareWithPrevious(5, 1, '2026-11')).toBe('4 más que en no…
+       |                                                  ^
+     74|     expect(compareWithPrevious(1, 3, '2026-11')).toBe('2 menos que en …
+     75|     expect(compareWithPrevious(3, 3, '2026-11')).toBe('Igual que en no…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > the three states > modest: the sentence, the figures and "Ver todo tu mes"
+AssertionError: expected 'HoyComedor de pruebaNoviembre, hasta …' to contain 'Este mes 5 personas tocaron tu botón …'
+
+Expected: "Este mes 5 personas tocaron tu botón de WhatsApp o Llamar en ConoceRD"
+Received: "HoyComedor de pruebaNoviembre, hasta hoyEste mes 13 personas tocaron tu botón de WhatsApp o Llamar en ConoceRD y 9 estuvieron en tu negocio con la app abierta.10 más que en octubre, cuando fueron 3.EscúchaloEste navegador no sabe leer en voz alta.Tocaron tu botón de WhatsApp o Llamar13Estuvieron en tu negocio con la app abierta9La app de la persona nos avisa que llegó; no sabemos quién es.Pidieron cómo llegar8Va aparte: pedir cómo llegar no es llegar.Te tocaPon tu horario: lo que ve la gente no dice cuándo abres. Si abres igual todos los días, es un solo toque.Poner mi horarioVer todo tu mesReseñas1 sin responderLos comentarios que te dejan en la app.4,1de 7 reseñas5 estrellas34 estrellas33 estrellas02 estrellas11 estrellas02 reseñas nuevas este mes.Responder reseñasLo tienen guardado ahora mismo15personasTocaron el corazón de tu negocio en la app para tenerlo guardado. Es lo que hay hoy, no solo de este mes.Meses anterioresOctubre: 3 personas tocaron tu botón, y 7 estuvieron en tu negocio con la app abierta.Sirve para comparar temporadas: diciembre con agosto, Semana Santa con septiembre."
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:125:20
+    123|     serve({ 'biz-1': modestWithPhone(PERIOD) });
+    124|     await mount();
+    125|     expect(text()).toContain('Este mes 5 personas tocaron tu botón de …
+       |                    ^
+    126|     expect(text()).toContain('2 más que en');
+    127|     expect(button('Ver todo tu mes')).toBeDefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > the three states > little: says there are too few to show by day, and no chart
+AssertionError: expected 'HoyComedor de pruebaNoviembre, hasta …' to contain '1 persona tocó tu botón'
+
+Expected: "1 persona tocó tu botón"
+Received: "HoyComedor de pruebaNoviembre, hasta hoyEste mes 4 personas tocaron tu botón de WhatsApp o Llamar en ConoceRD y 1 estuvieron en tu negocio con la app abierta.Es tu primer mes: no hay mes anterior para comparar.EscúchaloEste navegador no sabe leer en voz alta.Tocaron tu botón de WhatsApp o Llamar4Estuvieron en tu negocio con la app abierta1La app de la persona nos avisa que llegó; no sabemos quién es.Pidieron cómo llegar3Va aparte: pedir cómo llegar no es llegar.Son pocos para mostrarte qué días fueron. Cuando sean 5 o más en el mes te lo mostramos; así nadie sabe quién fue.Te tocaPon tu horario: lo que ve la gente no dice cuándo abres. Si abres igual todos los días, es un solo toque.Poner mi horarioTambién falta una parte:Tus fotosVer todo tu mesReseñasLos comentarios que te dejan en la app.Todavía no tienes reseñas. Las dejan los viajeros en la app.1 reseñas nuevas este mes.Ver reseñasLo tienen guardado ahora mismo3personasTocaron el corazón de tu negocio en la app para tenerlo guardado. Es lo que hay hoy, no solo de este mes.Meses anterioresEste es tu primer mes con datos: todavía no hay un mes anterior para comparar."
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:134:20
+    132|     serve({ 'biz-1': little(PERIOD) });
+    133|     await mount();
+    134|     expect(text()).toContain('1 persona tocó tu botón');
+       |                    ^
+    135|     expect(text()).toContain('Es tu primer mes: no hay mes anterior pa…
+    136|     expect(text()).toContain('Son pocos para mostrarte qué días fueron…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > Ver todo tu mes > keeps directions, bookings and views apart from the contact total
+AssertionError: expected ' Volver a HoyTu mes en detalleComedor…' to match /Tocaron tu botón de WhatsApp\s*7\s*pe…/
+
+- Expected:
+/Tocaron tu botón de WhatsApp\s*7\s*personas este mes/
+
++ Received:
+" Volver a HoyTu mes en detalleComedor de pruebaNoviembre, hasta hoyEscúchaloEste navegador no sabe leer en voz alta.Tocaron tu botón de WhatsApp12personas este mes7 más que en octubre, cuando fueron 5.Tocaron WhatsApp en tu negocio, en la app. No todos terminan escribiendo. Si la misma persona toca dos veces el mismo día, cuenta una vez.Tocaron WhatsApp7En tu página general1ballenas-jorobadas4dia-de-playa-en-el-cayo223211530Compruébalo en el WhatsApp del negocio: busca «en ConoceRD». No todos los que tocan el botón terminan escribiendo: es normal que encuentres menos mensajes que toques.Estuvieron en tu negocio con la app abierta7personas este mes2 más que en octubre, cuando fueron 5.Estuvieron en tu negocio unos minutos con la app abierta. La app de la persona nos avisa que llegó; no sabemos quién es. Quien entra sin abrir la app no sale aquí. Cada persona cuenta una vez al día.1122111530Otros toques, aparteVan aparte: no se suman a las personas que tocaron tu botón.Pidieron cómo llegar5Tocaron «Cómo llegar» en tu negocio. Pedir cómo llegar no es llegar.Tocaron Reservar3Tocaron «Reservar» en tu negocio, en la app.ballenas-jorobadas3Abrieron una excursión (59 veces)59Abrieron la página de una excursión en la app. Una persona puede ver varias, así que no se suman.En tu página general6ballenas-jorobadas41dia-de-playa-en-el-cayo12Lo tienen guardado ahora mismo21personasTocaron el corazón de tu negocio en la app para tenerlo guardado. Es lo que hay hoy, no solo de este mes.Meses anterioresOctubre: 5 personas tocaron tu botón, y 5 estuvieron en tu negocio con la app abierta.Sirve para comparar temporadas: diciembre con agosto, Semana Santa con septiembre."
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:170:20
+    168|     expect(text()).toContain('Van aparte: no se suman');
+    169|     // 7 people tapped; the 59 excursion views are not in that number.
+    170|     expect(text()).toMatch(/Tocaron tu botón de WhatsApp\s*7\s*persona…
+       |                    ^
+    171|   });
+    172|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > loading, error and offline > shows a plain retry when the call fails and nothing is cached
+AssertionError: expected 'HoyComedor de pruebaNoviembre, hasta …' to contain 'Este mes 5 personas'
+
+Expected: "Este mes 5 personas"
+Received: "HoyComedor de pruebaNoviembre, hasta hoyEste mes 13 personas tocaron tu botón de WhatsApp o Llamar en ConoceRD y 9 estuvieron en tu negocio con la app abierta.10 más que en octubre, cuando fueron 3.EscúchaloEste navegador no sabe leer en voz alta.Tocaron tu botón de WhatsApp o Llamar13Estuvieron en tu negocio con la app abierta9La app de la persona nos avisa que llegó; no sabemos quién es.Pidieron cómo llegar8Va aparte: pedir cómo llegar no es llegar.Te tocaPon tu horario: lo que ve la gente no dice cuándo abres. Si abres igual todos los días, es un solo toque.Poner mi horarioVer todo tu mesReseñas1 sin responderLos comentarios que te dejan en la app.4,1de 7 reseñas5 estrellas34 estrellas33 estrellas02 estrellas11 estrellas02 reseñas nuevas este mes.Responder reseñasLo tienen guardado ahora mismo15personasTocaron el corazón de tu negocio en la app para tenerlo guardado. Es lo que hay hoy, no solo de este mes.Meses anterioresOctubre: 3 personas tocaron tu botón, y 7 estuvieron en tu negocio con la app abierta.Sirve para comparar temporadas: diciembre con agosto, Semana Santa con septiembre."
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:229:20
+    227|     serve({ 'biz-1': modestWithPhone(PERIOD) });
+    228|     await click(button('Intentar otra vez'));
+    229|     expect(text()).toContain('Este mes 5 personas');
+       |                    ^
+    230|   });
+    231|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > loading, error and offline > offline with an earlier answer: keeps it and says it may be old
+AssertionError: expected 'HoyComedor de pruebaNoviembre, hasta …' to contain 'Este mes 5 personas'
+
+Expected: "Este mes 5 personas"
+Received: "HoyComedor de pruebaNoviembre, hasta hoyEste mes 13 personas tocaron tu botón de WhatsApp o Llamar en ConoceRD y 9 estuvieron en tu negocio con la app abierta.10 más que en octubre, cuando fueron 3.EscúchaloEste navegador no sabe leer en voz alta.Tocaron tu botón de WhatsApp o Llamar13Estuvieron en tu negocio con la app abierta9La app de la persona nos avisa que llegó; no sabemos quién es.Pidieron cómo llegar8Va aparte: pedir cómo llegar no es llegar.Te tocaPon tu horario: lo que ve la gente no dice cuándo abres. Si abres igual todos los días, es un solo toque.Poner mi horarioVer todo tu mesReseñas1 sin responderLos comentarios que te dejan en la app.4,1de 7 reseñas5 estrellas34 estrellas33 estrellas02 estrellas11 estrellas02 reseñas nuevas este mes.Responder reseñasLo tienen guardado ahora mismo15personasTocaron el corazón de tu negocio en la app para tenerlo guardado. Es lo que hay hoy, no solo de este mes.Meses anterioresOctubre: 3 personas tocaron tu botón, y 7 estuvieron en tu negocio con la app abierta.Sirve para comparar temporadas: diciembre con agosto, Semana Santa con septiembre."
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:235:20
+    233|     serve({ 'biz-1': modestWithPhone(PERIOD) });
+    234|     await mount();
+    235|     expect(text()).toContain('Este mes 5 personas');
+       |                    ^
+    236|     serve({ 'biz-1': new ApiError(0, 'network', 'x') });
+    237|     await act(async () => root?.unmount());
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > the business selector > shows a choice with two, and never renders the old business after switching
+AssertionError: expected 'HoyOleaga CentroOleaga PlayaNoviembre…' to contain 'Este mes 5 personas'
+
+Expected: "Este mes 5 personas"
+Received: "HoyOleaga CentroOleaga PlayaNoviembre, hasta hoyEste mes 13 personas tocaron tu botón de WhatsApp o Llamar en ConoceRD y 9 estuvieron en tu negocio con la app abierta.10 más que en octubre, cuando fueron 3.EscúchaloEste navegador no sabe leer en voz alta.Tocaron tu botón de WhatsApp o Llamar13Estuvieron en tu negocio con la app abierta9La app de la persona nos avisa que llegó; no sabemos quién es.Pidieron cómo llegar8Va aparte: pedir cómo llegar no es llegar.Te tocaPon tu horario: lo que ve la gente no dice cuándo abres. Si abres igual todos los días, es un solo toque.Poner mi horarioVer todo tu mesReseñas1 sin responderLos comentarios que te dejan en la app.4,1de 7 reseñas5 estrellas34 estrellas33 estrellas02 estrellas11 estrellas02 reseñas nuevas este mes.Responder reseñasLo tienen guardado ahora mismo15personasTocaron el corazón de tu negocio en la app para tenerlo guardado. Es lo que hay hoy, no solo de este mes.Meses anterioresOctubre: 3 personas tocaron tu botón, y 7 estuvieron en tu negocio con la app abierta.Sirve para comparar temporadas: diciembre con agosto, Semana Santa con septiembre."
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:264:20
+    262|     serve({ 'biz-1': modestWithPhone(PERIOD, 'biz-1'), 'biz-2': 'hang'…
+    263|     await mount();
+    264|     expect(text()).toContain('Este mes 5 personas');
+       |                    ^
+    265|     await click(button(/Oleaga Playa/));
+    266|     // biz-2 has not answered: biz-1's figures must be gone.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > Escúchalo > reads the summary in Spanish with the browser voice
+AssertionError: expected 'Este mes 13 personas tocaron tu botón…' to contain 'Este mes 5 personas tocaron tu botón …'
+
+Expected: "Este mes 5 personas tocaron tu botón de WhatsApp o Llamar"
+Received: "Este mes 13 personas tocaron tu botón de WhatsApp o Llamar en ConoceRD y 9 estuvieron en tu negocio con la app abierta. 10 más que en octubre, cuando fueron 3. 8 pidieron cómo llegar. Lo tienen guardado ahora mismo 15 personas. Tu calificación es 4,1 de 5, con 7 reseñas. 1 reseñas esperan tu respuesta. Te toca: Pon tu horario: lo que ve la gente no dice cuándo abres. Si abres igual todos los días, es un solo toque."
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:341:29
+    339|     expect(spoken).toHaveLength(1);
+    340|     expect(spoken[0]?.lang).toBe('es-DO');
+    341|     expect(spoken[0]?.text).toContain('Este mes 5 personas tocaron tu …
+       |                             ^
+    342|     expect(spoken[0]?.text).toContain('Te toca: Pon tu horario');
+    343|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  10 failed | 23 passed (33)
+   Start at  20:08:45
+   Duration  802ms (tests 44%, environment 33%, import 12%, transform 10%, worker 1%)
+
