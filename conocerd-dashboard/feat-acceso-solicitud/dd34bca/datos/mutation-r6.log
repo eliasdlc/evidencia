@@ -1,0 +1,33 @@
+# R6 at dd34bca, with copy.patch applied
+# $ pnpm exec vitest run src/lib/requests.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-solicitud
+
+ ❯ src/lib/requests.test.ts (3 tests | 1 failed) 7ms
+   ❯ the copy for requests (3)
+     × maps request_exists to the panel words 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/requests.test.ts > the copy for requests > maps request_exists to the panel words
+AssertionError: expected 'Algo falló de nuestro lado. Prueba ot…' to be 'Ya pediste este negocio. Mira cómo va.' // Object.is equality
+
+Expected: "Ya pediste este negocio. Mira cómo va."
+Received: "Algo falló de nuestro lado. Prueba otra vez."
+
+ ❯ src/lib/requests.test.ts:11:74
+      9|     ['evidence_invalid', 422, COPY.evidenceInvalid],
+     10|   ])('maps %s to the panel words', (code, status, copy) => {
+     11|     expect(apiCopyFor(new ApiError(status, code, 'texto del servidor')…
+       |                                                                          ^
+     12|   });
+     13|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  22:55:32
+   Duration  109ms (import 41%, transform 27%, tests 23%, worker 9%)
+
