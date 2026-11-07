@@ -1,0 +1,38 @@
+# R7 at 6ab2a32, with credentials.patch applied
+# $ pnpm exec vitest run src/lib/access.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar
+
+ ❯ src/lib/access.test.ts (43 tests | 1 failed) 28ms
+   ❯ the copy map (13)
+     × gives a wrong password, an unknown email and a Google-only email the same sentence 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/access.test.ts > the copy map > gives a wrong password, an unknown email and a Google-only email the same sentence
+AssertionError: expected Set{ …(2) } to deeply equal Set{ 'El correo o la contraseña no c…' }
+
+- Expected
++ Received
+
+  Set {
+    "El correo o la contraseña no coinciden. Si entras con Google, toca «Continuar con Google».",
++   "Revisa el correo.",
+  }
+
+ ❯ src/lib/access.test.ts:69:61
+     67|   it('gives a wrong password, an unknown email and a Google-only email…
+     68|     const codes = ['auth/invalid-credential', 'auth/wrong-password', '…
+     69|     expect(new Set(codes.map((code) => copyFor({ code })))).toEqual(ne…
+       |                                                             ^
+     70|   });
+     71|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 42 passed (43)
+   Start at  21:06:45
+   Duration  550ms (environment 75%, import 13%, tests 7%, transform 4%, worker 1%)
+
