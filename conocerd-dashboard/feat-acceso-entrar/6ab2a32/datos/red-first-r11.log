@@ -1,0 +1,118 @@
+# R11 at 6ab2a32, with index.html, vercel.json back at 8839f4c  [agents evidence scrubbed U+00B7 x3 as "."]
+# $ pnpm exec vitest run src/config.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar
+
+ ❯ src/config.test.ts (3 tests | 3 failed) 14ms
+   ❯ the headers and the document (3)
+     × send a bare origin as Referer, from the server and from the page itself 8ms
+     × let Google Identity Services and Storage through, and nothing wider 3ms
+     × title the tab without a middle dot 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/config.test.ts > the headers and the document > send a bare origin as Referer, from the server and from the page itself
+AssertionError: expected '<!doctype html>\n<html lang="es">\n  …' to contain '<meta name="referrer" content="strict…'
+
+- Expected
++ Received
+
+- <meta name="referrer" content="strict-origin-when-cross-origin" />
++ <!doctype html>
++ <html lang="es">
++   <head>
++     <meta charset="UTF-8" />
++     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
++     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
++     <meta name="theme-color" content="#FDF8F0" />
++     <title>ConoceRD . Panel de Negocio</title>
++     <link rel="preconnect" href="https://fonts.googleapis.com" />
++     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
++     <link
++       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&amp;family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap"
++       rel="stylesheet"
++     />
++   </head>
++   <body>
++     <div id="root"></div>
++     <script type="module" src="/src/main.tsx"></script>
++   </body>
++ </html>
++
+
+ ❯ src/config.test.ts:22:18
+     20|   it('send a bare origin as Referer, from the server and from the page…
+     21|     expect(header('Referrer-Policy')).toBe('strict-origin-when-cross-o…
+     22|     expect(html).toContain('<meta name="referrer" content="strict-orig…
+       |                  ^
+     23|   });
+     24|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/config.test.ts > the headers and the document > let Google Identity Services and Storage through, and nothing wider
+AssertionError: expected [ '\'self\'' ] to deeply equal [ '\'self\'', …(1) ]
+
+- Expected
++ Received
+
+  [
+    "'self'",
+-   "https://accounts.google.com/gsi/client",
+  ]
+
+ ❯ src/config.test.ts:26:37
+     24|
+     25|   it('let Google Identity Services and Storage through, and nothing wi…
+     26|     expect(directive('script-src')).toEqual(["'self'", 'https://accoun…
+       |                                     ^
+     27|     expect(directive('frame-src')).toEqual(['https://accounts.google.c…
+     28|     expect(directive('style-src')).toContain('https://accounts.google.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/config.test.ts > the headers and the document > title the tab without a middle dot
+AssertionError: expected '<!doctype html>\n<html lang="es">\n  …' to contain '<title>ConoceRD Negocios</title>'
+
+- Expected
++ Received
+
+- <title>ConoceRD Negocios</title>
++ <!doctype html>
++ <html lang="es">
++   <head>
++     <meta charset="UTF-8" />
++     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
++     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
++     <meta name="theme-color" content="#FDF8F0" />
++     <title>ConoceRD . Panel de Negocio</title>
++     <link rel="preconnect" href="https://fonts.googleapis.com" />
++     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
++     <link
++       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&amp;family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap"
++       rel="stylesheet"
++     />
++   </head>
++   <body>
++     <div id="root"></div>
++     <script type="module" src="/src/main.tsx"></script>
++   </body>
++ </html>
++
+
+ ❯ src/config.test.ts:35:18
+     33|
+     34|   it('title the tab without a middle dot', () => {
+     35|     expect(html).toContain('<title>ConoceRD Negocios</title>');
+       |                  ^
+     36|     expect(html).not.toContain('.');
+     37|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  21:07:06
+   Duration  133ms (tests 47%, import 28%, transform 13%, worker 11%)
+
