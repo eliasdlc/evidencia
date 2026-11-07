@@ -1,0 +1,36 @@
+# R6 at e544535, with headers.patch applied
+# $ pnpm exec vitest run src/lib/api.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar
+
+ ❯ src/lib/api.test.ts (23 tests | 1 failed) 147ms
+   ❯ createPublicClient (3)
+     × posts without any Authorization header, even when a caller passes one 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/api.test.ts > createPublicClient > posts without any Authorization header, even when a caller passes one
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/lib/api.test.ts:272:83
+    270|
+    271|     expect(h.fetch.mock.calls[0]?.[0]).toBe(`${BASE}/business/activati…
+    272|     expect(new Headers(h.fetch.mock.calls[0]?.[1]?.headers).has('Autho…
+       |                                                                                   ^
+    273|   });
+    274|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 22 passed (23)
+   Start at  21:17:21
+   Duration  265ms (tests 86%, import 7%, transform 5%, worker 2%)
+
