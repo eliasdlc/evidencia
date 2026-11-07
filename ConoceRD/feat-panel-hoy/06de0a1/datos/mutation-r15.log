@@ -1,0 +1,63 @@
+# R15 at 06de0a1, with mutate-r5.patch applied
+# $ pnpm exec vitest run src/features/negocio/hoy/derive.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-hoy
+
+ ❯ src/features/negocio/hoy/derive.test.ts (17 tests | 2 failed) 13ms
+   ❯ tasksOf (2)
+     × lists only what listing.missing says, never a field already present 5ms
+     × says the team reviews photos, without a person 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/hoy/derive.test.ts > tasksOf > lists only what listing.missing says, never a field already present
+AssertionError: expected [ 'whatsapp', 'description', …(6) ] to deeply equal [ 'openingHours', 'photos' ]
+
+- Expected
++ Received
+
+  [
+-   "openingHours",
+-   "photos",
++   "whatsapp",
++   "description",
++   "phone",
++   "howToGetThere",
++   "services",
++   "bestTimeToVisit",
++   "instagram",
++   "website",
+  ]
+
+ ❯ src/features/negocio/hoy/derive.test.ts:119:57
+    117|   it('lists only what listing.missing says, never a field already pres…
+    118|     const overview = makeOverview({ period: PERIOD, missing: ['photos'…
+    119|     expect(tasksOf(overview).map((task) => task.field)).toEqual(['open…
+       |                                                         ^
+    120|     expect(tasksOf(makeOverview({ period: PERIOD, missing: [] }))).toE…
+    121|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/hoy/derive.test.ts > tasksOf > says the team reviews photos, without a person
+AssertionError: expected 'Pon tu horario: lo que ve la gente no…' to contain 'el equipo de ConoceRD'
+
+Expected: "el equipo de ConoceRD"
+Received: "Pon tu horario: lo que ve la gente no dice cuándo abres. Si abres igual todos los días, es un solo toque."
+
+ ❯ src/features/negocio/hoy/derive.test.ts:125:26
+    123|   it('says the team reviews photos, without a person', () => {
+    124|     const photos = tasksOf(makeOverview({ period: PERIOD, missing: ['p…
+    125|     expect(photos?.text).toContain('el equipo de ConoceRD');
+       |                          ^
+    126|   });
+    127| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 15 passed (17)
+   Start at  20:09:39
+   Duration  147ms (transform 48%, tests 26%, import 21%, worker 6%)
+
