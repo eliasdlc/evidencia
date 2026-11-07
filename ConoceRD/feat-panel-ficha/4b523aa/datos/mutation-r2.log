@@ -1,0 +1,101 @@
+# R2 at 4b523aa, with m4.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/schedule.test.ts src/features/negocio/ficha/FichaPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha
+
+ ❯ src/features/negocio/ficha/schedule.test.ts (19 tests | 3 failed) 61ms
+   ❯ validateSchedule (7)
+     × rejects two ranges of one day that overlap, and accepts ones that touch 15ms
+     × counts the morning an overnight range spills into against the next day 2ms
+     × wraps Sunday night into Monday 4ms
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx (37 tests | 1 failed) 3665ms
+   ❯ saving a part (12)
+     × an overlapping schedule is stopped before any call, with its day named 217ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/FichaPage.test.tsx > saving a part > an overlapping schedule is stopped before any call, with its day named
+AssertionError: expected 'Lo que ve la genteComedor de pruebaEs…' to contain 'El martes tiene dos horarios que se m…'
+
+Expected: "El martes tiene dos horarios que se montan uno sobre el otro."
+Received: "Lo que ve la genteComedor de pruebaEs lo que ve el viajero de tu negocio en la app. Toca «Cambiar» en lo que quieras: cada parte tiene su botón Guardar y sale en la app apenas guardas.Guardamos tu horarioYa sale así en la app.WhatsApp del negocioCambiar+18095550142Teléfono para llamarCambiar+18095550177Tu horarioCambiar Guardado hace un momentoMartes, de 8:00 de la mañana a 1:00 de la tarde y de 12:00 del mediodía a 6:00 de la tarde. Lunes, miércoles, jueves, viernes, sábado y domingo cerrados.Qué te hace especialCambiarTrucha frita frente al ríoTambién está en inglés.Cuánto cuesta entrarCambiarFalta Todavía no dice nada.Cómo llegarCambiarSube carro normalMejor hora para irCambiarFalta Todavía no dice nada.Qué hay y qué avisosCambiarHay: Parqueo. Avisos: Los últimos 2 km son de tierra.InstagramCambiarcomedorlaterrazaSitio webCambiarhttps://comedor.exampleEsto lo cambia el equipoEl nombre, el tipo de negocio y dónde sale en el mapa. Si algo está mal, escríbele al equipo de ConoceRD y lo corregimos contigo."
+
+ ❯ src/features/negocio/ficha/FichaPage.test.tsx:378:20
+    376|     await click(document.querySelector('[aria-label="miércoles: abre o…
+    377|     await click(button('Guardar mi horario'));
+    378|     expect(text()).toContain('El martes tiene dos horarios que se mont…
+       |                    ^
+    379|     expect(patches()).toHaveLength(0);
+    380|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/features/negocio/ficha/schedule.test.ts > validateSchedule > rejects two ranges of one day that overlap, and accepts ones that touch
+AssertionError: expected [] to deeply equal [ 'lun' ]
+
+- Expected
++ Received
+
+- [
+-   "lun",
+- ]
++ []
+
+ ❯ src/features/negocio/ficha/schedule.test.ts:85:39
+     83|   it('rejects two ranges of one day that overlap, and accepts ones tha…
+     84|     const overlap = validateSchedule(weekly({ lun: [{ desde: '08:00', …
+     85|     expect(overlap.map((i) => i.day)).toEqual(['lun']);
+       |                                       ^
+     86|     const touching = validateSchedule(weekly({ lun: [{ desde: '08:00',…
+     87|     expect(touching).toEqual([]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/features/negocio/ficha/schedule.test.ts > validateSchedule > counts the morning an overnight range spills into against the next day
+AssertionError: expected [] to deeply equal [ 'dom' ]
+
+- Expected
++ Received
+
+- [
+-   "dom",
+- ]
++ []
+
+ ❯ src/features/negocio/ficha/schedule.test.ts:92:38
+     90|   it('counts the morning an overnight range spills into against the ne…
+     91|     const issues = validateSchedule(weekly({ sab: [{ desde: '18:00', h…
+     92|     expect(issues.map((i) => i.day)).toEqual(['dom']);
+       |                                      ^
+     93|     expect(validateSchedule(weekly({ sab: [{ desde: '18:00', hasta: '0…
+     94|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/features/negocio/ficha/schedule.test.ts > validateSchedule > wraps Sunday night into Monday
+AssertionError: expected [] to deeply equal [ 'lun' ]
+
+- Expected
++ Received
+
+- [
+-   "lun",
+- ]
++ []
+
+ ❯ src/features/negocio/ficha/schedule.test.ts:98:38
+     96|   it('wraps Sunday night into Monday', () => {
+     97|     const issues = validateSchedule(weekly({ dom: [{ desde: '20:00', h…
+     98|     expect(issues.map((i) => i.day)).toEqual(['lun']);
+       |                                      ^
+     99|   });
+    100|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 52 passed (56)
+   Start at  21:04:11
+   Duration  4.35s (tests 86%, environment 8%, import 4%, transform 2%)
+
