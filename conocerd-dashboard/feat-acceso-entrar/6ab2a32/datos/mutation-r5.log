@@ -1,0 +1,31 @@
+# R5 at 6ab2a32, with returnpath.patch applied
+# $ pnpm exec vitest run src/router.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-acceso-entrar
+
+ ❯ src/router.test.tsx (21 tests | 1 failed) 273ms
+   ❯ the signed-out screens (14)
+     × returns only paths the panel router opens, inside the panel, on no access screen 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/router.test.tsx > the signed-out screens > returns only paths the panel router opens, inside the panel, on no access screen
+Error: External navigation is not allowed
+ ❯ validateNavigationTarget node_modules/.pnpm/react-router@8.5.1_@types+react-dom@19.2.4_@types+react@19.2.18__@types+react@19.2.18_r_fc3190b96b4e06d3f5733fad2425362e/node_modules/react-router/dist/development/lib/router/navigation.js:39:55
+ ❯ Object.navigate node_modules/.pnpm/react-router@8.5.1_@types+react-dom@19.2.4_@types+react@19.2.18__@types+react@19.2.18_r_fc3190b96b4e06d3f5733fad2425362e/node_modules/react-router/dist/development/lib/router/router.js:446:3
+ ❯ src/router.test.tsx:186:20
+    184|       if (out === null) continue;
+    185|       kept += 1;
+    186|       await router.navigate(out, { replace: true });
+       |                    ^
+    187|       const landed = router.state.location;
+    188|       expect(router.state.errors, input).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  21:06:35
+   Duration  713ms (tests 45%, environment 30%, import 20%, transform 4%, worker 1%)
+
