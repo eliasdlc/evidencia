@@ -1,0 +1,39 @@
+# R33 at cf1d88a, with m3.patch applied
+# $ pnpm exec vitest run src/features/negocio/resenas/ResenasPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-resenas
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx (36 tests | 1 failed) 2229ms
+   ❯ replying (14)
+     × sends the reply, shows it at once and moves that review to the top 82ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/resenas/ResenasPage.test.tsx > replying > sends the reply, shows it at once and moves that review to the top
+AssertionError: expected [ 'Reseña de Carla', …(1) ] to deeply equal [ 'Reseña de Pablo N.', …(1) ]
+
+- Expected
++ Received
+
+  [
+-   "Reseña de Pablo N.",
+    "Reseña de Carla",
++   "Reseña de Pablo N.",
+  ]
+
+ ❯ src/features/negocio/resenas/ResenasPage.test.tsx:313:21
+    311|     await click(find('Mandar mi respuesta'));
+    312|     expect(posted).toEqual([{ destinationId: 'biz-1', authorId: 'b', t…
+    313|     expect(names()).toEqual(['Reseña de Pablo N.', 'Reseña de Carla']);
+       |                     ^
+    314|     expect(text()).toContain('Tu respuesta ya está publicada');
+    315|     expect(text()).toContain('Gracias, Pablo.');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 35 passed (36)
+   Start at  20:49:34
+   Duration  2.79s (tests 84%, environment 11%, import 4%, transform 1%)
+
