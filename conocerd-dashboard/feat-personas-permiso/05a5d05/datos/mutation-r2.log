@@ -1,0 +1,36 @@
+# R2 at 05a5d05, with mutate-r4.patch applied
+# $ pnpm exec vitest run src/features/personas/mutations.test.ts src/features/personas/copy.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-personas-permiso
+
+ ❯ src/features/personas/mutations.test.ts (6 tests | 1 failed) 14ms
+   ❯ what a change leaves for the business, whatever screen is open (6)
+     × a grant whose email left starts the wait and refreshes the list; one whose email did not, only refreshes 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/personas/mutations.test.ts > what a change leaves for the business, whatever screen is open > a grant whose email left starts the wait and refreshes the list; one whose email did not, only refreshes
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/features/personas/mutations.test.ts:43:124
+     41| describe('what a change leaves for the business, whatever screen is op…
+     42|   it('a grant whose email left starts the wait and refreshes the list;…
+     43|     expect(await changes('b1', () => grant(client({ person: person('m_…
+       |                                                                                                                            ^
+     44|     expect(cooldownLeft('b1', 'm_a')).toBe(60);
+     45|     expect(await changes('b1', () => grant(client({ person: person('m_…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 23 passed (24)
+   Start at  11:46:09
+   Duration  256ms (import 56%, tests 22%, transform 17%, worker 6%)
+
