@@ -1,0 +1,332 @@
+# R71 at fb2ebe4, with m1.patch applied
+# $ pnpm exec vitest run src/features/negocio/resenas/avisar.test.ts src/features/negocio/resenas/Avisar.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-resenas-avisar
+
+ ❯ src/features/negocio/resenas/avisar.test.ts (14 tests | 5 failed) 45ms
+   ❯ reportBody (8)
+     × sends only the reason never_came without a note 17ms
+     × sends only the reason fake_or_other_business without a note 3ms
+     × sends only the reason insults_or_personal_data without a note 2ms
+     × sends only the reason other without a note 2ms
+     × sends the trimmed note 3ms
+ ❯ src/features/negocio/resenas/Avisar.test.tsx (33 tests | 9 failed) 2623ms
+   ❯ what is posted (11)
+     × posts the exact body for never_came without a note 95ms
+     × posts the exact body for fake_or_other_business without a note 74ms
+     × posts the exact body for insults_or_personal_data without a note 81ms
+     × posts the exact body for other without a note 76ms
+     × posts the trimmed note for never_came 69ms
+     × posts the trimmed note for fake_or_other_business 67ms
+     × posts the trimmed note for insults_or_personal_data 72ms
+     × posts the trimmed note for other 67ms
+     × does not send a whitespace-only note 69ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > what is posted > posts the exact body for never_came without a note
+AssertionError: expected { reason: 'never_came', note: '' } to deeply equal { reason: 'never_came' }
+
+- Expected
++ Received
+
+  {
++   "note": "",
+    "reason": "never_came",
+  }
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:243:30
+    241|       expect(calls).toHaveLength(1);
+    242|       expect(calls[0]?.path).toBe('/business/biz-1/reviews/a/report');
+    243|       expect(calls[0]?.body).toEqual({ reason });
+       |                              ^
+    244|     },
+    245|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > what is posted > posts the exact body for fake_or_other_business without a note
+AssertionError: expected { …(2) } to deeply equal { reason: 'fake_or_other_business' }
+
+- Expected
++ Received
+
+  {
++   "note": "",
+    "reason": "fake_or_other_business",
+  }
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:243:30
+    241|       expect(calls).toHaveLength(1);
+    242|       expect(calls[0]?.path).toBe('/business/biz-1/reviews/a/report');
+    243|       expect(calls[0]?.body).toEqual({ reason });
+       |                              ^
+    244|     },
+    245|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > what is posted > posts the exact body for insults_or_personal_data without a note
+AssertionError: expected { …(2) } to deeply equal { reason: 'insults_or_personal_data' }
+
+- Expected
++ Received
+
+  {
++   "note": "",
+    "reason": "insults_or_personal_data",
+  }
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:243:30
+    241|       expect(calls).toHaveLength(1);
+    242|       expect(calls[0]?.path).toBe('/business/biz-1/reviews/a/report');
+    243|       expect(calls[0]?.body).toEqual({ reason });
+       |                              ^
+    244|     },
+    245|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > what is posted > posts the exact body for other without a note
+AssertionError: expected { reason: 'other', note: '' } to deeply equal { reason: 'other' }
+
+- Expected
++ Received
+
+  {
++   "note": "",
+    "reason": "other",
+  }
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:243:30
+    241|       expect(calls).toHaveLength(1);
+    242|       expect(calls[0]?.path).toBe('/business/biz-1/reviews/a/report');
+    243|       expect(calls[0]?.body).toEqual({ reason });
+       |                              ^
+    244|     },
+    245|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > what is posted > posts the trimmed note for never_came
+AssertionError: expected { reason: 'never_came', …(1) } to deeply equal { reason: 'never_came', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "note": "Ese sábado cerramos por la lluvia.",
++   "note": "  Ese sábado cerramos por la lluvia.  ",
+    "reason": "never_came",
+  }
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:256:30
+    254|       await typeNote('  Ese sábado cerramos por la lluvia.  ');
+    255|       await click(send());
+    256|       expect(calls[0]?.body).toEqual({ reason, note: 'Ese sábado cerra…
+       |                              ^
+    257|     },
+    258|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > what is posted > posts the trimmed note for fake_or_other_business
+AssertionError: expected { …(2) } to deeply equal { …(2) }
+
+- Expected
++ Received
+
+  {
+-   "note": "Ese sábado cerramos por la lluvia.",
++   "note": "  Ese sábado cerramos por la lluvia.  ",
+    "reason": "fake_or_other_business",
+  }
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:256:30
+    254|       await typeNote('  Ese sábado cerramos por la lluvia.  ');
+    255|       await click(send());
+    256|       expect(calls[0]?.body).toEqual({ reason, note: 'Ese sábado cerra…
+       |                              ^
+    257|     },
+    258|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > what is posted > posts the trimmed note for insults_or_personal_data
+AssertionError: expected { …(2) } to deeply equal { …(2) }
+
+- Expected
++ Received
+
+  {
+-   "note": "Ese sábado cerramos por la lluvia.",
++   "note": "  Ese sábado cerramos por la lluvia.  ",
+    "reason": "insults_or_personal_data",
+  }
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:256:30
+    254|       await typeNote('  Ese sábado cerramos por la lluvia.  ');
+    255|       await click(send());
+    256|       expect(calls[0]?.body).toEqual({ reason, note: 'Ese sábado cerra…
+       |                              ^
+    257|     },
+    258|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > what is posted > posts the trimmed note for other
+AssertionError: expected { reason: 'other', …(1) } to deeply equal { reason: 'other', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "note": "Ese sábado cerramos por la lluvia.",
++   "note": "  Ese sábado cerramos por la lluvia.  ",
+    "reason": "other",
+  }
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:256:30
+    254|       await typeNote('  Ese sábado cerramos por la lluvia.  ');
+    255|       await click(send());
+    256|       expect(calls[0]?.body).toEqual({ reason, note: 'Ese sábado cerra…
+       |                              ^
+    257|     },
+    258|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > what is posted > does not send a whitespace-only note
+AssertionError: expected { reason: 'other', note: '   \n  ' } to deeply equal { reason: 'other' }
+
+- Expected
++ Received
+
+  {
++   "note": "   
++   ",
+    "reason": "other",
+  }
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:267:28
+    265|     await typeNote('   \n  ');
+    266|     await click(send());
+    267|     expect(calls[0]?.body).toEqual({ reason: 'other' });
+       |                            ^
+    268|   });
+    269|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯
+
+ FAIL  src/features/negocio/resenas/avisar.test.ts > reportBody > sends only the reason never_came without a note
+AssertionError: expected { reason: 'never_came', note: '' } to deeply equal { reason: 'never_came' }
+
+- Expected
++ Received
+
+  {
++   "note": "",
+    "reason": "never_came",
+  }
+
+ ❯ src/features/negocio/resenas/avisar.test.ts:12:32
+     10|
+     11|   it.each(REASONS.map((reason) => reason.id))('sends only the reason %…
+     12|     expect(reportBody(id, '')).toEqual({ reason: id });
+       |                                ^
+     13|     expect(reportBody(id, '   \n\t ')).toEqual({ reason: id });
+     14|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯
+
+ FAIL  src/features/negocio/resenas/avisar.test.ts > reportBody > sends only the reason fake_or_other_business without a note
+AssertionError: expected { …(2) } to deeply equal { reason: 'fake_or_other_business' }
+
+- Expected
++ Received
+
+  {
++   "note": "",
+    "reason": "fake_or_other_business",
+  }
+
+ ❯ src/features/negocio/resenas/avisar.test.ts:12:32
+     10|
+     11|   it.each(REASONS.map((reason) => reason.id))('sends only the reason %…
+     12|     expect(reportBody(id, '')).toEqual({ reason: id });
+       |                                ^
+     13|     expect(reportBody(id, '   \n\t ')).toEqual({ reason: id });
+     14|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯
+
+ FAIL  src/features/negocio/resenas/avisar.test.ts > reportBody > sends only the reason insults_or_personal_data without a note
+AssertionError: expected { …(2) } to deeply equal { reason: 'insults_or_personal_data' }
+
+- Expected
++ Received
+
+  {
++   "note": "",
+    "reason": "insults_or_personal_data",
+  }
+
+ ❯ src/features/negocio/resenas/avisar.test.ts:12:32
+     10|
+     11|   it.each(REASONS.map((reason) => reason.id))('sends only the reason %…
+     12|     expect(reportBody(id, '')).toEqual({ reason: id });
+       |                                ^
+     13|     expect(reportBody(id, '   \n\t ')).toEqual({ reason: id });
+     14|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/14]⎯
+
+ FAIL  src/features/negocio/resenas/avisar.test.ts > reportBody > sends only the reason other without a note
+AssertionError: expected { reason: 'other', note: '' } to deeply equal { reason: 'other' }
+
+- Expected
++ Received
+
+  {
++   "note": "",
+    "reason": "other",
+  }
+
+ ❯ src/features/negocio/resenas/avisar.test.ts:12:32
+     10|
+     11|   it.each(REASONS.map((reason) => reason.id))('sends only the reason %…
+     12|     expect(reportBody(id, '')).toEqual({ reason: id });
+       |                                ^
+     13|     expect(reportBody(id, '   \n\t ')).toEqual({ reason: id });
+     14|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/14]⎯
+
+ FAIL  src/features/negocio/resenas/avisar.test.ts > reportBody > sends the trimmed note
+AssertionError: expected { reason: 'other', …(1) } to deeply equal { reason: 'other', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "note": "Nadie comió aquí ese día.",
++   "note": "  Nadie comió aquí ese día.  ",
+    "reason": "other",
+  }
+
+ ❯ src/features/negocio/resenas/avisar.test.ts:17:66
+     15|
+     16|   it('sends the trimmed note', () => {
+     17|     expect(reportBody('other', '  Nadie comió aquí ese día.  ')).toEqu…
+       |                                                                  ^
+     18|   });
+     19|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/14]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  14 failed | 33 passed (47)
+   Start at  10:17:32
+   Duration  3.35s (tests 81%, environment 11%, import 5%, transform 1%, worker 1%)
+
