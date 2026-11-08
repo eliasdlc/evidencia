@@ -1,0 +1,282 @@
+# R5 at 42292fb, with q-n7.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu.sh test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/6a-hospedaje-finca-tienda
+
+ ✓ test/profile-kinds-route.test.ts (74 tests) 10921ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 1: en R, {"tours":[]} es 422 field_not_for_type y no escribe nada  1148ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: los otros placeType del cuadro  392ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 20: los límites de fare  579ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 21: highSeasonMonths [12,1,2] se guarda [1,2,12]; [0], [13], [1,1] y los 12 meses son 422; [] borra  464ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 22: bookingUrl  460ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 25: durationMinutes y maxGroup  507ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > casos 36 y 37: ids mal formados o repetidos son 422  385ms
+ ❯ test/profile-maps-route.test.ts (42 tests | 1 failed) 6956ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: S muestra stay con sus tres campos del dueño, sin priceFrom ni capacity  305ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: S2 (stay es un texto) muestra stay vacío 43ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: un stay con valores, y con otros que no tienen la forma, se lee con tolerancia 49ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: F muestra farm vacío; una finca con farm lo muestra 129ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: C muestra craft sin paymentMethods; acceptsCommissions es true solo si está guardado true 74ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: R y T no muestran ningún mapa 83ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en S, el cuerpo entero de GET es 200 changed [] y no escribe 155ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en S2, el cuerpo entero de GET es 200 changed [] y no escribe 120ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en F, el cuerpo entero de GET es 200 changed [] y no escribe 118ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en C, el cuerpo entero de GET es 200 changed [] y no escribe 120ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en un stay con valores que hoy no pasarían, el cuerpo entero de GET es 200 changed [] y no escribe 110ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en una finca llena, el cuerpo entero de GET es 200 changed [] y no escribe 108ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en una tienda llena, el cuerpo entero de GET es 200 changed [] y no escribe 109ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 2: T con stay es 422 field_not_for_type y no escribe nada 74ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 4: S con craft y description es 422 field_not_for_type, ni siquiera description 65ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > casos 12 y 51: includes [] es eco; bring se escribe por ruta y [] borra la clave; priceFrom y capacity quedan 165ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 31: houseRules sin forma, priceFrom y stay null son 422; houseRules {pets:true} es 200  356ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > houseRules se reemplaza entero, y {} o null lo borran 255ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > las listas: 12 líneas de 80 son 200; 13 líneas o una de 81 son 422; se recortan y no se repiten 268ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 53: S2 (stay es un texto) con includes escribe stay como un mapa de lo del dueño 80ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > un hotel sin stay recibe stay con solo lo escrito 81ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > vaciar lo último que tiene stay borra la clave entera: no queda un mapa vacío 87ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > el eco va dentro del mapa: 13 includes guardados vuelven sin error y bring se escribe 98ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > el eco compara también con lo guardado: unas houseRules guardadas con una clave de más vuelven sin error 86ms
+   × ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > un valor nuevo que al recortarse es lo guardado no escribe; stay {} tampoco 88ms
+     → caso 54: stay.includes cambia de verdad: expected [ 'Wifi' ] to not deeply equal [ 'Wifi' ]
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 54: un campo de la ficha y dos subcampos en un PATCH: una línea con las tres rutas 88ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 32: __proto__ dentro de stay y 21 niveles son 422, nunca 500 146ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 27: F con advanceNotice one_week escribe farm.advanceNotice 84ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 28: un aviso desconocido, farm null y los límites movidos por uno son 422  561ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 28: los límites que pasan: 5 y 1440 minutos, grupos de 1 y 500, fare de 1000000 pesos y 20000 dólares  406ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > null borra cada subcampo, y una finca que queda sin nada pierde la clave farm 143ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > el eco va dentro del mapa: un aviso guardado que hoy no existe vuelve sin error 138ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 1 en finca: farm en un comedor es 422 field_not_for_type 66ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 13: C con acceptsCommissions true y materials guardados es 200 [] sin escribir 82ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 13: la forma guardada también es un eco aunque GET la muestre distinta 95ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > casos 29 y 50: payments sin repetir y en su orden; escribirlo borra paymentMethods y deja materials 201ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 50: payments [card] en C directo 68ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > un PATCH de otro subcampo no borra paymentMethods 70ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 30: un pago o un envío desconocidos y paymentMethods son 422  412ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 52: acceptsCommissions false borra la clave; true la guarda 203ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > shipping none se guarda; null lo borra; productos y materiales de 12 x 80 191ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 54: payments en la bitácora con su antes y su después 74ms
+ ❯ src/lib/profile-maps.test.ts (35 tests | 5 failed) 57ms
+   ✓ shownMap > caso 6: un mapa ausente o que no es un mapa se muestra vacío 4ms
+   ✓ shownMap > stay muestra solo sus tres subcampos, leídos con tolerancia 0ms
+   ✓ shownMap > farm muestra un aviso conocido, enteros y un fare con forma 0ms
+   ✓ shownMap > craft no muestra paymentMethods ni las claves del equipo; payments sale sin repetir y en su orden 1ms
+   ✓ profilePatchSchemaFor con stay > el eco de un subcampo se quita, no se sustituye 6ms
+   ✓ profilePatchSchemaFor con stay > un mapa que queda vacío tras quitar ecos se quita entero 1ms
+   ✓ profilePatchSchemaFor con stay > el mapa entero que GET muestra es un eco 1ms
+   ✓ profilePatchSchemaFor con stay > una clave del equipo igual a la guardada no es un eco: es un 422 2ms
+   ✓ profilePatchSchemaFor con stay > stay null es un 422 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"advanceNotice":"same_day"} acepta: true 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"advanceNotice":"two_weeks"} acepta: false 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"durationMinutes":1440} acepta: true 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"durationMinutes":1441} acepta: false 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"durationMinutes":5} acepta: true 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"durationMinutes":4} acepta: false 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"maxGroup":500} acepta: true 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"maxGroup":501} acepta: false 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"maxGroup":1} acepta: true 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"maxGroup":0} acepta: false 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"fare":{"dop":1000000}} acepta: true 2ms
+   ✓ profilePatchSchemaFor con farm > farm {"fare":{"dop":1000001}} acepta: false 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"fare":{"usd":20000}} acepta: true 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"fare":{"usd":20001}} acepta: false 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"fare":{"dop":1.5}} acepta: false 1ms
+   ✓ profilePatchSchemaFor con farm > farm null es un 422 1ms
+   ✓ profilePatchSchemaFor con farm > el eco de un subcampo se quita, también contra lo guardado 1ms
+   ✓ mergeMap > lo ausente se queda, [] y null borran, y las claves del equipo no se tocan 2ms
+   × mergeMap > un valor igual al guardado no es un cambio 14ms
+     → expected [ { path: 'stay.includes', …(2) } ] to deeply equal []
+   ✓ mergeMap > escribir craft.payments borra paymentMethods por su ruta; otro subcampo no 1ms
+   × mergeMap > acceptsCommissions false borra la clave y no es un cambio si no estaba 2ms
+     → expected [ { …(3) } ] to deeply equal []
+   × mergeMap > un null guardado que se vacía, o basura que se normaliza a lo mismo, no es un cambio (ronda 1, C1) 1ms
+     → expected [ { path: 'stay.bring', …(2) } ] to deeply equal []
+   ✓ mergeMap > un cambio real lista la ruta con lo crudo guardado antes y después 0ms
+   × mergeMap > solo se escribe lo que se lista: un hermano igual a lo mostrado no se toca (ronda 2, C2) 1ms
+     → expected [ 'stay.includes', 'stay.bring' ] to deeply equal [ 'stay.bring' ]
+   × mergeMap > lo que queda igual a lo mostrado deja el valor guardado como está (ronda 3, hueco de pruebas) 2ms
+     → expected { changes: [ { …(3) }, …(2) ], …(1) } to deeply equal { changes: [], write: { …(2) } }
+   ✓ mergeMap > un stay guardado que no es un mapa se escribe entero; uno que queda vacío se borra 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/profile-maps-route.test.ts > ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > un valor nuevo que al recortarse es lo guardado no escribe; stay {} tampoco
+AssertionError: caso 54: stay.includes cambia de verdad: expected [ 'Wifi' ] to not deeply equal [ 'Wifi' ]
+
+[2mCompared values have no visual difference.[22m
+
+ ❯ patch test/profile-maps-route.test.ts:126:82
+    124|     expect(Object.keys(edit.changes).sort(), 'caso 54: las claves de c…
+    125|     for (const path of changed) {
+    126|       expect(edit.changes[path].before, `caso 54: ${path} cambia de ve…
+       |                                                                                  ^
+    127|     }
+    128|     const touched = [...new Set([...Object.keys(docBefore), ...Object.…
+ ❯ test/profile-maps-route.test.ts:393:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/lib/profile-maps.test.ts > mergeMap > un valor igual al guardado no es un cambio
+AssertionError: expected [ { path: 'stay.includes', …(2) } ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   {[39m
+[31m+     "after": [[39m
+[31m+       "a",[39m
+[31m+     ],[39m
+[31m+     "before": [[39m
+[31m+       "a",[39m
+[31m+     ],[39m
+[31m+     "path": "stay.includes",[39m
+[31m+   },[39m
+[31m+ ][39m
+
+ ❯ src/lib/profile-maps.test.ts:144:80
+    142| 
+    143|   it('un valor igual al guardado no es un cambio', () => {
+    144|     expect(mergeMap('stay', { includes: ['a'] }, { includes: ['a'] }).…
+       |                                                                                ^
+    145|     expect(mergeMap('stay', {}, { includes: [] }).changes).toEqual([]);
+    146|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/lib/profile-maps.test.ts > mergeMap > acceptsCommissions false borra la clave y no es un cambio si no estaba
+AssertionError: expected [ { …(3) } ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   {[39m
+[31m+     "after": undefined,[39m
+[31m+     "before": undefined,[39m
+[31m+     "path": "craft.acceptsCommissions",[39m
+[31m+   },[39m
+[31m+ ][39m
+
+ ❯ src/lib/profile-maps.test.ts:163:92
+    161|       write: { mode: 'delete' },
+    162|     });
+    163|     expect(mergeMap('craft', { materials: ['a'] }, { acceptsCommission…
+       |                                                                                            ^
+    164|   });
+    165| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/lib/profile-maps.test.ts > mergeMap > un null guardado que se vacía, o basura que se normaliza a lo mismo, no es un cambio (ronda 1, C1)
+AssertionError: expected [ { path: 'stay.bring', …(2) } ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   {[39m
+[31m+     "after": undefined,[39m
+[31m+     "before": null,[39m
+[31m+     "path": "stay.bring",[39m
+[31m+   },[39m
+[31m+ ][39m
+
+ ❯ src/lib/profile-maps.test.ts:167:83
+    165| 
+    166|   it('un null guardado que se vacía, o basura que se normaliza a lo mi…
+    167|     expect(mergeMap('stay', { bring: null, capacity: 4 }, { bring: [] …
+       |                                                                                   ^
+    168|     expect(mergeMap('stay', { houseRules: null }, { houseRules: {} }).…
+    169|     expect(mergeMap('stay', { includes: ['a', 5] }, { includes: ['a'] …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/lib/profile-maps.test.ts > mergeMap > solo se escribe lo que se lista: un hermano igual a lo mostrado no se toca (ronda 2, C2)
+AssertionError: expected [ 'stay.includes', 'stay.bring' ] to deeply equal [ 'stay.bring' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[31m+   "stay.includes",[39m
+[2m    "stay.bring",[22m
+[2m  ][22m
+
+ ❯ src/lib/profile-maps.test.ts:183:42
+    181|   it('solo se escribe lo que se lista: un hermano igual a lo mostrado …
+    182|     const a = mergeMap('stay', { includes: ['a', 5], bring: ['x'] }, {…
+    183|     expect(a.changes.map((c) => c.path)).toEqual(['stay.bring']);
+       |                                          ^
+    184|     expect(a.write).toEqual({ mode: 'paths', paths: { 'stay.bring': ['…
+    185|     const b = mergeMap('stay', { bring: null, includes: ['a'] }, { bri…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/lib/profile-maps.test.ts > mergeMap > lo que queda igual a lo mostrado deja el valor guardado como está (ronda 3, hueco de pruebas)
+AssertionError: expected { changes: [ { …(3) }, …(2) ], …(1) } to deeply equal { changes: [], write: { …(2) } }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "changes": [],[39m
+[31m+   "changes": [[39m
+[31m+     {[39m
+[31m+       "after": undefined,[39m
+[31m+       "before": undefined,[39m
+[31m+       "path": "stay.includes",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "after": undefined,[39m
+[31m+       "before": undefined,[39m
+[31m+       "path": "stay.bring",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "after": undefined,[39m
+[31m+       "before": undefined,[39m
+[31m+       "path": "stay.houseRules",[39m
+[31m+     },[39m
+[31m+   ],[39m
+[2m    "write": {[22m
+[32m-     "mode": "paths",[39m
+[32m-     "paths": {},[39m
+[31m+     "mode": "delete",[39m
+[2m    },[22m
+[2m  }[22m
+
+ ❯ src/lib/profile-maps.test.ts:193:86
+    191| 
+    192|   it('lo que queda igual a lo mostrado deja el valor guardado como est…
+    193|     expect(mergeMap('stay', 'texto', { includes: [], bring: [], houseR…
+       |                                                                                      ^
+    194|     expect(mergeMap('craft', { materials: ['a'] }, { acceptsCommission…
+    195|     const keep = mergeMap('stay', { includes: ['a'], priceFrom: 3 }, {…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  6 failed | 145 passed (151)
+   Start at  02:46:31
+   Duration  19.56s (transform 335ms, setup 20ms, collect 663ms, tests 17.93s, environment 1ms, prepare 311ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts" exited with code 1
