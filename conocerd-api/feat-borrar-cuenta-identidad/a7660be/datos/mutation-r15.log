@@ -1,0 +1,93 @@
+# R15 at a7660be, with i16-traveler-sessions-revoked.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-identidad/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-identidad/emu.sh test/account-delete-owner.test.ts test/account-delete-route.test.ts src/lib/account-deletion.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18162.
+i  Running script: pnpm exec vitest run test/account-delete-owner.test.ts test/account-delete-route.test.ts src/lib/account-deletion.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-identidad
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo
+[app-check] ausente /business/me
+
+stderr | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe
+[conocerd-api] la cuenta se borró pero no quedó la constancia en accountDeletions
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado
+[app-check] ausente /account-delete
+
+ ❯ test/account-delete-owner.test.ts (17 tests | 1 failed) 8225ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K1 K2 K5 K7 K10: la dueña se borra, la ficha y las respuestas se quedan, sus pedidos y datos se van  1236ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo  1662ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina  422ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > un fallo de Auth dentro de revokeOwnership  491ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el retiro de un pedido falla  470ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el borrado de ficheros falla  455ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > falla justo después de los datos de negocio (paso 5)  400ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > recursiveDelete falla  390ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > deleteUser falla  389ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: una propiedad que ya no está cuando el paso 2 la revoca (`409 not_owner`) cuenta como hecha 97ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K13: con un borrado en curso, otro responde 409 sin escribir; un candado de hace 121 s se toma  401ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K14: una propiedad concedida a mitad del borrado se revoca en la segunda pasada 279ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K15: si la verificación encuentra una concesión dos veces, 500 deletion_incomplete y Auth se queda  343ms
+   × borrado de una cuenta de negocio contra el emulador > K18 K20: un viajero se borra como antes: sin pasos de negocio, cifras nuevas en cero, el informe con sus claves 82ms
+     → expected [ 'revokeRefreshTokens', 'deleteUser' ] to deeply equal [ 'deleteUser' ]
+   ✓ borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe 241ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado 181ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K22: el orden: enlaces y sesiones antes de los ficheros, ficheros vacíos antes de limpiar sus documentos, Auth y la constancia al final 186ms
+stdout | test/account-delete-route.test.ts > borrado de cuenta contra el emulador > la reseña sobrevive sin autor y el rating del lugar no se mueve
+[app-check] ausente /reviews
+
+stdout | test/account-delete-route.test.ts > borrado de cuenta contra el emulador > una sesión vieja no puede borrar la cuenta sin volver a identificarse
+[app-check] ausente /account-delete
+
+stdout | test/account-delete-route.test.ts > borrado de cuenta contra el emulador > una sesión vieja no puede borrar la cuenta sin volver a identificarse
+[app-check] ausente /account-delete
+
+ ✓ test/account-delete-route.test.ts (7 tests) 2415ms
+   ✓ borrado de cuenta contra el emulador > la reseña sobrevive sin autor y el rating del lugar no se mueve  327ms
+   ✓ borrado de cuenta contra el emulador > una sesión vieja no puede borrar la cuenta sin volver a identificarse  1121ms
+ ✓ src/lib/account-deletion.test.ts (4 tests) 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K18 K20: un viajero se borra como antes: sin pasos de negocio, cifras nuevas en cero, el informe con sus claves
+AssertionError: expected [ 'revokeRefreshTokens', 'deleteUser' ] to deeply equal [ 'deleteUser' ]
+
+- Expected
++ Received
+
+  [
++   "revokeRefreshTokens",
+    "deleteUser",
+  ]
+
+ ❯ test/account-delete-owner.test.ts:662:19
+    660|     });
+    661|     expect(revoke).not.toHaveBeenCalled();
+    662|     expect(calls).toEqual(['deleteUser']);
+       |                   ^
+    663|     expect((await db().collection(deletion.ACCOUNT_DELETION_LEASES).do…
+    664|     const record = await db().collection('accountDeletions').where('au…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 27 passed (28)
+   Start at  12:22:30
+   Duration  11.45s (transform 286ms, setup 11ms, collect 367ms, tests 10.64s, environment 0ms, prepare 132ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/account-delete-owner.test.ts test/account-delete-route.test.ts src/lib/account-deletion.test.ts" exited with code 1
