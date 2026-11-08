@@ -1,0 +1,146 @@
+# R2 at 34df5c9, with m9.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu.sh test/monthly-report.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/monthly-report.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/informe-mensual-composicion
+
+stderr | test/monthly-report.test.ts > ronda 1 de revisión > C1: con PANEL_BASE_URL=https://x.example:443, el pie y el cuerpo comparten host
+[conocerd-api] PANEL_BASE_URL no es https://host sin ruta: los correos usan la dirección por defecto
+
+ ❯ test/monthly-report.test.ts (94 tests | 1 failed) 2076ms
+   ✓ cifras del resumen mensual (M5) > F-1: con teléfono, contacto es WhatsApp más llamadas, con el reparto debajo 6ms
+   ✓ cifras del resumen mensual (M5) > F-2: sin teléfono no hay Llamar en ningún lado, aunque el agregado traiga llamadas 1ms
+   ✓ cifras del resumen mensual (M5) > F-3: por excursión, la parte general y cada excursión con su nombre, y suman el total 1ms
+   ✓ cifras del resumen mensual (M5) > F-3: con teléfono, WhatsApp y llamadas de la misma excursión van en una sola fila 1ms
+   ✓ cifras del resumen mensual (M5) > F-3: sin toques en ninguna excursión no hay filas 0ms
+   ✓ cifras del resumen mensual (M5) > F-4: el contacto es el de contactSummary (general más excursiones), no el total guardado 1ms
+   ✓ cifras del resumen mensual (M5) > F-5: una persona en singular; sin contacto, el asunto habla de las visitas 1ms
+   ✓ cifras del resumen mensual (M5) > F-6: sin mes anterior lo dice; con mes anterior compara como Hoy 1ms
+   ✓ cifras del resumen mensual (M5) > F-7: guardados al cerrar el mes, comparados con el cierre anterior 1ms
+   ✓ cifras del resumen mensual (M5) > F-8: sin cierre, el número de ahora mismo y sin comparación 1ms
+   ✓ cifras del resumen mensual (M5) > F-9: reseñas del mes, su promedio y primero las que esperan respuesta; la del mes siguiente no cuenta 1ms
+   ✓ cifras del resumen mensual (M5) > F-9: nunca más de 3 extractos 2ms
+   ✓ cifras del resumen mensual (M5) > F-10: el extracto se corta a 160 grafemas con «…» y no parte un emoji 1ms
+   ✓ cifras del resumen mensual (M5) > F-10: un sustituto suelto se vuelve U+FFFD antes de cortar 0ms
+   ✓ cifras del resumen mensual (M5) > F-11: con desglose por día en el resumen, el correo no lleva ningún día ni hora 1ms
+   ✓ cifras del resumen mensual (M5) > F-13: los guardados no cuentan para un mes en cero 0ms
+   ✓ cifras del resumen mensual (M5) > F-14: sin reseñas por contestar, la tarea es lo primero que falta en el orden del panel 0ms
+   ✓ cifras del resumen mensual (M5) > F-15: sin enlace de reserva ni excursiones, no hay bloque de Reservar ni de excursión 0ms
+   ✓ cifras del resumen mensual (M5) > F-16: con más de un negocio, el asunto nombra el negocio 0ms
+   ✓ cifras del resumen mensual (M5) > M9: el primer resumen en cero dice que es el primero y trae la tarea 0ms
+   ✓ cifras del resumen mensual (M5) > un mes con algo, que no es el primero, dice "Tu resumen de" 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > F-17 conTelefono: ninguna cifra usa un verbo prohibido 1ms
+   ✓ texto del resumen mensual (H2 y R-1) > F-17 tours: ninguna cifra usa un verbo prohibido 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > F-17 ceroPrimero: ninguna cifra usa un verbo prohibido 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > F-17 ceroConGuardados: ninguna cifra usa un verbo prohibido 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > F-17 soloVisitas: ninguna cifra usa un verbo prohibido 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > F-17 unaPersona: ninguna cifra usa un verbo prohibido 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > R-1 conTelefono: el texto y el HTML llevan los mismos números y las mismas direcciones 1ms
+   ✓ texto del resumen mensual (H2 y R-1) > R-1 tours: el texto y el HTML llevan los mismos números y las mismas direcciones 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > R-1 ceroPrimero: el texto y el HTML llevan los mismos números y las mismas direcciones 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > R-1 ceroConGuardados: el texto y el HTML llevan los mismos números y las mismas direcciones 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > R-1 soloVisitas: el texto y el HTML llevan los mismos números y las mismas direcciones 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > R-1 unaPersona: el texto y el HTML llevan los mismos números y las mismas direcciones 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > H2 conTelefono: pie con la dirección, sin RNC, sin teléfono ni wa.me, ayuda por el buzón 1ms
+   ✓ texto del resumen mensual (H2 y R-1) > H2 tours: pie con la dirección, sin RNC, sin teléfono ni wa.me, ayuda por el buzón 1ms
+   ✓ texto del resumen mensual (H2 y R-1) > H2 ceroPrimero: pie con la dirección, sin RNC, sin teléfono ni wa.me, ayuda por el buzón 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > H2 ceroConGuardados: pie con la dirección, sin RNC, sin teléfono ni wa.me, ayuda por el buzón 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > H2 soloVisitas: pie con la dirección, sin RNC, sin teléfono ni wa.me, ayuda por el buzón 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > H2 unaPersona: pie con la dirección, sin RNC, sin teléfono ni wa.me, ayuda por el buzón 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > U6 conTelefono: el pie lleva la baja de un toque con el token que se le pasa 1ms
+   ✓ texto del resumen mensual (H2 y R-1) > U6 tours: el pie lleva la baja de un toque con el token que se le pasa 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > U6 ceroPrimero: el pie lleva la baja de un toque con el token que se le pasa 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > U6 ceroConGuardados: el pie lleva la baja de un toque con el token que se le pasa 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > U6 soloVisitas: el pie lleva la baja de un toque con el token que se le pasa 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > U6 unaPersona: el pie lleva la baja de un toque con el token que se le pasa 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > el nombre del negocio va escapado en el HTML y literal en el texto 1ms
+   ✓ texto del resumen mensual (H2 y R-1) > el id del negocio va codificado en los enlaces 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > el documento tiene la vista previa: la tarea, o la comparación si no hay tarea 1ms
+   ✓ texto del resumen mensual (H2 y R-1) > sin buzón de ayuda, remite a la persona de ConoceRD que lo atendió 0ms
+   ✓ texto del resumen mensual (H2 y R-1) > compruébalo solo cuando hubo toques de WhatsApp, y "las llamadas" solo con teléfono 3ms
+   ✓ ronda 1 de revisión > C2: un nombre con saltos queda en una línea, en el texto y en el HTML, sin enlace de más 1ms
+   ✓ ronda 1 de revisión > C2: un nombre largo se corta a 60 caracteres con «…»; vacío es "Alguien" 0ms
+   ✓ ronda 1 de revisión > C2: el nombre del negocio y el de una excursión también quedan en una línea 0ms
+   ✓ ronda 1 de revisión > C4: una reseña sin texto cuenta en las cifras pero no ocupa un extracto 0ms
+   ✓ ronda 1 de revisión > C5: la cuenta y el promedio son del mismo grupo: las que tienen una calificación válida 0ms
+   ✓ ronda 1 de revisión > C7: singular y plural de las cifras aparte y de los guardados 1ms
+   ✓ ronda 1 de revisión > C1: con PANEL_BASE_URL=https://x.example:443, el pie y el cuerpo comparten host 2ms
+   ✓ ronda 1 de revisión > C1: con PANEL_BASE_URL=https://x.example//, el pie y el cuerpo comparten host 0ms
+   ✓ ronda 1 de revisión > C1: con PANEL_BASE_URL=https://panel.x1, el pie y el cuerpo comparten host 0ms
+   ✓ ronda 1 de revisión > C1: con PANEL_BASE_URL=https://xn--p1ai.xn--p1ai, el pie y el cuerpo comparten host 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de U+200B es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de U+3164 es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de U+2800 es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de U+115F es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de U+1160 es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de U+202E es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de U+2066 es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de U+00AD es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de U+FEFF es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de ESC es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre hecho solo de NUL es "Alguien" 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > esos caracteres se quitan dentro de un nombre, sin pegar las palabras separadas por saltos 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre de 500 marcas combinadas queda corto y bien formado 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > el tope de 120 unidades no parte un par sustituto 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un texto hecho solo de caracteres invisibles cuenta en las cifras pero no lleva cita 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un emoji con uniones sigue entero en un extracto 0ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > un nombre que es una dirección va en una línea y nunca como enlace en el HTML 1ms
+   ✓ ronda 2 de revisión: caracteres invisibles en textos de otras personas > el nombre del negocio y el de una excursión pasan por la misma limpieza 0ms
+   ✓ a quién le llegaría (3.2, decisión pura) > E-1: con todo en regla, le llegaría 0ms
+   ✓ a quién le llegaría (3.2, decisión pura) > E-2: con el resumen apagado, opted_out; ausente o con otra forma, encendido 0ms
+   ✓ a quién le llegaría (3.2, decisión pura) > E-3: propiedad revocada, not_owner 0ms
+   ✓ a quién le llegaría (3.2, decisión pura) > E-4: el claim biz no trae el destino, not_owner 0ms
+   ✓ a quién le llegaría (3.2, decisión pura) > E-5: un destino sin el panel en su plan, no_dashboard, antes que todo lo de la cuenta 0ms
+   ✓ a quién le llegaría (3.2, decisión pura) > E-6: sin verificar, deshabilitada, sin correo o sin cuenta 0ms
+   × a quién le llegaría (3.2, decisión pura) > F-12 y M9: un mes en cero sale solo como primer resumen 8ms
+     → expected 'empty_skip' to be 'would_send' // Object.is equality
+   ✓ a quién le llegaría (3.2, decisión pura) > el consentimiento pesa antes que un mes vacío 0ms
+   ✓ resumen mensual contra el emulador > F-9: la consulta trae las visibles del mes, de la primera a la última fracción, y nada del siguiente  1032ms
+   ✓ resumen mensual contra el emulador > M5: cada cifra es la de loadOverview para ese destino y ese mes cerrado 115ms
+   ✓ resumen mensual contra el emulador > firstReport: una fila enviada de esa cuenta y ese destino lo apaga; una de prueba no 58ms
+   ✓ resumen mensual contra el emulador > E-1 a E-7 y E-9: cada dueño activo con su decisión, sin miembros ni revocados 282ms
+   ✓ resumen mensual contra el emulador > E-5: un destino minimal deja a cada dueño en no_dashboard 43ms
+   ✓ resumen mensual contra el emulador > la fila del mes, si existe, sale con su estado; una cuenta borrada es not_owner 69ms
+   ✓ resumen mensual contra el emulador > C5: con 201 reseñas visibles en el mes, el correo cuenta y promedia las 200 más nuevas  321ms
+   ✓ resumen mensual contra el emulador > F-16: el número de negocios con el panel de una cuenta, para el asunto 69ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/monthly-report.test.ts > a quién le llegaría (3.2, decisión pura) > F-12 y M9: un mes en cero sale solo como primer resumen
+AssertionError: expected 'empty_skip' to be 'would_send' // Object.is equality
+
+Expected: [32m"would_send"[39m
+Received: [31m"empty_skip"[39m
+
+ ❯ test/monthly-report.test.ts:638:76
+    639| 
+    640|   it('el consentimiento pesa antes que un mes vacío', () => {
+    641|     expect(decideEligibility(facts({ allZero: true, owner: { monthlyRe…
+       |       ^
+    642|   });
+    643| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 93 passed (94)
+   Start at  12:33:04
+   Duration  2.92s (transform 254ms, setup 13ms, collect 626ms, tests 2.08s, environment 0ms, prepare 58ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/monthly-report.test.ts" exited with code 1
