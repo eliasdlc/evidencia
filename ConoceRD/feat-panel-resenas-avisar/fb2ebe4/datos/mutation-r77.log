@@ -1,0 +1,72 @@
+# R77 at fb2ebe4, with m5.patch applied
+# $ pnpm exec vitest run src/features/negocio/resenas/avisar.test.ts src/features/negocio/resenas/Avisar.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-resenas-avisar
+
+ ❯ src/features/negocio/resenas/avisar.test.ts (14 tests | 2 failed) 39ms
+   ❯ reportFailure (3)
+     × says each code in plain Spanish 17ms
+     × allows another try only when it can work 5ms
+ ❯ src/features/negocio/resenas/Avisar.test.tsx (33 tests | 1 failed) 2803ms
+   ❯ every error keeps what the owner typed (11)
+     × 429 says it in Spanish and keeps the reason and the note 108ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > every error keeps what the owner typed > 429 says it in Spanish and keeps the reason and the note
+AssertionError: expected 'ReseñasLos comentarios que te dejan e…' to contain 'Mandaste muchos avisos hoy. Prueba ma…'
+
+Expected: "Mandaste muchos avisos hoy. Prueba mañana."
+Received: "ReseñasLos comentarios que te dejan en la app, con sus estrellas.Comedor de pruebaTodasSin responderAAnaSin respondersábado 21 de noviembreMala experiencia, dice AnaResponder a AnaAvisarle al equipo de esta reseñaSi crees que esta reseña no cumple las reglas, avísale al equipo de ConoceRD. La revisamos y, si no las cumple, la retiramos. La reseña sigue publicada y puedes contestarla igual.¿Qué pasa con esta reseña?Esta persona no vino a mi negocioParece falsa o es de otro negocioTiene insultos o datos personalesOtra razónCuéntanos más (si quieres)Ese día estuvimos cerrados.27 de 500No pudimos mandar el aviso ahora. Prueba otra vez en un rato.Intentar otra vezCancelarEsas son todas."
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:385:20
+    383|     await typeNote(NOTE);
+    384|     await click(send());
+    385|     expect(text()).toContain(copy);
+       |                    ^
+    386|     expect(form()).not.toBeNull();
+    387|     expect(radio('insults_or_personal_data').checked).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/features/negocio/resenas/avisar.test.ts > reportFailure > says each code in plain Spanish
+AssertionError: expected 'No pudimos mandar el aviso ahora. Pru…' to be 'Mandaste muchos avisos hoy. Prueba ma…' // Object.is equality
+
+Expected: "Mandaste muchos avisos hoy. Prueba mañana."
+Received: "No pudimos mandar el aviso ahora. Prueba otra vez en un rato."
+
+ ❯ src/features/negocio/resenas/avisar.test.ts:36:44
+     34|
+     35|   it('says each code in plain Spanish', () => {
+     36|     expect(copy(429, 'too_many_requests')).toBe('Mandaste muchos aviso…
+       |                                            ^
+     37|     expect(copy(403, 'not_owner')).toBe('Tu cuenta no puede avisar de …
+     38|     expect(copy(403, 'role_forbidden')).toBe('Tu cuenta no puede avisa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/features/negocio/resenas/avisar.test.ts > reportFailure > allows another try only when it can work
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/features/negocio/resenas/avisar.test.ts:60:78
+     58|
+     59|   it('allows another try only when it can work', () => {
+     60|     expect(reportFailure(new ApiError(429, 'too_many_requests', 'x')).…
+       |                                                                              ^
+     61|     expect(reportFailure(new ApiError(409, 'own_review', 'x')).again).…
+     62|     expect(reportFailure(new ApiError(404, 'not_found', 'x')).again).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 44 passed (47)
+   Start at  10:18:32
+   Duration  3.70s (tests 79%, environment 13%, import 6%, transform 1%)
+
