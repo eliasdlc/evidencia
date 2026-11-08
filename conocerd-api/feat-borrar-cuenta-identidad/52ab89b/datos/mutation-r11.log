@@ -1,0 +1,125 @@
+# R11 at 52ab89b, with i9-unverified-delete.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-identidad/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-identidad/emu.sh test/account-delete-owner.test.ts src/lib/account-deletion.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18162.
+i  Running script: pnpm exec vitest run test/account-delete-owner.test.ts src/lib/account-deletion.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-identidad
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo
+[app-check] ausente /business/me
+
+stderr | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina
+No se pudieron borrar todas las fotos de los pedidos de negocio
+
+stderr | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe
+[conocerd-api] la cuenta se borró pero no quedó la constancia en accountDeletions
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado
+[app-check] ausente /account-delete
+
+ ❯ test/account-delete-owner.test.ts (17 tests | 1 failed) 9091ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K1 K2 K5 K7 K10: la dueña se borra, la ficha y las respuestas se quedan, sus pedidos y datos se van  1717ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo  1808ms
+   × borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina 420ms
+     → promise resolved "{ diaryEntriesDeleted: +0, …(11) }" instead of rejecting
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > un fallo de Auth dentro de revokeOwnership  493ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el retiro de un pedido falla  409ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el borrado de ficheros falla  365ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > falla justo después de los datos de negocio (paso 5)  367ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > recursiveDelete falla  398ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > deleteUser falla  401ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: una propiedad que ya no está cuando el paso 2 la revoca (`409 not_owner`) cuenta como hecha 104ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K13: con un borrado en curso, otro responde 409 sin escribir; un candado de hace 121 s se toma  394ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K14: una propiedad concedida a mitad del borrado se revoca en la segunda pasada 289ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K15: si la verificación encuentra una concesión dos veces, 500 deletion_incomplete y Auth se queda  359ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K18 K20: un viajero se borra como antes: sin pasos de negocio, cifras nuevas en cero, el informe con sus claves 75ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe 274ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado 225ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K22: el orden: enlaces y sesiones antes de los ficheros, ficheros vacíos antes de limpiar sus documentos, Auth y la constancia al final 259ms
+stderr | src/lib/account-deletion.test.ts > deleteDiaryPhotos > si queda alguna foto detrás, aborta en vez de seguir hacia el borrado de la cuenta
+No se pudieron borrar todas las fotos del diario
+
+ ❯ src/lib/account-deletion.test.ts (4 tests | 1 failed) 9ms
+   ✓ deleteDiaryPhotos > borra bajo el prefijo del dueño y solo ese 1ms
+   ✓ deleteDiaryPhotos > sin fotos no hace nada y no falla 0ms
+   × deleteDiaryPhotos > si queda alguna foto detrás, aborta en vez de seguir hacia el borrado de la cuenta 6ms
+     → promise resolved "1" instead of rejecting
+   ✓ leaseIdFor > es fijo por cuenta y no lleva el uid dentro (I11, sección 4) 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina
+AssertionError: promise resolved "{ diaryEntriesDeleted: +0, …(11) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "businessPhotosRemoved": 0,
++   "diaryEntriesDeleted": 0,
++   "linksRevoked": 3,
++   "membershipsRemoved": 0,
++   "notified": false,
++   "ownerRequestsWithdrawn": 1,
++   "ownershipsRevoked": 2,
++   "peopleRemoved": 0,
++   "photosDeleted": 0,
++   "placeRequestsDeleted": 0,
++   "publishedRoutesDeleted": 0,
++   "reviewsAnonymized": 0,
+  }
+
+ ❯ test/account-delete-owner.test.ts:480:24
+    478|     f.files.stuck.add(`claims/${f.O.uid}/`);
+    479| 
+    480|     await expect(run(f)).rejects.toMatchObject({ status: 500, code: 's…
+       |                        ^
+    481|     expect(await exists(f.O.uid)).toBe(true);
+    482| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/account-deletion.test.ts > deleteDiaryPhotos > si queda alguna foto detrás, aborta en vez de seguir hacia el borrado de la cuenta
+AssertionError: promise resolved "1" instead of rejecting
+
+- Expected: 
+Error {
+  "message": "rejected promise",
+}
+
++ Received: 
+1
+
+ ❯ src/lib/account-deletion.test.ts:43:49
+     41|   it('si queda alguna foto detrás, aborta en vez de seguir hacia el bo…
+     42|     const photos = store(['diary/yo/a.jpg'], () => {});
+     43|     await expect(deleteDiaryPhotos('yo', photos)).rejects.toMatchObjec…
+       |                                                 ^
+     44|   });
+     45| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 19 passed (21)
+   Start at  13:22:42
+   Duration  9.78s (transform 351ms, setup 11ms, collect 354ms, tests 9.10s, environment 0ms, prepare 95ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/account-delete-owner.test.ts src/lib/account-deletion.test.ts" exited with code 1
