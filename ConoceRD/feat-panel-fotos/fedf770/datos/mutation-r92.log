@@ -1,0 +1,119 @@
+# R92 at fedf770, with m4.patch applied
+# $ pnpm exec vitest run src/features/negocio/fotos/model.test.ts src/features/negocio/fotos/FotosPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-fotos
+
+ ❯ src/features/negocio/fotos/model.test.ts (35 tests | 4 failed) 25ms
+   ❯ statusLine (3)
+     × says each status in the words of the contract 7ms
+     × says a photo that was in the app left it 2ms
+     × does not print "null" when a rejected photo has no reason 1ms
+   ❯ photoName (1)
+     × uses the caption, else says the photo has none and what state it is in 2ms
+stderr | src/features/negocio/fotos/FotosPage.test.tsx > Tus fotos, the list > says the cap, the counts, the review promise and each status in the contract words
+The current testing environment is not configured to support act(...)
+
+stderr | src/features/negocio/fotos/FotosPage.test.tsx > Tus fotos, the list > says the cap, the counts, the review promise and each status in the contract words
+The current testing environment is not configured to support act(...)
+
+stderr | src/features/negocio/fotos/FotosPage.test.tsx > Tus fotos, the list > says the cap, the counts, the review promise and each status in the contract words
+The current testing environment is not configured to support act(...)
+
+ ❯ src/features/negocio/fotos/FotosPage.test.tsx (46 tests | 1 failed) 3267ms
+   ❯ Tus fotos, the list (5)
+     × says the cap, the counts, the review promise and each status in the contract words 151ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/fotos/FotosPage.test.tsx > Tus fotos, the list > says the cap, the counts, the review promise and each status in the contract words
+AssertionError: expected ' Volver a lo que ve la genteTus fotos…' to contain 'No la pudimos usar: sale borrosa'
+
+Expected: "No la pudimos usar: sale borrosa"
+Received: " Volver a lo que ve la genteTus fotosExcursiones de pruebaPon las fotos que venden tu negocio. El equipo revisa cada foto antes de que salga en la app: La revisamos y sale en la app en unas horas, a más tardar mañana.Cuando la revisemos, te avisamos por correo. Puedes tener hasta 12 fotos. Tienes 2: 1 en revisión y 1 ya sale en la app. Subir una fotoLa cola de la ballena En revisiónQuitarEl pescado frito Ya sale en la appQuitarLa quitamos de la app: sale borrosaLa quitamos de tu lista el domingo 15 de noviembre.QuitarNo la pudimos usar: es igual a otra que ya tienesQuitarQué fotos no salenLas borrosas, las que tienen letreros de otro negocio y las que enseñan la cara de un cliente sin su permiso. Si una no sale, te decimos por qué."
+
+ ❯ src/features/negocio/fotos/FotosPage.test.tsx:243:18
+    241|     expect(text).toContain('En revisión');
+    242|     expect(text).toContain('Ya sale en la app');
+    243|     expect(text).toContain('No la pudimos usar: sale borrosa');
+       |                  ^
+    244|     expect(text).toContain('La quitamos de la app: es igual a otra que…
+    245|     expect(text).toContain('La quitamos de tu lista el domingo 15 de n…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/features/negocio/fotos/model.test.ts > statusLine > says each status in the words of the contract
+AssertionError: expected { tone: 'coral', …(1) } to deeply equal { tone: 'coral', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "text": "No la pudimos usar: sale borrosa",
++   "text": "La quitamos de la app: sale borrosa",
+    "tone": "coral",
+  }
+
+ ❯ src/features/negocio/fotos/model.test.ts:158:93
+    156|     expect(statusLine({ status: 'in_review', reason: null, wasPublishe…
+    157|     expect(statusLine({ status: 'published', reason: null, wasPublishe…
+    158|     expect(statusLine({ status: 'rejected', reason: 'sale borrosa', wa…
+       |                                                                                             ^
+    159|   });
+    160|   it('says a photo that was in the app left it', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/features/negocio/fotos/model.test.ts > statusLine > says a photo that was in the app left it
+AssertionError: expected 'No la pudimos usar: es igual a otra q…' to be 'La quitamos de la app: es igual a otr…' // Object.is equality
+
+Expected: "La quitamos de la app: es igual a otra que ya tienes"
+Received: "No la pudimos usar: es igual a otra que ya tienes"
+
+ ❯ src/features/negocio/fotos/model.test.ts:161:114
+    159|   });
+    160|   it('says a photo that was in the app left it', () => {
+    161|     expect(statusLine({ status: 'rejected', reason: 'es igual a otra q…
+       |                                                                                                                  ^
+    162|   });
+    163|   it('does not print "null" when a rejected photo has no reason', () =…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/features/negocio/fotos/model.test.ts > statusLine > does not print "null" when a rejected photo has no reason
+AssertionError: expected 'La quitamos de la app.' to be 'No la pudimos usar.' // Object.is equality
+
+Expected: "No la pudimos usar."
+Received: "La quitamos de la app."
+
+ ❯ src/features/negocio/fotos/model.test.ts:164:88
+    162|   });
+    163|   it('does not print "null" when a rejected photo has no reason', () =…
+    164|     expect(statusLine({ status: 'rejected', reason: null, wasPublished…
+       |                                                                                        ^
+    165|     expect(statusLine({ status: 'rejected', reason: '  ', wasPublished…
+    166|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/features/negocio/fotos/model.test.ts > photoName > uses the caption, else says the photo has none and what state it is in
+AssertionError: expected 'Foto sin título (la quitamos de la ap…' to be 'Foto sin título (no la pudimos usar)' // Object.is equality
+
+Expected: "Foto sin título (no la pudimos usar)"
+Received: "Foto sin título (la quitamos de la app)"
+
+ ❯ src/features/negocio/fotos/model.test.ts:191:107
+    189|     expect(photoName({ caption: ' La cola ', status: 'published', reas…
+    190|     expect(photoName({ caption: null, status: 'in_review', reason: nul…
+    191|     expect(photoName({ caption: null, status: 'rejected', reason: 'sal…
+       |                                                                                                           ^
+    192|   });
+    193| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 76 passed (81)
+   Start at  10:49:26
+   Duration  3.75s (tests 89%, environment 6%, import 3%, transform 1%)
+
