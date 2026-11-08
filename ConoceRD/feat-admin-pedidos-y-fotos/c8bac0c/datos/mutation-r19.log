@@ -1,0 +1,35 @@
+# R19 at c8bac0c, with r17-batch-id-uuid.patch applied
+# $ pnpm exec vitest run src/app/destinos/fotos-dueno/acciones.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/admin-pedidos-y-fotos
+
+ ❯ src/app/destinos/fotos-dueno/acciones.test.ts (8 tests | 1 failed) 14ms
+     × un batchId que no es un UUID v4 no llega a la API 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/destinos/fotos-dueno/acciones.test.ts > guardar una revisión de fotos > un batchId que no es un UUID v4 no llega a la API
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/app/destinos/fotos-dueno/acciones.test.ts:66:18
+     64|     api(() => publicadas(1));
+     65|     const r = await guardarRevision({ destinoId: 'd1', batchId: 'uno',…
+     66|     expect(r.ok).toBe(false);
+       |                  ^
+     67|     expect(llamarApi).not.toHaveBeenCalled();
+     68|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  15:11:16
+   Duration  456ms (transform 66ms, setup 0ms, import 300ms, tests 14ms, environment 0ms)
+
