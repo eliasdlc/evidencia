@@ -1,0 +1,17 @@
+# R8 at 6008b42, with r8.patch applied
+# $ bin/test -race -run TestHeal
+FAIL  lifecycle_test.go::TestHealASocketThatDiedSilently
+FAIL  lifecycle_test.go::TestHealAfterABootWithoutNetwork
+PASS  lifecycle_test.go::TestHealKeepAliveTimeoutAndRestore
+FAIL  lifecycle_test.go::TestHealLeavesStatesThatNeedAPersonAndWaitsOutABan
+
+FAILED lifecycle_test.go::TestHealAfterABootWithoutNetwork
+    lifecycle_test.go:241: reconnects 0 after three minutes offline
+
+FAILED lifecycle_test.go::TestHealASocketThatDiedSilently
+    lifecycle_test.go:254: reconnects 0
+
+FAILED lifecycle_test.go::TestHealLeavesStatesThatNeedAPersonAndWaitsOutABan
+    lifecycle_test.go:286: reconnects 0 after the ban expired
+
+1 passed, 3 failed
