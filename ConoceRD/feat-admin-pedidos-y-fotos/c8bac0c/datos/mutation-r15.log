@@ -1,0 +1,117 @@
+# R15 at c8bac0c, with r09-solo-la-api.patch applied
+# $ pnpm exec vitest run src/app/solicitudes/pedidos/acciones.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/admin-pedidos-y-fotos
+
+ ❯ src/app/solicitudes/pedidos/acciones.test.ts (7 tests | 1 failed) 29ms
+     × nunca escribe en Firestore: el único canal es la API 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/solicitudes/pedidos/acciones.test.ts > la acción de decidir > nunca escribe en Firestore: el único canal es la API
+AssertionError: expected '\'use server\';\n\nimport { revalidat…' not to match /firebase-admin|adminDb|claims\b.*set\(/
+
+- Expected:
+/firebase-admin|adminDb|claims\b.*set\(/
+
++ Received:
+"'use server';
+
+import { revalidatePath } from 'next/cache';
+
+import { exigirAdmin } from '@/lib/auth';
+import { ErrorDeApi } from '@/lib/api';
+import { adminDb } from '@/lib/firebase-admin';
+void adminDb;
+import { avisosDe, construirDecision, textoDeError } from '@/pedidos/decision';
+import { decidirPedido as decidirEnLaApi, detalleDePedido } from '@/pedidos/servicio';
+
+/**
+ * La decisión sobre un pedido de dueño.
+ *
+ * No escribe nada: pide a `conocerd-api` que decida, a nombre de este admin.
+ * Aprobar concede acceso a un negocio real, y eso (claims, titularidad,
+ * bitácora de acceso, el correo) lo hace la API en una transacción. El panel
+ * no concede claims.
+ *
+ * `exigirAdmin()` va dentro de la acción, como en el resto del panel. Y el
+ * detalle se vuelve a leer aquí: el destino y si hay que elegir entre codueño
+ * y reemplazo salen de lo que dice la API ahora, no de campos que viajaron por
+ * el navegador.
+ */
+
+export type Resultado =
+  | { readonly ok: true; readonly mensaje: string; readonly avisos: readonly string[] }
+  | { readonly ok: false; readonly errores: readonly string[] };
+
+const texto = (datos: FormData, nombre: string): string => {
+  const v = datos.get(nombre);
+  return typeof v === 'string' ? v : '';
+};
+
+export async function decidir(
+  id: string,
+  _previo: Resultado | null,
+  datos: FormData,
+): Promise<Resultado> {
+  const admin = await exigirAdmin();
+
+  let detalle;
+  try {
+    detalle = await detalleDePedido(admin.uid, id);
+  } catch (e) {
+    return { ok: false, errores: [errorLegible(e)] };
+  }
+
+  const construido = construirDecision(
+    {
+      decision: texto(datos, 'decision') || null,
+      nota: texto(datos, 'nota'),
+      resolucion: texto(datos, 'resolucion') || null,
+      motivo: texto(datos, 'motivo') || null,
+      mensaje: texto(datos, 'mensaje'),
+    },
+    detalle,
+  );
+  if (!construido.ok) return construido;
+
+  try {
+    const resultado = await decidirEnLaApi(admin.uid, id, construido.cuerpo);
+    revalidatePath('/solicitudes/pedidos');
+    revalidatePath(`/solicitudes/pedidos/${id}`);
+    return {
+      ok: true,
+      mensaje:
+        construido.cuerpo.decision === 'approve'
+          ? `Aprobado. ${detalle.requester.email ?? 'La cuenta'} ya maneja ${resultado.request.destinationName}.`
+          : 'Rechazado. El motivo le llega a quien lo pidió.',
+      avisos: avisosDe(resultado),
+    };
+  } catch (e) {
+    revalidatePath(`/solicitudes/pedidos/${id}`);
+    return { ok: false, errores: [errorLegible(e)] };
+  }
+}
+
+function errorLegible(e: unknown): string {
+  if (e instanceof ErrorDeApi) return textoDeError(e.codigo, e.message);
+  return 'No se pudo hablar con la API de ConoceRD. Vuelve a intentarlo en un momento.';
+}
+"
+
+ ❯ src/app/solicitudes/pedidos/acciones.test.ts:85:24
+     83|   it('nunca escribe en Firestore: el único canal es la API', async () …
+     84|     const fuente = await import('node:fs').then((fs) => fs.readFileSyn…
+     85|     expect(fuente).not.toMatch(/firebase-admin|adminDb|claims\b.*set\(…
+       |                        ^
+     86|   });
+     87| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  15:10:47
+   Duration  554ms (transform 104ms, setup 0ms, import 395ms, tests 29ms, environment 0ms)
+
