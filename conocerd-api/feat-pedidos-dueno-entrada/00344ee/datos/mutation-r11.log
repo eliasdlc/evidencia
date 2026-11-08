@@ -1,0 +1,82 @@
+# R11 at 00344ee, with r11-i12-retention-days.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-entrada/scrub.sh pnpm exec vitest run src/lib/owner-requests.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada
+
+stderr | src/lib/owner-requests.test.ts > sendRequestReceivedEmail > sin clave no sale nada; un 5xx o el modo prueba no cuentan como enviado
+[conocerd-api] Resend rechazó un correo: 503
+
+ ❯ src/lib/owner-requests.test.ts (33 tests | 1 failed) 74ms
+   ✓ evidencia: rutas (I3) > C4, C5: solo la carpeta del propio uid y del propio requestId 2ms
+   ✓ evidencia: rutas (I3) > C6: n de 1 a 99 sin cero delante, solo .jpg; 7.jpg (un reintento) sí 1ms
+   ✓ evidencia: rutas (I3) > C10: de 1 a 5 rutas distintas, si no 422 evidence_invalid 1ms
+   ✓ evidencia: objetos (I3) > C7: un objeto que no está es 422 0ms
+   ✓ evidencia: objetos (I3) > C8: el tipo guardado manda, no la extensión 0ms
+   ✓ evidencia: objetos (I3) > C9: 10 MB exactos es 422; un byte menos pasa 0ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > acepta los dos tipos de negocio del panel 3ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > C23: coordenadas, un tipo fuera de la lista o un pueblo de una letra son 422 2ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > el requestId es un UUID v4 y el destino un id sin barras 1ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > el WhatsApp queda en dígitos, de 7 a 15 1ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > relation sale de la lista del panel 0ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > la huella no depende del orden de las claves 1ms
+   ✓ planCreate > crea con la cuenta y el negocio al día 4ms
+   ✓ planCreate > I13, C24: el mismo id, la misma cuenta y la misma huella es una repetición 1ms
+   ✓ planCreate > I13, C25: el mismo id con otro cuerpo o de otra cuenta es 409 request_id_taken 1ms
+   ✓ planCreate > C21: un destino que no existe es 422 unknown_destination 1ms
+   ✓ planCreate > C13, C14: ya dueño por el token o por una propiedad activa es 409 already_owner 1ms
+   ✓ planCreate > I1, C11: un segundo pedido abierto de la misma cuenta al mismo negocio es 409 request_exists 1ms
+   ✓ planCreate > C20: un negocio con 10 abiertos es 409 listing_queue_full 2ms
+   ✓ planCreate > I2, C15: con 3 abiertos el cuarto es 429 too_many_requests 2ms
+   ✓ planCreate > I2, C17: el undécimo en la ventana es 429; la ventana vencida empieza de cero 2ms
+   ✓ planCreate > C28: 39 negocios en el token y 1 abierto es 409 too_many_businesses 1ms
+   ✓ planCreate > C18, C19: otro dueño activo u otro pedido abierto lo marcan disputado 8ms
+   ✓ planCreate > un negocio nuevo no toca la lista de ningún negocio y sí la cuenta 2ms
+   ✓ planWithdraw > W2: ajeno o inexistente es 404, nunca 403 2ms
+   ✓ planWithdraw > W3: decidido es 409 not_pending; abierto pasa 2ms
+   × correo de pedido recibido (I12, C29) > dice los días de la foto con el número que recibe, no con uno escrito 9ms
+     → expected 'Hola, Ana:\n\nRecibimos tu pedido par…' to contain 'la guardamos 45 días por si alguien m…'
+   ✓ correo de pedido recibido (I12, C29) > la frase de retención es la del plan, palabra por palabra 0ms
+   ✓ correo de pedido recibido (I12, C29) > ninguna variante menciona a Laura, WhatsApp, llamadas ni el panel 6ms
+   ✓ correo de pedido recibido (I12, C29) > C18: la variante disputada lo dice sin nombrar a nadie 1ms
+   ✓ correo de pedido recibido (I12, C29) > dice a qué dirección llegó 1ms
+   ✓ sendRequestReceivedEmail > C24: la clave es una por pedido, igual en cada repetición 11ms
+   ✓ sendRequestReceivedEmail > sin clave no sale nada; un 5xx o el modo prueba no cuentan como enviado 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/owner-requests.test.ts > correo de pedido recibido (I12, C29) > dice los días de la foto con el número que recibe, no con uno escrito
+AssertionError: expected 'Hola, Ana:\n\nRecibimos tu pedido par…' to contain 'la guardamos 45 días por si alguien m…'
+
+- Expected
++ Received
+
+- la guardamos 45 días por si alguien más reclama el negocio
++ Hola, Ana:
++
++ Recibimos tu pedido para manejar Comedor Doña Ana en ConoceRD. El equipo revisa la foto y te escribe a este correo cuando decida.
++
++ La foto no se publica. Solo la ve el equipo de ConoceRD. Si no te damos el acceso, la borramos ese mismo día. Si te lo damos, la guardamos 30 días por si alguien más reclama el negocio, y después la borramos.
++
++ Si no hiciste este pedido, responde a este correo.
++
++ Este correo llegó a <email>.
++
++ El equipo de ConoceRD
++
+
+ ❯ src/lib/owner-requests.test.ts:258:18
+    256|   it('dice los días de la foto con el número que recibe, no con uno es…
+    257|     const { text } = requestReceivedEmail(input);
+    258|     expect(text).toContain('la guardamos 45 días por si alguien más re…
+       |                  ^
+    259|     expect(text).not.toContain('30 días');
+    260|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 32 passed (33)
+   Start at  03:44:12
+   Duration  734ms (transform 241ms, setup 39ms, collect 383ms, tests 74ms, environment 1ms, prepare 89ms)
+
