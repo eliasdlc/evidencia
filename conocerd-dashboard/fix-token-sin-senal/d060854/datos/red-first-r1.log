@@ -1,0 +1,61 @@
+# R1 at d060854, with src/lib/api.ts back at afb6957
+# $ pnpm exec vitest run src/lib/api.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/fix-token-sin-senal
+
+ ❯ src/lib/api.test.ts (27 tests | 3 failed) 141ms
+   ❯ createApiClient (23)
+     × reports a token refresh that found no signal as a network error, never a raw Firebase error 4ms
+     × reports a first token that found no signal as a network error, without calling the API 1ms
+     × types any other token failure as unexpected, keeping only its code 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > reports a token refresh that found no signal as a network error, never a raw Firebase error
+AssertionError: expected Error: Firebase: Error (auth/network-requ… { code: '…' } to be an instance of ApiError
+ ❯ src/lib/api.test.ts:241:21
+    239|     const failure = await client.request('/business/b1/overview').catc…
+    240|
+    241|     expect(failure).toBeInstanceOf(ApiError);
+       |                     ^
+    242|     expect(failure).toMatchObject({ status: 0, code: 'network' });
+    243|     expect(fetch).toHaveBeenCalledTimes(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > reports a first token that found no signal as a network error, without calling the API
+Error: [2mexpect([22m[31mreceived[39m[2m).toSatisfy()[22m
+
+Expected value to satisfy:
+[32m[Function anonymous][39m
+
+Received:
+[31m[Error: Firebase: Error (auth/network-request-failed).][39m
+ ❯ src/lib/api.test.ts:251:38
+    249|     const client = createApiClient({ baseUrl: BASE, tokens: { idToken:…
+    250|
+    251|     await expect(client.businessMe()).rejects.toSatisfy((error) => err…
+       |                                      ^
+    252|     expect(fetch).not.toHaveBeenCalled();
+    253|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > types any other token failure as unexpected, keeping only its code
+AssertionError: expected Error: Firebase: Error (auth/internal-err… { code: '…' } to be an instance of ApiError
+ ❯ src/lib/api.test.ts:261:21
+    259|     const failure = await client.request('/business/b1/reviews').catch…
+    260|
+    261|     expect(failure).toBeInstanceOf(ApiError);
+       |                     ^
+    262|     expect(failure).toMatchObject({ status: 0, code: 'unexpected', mes…
+    263|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 24 passed (27)
+   Start at  09:57:15
+   Duration  254ms (tests 89%, import 6%, transform 3%, worker 2%)
+
