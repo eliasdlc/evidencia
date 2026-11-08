@@ -1,0 +1,60 @@
+# R124 at 4e8a6f6, with m5.patch applied
+# $ pnpm exec vitest run src/features/negocio/hoy/period.test.ts src/features/negocio/hoy/HoyPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-hoy-mes-cerrado
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx (47 tests | 2 failed) 3509ms
+   ❯ invalid_period from the API (3)
+     × falls back to the current month once, without a loop 61ms
+     × shows the plain error, and does not loop, when the current month is refused too 54ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > invalid_period from the API > falls back to the current month once, without a loop
+AssertionError: expected [ '2026-10' ] to deeply equal [ '2026-10', '2026-11' ]
+
+- Expected
++ Received
+
+  [
+    "2026-10",
+-   "2026-11",
+  ]
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:538:28
+    536|     const router = await mount(`/hoy?negocio=biz-1&mes=${CLOSED}`);
+    537|     await settle();
+    538|     expect(periodsAsked()).toEqual([CLOSED, PERIOD]);
+       |                            ^
+    539|     expect(router.state.location.search).toBe('?negocio=biz-1');
+    540|     expect(text()).toContain('Este mes 5 personas');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > invalid_period from the API > shows the plain error, and does not loop, when the current month is refused too
+AssertionError: expected [ '2026-10' ] to deeply equal [ '2026-10', '2026-11' ]
+
+- Expected
++ Received
+
+  [
+    "2026-10",
+-   "2026-11",
+  ]
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:550:28
+    548|     await mount(`/hoy?mes=${CLOSED}`);
+    549|     await settle();
+    550|     expect(periodsAsked()).toEqual([CLOSED, PERIOD]);
+       |                            ^
+    551|     expect(text()).toContain('No pudimos traer tus números');
+    552|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 54 passed (56)
+   Start at  15:50:24
+   Duration  4.00s (tests 90%, environment 6%, import 3%, transform 1%)
+
