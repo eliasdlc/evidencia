@@ -1,0 +1,40 @@
+# R3 at 88320ca, with a3.patch applied
+# $ pnpm exec vitest run src/contrasena/modelo.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/admin-invitaciones
+
+ ❯ src/contrasena/modelo.test.ts (5 tests | 1 failed) 10ms
+     × pide un correo válido y la casilla, las dos cosas a la vez 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/contrasena/modelo.test.ts > validarEnlace > pide un correo válido y la casilla, las dos cosas a la vez
+AssertionError: expected { ok: false, …(1) } to deeply equal { ok: false, errores: [ …(2) ] }
+
+- Expected
++ Received
+
+  {
+    "errores": [
+      "Escribe el correo de la cuenta del dueño",
+-     "Marca que confirmaste que es el dueño",
+    ],
+    "ok": false,
+  }
+
+ ❯ src/contrasena/modelo.test.ts:9:63
+      7| describe('validarEnlace', () => {
+      8|   it('pide un correo válido y la casilla, las dos cosas a la vez', () …
+      9|     expect(validarEnlace({ email: 'nada', confirmo: false })).toEqual({
+       |                                                               ^
+     10|       ok: false,
+     11|       errores: ['Escribe el correo de la cuenta del dueño', 'Marca que…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  11:53:39
+   Duration  162ms (transform 23ms, setup 0ms, import 32ms, tests 10ms, environment 0ms)
+
