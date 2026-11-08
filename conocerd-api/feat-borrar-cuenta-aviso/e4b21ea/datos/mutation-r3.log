@@ -1,0 +1,122 @@
+# R3 at e4b21ea, with i15-sole-owner-counts-self.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-aviso/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-aviso/emu.sh test/account-deletion-preview.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18162.
+i  Running script: pnpm exec vitest run test/account-deletion-preview.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-aviso
+
+stdout | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V1 V4: cuenta lo que el borrado haría, sin escribir nada y sin nombrar a nadie más
+[app-check] ausente /business/me/deletion-preview
+
+stdout | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V2: si la otra dueña de D2 deja de serlo, D2 pasa a única dueña en la siguiente consulta
+[app-check] ausente /business/me/deletion-preview
+
+stdout | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V3: un viajero recibe listas vacías y ceros, no un 403
+[app-check] ausente /business/me/deletion-preview
+
+stderr | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el envío lanza
+[conocerd-api] la cuenta se borró pero el correo de confirmación no salió
+
+stderr | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el proveedor responde 5xx
+[conocerd-api] Resend rechazó un correo: 503
+
+ ❯ test/account-deletion-preview.test.ts (8 tests | 3 failed) 6879ms
+   × vista previa del borrado y correo de confirmación contra el emulador > V1 V4: cuenta lo que el borrado haría, sin escribir nada y sin nombrar a nadie más 1715ms
+     → expected { …(5) } to deeply equal { …(5) }
+   × vista previa del borrado y correo de confirmación contra el emulador > V2: si la otra dueña de D2 deja de serlo, D2 pasa a única dueña en la siguiente consulta 586ms
+     → expected false to be true // Object.is equality
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > V3: un viajero recibe listas vacías y ceros, no un 403 52ms
+   × vista previa del borrado y correo de confirmación contra el emulador > V5 K17 I14: el borrado hace lo que la vista previa dijo, y manda un correo, a la dueña, que nombra sus negocios y a nadie más 912ms
+     → Comedor Doña Ana: expected true to be false // Object.is equality
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el envío lanza  1050ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el proveedor responde 5xx  885ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > modo de prueba  786ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K18: un viajero se borra sin correo 128ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V1 V4: cuenta lo que el borrado haría, sin escribir nada y sin nombrar a nadie más
+AssertionError: expected { …(5) } to deeply equal { …(5) }
+
+- Expected
++ Received
+
+  {
+    "id": "destino-<uuid>",
+    "name": "Comedor Doña Ana",
+    "peopleLosingAccess": 1,
+    "role": "owner",
+-   "soleOwner": true,
++   "soleOwner": false,
+  }
+
+ ❯ test/account-deletion-preview.test.ts:260:24
+    258|     expect(status).toBe(200);
+    259|     const byId = Object.fromEntries(body.businesses.map((business) => …
+    260|     expect(byId[f.D1]).toEqual({ id: f.D1, name: 'Comedor Doña Ana', r…
+       |                        ^
+    261|     expect(byId[f.D2]).toEqual({ id: f.D2, name: 'Cabañas del Río', ro…
+    262|     expect(byId[f.D9]).toEqual({ id: f.D9, name: 'Tienda de Otra', rol…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V2: si la otra dueña de D2 deja de serlo, D2 pasa a única dueña en la siguiente consulta
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ test/account-deletion-preview.test.ts:282:97
+    280|     await Promise.all(theirs.docs.map((doc) => doc.ref.update({ status…
+    281| 
+    282|     expect((await askPreview(f.O.token)).body.businesses.find((b) => b…
+       |                                                                                                 ^
+    283|   }, SLOW);
+    284| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V5 K17 I14: el borrado hace lo que la vista previa dijo, y manda un correo, a la dueña, que nombra sus negocios y a nadie más
+AssertionError: Comedor Doña Ana: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/account-deletion-preview.test.ts:307:43
+    305|     for (const business of said.businesses.filter((b) => b.role === 'o…
+    306|       const active = await db().collection('ownerships').where('destin…
+    307|       expect(active.empty, business.name).toBe(business.soleOwner);
+       |                                           ^
+    308|     }
+    309|     expect(report.peopleRemoved).toBe(said.businesses.reduce((sum, b) …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 5 passed (8)
+   Start at  15:21:48
+   Duration  7.23s (transform 453ms, setup 14ms, collect 123ms, tests 6.88s, environment 0ms, prepare 70ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/account-deletion-preview.test.ts" exited with code 1
