@@ -1,0 +1,49 @@
+# R1 at 88320ca, with a1.patch applied
+# $ pnpm exec vitest run src/invitaciones/modelo.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/admin-invitaciones
+
+ ❯ src/invitaciones/modelo.test.ts (18 tests | 2 failed) 10ms
+     × sin ningún enlace emitido el correo no salió 4ms
+     × una entrada rara en issuedTokens no cuenta como enlace 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/invitaciones/modelo.test.ts > aInvitacion > sin ningún enlace emitido el correo no salió
+AssertionError: expected 'enviada' to be 'sin-enviar' // Object.is equality
+
+Expected: "sin-enviar"
+Received: "enviada"
+
+ ❯ src/invitaciones/modelo.test.ts:49:60
+     47|   it('sin ningún enlace emitido el correo no salió', () => {
+     48|     const doc = { ...base, issuedTokens: undefined };
+     49|     expect(aInvitacion('i1', doc, nombres, AHORA)?.estado).toBe('sin-e…
+       |                                                            ^
+     50|     expect(aInvitacion('i1', { ...base, issuedTokens: [] }, nombres, A…
+     51|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/invitaciones/modelo.test.ts > aInvitacion > una entrada rara en issuedTokens no cuenta como enlace
+AssertionError: expected 'enviada' to be 'sin-enviar' // Object.is equality
+
+Expected: "sin-enviar"
+Received: "enviada"
+
+ ❯ src/invitaciones/modelo.test.ts:54:94
+     52|
+     53|   it('una entrada rara en issuedTokens no cuenta como enlace', () => {
+     54|     expect(aInvitacion('i1', { ...base, issuedTokens: ['basura'] }, no…
+       |                                                                                              ^
+     55|   });
+     56|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 16 passed (18)
+   Start at  11:53:27
+   Duration  149ms (transform 31ms, setup 0ms, import 42ms, tests 10ms, environment 0ms)
+
