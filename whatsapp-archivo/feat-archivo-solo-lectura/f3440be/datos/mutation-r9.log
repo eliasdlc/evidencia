@@ -1,0 +1,16 @@
+# R9 at f3440be, with r9.patch applied
+# $ bin/test -race -run TestNoLoss
+FAIL  ingest_test.go::TestNoLossAHistoryChunkSurvivesARestart
+FAIL  lifecycle_test.go::TestNoLossAMessageTheStoreRefusedIsLeftUnacked
+FAIL  ingest_test.go::TestNoLossAQueuedFileSurvivesARestart
+
+FAILED ingest_test.go::TestNoLossAHistoryChunkSurvivesARestart
+    ingest_test.go:48: the chunk received before the restart wrote 0 messages, want 3
+
+FAILED ingest_test.go::TestNoLossAQueuedFileSurvivesARestart
+    ingest_test.go:71: the file queued before the restart was not saved: 1 messages, ids [img1]
+
+FAILED lifecycle_test.go::TestNoLossAMessageTheStoreRefusedIsLeftUnacked
+    lifecycle_test.go:278: a message the store could not save was reported as handled, so whatsmeow acks it and it is lost
+
+0 passed, 3 failed
