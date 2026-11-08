@@ -1,0 +1,57 @@
+# R18 at 8d6670f, with r16-quitar-solo-publicadas.patch applied
+# $ pnpm exec vitest run src/fotos-dueno/lote.test.ts src/app/destinos/fotos-dueno/acciones.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/admin-pedidos-y-fotos
+
+ ❯ src/fotos-dueno/lote.test.ts (12 tests | 2 failed) 27ms
+     × en revisión se aprueba o se rechaza; publicada solo se quita; rechazada no admite nada 15ms
+     × no ofrece aprobar una publicada ni quitar una en revisión 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/fotos-dueno/lote.test.ts > qué se puede decidir de cada foto > en revisión se aprueba o se rechaza; publicada solo se quita; rechazada no admite nada
+AssertionError: expected [ 'approve', 'unpublish' ] to deeply equal [ 'unpublish' ]
+
+- Expected
++ Received
+
+  [
++   "approve",
+    "unpublish",
+  ]
+
+ ❯ src/fotos-dueno/lote.test.ts:17:54
+     15|   it('en revisión se aprueba o se rechaza; publicada solo se quita; re…
+     16|     expect(accionesPosibles(foto('a', 'in_review'))).toEqual(['approve…
+     17|     expect(accionesPosibles(foto('b', 'published'))).toEqual(['unpubli…
+       |                                                      ^
+     18|     expect(accionesPosibles(foto('c', 'rejected'))).toEqual([]);
+     19|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/fotos-dueno/lote.test.ts > armar la revisión > no ofrece aprobar una publicada ni quitar una en revisión
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/fotos-dueno/lote.test.ts:66:71
+     64|
+     65|   it('no ofrece aprobar una publicada ni quitar una en revisión', () =…
+     66|     expect(armarLote(detalle(fotos), { p3: { kind: 'approve' } }).ok).…
+       |                                                                       ^
+     67|     expect(armarLote(detalle(fotos), { p1: { kind: 'unpublish', motivo…
+     68|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 18 passed (20)
+   Start at  14:11:16
+   Duration  573ms (transform 128ms, setup 0ms, import 571ms, tests 40ms, environment 0ms)
+
