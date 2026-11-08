@@ -1,0 +1,186 @@
+# R5 at 737dc76, with i1-revoke-skipped.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-identidad/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-identidad/emu.sh test/account-delete-owner.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18162.
+i  Running script: pnpm exec vitest run test/account-delete-owner.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-identidad
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo
+[app-check] ausente /business/me
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado
+[app-check] ausente /account-delete
+
+ ❯ test/account-delete-owner.test.ts (17 tests | 13 failed) 6658ms
+   × borrado de una cuenta de negocio contra el emulador > K1 K2 K5 K7 K10: la dueña se borra, la ficha y las respuestas se quedan, sus pedidos y datos se van 1008ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   × borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo 1491ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   × borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina 340ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > un fallo de Auth dentro de revokeOwnership 458ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el retiro de un pedido falla 315ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el borrado de ficheros falla 311ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > falla justo después de los datos de negocio (paso 5) 311ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > recursiveDelete falla 330ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > deleteUser falla 334ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: una propiedad que ya no está cuando el paso 2 la revoca (`409 not_owner`) cuenta como hecha 81ms
+   × borrado de una cuenta de negocio contra el emulador > K13: con un borrado en curso, otro responde 409 sin escribir; un candado de hace 121 s se toma 231ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   × borrado de una cuenta de negocio contra el emulador > K14: una propiedad concedida a mitad del borrado se revoca en la segunda pasada 178ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   ✓ borrado de una cuenta de negocio contra el emulador > K15: si la verificación encuentra una concesión dos veces, 500 deletion_incomplete y Auth se queda 219ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K18 K20: un viajero se borra como antes: sin pasos de negocio, cifras nuevas en cero, el informe con sus claves 69ms
+   × borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe 176ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+   ✓ borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado 135ms
+   × borrado de una cuenta de negocio contra el emulador > K22: el orden: enlaces y sesiones antes de los ficheros, ficheros vacíos antes de limpiar sus documentos, Auth y la constancia al final 194ms
+     → Algo de la cuenta cambió mientras se borraba; prueba otra vez
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K1 K2 K5 K7 K10: la dueña se borra, la ficha y las respuestas se quedan, sus pedidos y datos se van
+ApiError: Algo de la cuenta cambió mientras se borraba; prueba otra vez
+ ❯ deleteUntilAuth src/lib/account-deletion.ts:251:13
+    249|     await ownerPass({ ...again, businessAccount });
+    250|     if ((await leftovers(uid, deps)) > 0) {
+    251|       throw new ApiError(500, 'deletion_incomplete', 'Algo de la cuent…
+       |             ^
+    252|     }
+    253|   }
+ ❯ Module.deleteAccount src/lib/account-deletion.ts:158:15
+ ❯ test/account-delete-owner.test.ts:357:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/13]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo
+ApiError: Algo de la cuenta cambió mientras se borraba; prueba otra vez
+ ❯ deleteUntilAuth src/lib/account-deletion.ts:251:13
+    249|     await ownerPass({ ...again, businessAccount });
+    250|     if ((await leftovers(uid, deps)) > 0) {
+    251|       throw new ApiError(500, 'deletion_incomplete', 'Algo de la cuent…
+       |             ^
+    252|     }
+    253|   }
+ ❯ Module.deleteAccount src/lib/account-deletion.ts:158:15
+ ❯ test/account-delete-owner.test.ts:382:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/13]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina
+ApiError: Algo de la cuenta cambió mientras se borraba; prueba otra vez
+ ❯ deleteUntilAuth src/lib/account-deletion.ts:251:13
+    249|     await ownerPass({ ...again, businessAccount });
+    250|     if ((await leftovers(uid, deps)) > 0) {
+    251|       throw new ApiError(500, 'deletion_incomplete', 'Algo de la cuent…
+       |             ^
+    252|     }
+    253|   }
+ ❯ Module.deleteAccount src/lib/account-deletion.ts:158:15
+ ❯ test/account-delete-owner.test.ts:431:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/13]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > un fallo de Auth dentro de revokeOwnership
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el retiro de un pedido falla
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el borrado de ficheros falla
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > falla justo después de los datos de negocio (paso 5)
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > recursiveDelete falla
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > deleteUser falla
+ApiError: Algo de la cuenta cambió mientras se borraba; prueba otra vez
+ ❯ deleteUntilAuth src/lib/account-deletion.ts:251:13
+    249|     await ownerPass({ ...again, businessAccount });
+    250|     if ((await leftovers(uid, deps)) > 0) {
+    251|       throw new ApiError(500, 'deletion_incomplete', 'Algo de la cuent…
+       |             ^
+    252|     }
+    253|   }
+ ❯ Module.deleteAccount src/lib/account-deletion.ts:158:15
+ ❯ test/account-delete-owner.test.ts:500:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/13]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K13: con un borrado en curso, otro responde 409 sin escribir; un candado de hace 121 s se toma
+ApiError: Algo de la cuenta cambió mientras se borraba; prueba otra vez
+ ❯ deleteUntilAuth src/lib/account-deletion.ts:251:13
+    249|     await ownerPass({ ...again, businessAccount });
+    250|     if ((await leftovers(uid, deps)) > 0) {
+    251|       throw new ApiError(500, 'deletion_incomplete', 'Algo de la cuent…
+       |             ^
+    252|     }
+    253|   }
+ ❯ Module.deleteAccount src/lib/account-deletion.ts:158:15
+ ❯ test/account-delete-owner.test.ts:549:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/13]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K14: una propiedad concedida a mitad del borrado se revoca en la segunda pasada
+ApiError: Algo de la cuenta cambió mientras se borraba; prueba otra vez
+ ❯ deleteUntilAuth src/lib/account-deletion.ts:251:13
+    249|     await ownerPass({ ...again, businessAccount });
+    250|     if ((await leftovers(uid, deps)) > 0) {
+    251|       throw new ApiError(500, 'deletion_incomplete', 'Algo de la cuent…
+       |             ^
+    252|     }
+    253|   }
+ ❯ Module.deleteAccount src/lib/account-deletion.ts:158:15
+ ❯ test/account-delete-owner.test.ts:569:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/13]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe
+ApiError: Algo de la cuenta cambió mientras se borraba; prueba otra vez
+ ❯ deleteUntilAuth src/lib/account-deletion.ts:251:13
+    249|     await ownerPass({ ...again, businessAccount });
+    250|     if ((await leftovers(uid, deps)) > 0) {
+    251|       throw new ApiError(500, 'deletion_incomplete', 'Algo de la cuent…
+       |             ^
+    252|     }
+    253|   }
+ ❯ Module.deleteAccount src/lib/account-deletion.ts:158:15
+ ❯ test/account-delete-owner.test.ts:671:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/13]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K22: el orden: enlaces y sesiones antes de los ficheros, ficheros vacíos antes de limpiar sus documentos, Auth y la constancia al final
+ApiError: Algo de la cuenta cambió mientras se borraba; prueba otra vez
+ ❯ deleteUntilAuth src/lib/account-deletion.ts:251:13
+    249|     await ownerPass({ ...again, businessAccount });
+    250|     if ((await leftovers(uid, deps)) > 0) {
+    251|       throw new ApiError(500, 'deletion_incomplete', 'Algo de la cuent…
+       |             ^
+    252|     }
+    253|   }
+ ❯ Module.deleteAccount src/lib/account-deletion.ts:158:15
+ ❯ test/account-delete-owner.test.ts:701:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/13]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  13 failed | 4 passed (17)
+   Start at  11:44:05
+   Duration  6.89s (transform 223ms, setup 9ms, collect 64ms, tests 6.66s, environment 0ms, prepare 48ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/account-delete-owner.test.ts" exited with code 1
