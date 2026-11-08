@@ -1,0 +1,48 @@
+# R2 at e4b21ea
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-aviso/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-aviso/emu.sh test/account-deletion-preview.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18162.
+i  Running script: pnpm exec vitest run test/account-deletion-preview.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-aviso
+
+stdout | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V1 V4: cuenta lo que el borrado haría, sin escribir nada y sin nombrar a nadie más
+[app-check] ausente /business/me/deletion-preview
+
+stdout | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V2: si la otra dueña de D2 deja de serlo, D2 pasa a única dueña en la siguiente consulta
+[app-check] ausente /business/me/deletion-preview
+
+stdout | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V3: un viajero recibe listas vacías y ceros, no un 403
+[app-check] ausente /business/me/deletion-preview
+
+stderr | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el envío lanza
+[conocerd-api] la cuenta se borró pero el correo de confirmación no salió
+
+stderr | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el proveedor responde 5xx
+[conocerd-api] Resend rechazó un correo: 503
+
+ ✓ test/account-deletion-preview.test.ts (8 tests) 6188ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > V1 V4: cuenta lo que el borrado haría, sin escribir nada y sin nombrar a nadie más  1431ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > V2: si la otra dueña de D2 deja de serlo, D2 pasa a única dueña en la siguiente consulta  445ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > V5 K17 I14: el borrado hace lo que la vista previa dijo, y manda un correo, a la dueña, que nombra sus negocios y a nadie más  627ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el envío lanza  889ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el proveedor responde 5xx  868ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > modo de prueba  883ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  15:20:40
+   Duration  6.56s (transform 452ms, setup 14ms, collect 134ms, tests 6.19s, environment 0ms, prepare 64ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
