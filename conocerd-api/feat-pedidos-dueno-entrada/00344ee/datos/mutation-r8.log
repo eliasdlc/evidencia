@@ -1,0 +1,356 @@
+# R8 at 00344ee, with r8-i8-write-after-send.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-entrada/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-entrada/emu.sh test/owner-requests-intake.test.ts
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18132.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/owner-requests-intake.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S1: todas las palabras, sobre nombre y provincia
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S1: todas las palabras, sobre nombre y provincia
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S1: todas las palabras, sobre nombre y provincia
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S1: todas las palabras, sobre nombre y provincia
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S2: ÑAPA encuentra Cafetería Ñapa, con la ñ doblada a n como la app
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S4: una letra no lee nada; dos ya buscan
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S4: una letra no lee nada; dos ya buscan
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S5, S6 (I10): dice que tiene dueño y nada más, ni quién
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S5, S6 (I10): dice que tiene dueño y nada más, ni quién
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S7: la cuota vive en Firestore: con 30 en la ventana la siguiente es 429
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S7: la cuota vive en Firestore: con 30 en la ventana la siguiente es 429
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > una búsqueda vacía o de más de 80 es 422 invalid_query; sin sesión, 401
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > una búsqueda vacía o de más de 80 es 422 invalid_query; sin sesión, 401
+[app-check] ausente /business/catalog-search
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C1 (I17): crea el pedido y escribe la cuenta y el negocio en la misma transacción
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C2: sin correo verificado es 403 email_not_verified y no escribe nada
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C3 (I14): una cuenta admin o agent es 409 email_belongs_to_staff
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C3 (I14): una cuenta admin o agent es 409 email_belongs_to_staff
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C6: 7.jpg (un reintento del panel) y cinco fotos se aceptan
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C6: 7.jpg (un reintento del panel) y cinco fotos se aceptan
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C11 (I1): un segundo pedido abierto al mismo negocio es 409 request_exists
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C11 (I1): un segundo pedido abierto al mismo negocio es 409 request_exists
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C13, C14: ya dueño por el token o por una propiedad activa es 409 already_owner
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C13, C14: ya dueño por el token o por una propiedad activa es 409 already_owner
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C15 (I2): con 3 abiertos el cuarto es 429 too_many_requests
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C15 (I2): con 3 abiertos el cuarto es 429 too_many_requests
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C15 (I2): con 3 abiertos el cuarto es 429 too_many_requests
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C15 (I2): con 3 abiertos el cuarto es 429 too_many_requests
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C16 (I2): con 2 abiertos, dos pedidos a la vez a negocios distintos: uno entra
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C16 (I2): con 2 abiertos, dos pedidos a la vez a negocios distintos: uno entra
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C17 (I2): retirar no devuelve cupo de la ventana; vencida la ventana, entra
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C17 (I2): retirar no devuelve cupo de la ventana; vencida la ventana, entra
+[app-check] ausente /business/requests/<uuid>
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C17 (I2): retirar no devuelve cupo de la ventana; vencida la ventana, entra
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C17 (I2): retirar no devuelve cupo de la ventana; vencida la ventana, entra
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C18 (I10): con otro dueño activo entra disputado, y nada de esa cuenta sale
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C19: con otro pedido abierto entra disputado
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C19: con otro pedido abierto entra disputado
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C20: un negocio con 10 abiertos es 409 listing_queue_full
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C21: un destino que no existe es 422 unknown_destination y no escribe nada
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C22 (I16): un negocio nuevo crea un solo pedido de lugar, en la misma transacción, sin coordenadas
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C23: coordenadas o un tipo fuera de la lista son 422 invalid_body
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C24 (I13): el mismo POST dos veces es 200 con el mismo pedido, sin cambiar nada
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C24 (I13): el mismo POST dos veces es 200 con el mismo pedido, sin cambiar nada
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C25 (I13): el mismo requestId con otro cuerpo o desde otra cuenta es 409 request_id_taken
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C25 (I13): el mismo requestId con otro cuerpo o desde otra cuenta es 409 request_id_taken
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C25 (I13): el mismo requestId con otro cuerpo o desde otra cuenta es 409 request_id_taken
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C26 (I8): pase lo que pase con el correo, el estado al enviar es el de después
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C27 (I9): si la transacción no confirma, no sale ningún correo
+[app-check] ausente /business/requests
+
+stderr | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C27 (I9): si la transacción no confirma, no sale ningún correo
+[conocerd-api] error no controlado Error: commit fallido a propósito
+    at /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada/test/tx-recorder.ts:64:43
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at Transaction.runTransactionOnce (/home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada/node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/transaction.js:440:28)
+    at /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada/node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/transaction.js:412:28
+    at createOwnerRequest (/home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada/src/lib/owner-request-service.ts:105:19)
+    at create (/home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada/src/lib/owner-request-service.ts:305:22)
+    at /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada/src/lib/http.ts:92:14
+    at file (/home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada/test/owner-requests-intake.test.ts:142:22)
+    at /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada/test/owner-requests-intake.test.ts:691:22
+    at file:///home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada/node_modules/.pnpm/@vitest+runner@3.2.7/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C28: 39 negocios en el token y 1 abierto es 409 too_many_businesses
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W1 (I17): retira, saca el pedido de las dos listas y borra las fotos, sin correo
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W1 (I17): retira, saca el pedido de las dos listas y borra las fotos, sin correo
+[app-check] ausente /business/requests/<uuid>
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W2: el pedido de otra cuenta es 404, igual que uno que no existe
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W2: el pedido de otra cuenta es 404, igual que uno que no existe
+[app-check] ausente /business/requests/<uuid>
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W2: el pedido de otra cuenta es 404, igual que uno que no existe
+[app-check] ausente /business/requests/<uuid>
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W2: el pedido de otra cuenta es 404, igual que uno que no existe
+[app-check] ausente /business/requests/no-es-un-uuid
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W3: uno ya decidido es 409 not_pending
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W3: uno ya decidido es 409 not_pending
+[app-check] ausente /business/requests/<uuid>
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W4 (I17): después de retirar se puede volver a pedir el mismo negocio
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W4 (I17): después de retirar se puede volver a pedir el mismo negocio
+[app-check] ausente /business/requests/<uuid>
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W4 (I17): después de retirar se puede volver a pedir el mismo negocio
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W5: si Storage falla, el pedido queda retirado y las fotos para el barrido
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W5: si Storage falla, el pedido queda retirado y las fotos para el barrido
+[app-check] ausente /business/requests/<uuid>
+
+stderr | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W5: si Storage falla, el pedido queda retirado y las fotos para el barrido
+[conocerd-api] no se pudieron borrar las fotos de un pedido retirado
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W6: retirar y decidir a la vez: gana uno, el otro no escribe
+[app-check] ausente /business/requests
+
+stdout | test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W6: retirar y decidir a la vez: gana uno, el otro no escribe
+[app-check] ausente /business/requests
+
+ ❯ test/owner-requests-intake.test.ts (34 tests | 2 failed) 17569ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S1: todas las palabras, sobre nombre y provincia  399ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S2: ÑAPA encuentra Cafetería Ñapa, con la ñ doblada a n como la app 50ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S4: una letra no lee nada; dos ya buscan 75ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S5, S6 (I10): dice que tiene dueño y nada más, ni quién 65ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > S7: la cuota vive en Firestore: con 30 en la ventana la siguiente es 429 63ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > GET /business/catalog-search > una búsqueda vacía o de más de 80 es 422 invalid_query; sin sesión, 401 8ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C1 (I17): crea el pedido y escribe la cuenta y el negocio en la misma transacción 112ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C2: sin correo verificado es 403 email_not_verified y no escribe nada 20ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C3 (I14): una cuenta admin o agent es 409 email_belongs_to_staff 35ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid  358ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C6: 7.jpg (un reintento del panel) y cinco fotos se aceptan 77ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C11 (I1): un segundo pedido abierto al mismo negocio es 409 request_exists 54ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C12 (I1): dos pedidos de la misma cuenta al mismo negocio a la vez: uno entra  3452ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C13, C14: ya dueño por el token o por una propiedad activa es 409 already_owner 119ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C15 (I2): con 3 abiertos el cuarto es 429 too_many_requests 196ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C16 (I2): con 2 abiertos, dos pedidos a la vez a negocios distintos: uno entra  3675ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C17 (I2): retirar no devuelve cupo de la ventana; vencida la ventana, entra 195ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C18 (I10): con otro dueño activo entra disputado, y nada de esa cuenta sale 40ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C19: con otro pedido abierto entra disputado 78ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C20: un negocio con 10 abiertos es 409 listing_queue_full 57ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C21: un destino que no existe es 422 unknown_destination y no escribe nada 53ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C22 (I16): un negocio nuevo crea un solo pedido de lugar, en la misma transacción, sin coordenadas 36ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C23: coordenadas o un tipo fuera de la lista son 422 invalid_body 21ms
+   × pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C24 (I13): el mismo POST dos veces es 200 con el mismo pedido, sin cambiar nada 100ms
+     → expected '{"claimDoc":{"requestedBy":"V8Sh5VwwN…' to be '{"claimDoc":{"requestedBy":"V8Sh5VwwN…' // Object.is equality
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C25 (I13): el mismo requestId con otro cuerpo o desde otra cuenta es 409 request_id_taken 261ms
+   × pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C26 (I8): pase lo que pase con el correo, el estado al enviar es el de después 61ms
+     → sent: expected '{"claimDoc":{"requestedBy":"hpBd5NrGO…' to be '{"claimDoc":{"requestedBy":"hpBd5NrGO…' // Object.is equality
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C27 (I9): si la transacción no confirma, no sale ningún correo 38ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C28: 39 negocios en el token y 1 abierto es 409 too_many_businesses 31ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W1 (I17): retira, saca el pedido de las dos listas y borra las fotos, sin correo 84ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W2: el pedido de otra cuenta es 404, igual que uno que no existe 58ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W3: uno ya decidido es 409 not_pending 60ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W4 (I17): después de retirar se puede volver a pedir el mismo negocio 95ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W5: si Storage falla, el pedido queda retirado y las fotos para el barrido 64ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W6: retirar y decidir a la vez: gana uno, el otro no escribe  6193ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C24 (I13): el mismo POST dos veces es 200 con el mismo pedido, sin cambiar nada
+AssertionError: expected '{"claimDoc":{"requestedBy":"V8Sh5VwwN…' to be '{"claimDoc":{"requestedBy":"V8Sh5VwwN…' // Object.is equality
+
+Expected: "{"claimDoc":{"requestedBy":"V8Sh5VwwNo48UHUG7sAjPszKE13p","requesterEmailAtCreation":"<email>","target":{"kind":"existing","destinationId":"destino-<uuid>"},"destinationId":"destino-<uuid>","relation":"dueno","note":null,"evidence":[{"path":"claims/V8Sh5VwwNo48UHUG7sAjPszKE13p/<uuid>/1.jpg","contentType":"image/jpeg","size":13,"md5Hash":"malNcOqjuHrMO2uOdVqIdg==","uploadedAt":"2026-11-08T07:41:59.913Z"}],"status":"pending","contestedAtCreation":false,"placeRequestId":null,"bodyHash":"82ed2ea5a962b74b0f08b48510dafffec2339eb223261ea481a5674fe07015ee","createdAt":{"_seconds":1794123719,"_nanoseconds":929000000},"decidedAt":null,"decidedBy":null,"decision":null,"evidenceDeleteAfter":null,"evidenceDeletedAt":null,"notifiedAt":{"_seconds":1794123719,"_nanoseconds":933000000}},"accountDoc":{"open":["<uuid>"],"windowStart":1794123719929,"createdInWindow":1,"updatedAt":{"_seconds":1794123719,"_nanoseconds":929000000}},"targetDoc":{"open":[{"requestId":"<uuid>","uid":"V8Sh5VwwNo48UHUG7sAjPszKE13p"}],"updatedAt":{"_seconds":1794123719,"_nanoseconds":929000000}},"places":[],"files":["claims/V8Sh5VwwNo48UHUG7sAjPszKE13p/<uuid>/1.jpg"]}"
+Received: "{"claimDoc":{"requestedBy":"V8Sh5VwwNo48UHUG7sAjPszKE13p","requesterEmailAtCreation":"<email>","target":{"kind":"existing","destinationId":"destino-<uuid>"},"destinationId":"destino-<uuid>","relation":"dueno","note":null,"evidence":[{"path":"claims/V8Sh5VwwNo48UHUG7sAjPszKE13p/<uuid>/1.jpg","contentType":"image/jpeg","size":13,"md5Hash":"malNcOqjuHrMO2uOdVqIdg==","uploadedAt":"2026-11-08T07:41:59.913Z"}],"status":"pending","contestedAtCreation":false,"placeRequestId":null,"bodyHash":"82ed2ea5a962b74b0f08b48510dafffec2339eb223261ea481a5674fe07015ee","createdAt":{"_seconds":1794123719,"_nanoseconds":929000000},"decidedAt":null,"decidedBy":null,"decision":null,"evidenceDeleteAfter":null,"evidenceDeletedAt":null,"notifiedAt":{"_seconds":1794123719,"_nanoseconds":992000000}},"accountDoc":{"open":["<uuid>"],"windowStart":1794123719929,"createdInWindow":1,"updatedAt":{"_seconds":1794123719,"_nanoseconds":929000000}},"targetDoc":{"open":[{"requestId":"<uuid>","uid":"V8Sh5VwwNo48UHUG7sAjPszKE13p"}],"updatedAt":{"_seconds":1794123719,"_nanoseconds":929000000}},"places":[],"files":["claims/V8Sh5VwwNo48UHUG7sAjPszKE13p/<uuid>/1.jpg"]}"
+
+ ❯ test/owner-requests-intake.test.ts:644:48
+    642|       expect(second.status).toBe(200);
+    643|       expect(await second.json()).toEqual(await first.json());
+    644|       expect(await state(u.uid, requestId, d)).toBe(before);
+       |                                                ^
+    645|       expect((await account(u.uid))?.createdInWindow).toBe(1);
+    646|       expect(mail.calls.map((call) => call.requestId)).toEqual([reques…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/owner-requests-intake.test.ts > pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C26 (I8): pase lo que pase con el correo, el estado al enviar es el de después
+AssertionError: sent: expected '{"claimDoc":{"requestedBy":"hpBd5NrGO…' to be '{"claimDoc":{"requestedBy":"hpBd5NrGO…' // Object.is equality
+
+Expected: "{"claimDoc":{"requestedBy":"hpBd5NrGOt0d7HMRtjKUyulsCEEj","requesterEmailAtCreation":"<email>","target":{"kind":"existing","destinationId":"destino-<uuid>"},"destinationId":"destino-<uuid>","relation":"dueno","note":null,"evidence":[{"path":"claims/hpBd5NrGOt0d7HMRtjKUyulsCEEj/<uuid>/1.jpg","contentType":"image/jpeg","size":13,"md5Hash":"malNcOqjuHrMO2uOdVqIdg==","uploadedAt":"2026-11-08T07:42:00.277Z"}],"status":"pending","contestedAtCreation":false,"placeRequestId":null,"bodyHash":"3df663d18c45b578ea0e712b615c6d02c531f9198d5cc849629b645fadd0c3c3","createdAt":{"_seconds":1794123720,"_nanoseconds":295000000},"decidedAt":null,"decidedBy":null,"decision":null,"evidenceDeleteAfter":null,"evidenceDeletedAt":null},"accountDoc":{"open":["<uuid>"],"windowStart":1794123720295,"createdInWindow":1,"updatedAt":{"_seconds":1794123720,"_nanoseconds":295000000}},"targetDoc":{"open":[{"requestId":"<uuid>","uid":"hpBd5NrGOt0d7HMRtjKUyulsCEEj"}],"updatedAt":{"_seconds":1794123720,"_nanoseconds":295000000}},"places":[],"files":["claims/hpBd5NrGOt0d7HMRtjKUyulsCEEj/<uuid>/1.jpg"]}"
+Received: "{"claimDoc":{"requestedBy":"hpBd5NrGOt0d7HMRtjKUyulsCEEj","requesterEmailAtCreation":"<email>","target":{"kind":"existing","destinationId":"destino-<uuid>"},"destinationId":"destino-<uuid>","relation":"dueno","note":null,"evidence":[{"path":"claims/hpBd5NrGOt0d7HMRtjKUyulsCEEj/<uuid>/1.jpg","contentType":"image/jpeg","size":13,"md5Hash":"malNcOqjuHrMO2uOdVqIdg==","uploadedAt":"2026-11-08T07:42:00.277Z"}],"status":"pending","contestedAtCreation":false,"placeRequestId":null,"bodyHash":"3df663d18c45b578ea0e712b615c6d02c531f9198d5cc849629b645fadd0c3c3","createdAt":{"_seconds":1794123720,"_nanoseconds":295000000},"decidedAt":null,"decidedBy":null,"decision":null,"evidenceDeleteAfter":null,"evidenceDeletedAt":null,"notifiedAt":{"_seconds":1794123720,"_nanoseconds":317000000}},"accountDoc":{"open":["<uuid>"],"windowStart":1794123720295,"createdInWindow":1,"updatedAt":{"_seconds":1794123720,"_nanoseconds":295000000}},"targetDoc":{"open":[{"requestId":"<uuid>","uid":"hpBd5NrGOt0d7HMRtjKUyulsCEEj"}],"updatedAt":{"_seconds":1794123720,"_nanoseconds":295000000}},"places":[],"files":["claims/hpBd5NrGOt0d7HMRtjKUyulsCEEj/<uuid>/1.jpg"]}"
+
+ ❯ test/owner-requests-intake.test.ts:680:60
+    678|         expect(Object.keys((await response.json()) as object)).toEqual…
+    679|         expect(mail.calls).toHaveLength(1);
+    680|         expect(await state(u.uid, requestId, d), behavior).toBe(atSend…
+       |                                                            ^
+    681|         await new Promise((resolve) => setTimeout(resolve, 300));
+    682|         expect(await state(u.uid, requestId, d), behavior).toBe(atSend…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 32 passed (34)
+   Start at  03:41:49
+   Duration  17.86s (transform 195ms, setup 8ms, collect 121ms, tests 17.57s, environment 0ms, prepare 48ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/owner-requests-intake.test.ts" exited with code 1
