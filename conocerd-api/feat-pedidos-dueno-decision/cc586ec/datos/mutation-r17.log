@@ -1,0 +1,79 @@
+# R17 at cc586ec, with r17-approval-copy-panel.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-decision/scrub.sh pnpm exec vitest run src/lib/owner-request-decisions.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision
+
+ ❯ src/lib/owner-request-decisions.test.ts (19 tests | 1 failed) 27ms
+   ✓ planApprove (T-approve) > A1: un pedido abierto sin otro dueño se aprueba sin reemplazos 2ms
+   ✓ planApprove (T-approve) > A3 (I5): un pedido que ya no está abierto es 409 not_pending; uno que no existe, 404 1ms
+   ✓ planApprove (T-approve) > A6, A7, A8, A10 (I6): otro dueño exige resolución; sin otro dueño, la resolución no aplica 1ms
+   ✓ planApprove (T-approve) > A18: la propia cuenta como dueña activa no es "otra cuenta" 0ms
+   ✓ planApprove (T-approve) > A12, A13, A14 (I16): el destino del cuerpo tiene que ser el del pedido o el que se creó para él 0ms
+   ✓ planApprove (T-approve) > el orden de los rechazos es el del plan: estado, listado, destino, resolución 0ms
+   ✓ planReject (T-reject) > solo un pedido abierto se rechaza 1ms
+   ✓ el cuerpo de la decisión > aprobar exige una nota de 1 a 500; la resolución es una de dos 3ms
+   ✓ el cuerpo de la decisión > R7: rechazar solo con un código de la lista cerrada 1ms
+   ✓ namesOther (I10) > R3: el correo entero o una palabra del nombre de 3 letras o más, sin mayúsculas ni tildes 3ms
+   ✓ namesOther (I10) > no confunde partes de otras palabras ni nombres de menos de 3 letras 0ms
+   ✓ motivos (una sola lista) > R6: /business/me y el correo leen la misma frase por código; otro solo lleva el mensaje del equipo 0ms
+   ✓ motivos (una sola lista) > las cinco claves que ya había siguen en la lista, más las dos de la foto 1ms
+   ✓ motivos (una sola lista) > I15: foto_revisada es un método de verificación 0ms
+   × los correos de la decisión > A21: aprobado dice "tu página", lleva /entrar, y nada de panel, Laura, WhatsApp de ConoceRD ni llamada 7ms
+     → /\bpanel\b/i: expected 'Listo: Comedor Doña Ana ya es tuyo en…' not to match /\bpanel\b/i
+   ✓ los correos de la decisión > R1: rechazado lleva la frase del motivo y, con otro, solo el mensaje del equipo 1ms
+   ✓ los correos de la decisión > A8: el aviso a la cuenta reemplazada no nombra a nadie y no dice panel 1ms
+   ✓ los correos de la decisión > con buzón de respuesta, cada correo lo dice 0ms
+   ✓ los correos de la decisión > una clave de idempotencia por pedido y por correo 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/owner-request-decisions.test.ts > los correos de la decisión > A21: aprobado dice "tu página", lleva /entrar, y nada de panel, Laura, WhatsApp de ConoceRD ni llamada
+AssertionError: /\bpanel\b/i: expected 'Listo: Comedor Doña Ana ya es tuyo en…' not to match /\bpanel\b/i
+
+- Expected: 
+/\bpanel\b/i
+
++ Received: 
+"Listo: Comedor Doña Ana ya es tuyo en ConoceRD
+Hola, Ana:
+
+Revisamos la foto que nos mandaste y confirmamos que manejas Comedor Doña Ana. Ya puedes entrar a tu panel del negocio en ConoceRD.
+
+Entrar a mi página: https://negocios.conocerd.app/entrar
+
+Entras con la misma cuenta con la que hiciste el pedido, la de este correo: <email>, con Google o con tu contraseña.
+
+EN TU PÁGINA PUEDES
+- ver cuántas personas vieron tu página y tocaron tu botón de WhatsApp o Llamar.
+- contestar las reseñas, los comentarios que te dejan en la app.
+- cambiar tu WhatsApp, tu teléfono y tu horario, cada cosa por separado.
+
+El resumen del mes te llega a este correo el día 1. Si no lo quieres, lo apagas con un clic al final de ese correo.
+
+¿Dudas? Responde a este correo y te contesta una persona del equipo.
+
+El equipo de ConoceRD
+
+--
+Te escribimos porque pediste manejar Comedor Doña Ana en ConoceRD.
+Este correo llegó a <email>.
+ConoceRD, Santo Domingo, República Dominicana. Gratis para tu negocio: nunca cobramos comisión por reserva.
+"
+
+ ❯ clean src/lib/owner-request-decisions.test.ts:169:72
+    167| 
+    168|   const clean = (text: string) => {
+    169|     for (const pattern of forbidden) expect(text, String(pattern)).not…
+       |                                                                        ^
+    170|   };
+    171| 
+ ❯ src/lib/owner-request-decisions.test.ts:179:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 passed (19)
+   Start at  10:28:58
+   Duration  1.09s (transform 243ms, setup 18ms, collect 738ms, tests 27ms, environment 0ms, prepare 99ms)
+
