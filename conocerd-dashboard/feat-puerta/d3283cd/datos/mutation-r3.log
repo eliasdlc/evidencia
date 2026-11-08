@@ -1,0 +1,60 @@
+# R3 at d3283cd, with mutate-r3.patch applied
+# $ pnpm exec vitest run src/features/puerta/answers.test.ts src/features/puerta/puerta.test.ts src/features/puerta/useCamera.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-puerta
+
+ ❯ src/features/puerta/answers.test.ts (49 tests | 4 failed) 32ms
+   ❯ what a failed door call means for its tap (20)
+     × no answer is ApiError: network 8ms
+     × no answer in time is ApiError: timeout 1ms
+     × a token refresh without signal is Error: auth/network-request-failed 1ms
+   ❯ the answers of /qr/check and /qr/redeem (21)
+     × turns down {} 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/puerta/answers.test.ts > what a failed door call means for its tap > no answer is ApiError: network
+ FAIL  src/features/puerta/answers.test.ts > what a failed door call means for its tap > no answer in time is ApiError: timeout
+ FAIL  src/features/puerta/answers.test.ts > what a failed door call means for its tap > a token refresh without signal is Error: auth/network-request-failed
+AssertionError: expected 'lost' to be 'offline' // Object.is equality
+
+Expected: "offline"
+Received: "lost"
+
+ ❯ src/features/puerta/answers.test.ts:32:34
+     30|     ['nothing', undefined, 'lost'],
+     31|   ] as const)('%s is %s', (_, error, kind) => {
+     32|     expect(classify(error).kind).toBe(kind);
+       |                                  ^
+     33|   });
+     34| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/features/puerta/answers.test.ts > the answers of /qr/check and /qr/redeem > turns down {}
+AssertionError: expected { result: 'invalid' } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "result": "invalid",
+}
+
+ ❯ src/features/puerta/answers.test.ts:67:32
+     65|     [{ result: 'exhausted', dailyMax: null }],
+     66|   ])('turns down %j', (answer) => {
+     67|     expect(doorResult(answer)).toBeNull();
+       |                                ^
+     68|   });
+     69|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  4 failed | 77 passed (81)
+   Start at  18:04:13
+   Duration  453ms (environment 52%, tests 24%, transform 12%, import 11%, worker 1%)
+
