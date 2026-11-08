@@ -1,0 +1,304 @@
+# R7 at ceb8ee9, with i5-links-kept.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-identidad/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-identidad/emu.sh test/account-delete-owner.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18162.
+i  Running script: pnpm exec vitest run test/account-delete-owner.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-identidad
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo
+[app-check] ausente /business/me
+
+stderr | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe
+[conocerd-api] la cuenta se borró pero no quedó la constancia en accountDeletions
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado
+[app-check] ausente /account-delete
+
+ ❯ test/account-delete-owner.test.ts (17 tests | 12 failed) 10509ms
+   × borrado de una cuenta de negocio contra el emulador > K1 K2 K5 K7 K10: la dueña se borra, la ficha y las respuestas se quedan, sus pedidos y datos se van 1373ms
+     → expected { diaryEntriesDeleted: +0, …(11) } to match object { ownershipsRevoked: 2, …(3) }
+(8 matching properties omitted from actual)
+   × borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo 1792ms
+     → expected { redeem: { status: 400, …(1) }, …(4) } to deeply equal { redeem: { status: 400, …(1) }, …(4) }
+   × borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina 501ms
+     → expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > un fallo de Auth dentro de revokeOwnership 593ms
+     → expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el retiro de un pedido falla 460ms
+     → expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el borrado de ficheros falla 593ms
+     → expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > falla justo después de los datos de negocio (paso 5) 633ms
+     → expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > recursiveDelete falla 530ms
+     → expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > deleteUser falla 511ms
+     → expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: una propiedad que ya no está cuando el paso 2 la revoca (`409 not_owner`) cuenta como hecha 143ms
+   × borrado de una cuenta de negocio contra el emulador > K13: con un borrado en curso, otro responde 409 sin escribir; un candado de hace 121 s se toma 479ms
+     → expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+   ✓ borrado de una cuenta de negocio contra el emulador > K14: una propiedad concedida a mitad del borrado se revoca en la segunda pasada  451ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K15: si la verificación encuentra una concesión dos veces, 500 deletion_incomplete y Auth se queda  419ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K18 K20: un viajero se borra como antes: sin pasos de negocio, cifras nuevas en cero, el informe con sus claves 89ms
+   × borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe 274ms
+     → expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+   ✓ borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado 275ms
+   × borrado de una cuenta de negocio contra el emulador > K22: el orden: enlaces y sesiones antes de los ficheros, ficheros vacíos antes de limpiar sus documentos, Auth y la constancia al final 268ms
+     → expected { links: true, claimFiles: [], …(1) } to deeply equal { links: false, claimFiles: [], …(1) }
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K1 K2 K5 K7 K10: la dueña se borra, la ficha y las respuestas se quedan, sus pedidos y datos se van
+AssertionError: expected { diaryEntriesDeleted: +0, …(11) } to match object { ownershipsRevoked: 2, …(3) }
+(8 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "linksRevoked": 3,
++   "linksRevoked": 0,
+    "notified": false,
+    "ownerRequestsWithdrawn": 1,
+    "ownershipsRevoked": 2,
+  }
+
+ ❯ test/account-delete-owner.test.ts:359:20
+    357|     const report = await run(f);
+    358| 
+    359|     expect(report).toMatchObject({ ownershipsRevoked: 2, ownerRequests…
+       |                    ^
+    360|     expect(await digest(f)).toEqual(FINAL(f));
+    361|     // K2: D1 se queda sin nadie que la maneje; D2 sigue con C.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo
+AssertionError: expected { redeem: { status: 400, …(1) }, …(4) } to deeply equal { redeem: { status: 400, …(1) }, …(4) }
+
+- Expected
++ Received
+
+@@ -1,8 +1,8 @@
+  {
+-   "activation": 400,
+-   "linkDoc": false,
++   "activation": 409,
++   "linkDoc": true,
+    "member": 401,
+    "owner": 401,
+    "redeem": {
+      "error": "invalid_link",
+      "status": 400,
+
+ ❯ test/account-delete-owner.test.ts:414:18
+    412|     });
+    413| 
+    414|     expect(seen).toEqual({
+       |                  ^
+    415|       redeem: { status: 400, error: 'invalid_link' },
+    416|       linkDoc: false,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina
+AssertionError: expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+
+- Expected
++ Received
+
+@@ -19,18 +19,18 @@
+      "active",
+    ],
+    "files": [
+      "claims/ytogBEdVHX7WDbHRYttvSTB6TAan/<uuid>/1.jpg",
+    ],
+-   "invitations": 0,
++   "invitations": 2,
+    "lease": false,
+    "owners": false,
+    "ownerships": {
+      "D1": "revoked:account_deleted:self",
+      "D2": "revoked:account_deleted:self",
+    },
+-   "passwordLink": false,
++   "passwordLink": true,
+    "profileEdits": [
+      {
+        "email": false,
+        "uid": true,
+      },
+
+ ❯ test/account-delete-owner.test.ts:432:29
+    430|     f.files.stuck.clear();
+    431|     await run(f);
+    432|     expect(await digest(f)).toEqual(FINAL(f));
+       |                             ^
+    433|   }, SLOW);
+    434| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > un fallo de Auth dentro de revokeOwnership
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el retiro de un pedido falla
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el borrado de ficheros falla
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > falla justo después de los datos de negocio (paso 5)
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > recursiveDelete falla
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > deleteUser falla
+AssertionError: expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+
+- Expected
++ Received
+
+@@ -19,18 +19,18 @@
+      "active",
+    ],
+    "files": [
+      "claims/H3Q39s0ShgHB3ihxzp3Z7tZECXzD/<uuid>/1.jpg",
+    ],
+-   "invitations": 0,
++   "invitations": 2,
+    "lease": false,
+    "owners": false,
+    "ownerships": {
+      "D1": "revoked:account_deleted:self",
+      "D2": "revoked:account_deleted:self",
+    },
+-   "passwordLink": false,
++   "passwordLink": true,
+    "profileEdits": [
+      {
+        "email": false,
+        "uid": true,
+      },
+
+ ❯ test/account-delete-owner.test.ts:501:33
+    499|         vi.restoreAllMocks();
+    500|         await run(f);
+    501|         expect(await digest(f)).toEqual(FINAL(f));
+       |                                 ^
+    502|       }, SLOW);
+    503|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K13: con un borrado en curso, otro responde 409 sin escribir; un candado de hace 121 s se toma
+AssertionError: expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+
+- Expected
++ Received
+
+@@ -19,18 +19,18 @@
+      "active",
+    ],
+    "files": [
+      "claims/I6Gyeiw1Y4T32zucKBYk1TaEGTfu/<uuid>/1.jpg",
+    ],
+-   "invitations": 0,
++   "invitations": 2,
+    "lease": false,
+    "owners": false,
+    "ownerships": {
+      "D1": "revoked:account_deleted:self",
+      "D2": "revoked:account_deleted:self",
+    },
+-   "passwordLink": false,
++   "passwordLink": true,
+    "profileEdits": [
+      {
+        "email": false,
+        "uid": true,
+      },
+
+ ❯ test/account-delete-owner.test.ts:550:29
+    548|     release();
+    549|     await first;
+    550|     expect(await digest(f)).toEqual(FINAL(f));
+       |                             ^
+    551| 
+    552|     // Un candado vencido, de una corrida que se cayó, no bloquea.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe
+AssertionError: expected { auth: false, …(13) } to deeply equal { auth: false, …(13) }
+
+- Expected
++ Received
+
+@@ -19,18 +19,18 @@
+      "active",
+    ],
+    "files": [
+      "claims/LMpl1qC6CBhEGZA459GvnAJSMc9m/<uuid>/1.jpg",
+    ],
+-   "invitations": 0,
++   "invitations": 2,
+    "lease": false,
+    "owners": false,
+    "ownerships": {
+      "D1": "revoked:account_deleted:self",
+      "D2": "revoked:account_deleted:self",
+    },
+-   "passwordLink": false,
++   "passwordLink": true,
+    "profileEdits": [
+      {
+        "email": false,
+        "uid": true,
+      },
+
+ ❯ test/account-delete-owner.test.ts:678:29
+    676| 
+    677|     expect(report.ownershipsRevoked).toBe(2);
+    678|     expect(await digest(f)).toEqual(FINAL(f));
+       |                             ^
+    679|   }, SLOW);
+    680| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K22: el orden: enlaces y sesiones antes de los ficheros, ficheros vacíos antes de limpiar sus documentos, Auth y la constancia al final
+AssertionError: expected { links: true, claimFiles: [], …(1) } to deeply equal { links: false, claimFiles: [], …(1) }
+
+- Expected
++ Received
+
+  {
+    "claimFiles": [],
+    "emailBeforeScrub": true,
+-   "links": false,
++   "links": true,
+  }
+
+ ❯ test/account-delete-owner.test.ts:740:20
+    738|     });
+    739| 
+    740|     expect(checks).toEqual({ links: false, claimFiles: [], emailBefore…
+       |                    ^
+    741|     expect(log).toEqual([
+    742|       'step:0',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  12 failed | 5 passed (17)
+   Start at  12:06:26
+   Duration  10.91s (transform 403ms, setup 17ms, collect 125ms, tests 10.51s, environment 0ms, prepare 99ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/account-delete-owner.test.ts" exited with code 1
