@@ -1,0 +1,200 @@
+# R5 at e9f26b3, with u5.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu.sh src/lib/email/unsubscribe.test.ts src/lib/email/preferences.test.ts src/lib/email/resend.test.ts test/unsubscribe-route.test.ts test/business-me-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run src/lib/email/unsubscribe.test.ts src/lib/email/preferences.test.ts src/lib/email/resend.test.ts test/unsubscribe-route.test.ts test/business-me-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/baja-y-preferencias
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > U-17: sin documento en owners, las dos listas salen encendidas y no se escribe nada
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > cada lista se lee por separado; un valor que no es booleano cuenta como encendido
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > ordena por name.es, cae a name.en, omite destinos borrados y dice qué incluye cada plan
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > una cuenta sin destinos recibe una sesión vacía, no un error
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > lista las solicitudes propias, la más nueva primero, y nunca las ajenas
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me con personas del negocio (I9) > dueña de D2 y encargada de D1: cada una con su rol y su columna (fila 29)
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me con personas del negocio (I9) > pendiente, vencida y retirada no aparecen (fila 30)
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me con personas del negocio (I9) > si es dueña y miembro del mismo negocio, gana owner
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me con personas del negocio (I9) > lo que lista es lo que la siguiente llamada deja pasar, celda por celda
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > U-15: apagar los avisos de reseñas toca solo reviewNotices, con source panel
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > U-15: apagar los avisos de reseñas toca solo reviewNotices, con source panel
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > las dos en un PATCH, y volver a encender una apagada por el enlace la deja en panel
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > un cuerpo que no es JSON responde 400
+[app-check] ausente /business/me/preferences
+
+ ✓ test/business-me-route.test.ts (26 tests) 3958ms
+   ✓ panel de negocios contra el emulador > requireBusinessAccess > deja pasar al dueño de un destino registrado y devuelve el documento  894ms
+   ✓ panel de negocios contra el emulador > GET /business/me > un token revocado responde 401 aunque no haya caducado  1122ms
+   ✓ panel de negocios contra el emulador > GET /business/me con personas del negocio (I9) > lo que lista es lo que la siguiente llamada deja pasar, celda por celda  369ms
+stdout | test/unsubscribe-route.test.ts > POST /email/unsubscribe contra el emulador > U-5: apagar, encender en el panel y volver a tocar el enlace lo apaga otra vez
+[app-check] ausente /business/me/preferences
+
+ ✓ test/unsubscribe-route.test.ts (24 tests) 1234ms
+ ❯ src/lib/email/unsubscribe.test.ts (21 tests | 2 failed) 44ms
+   ✓ token de baja > K-1: lo que se acuña para cada lista se verifica con su cuenta y su lista 6ms
+   ✓ token de baja > el formato es el del diseño: un token armado a mano con la clave vigente vale 1ms
+   × token de baja > K-2: un carácter cambiado en el payload o en la firma no vale 8ms
+     → Unexpected token '', ""u":"cuen"... is not valid JSON
+   ✓ token de baja > K-3: cambiar la lista y volver a firmar con otra clave no vale 1ms
+   ✓ token de baja > K-4: lo firmado con la clave anterior vale solo mientras EMAIL_LINK_SECRET_PREVIOUS está puesta 1ms
+   ✓ token de baja > K-4: una anterior de menos de 32 caracteres no cuenta como clave, aunque firme el token 1ms
+   ✓ token de baja > K-4: sin clave vigente, la anterior sola no verifica nada 1ms
+   ✓ token de baja > K-5: sin clave o con menos de 32 caracteres no se acuña (503) ni se verifica nada 2ms
+   × token de baja > K-6: lo mal formado es null y nunca lanza, aunque venga bien firmado 6ms
+     → u1.bm8gZXMganNvbg.D5mD5EbaxebaVbrvsRE75u8z9-plio5MNmU9ROl7oDQ: expected [Function] to not throw an error but 'SyntaxError: Unexpected token \'o\', …' was thrown
+   ✓ token de baja > K-6: los bordes que sí valen: uid de 128, iat a +300 s, iat 1.700.000.000, 399 caracteres 1ms
+   ✓ token de baja > K-6: el tope es 400 caracteres: 399 firmados valen, 401 firmados no 1ms
+   ✓ token de baja > K-7 (U6): el token de muestra no vale nunca, tampoco por la ruta de URLs 1ms
+   ✓ token de baja > K-8: las cabeceras son exactamente dos, con el texto de RFC 8058 0ms
+   ✓ token de baja > las URLs: un toque en el API y la página del panel, con el token codificado 1ms
+   ✓ token de baja > bases de las URLs: solo https con un host de verdad > un valor que no es https con host cae al de siempre, con un aviso que no muestra el valor 6ms
+   ✓ token de baja > bases de las URLs: solo https con un host de verdad > el mismo valor malo avisa una sola vez por proceso 0ms
+   ✓ token de baja > bases de las URLs: solo https con un host de verdad > ausente o vacío es el de siempre, sin aviso; uno bueno se usa sin barra final 1ms
+   ✓ token de baja > bases de las URLs: solo https con un host de verdad > con API_PUBLIC_URL en http, la URL de un toque y List-Unsubscribe salen en https 0ms
+   ✓ token de baja > acuñar con un uid que no es un id de documento simple es un error del código 0ms
+   ✓ techo de bajas por IP > diez por minuto; la undécima no; pasado el minuto vuelve a abrir 1ms
+   ✓ techo de bajas por IP > no gasta los intentos de activación de la misma IP 0ms
+ ✓ src/lib/email/resend.test.ts (14 tests) 19ms
+ ✓ src/lib/email/preferences.test.ts (3 tests) 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/unsubscribe.test.ts > token de baja > K-2: un carácter cambiado en el payload o en la firma no vale
+SyntaxError: Unexpected token '', ""u":"cuen"... is not valid JSON
+ ❯ parse src/lib/email/unsubscribe.ts:125:33
+    123|   // escritura no canónica ya falla el HMAC. Esto solo lo rechaza ante…
+    124|   if (bytes.toString('base64url') !== payload) return null;
+    125|   const decoded: unknown = JSON.parse(utf8.decode(bytes));
+       |                                 ^
+    126|   if (typeof decoded !== 'object' || decoded === null || Array.isArray…
+    127|   const keys = Object.keys(decoded).sort();
+ ❯ verifyUnsubscribeToken src/lib/email/unsubscribe.ts:152:18
+ ❯ src/lib/email/unsubscribe.test.ts:70:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/email/unsubscribe.test.ts > token de baja > K-6: lo mal formado es null y nunca lanza, aunque venga bien firmado
+AssertionError: u1.bm8gZXMganNvbg.D5mD5EbaxebaVbrvsRE75u8z9-plio5MNmU9ROl7oDQ: expected [Function] to not throw an error but 'SyntaxError: Unexpected token \'o\', …' was thrown
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+"SyntaxError: Unexpected token 'o', \"no es json\" is not valid JSON"
+
+ ❯ src/lib/email/unsubscribe.test.ts:185:92
+    183|     ];
+    184|     for (const token of bad) {
+    185|       expect(() => verifyUnsubscribeToken(token as string, env(), NOW)…
+       |                                                                                            ^
+    186|       expect(verifyUnsubscribeToken(token as string, env(), NOW), Stri…
+    187|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  2 failed | 86 passed (88)
+   Start at  11:06:40
+   Duration  7.38s (transform 268ms, setup 20ms, collect 1.06s, tests 5.26s, environment 1ms, prepare 317ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run src/lib/email/unsubscribe.test.ts src/lib/email/preferences.test.ts src/lib/email/resend.test.ts test/unsubscribe-route.test.ts test/business-me-route.test.ts" exited with code 1
