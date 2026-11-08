@@ -1,0 +1,49 @@
+# R2 at 7ddf8c0, with a2.patch applied
+# $ pnpm exec vitest run src/invitaciones/modelo.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/admin-invitaciones
+
+ ❯ src/invitaciones/modelo.test.ts (18 tests | 1 failed) 14ms
+     × un nombre repetido pide elegir por id 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/invitaciones/modelo.test.ts > validarEnvio > un nombre repetido pide elegir por id
+AssertionError: expected { ok: true, cuerpo: { …(3) } } to deeply equal { ok: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "errores": [
+-     "Hay más de un negocio con ese nombre: elige uno de la lista",
++   "cuerpo": {
++     "destinationIds": [
++       "dup-1",
+      ],
+-   "ok": false,
++     "email": "dueno@example.com",
++     "verification": {
++       "method": "visita_presencial",
++       "note": "Lo conocí en el local",
++     },
++   },
++   "ok": true,
+  }
+
+ ❯ src/invitaciones/modelo.test.ts:147:15
+    145|   it('un nombre repetido pide elegir por id', () => {
+    146|     const r = validarEnvio({ ...completo, negocio: 'Playa Bonita' }, o…
+    147|     expect(r).toEqual({ ok: false, errores: ['Hay más de un negocio co…
+       |               ^
+    148|   });
+    149|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 passed (18)
+   Start at  11:42:15
+   Duration  186ms (transform 37ms, setup 0ms, import 50ms, tests 14ms, environment 0ms)
+
