@@ -1,0 +1,273 @@
+# R2 at b1b6399, with q-n2.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu2.sh test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/6a-hospedaje-finca-tienda
+
+ ✓ test/profile-kinds-route.test.ts (74 tests) 9949ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 1: en R, {"tours":[]} es 422 field_not_for_type y no escribe nada  1268ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: los otros placeType del cuadro  307ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 20: los límites de fare  627ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 21: highSeasonMonths [12,1,2] se guarda [1,2,12]; [0], [13], [1,1] y los 12 meses son 422; [] borra  426ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 22: bookingUrl  384ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 25: durationMinutes y maxGroup  410ms
+ ❯ test/profile-maps-route.test.ts (42 tests | 2 failed) 6891ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: S muestra stay con sus tres campos del dueño, sin priceFrom ni capacity 187ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: S2 (stay es un texto) muestra stay vacío 30ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: un stay con valores, y con otros que no tienen la forma, se lee con tolerancia 32ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: F muestra farm vacío; una finca con farm lo muestra 102ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: C muestra craft sin paymentMethods; acceptsCommissions es true solo si está guardado true 64ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: R y T no muestran ningún mapa 101ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en S, el cuerpo entero de GET es 200 changed [] y no escribe 142ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en S2, el cuerpo entero de GET es 200 changed [] y no escribe 107ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en F, el cuerpo entero de GET es 200 changed [] y no escribe 223ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en C, el cuerpo entero de GET es 200 changed [] y no escribe 104ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en un stay con valores que hoy no pasarían, el cuerpo entero de GET es 200 changed [] y no escribe 105ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en una finca llena, el cuerpo entero de GET es 200 changed [] y no escribe 94ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en una tienda llena, el cuerpo entero de GET es 200 changed [] y no escribe 90ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 2: T con stay es 422 field_not_for_type y no escribe nada 63ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 4: S con craft y description es 422 field_not_for_type, ni siquiera description 65ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > casos 12 y 51: includes [] es eco; bring se escribe por ruta y [] borra la clave; priceFrom y capacity quedan 149ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 31: houseRules sin forma, priceFrom y stay null son 422; houseRules {pets:true} es 200  460ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > houseRules se reemplaza entero, y {} o null lo borran  483ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > las listas: 12 líneas de 80 son 200; 13 líneas o una de 81 son 422; se recortan y no se repiten  425ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 53: S2 (stay es un texto) con includes escribe stay como un mapa de lo del dueño 90ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > un hotel sin stay recibe stay con solo lo escrito 103ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > vaciar lo último que tiene stay borra la clave entera: no queda un mapa vacío 83ms
+   × ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > el eco va dentro del mapa: 13 includes guardados vuelven sin error y bring se escribe 125ms
+     → expected { status: 422, body: { …(2) } } to match object { status: 200, …(1) }
+(4 matching properties omitted from actual)
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > el eco compara también con lo guardado: unas houseRules guardadas con una clave de más vuelven sin error 115ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > un valor nuevo que al recortarse es lo guardado no escribe; stay {} tampoco 162ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 54: un campo de la ficha y dos subcampos en un PATCH: una línea con las tres rutas 116ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 32: __proto__ dentro de stay y 21 niveles son 422, nunca 500 144ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 27: F con advanceNotice one_week escribe farm.advanceNotice 74ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 28: un aviso desconocido, farm null y los límites movidos por uno son 422  487ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 28: los límites que pasan: 5 y 1440 minutos, grupos de 1 y 500, fare de 1000000 pesos y 20000 dólares  423ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > null borra cada subcampo, y una finca que queda sin nada pierde la clave farm 123ms
+   × ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > el eco va dentro del mapa: un aviso guardado que hoy no existe vuelve sin error 121ms
+     → expected { status: 422, body: { …(2) } } to match object { status: 200, body: { changed: [] } }
+(4 matching properties omitted from actual)
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 1 en finca: farm en un comedor es 422 field_not_for_type 64ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 13: C con acceptsCommissions true y materials guardados es 200 [] sin escribir 72ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 13: la forma guardada también es un eco aunque GET la muestre distinta 82ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > casos 29 y 50: payments sin repetir y en su orden; escribirlo borra paymentMethods y deja materials 186ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 50: payments [card] en C directo 65ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > un PATCH de otro subcampo no borra paymentMethods 67ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 30: un pago o un envío desconocidos y paymentMethods son 422  350ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 52: acceptsCommissions false borra la clave; true la guarda 167ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > shipping none se guarda; null lo borra; productos y materiales de 12 x 80 160ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 54: payments en la bitácora con su antes y su después 82ms
+ ❯ src/lib/profile-maps.test.ts (35 tests | 2 failed) 59ms
+   ✓ shownMap > caso 6: un mapa ausente o que no es un mapa se muestra vacío 8ms
+   ✓ shownMap > stay muestra solo sus tres subcampos, leídos con tolerancia 1ms
+   ✓ shownMap > farm muestra un aviso conocido, enteros y un fare con forma 1ms
+   ✓ shownMap > craft no muestra paymentMethods ni las claves del equipo; payments sale sin repetir y en su orden 2ms
+   × profilePatchSchemaFor con stay > el eco de un subcampo se quita, no se sustituye 25ms
+     → expected { includes: [ 'Wifi' ], …(1) } to deeply equal { bring: [ 'Abrigo' ] }
+   ✓ profilePatchSchemaFor con stay > un mapa que queda vacío tras quitar ecos se quita entero 2ms
+   ✓ profilePatchSchemaFor con stay > el mapa entero que GET muestra es un eco 1ms
+   ✓ profilePatchSchemaFor con stay > una clave del equipo igual a la guardada no es un eco: es un 422 1ms
+   ✓ profilePatchSchemaFor con stay > stay null es un 422 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"advanceNotice":"same_day"} acepta: true 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"advanceNotice":"two_weeks"} acepta: false 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"durationMinutes":1440} acepta: true 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"durationMinutes":1441} acepta: false 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"durationMinutes":5} acepta: true 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"durationMinutes":4} acepta: false 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"maxGroup":500} acepta: true 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"maxGroup":501} acepta: false 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"maxGroup":1} acepta: true 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"maxGroup":0} acepta: false 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"fare":{"dop":1000000}} acepta: true 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"fare":{"dop":1000001}} acepta: false 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"fare":{"usd":20000}} acepta: true 0ms
+   ✓ profilePatchSchemaFor con farm > farm {"fare":{"usd":20001}} acepta: false 1ms
+   ✓ profilePatchSchemaFor con farm > farm {"fare":{"dop":1.5}} acepta: false 1ms
+   ✓ profilePatchSchemaFor con farm > farm null es un 422 1ms
+   × profilePatchSchemaFor con farm > el eco de un subcampo se quita, también contra lo guardado 1ms
+     → [
+  {
+    "code": "invalid_value",
+    "values": [
+      "same_day",
+      "one_day",
+      "two_days",
+      "one_week"
+    ],
+    "path": [
+      "farm",
+      "advanceNotice"
+    ],
+    "message": "Invalid option: expected one of \"same_day\"|\"one_day\"|\"two_days\"|\"one_week\""
+  }
+]
+   ✓ mergeMap > lo ausente se queda, [] y null borran, y las claves del equipo no se tocan 1ms
+   ✓ mergeMap > un valor igual al guardado no es un cambio 0ms
+   ✓ mergeMap > escribir craft.payments borra paymentMethods por su ruta; otro subcampo no 1ms
+   ✓ mergeMap > acceptsCommissions false borra la clave y no es un cambio si no estaba 0ms
+   ✓ mergeMap > un null guardado que se vacía, o basura que se normaliza a lo mismo, no es un cambio (ronda 1, C1) 1ms
+   ✓ mergeMap > un cambio real lista la ruta con lo crudo guardado antes y después 0ms
+   ✓ mergeMap > solo se escribe lo que se lista: un hermano igual a lo mostrado no se toca (ronda 2, C2) 1ms
+   ✓ mergeMap > lo que queda igual a lo mostrado deja el valor guardado como está (ronda 3, hueco de pruebas) 0ms
+   ✓ mergeMap > un stay guardado que no es un mapa se escribe entero; uno que queda vacío se borra 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/profile-maps-route.test.ts > ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > el eco va dentro del mapa: 13 includes guardados vuelven sin error y bring se escribe
+AssertionError: expected { status: 422, body: { …(2) } } to match object { status: 200, …(1) }
+(4 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "body": {[22m
+[32m-     "changed": [[39m
+[32m-       "stay.bring",[39m
+[31m+     "error": "invalid_body",[39m
+[31m+     "issues": {[39m
+[31m+       "errors": [],[39m
+[31m+       "properties": {[39m
+[31m+         "stay": {[39m
+[31m+           "errors": [],[39m
+[31m+           "properties": {[39m
+[31m+             "includes": {[39m
+[31m+               "errors": [[39m
+[31m+                 "Too big: expected array to have <=12 items",[39m
+[2m                ],[22m
+[31m+             },[39m
+[31m+           },[39m
+[2m          },[22m
+[32m-   "status": 200,[39m
+[31m+       },[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "status": 422,[39m
+[2m  }[22m
+
+ ❯ test/profile-maps-route.test.ts:376:81
+    374|       const { id, token } = await seed({ placeType: 'cabana', stay: { …
+    375|       const shown = (await get(id, token)).body.stay;
+    376|       expect(await patch(id, token, { stay: { ...shown, bring: ['Abrig…
+       |                                                                                 ^
+    377|         status: 200,
+    378|         body: { changed: ['stay.bring'] },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/profile-maps-route.test.ts > ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > el eco va dentro del mapa: un aviso guardado que hoy no existe vuelve sin error
+AssertionError: expected { status: 422, body: { …(2) } } to match object { status: 200, body: { changed: [] } }
+(4 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "body": {[22m
+[32m-     "changed": [],[39m
+[31m+     "error": "invalid_body",[39m
+[31m+     "issues": {[39m
+[31m+       "errors": [],[39m
+[31m+       "properties": {[39m
+[31m+         "farm": {[39m
+[31m+           "errors": [],[39m
+[31m+           "properties": {[39m
+[31m+             "advanceNotice": {[39m
+[31m+               "errors": [[39m
+[31m+                 "Invalid option: expected one of \"same_day\"|\"one_day\"|\"two_days\"|\"one_week\"",[39m
+[31m+               ],[39m
+[31m+             },[39m
+[31m+           },[39m
+[31m+         },[39m
+[31m+       },[39m
+[2m      },[22m
+[32m-   "status": 200,[39m
+[31m+   },[39m
+[31m+   "status": 422,[39m
+[2m  }[22m
+
+ ❯ test/profile-maps-route.test.ts:489:80
+    487|       expect((await stored(id)).farm).toEqual({ advanceNotice: 'two_we…
+    488|       // Lo guardado tal cual también es un eco.
+    489|       expect(await patch(id, token, { farm: { advanceNotice: 'two_week…
+       |                                                                                ^
+    490|     });
+    491| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/lib/profile-maps.test.ts > profilePatchSchemaFor con stay > el eco de un subcampo se quita, no se sustituye
+AssertionError: expected { includes: [ 'Wifi' ], …(1) } to deeply equal { bring: [ 'Abrigo' ] }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "bring": [[22m
+[2m      "Abrigo",[22m
+[2m    ],[22m
+[31m+   "includes": [[39m
+[31m+     "Wifi",[39m
+[31m+   ],[39m
+[2m  }[22m
+
+ ❯ src/lib/profile-maps.test.ts:75:25
+     73|   it('el eco de un subcampo se quita, no se sustituye', () => {
+     74|     const parsed = schemaForS().parse({ stay: { includes: ['Wifi'], br…
+     75|     expect(parsed.stay).toEqual({ bring: ['Abrigo'] });
+       |                         ^
+     76|     expect(parsed.stay).not.toHaveProperty('includes');
+     77|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/lib/profile-maps.test.ts > profilePatchSchemaFor con farm > el eco de un subcampo se quita, también contra lo guardado
+ZodError: [
+  {
+    "code": "invalid_value",
+    "values": [
+      "same_day",
+      "one_day",
+      "two_days",
+      "one_week"
+    ],
+    "path": [
+      "farm",
+      "advanceNotice"
+    ],
+    "message": "Invalid option: expected one of \"same_day\"|\"one_day\"|\"two_days\"|\"one_week\""
+  }
+]
+ ❯ src/lib/profile-maps.test.ts:127:77
+    125| 
+    126|   it('el eco de un subcampo se quita, también contra lo guardado', () …
+    127|     const parsed = schemaForF({ advanceNotice: 'two_weeks', maxGroup: …
+       |                                                                             ^
+    128|     expect(parsed.farm).toEqual({ maxGroup: 30 });
+    129|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  4 failed | 147 passed (151)
+   Start at  03:03:00
+   Duration  18.69s (transform 404ms, setup 26ms, collect 783ms, tests 16.90s, environment 1ms, prepare 277ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts" exited with code 1
