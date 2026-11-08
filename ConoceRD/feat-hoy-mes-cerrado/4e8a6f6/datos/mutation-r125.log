@@ -1,0 +1,60 @@
+# R125 at 4e8a6f6, with m2.patch applied
+# $ pnpm exec vitest run src/features/negocio/hoy/period.test.ts src/features/negocio/hoy/HoyPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-hoy-mes-cerrado
+
+ ❯ src/features/negocio/hoy/period.test.ts (9 tests | 1 failed) 8ms
+   ❯ parseMes (8)
+     × refuses 13 months back 4ms
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx (47 tests | 1 failed) 3517ms
+   ❯ a bad ?mes= is the current month (8)
+     × ignores mes=2001-01 silently 62ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > a bad ?mes= is the current month > ignores mes=2001-01 silently
+AssertionError: expected [ '2001-01' ] to deeply equal [ '2026-11' ]
+
+- Expected
++ Received
+
+  [
+-   "2026-11",
++   "2001-01",
+  ]
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:508:30
+    506|       servePeriods({ [PERIOD]: (id) => modestWithPhone(PERIOD, id) });
+    507|       await mount(`/hoy?mes=${value}`);
+    508|       expect(periodsAsked()).toEqual([PERIOD]);
+       |                              ^
+    509|       expect(text()).toContain('hasta hoy');
+    510|       expect(text()).toContain('Este mes 5 personas');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/hoy/period.test.ts > parseMes > refuses 13 months back
+AssertionError: expected '2025-10' to be null
+
+- Expected:
+null
+
++ Received:
+"2025-10"
+
+ ❯ src/features/negocio/hoy/period.test.ts:22:38
+     20|
+     21|   it('refuses 13 months back', () => {
+     22|     expect(parseMes('2025-10', NOW)).toBeNull();
+       |                                      ^
+     23|   });
+     24|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 54 passed (56)
+   Start at  15:49:26
+   Duration  4.01s (tests 89%, environment 7%, import 3%, transform 1%)
+
