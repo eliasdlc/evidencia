@@ -1,0 +1,61 @@
+# R76 at fb2ebe4, with m2.patch applied
+# $ pnpm exec vitest run src/features/negocio/resenas/avisar.test.ts src/features/negocio/resenas/Avisar.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-resenas-avisar
+
+ ❯ src/features/negocio/resenas/avisar.test.ts (14 tests | 1 failed) 51ms
+   ❯ reportBody (8)
+     × blocks a note over the limit and takes exactly the limit 21ms
+ ❯ src/features/negocio/resenas/Avisar.test.tsx (33 tests | 1 failed) 2929ms
+   ❯ what is posted (11)
+     × blocks a note over 500 characters 111ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/resenas/Avisar.test.tsx > what is posted > blocks a note over 500 characters
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/features/negocio/resenas/Avisar.test.tsx:276:30
+    274|     await choose('other');
+    275|     await typeNote('a'.repeat(501));
+    276|     expect(send()?.disabled).toBe(true);
+       |                              ^
+    277|     await click(send());
+    278|     expect(calls).toHaveLength(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/resenas/avisar.test.ts > reportBody > blocks a note over the limit and takes exactly the limit
+AssertionError: expected { reason: 'other', …(1) } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "note": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "reason": "other",
+}
+
+ ❯ src/features/negocio/resenas/avisar.test.ts:22:59
+     20|   it('blocks a note over the limit and takes exactly the limit', () =>…
+     21|     expect(reportBody('other', 'a'.repeat(MAX_NOTE))).toEqual({ reason…
+     22|     expect(reportBody('other', 'a'.repeat(MAX_NOTE + 1))).toBeNull();
+       |                                                           ^
+     23|   });
+     24|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 45 passed (47)
+   Start at  10:17:45
+   Duration  4.29s (tests 73%, environment 19%, import 5%, transform 2%)
+
