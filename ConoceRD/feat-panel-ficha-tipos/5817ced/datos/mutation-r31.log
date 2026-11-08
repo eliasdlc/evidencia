@@ -1,0 +1,272 @@
+# R31 at 5817ced, with m1.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/tipos/model.test.ts src/features/negocio/ficha/tipos/TiposEditor.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha-tipos
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts (23 tests | 5 failed) 35ms
+   ❯ diffTipo (11)
+     × sends nothing when nothing changed, for every part 8ms
+     × sends only the changed subfield under the key of its kind 1ms
+     × farm: group and duration are whole numbers and only the changed one goes 1ms
+     × craft: payments in a stable order, shipping, lists and the switch 1ms
+     × a map that is missing diffs against empty 1ms
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx (40 tests | 14 failed) 3413ms
+   ❯ each part saves alone (14)
+     × stay, Qué incluye: one PATCH with only the changed subfield and If-Match with the version 92ms
+     × stay, Qué traer: one PATCH with only the changed subfield and If-Match with the version 64ms
+     × farm, Con cuánto tiempo avisan: one PATCH with only the changed subfield and If-Match with the version 91ms
+     × farm, Grupos y duración: one PATCH with only the changed subfield and If-Match with the version 60ms
+     × farm, Precio por persona: one PATCH with only the changed subfield and If-Match with the version 61ms
+     × craft, Cómo te pagan: one PATCH with only the changed subfield and If-Match with the version 93ms
+     × craft, Envíos: one PATCH with only the changed subfield and If-Match with the version 62ms
+     × craft, Qué vendes: one PATCH with only the changed subfield and If-Match with the version 59ms
+     × craft, Con qué lo haces: one PATCH with only the changed subfield and If-Match with the version 59ms
+     × craft, Trabajos por encargo: one PATCH with only the changed subfield and If-Match with the version 60ms
+     × the whole map is never sent: only the subfield of the part 194ms
+     × saving one part does not carry the changes of another: the next part starts clean 91ms
+   ❯ clearing (6)
+     × emptying a number sends null, emptying the fare sends null 95ms
+   ❯ leaving and switching (2)
+     × asks before leaving a part with changes, and not when nothing changed 66ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > stay, Qué incluye: one PATCH with only the changed subfield and If-Match with the version
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > stay, Qué traer: one PATCH with only the changed subfield and If-Match with the version
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > farm, Con cuánto tiempo avisan: one PATCH with only the changed subfield and If-Match with the version
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > farm, Grupos y duración: one PATCH with only the changed subfield and If-Match with the version
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > farm, Precio por persona: one PATCH with only the changed subfield and If-Match with the version
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > craft, Cómo te pagan: one PATCH with only the changed subfield and If-Match with the version
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > craft, Envíos: one PATCH with only the changed subfield and If-Match with the version
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > craft, Qué vendes: one PATCH with only the changed subfield and If-Match with the version
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > craft, Con qué lo haces: one PATCH with only the changed subfield and If-Match with the version
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > craft, Trabajos por encargo: one PATCH with only the changed subfield and If-Match with the version
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx:307:42
+    305|       await mount();
+    306|       await openPart(row.part);
+    307|       expect(button(row.save)?.disabled).toBe(true);
+       |                                          ^
+    308|       await row.edit();
+    309|       expect(button(row.save)?.disabled).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > the whole map is never sent: only the subfield of the part
+AssertionError: expected { farm: { maxGroup: 25, …(1) } } to deeply equal { farm: { durationMinutes: 120 } }
+
+- Expected
++ Received
+
+  {
+    "farm": {
+      "durationMinutes": 120,
++     "maxGroup": 25,
+    },
+  }
+
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx:328:24
+    326|     await type(field('Cuánto dura la visita, en minutos'), '120');
+    327|     await click(button('Guardar grupos y duración'));
+    328|     expect(sentBody()).toEqual({ farm: { durationMinutes: 120 } });
+       |                        ^
+    329|     expect(Object.keys((sentBody() as { farm: object }).farm)).toEqual…
+    330|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > saving one part does not carry the changes of another: the next part starts clean
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx:340:51
+    338|     await click(button('Guardar qué incluye'));
+    339|     await openPart('Qué traer');
+    340|     expect(button('Guardar qué traer')?.disabled).toBe(true);
+       |                                                   ^
+    341|     expect(patches()).toHaveLength(1);
+    342|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > clearing > emptying a number sends null, emptying the fare sends null
+AssertionError: expected { farm: { maxGroup: null, …(1) } } to deeply equal { farm: { maxGroup: null } }
+
+- Expected
++ Received
+
+  {
+    "farm": {
++     "durationMinutes": 90,
+      "maxGroup": null,
+    },
+  }
+
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx:398:24
+    396|     await type(field('Hasta cuántas personas por grupo'), '');
+    397|     await click(button('Guardar grupos y duración'));
+    398|     expect(sentBody()).toEqual({ farm: { maxGroup: null } });
+       |                        ^
+    399|     await openPart('Precio por persona');
+    400|     await type(field('En pesos (RD$)'), '');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > leaving and switching > asks before leaving a part with changes, and not when nothing changed
+AssertionError: expected ' Volver a lo que ve la genteCambiar q…' not to contain '¿Salir sin guardar'
+
+Expected: "¿Salir sin guardar"
+Received: " Volver a lo que ve la genteCambiar qué traerCabañas de pruebaLo que conviene que traiga quien viene. Las noches suelen ser frías.Qué traerAbrigoQuitarAgregarToca para agregar:+ Repelente+ Protector solar+ LinternaHasta 12, de 80 letras cada uno.Sale en la app apenas guardes.Guardar qué traer¿Salir sin guardar qué traer?Cambiaste algo. Si sales ahora, ese cambio se pierde y en la app sigue lo de antes.Seguir editandoSalir sin guardar"
+
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx:596:24
+    594|     await openPart('Qué traer');
+    595|     await click(button('Volver a lo que ve la gente'));
+    596|     expect(body()).not.toContain('¿Salir sin guardar');
+       |                        ^
+    597|     await openPart('Qué traer');
+    598|     await click(button('Agregar Repelente'));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/model.test.ts > diffTipo > sends nothing when nothing changed, for every part
+AssertionError: expected { Object (stay) } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "stay": {
++     "includes": [
++       "Leña",
++       "Wifi",
++     ],
++   },
++ }
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts:68:97
+     66|   it('sends nothing when nothing changed, for every part', () => {
+     67|     for (const [profile, kind] of [[stayProfile(), 'stay'], [farmProfi…
+     68|       for (const part of TIPO_PARTS[kind]) expect(diffTipo(profile, ti…
+       |                                                                                                 ^
+     69|     }
+     70|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/model.test.ts > diffTipo > sends only the changed subfield under the key of its kind
+AssertionError: expected { Object (stay) } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "stay": {
++     "includes": [
++       "Leña",
++       "Wifi",
++     ],
++   },
++ }
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts:77:48
+     75|     expect(diffTipo(profile, form, 'traer')).toEqual({ stay: { bring: …
+     76|     // The part that did not change sends nothing even when another on…
+     77|     expect(diffTipo(profile, form, 'incluye')).toEqual({});
+       |                                                ^
+     78|   });
+     79|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/model.test.ts > diffTipo > farm: group and duration are whole numbers and only the changed one goes
+AssertionError: expected { farm: { maxGroup: 30, …(1) } } to deeply equal { farm: { maxGroup: 30 } }
+
+- Expected
++ Received
+
+  {
+    "farm": {
++     "durationMinutes": 90,
+      "maxGroup": 30,
+    },
+  }
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts:107:69
+    105|     const profile = farmProfile();
+    106|     const form = tipoToForm(profile);
+    107|     expect(diffTipo(profile, { ...form, maxGroup: '30' }, 'grupo')).to…
+       |                                                                     ^
+    108|     expect(diffTipo(profile, { ...form, durationMinutes: '' }, 'grupo'…
+    109|     expect(diffTipo(profile, { ...form, maxGroup: '1,000', durationMin…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/model.test.ts > diffTipo > craft: payments in a stable order, shipping, lists and the switch
+AssertionError: expected { craft: { payments: [ …(2) ] } } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "craft": {
++     "payments": [
++       "cash_dop",
++       "card",
++     ],
++   },
++ }
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts:124:85
+    122|     expect(diffTipo(profile, { ...form, payments: ['transfer', 'card',…
+    123|     // Same methods in another order is no change.
+    124|     expect(diffTipo(profile, { ...form, payments: ['card', 'cash_dop']…
+       |                                                                                     ^
+    125|     expect(diffTipo(profile, { ...form, payments: [] }, 'pagos')).toEq…
+    126|     expect(diffTipo(profile, { ...form, shipping: 'international' }, '…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/model.test.ts > diffTipo > a map that is missing diffs against empty
+AssertionError: expected { craft: { payments: [] } } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "craft": {
++     "payments": [],
++   },
++ }
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts:136:61
+    134|     const profile = craftProfile(null);
+    135|     expect(diffTipo(profile, { ...tipoToForm(profile), acceptsCommissi…
+    136|     expect(diffTipo(profile, tipoToForm(profile), 'pagos')).toEqual({}…
+       |                                                             ^
+    137|   });
+    138|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  19 failed | 44 passed (63)
+   Start at  03:33:35
+   Duration  3.84s (tests 91%, environment 5%, import 2%, transform 1%)
+
