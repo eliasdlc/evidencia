@@ -1,0 +1,95 @@
+# R1 at 086becf
+# $ bash /home/decruce/.cache/conocerd-api/feat-fotos-dueno-retencion/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-fotos-dueno-retencion/emu.sh test/business-photos-sweep.test.ts
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18172.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/business-photos-sweep.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion
+
+stderr | test/business-photos-sweep.test.ts > barrido de fotos del dueño, contra el emulador de Firestore > un fallo de Storage en una foto no frena a las demás, y la corrida siguiente lo termina
+[conocerd-api] barrido de fotos: no se pudieron borrar los archivos de <uuid> Error: Storage caído a propósito
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:431:29
+    at file:///home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/node_modules/.pnpm/@vitest+runner@3.2.7/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > la ruta exige admin: el dueño recibe 403
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > T9: reenvía a cada persona con la misma clave del original, con solo sus fotos, y no escribe nada
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > un lote que no existe es 404 y no sale nada
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > un lote que no existe es 404 y no sale nada
+[app-check] ausente /admin/business-photos/review/no-es-un-uuid/notify
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor accepted
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stderr | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected
+[conocerd-api] Resend rechazó un correo: 502
+
+stderr | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected
+[conocerd-api] Resend rechazó un correo: 502
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stderr | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws
+[conocerd-api] no se pudo mandar el correo de fotos revisadas Error: Resend caído a propósito
+    at Object.send (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:664:50)
+    at RecordingMailer.send (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:455:23)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-review.ts:438:30
+    at async Promise.all (index 1)
+    at respond (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-review.ts:604:20)
+    at notifyPhotoBatch (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-notify.ts:54:24)
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-notify.ts:66:20
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/http.ts:92:14
+    at callNotify (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:552:22)
+
+stderr | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws
+[conocerd-api] no se pudo mandar el correo de fotos revisadas Error: Resend caído a propósito
+    at Object.send (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:664:50)
+    at RecordingMailer.send (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:455:23)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-review.ts:438:30
+    at async Promise.all (index 0)
+    at respond (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-review.ts:604:20)
+    at notifyPhotoBatch (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-notify.ts:54:24)
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-notify.ts:66:20
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/http.ts:92:14
+    at callNotify (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:552:22)
+
+ ✓ test/business-photos-sweep.test.ts (20 tests) 4301ms
+   ✓ barrido de fotos del dueño, contra el emulador de Firestore > T1: una rechazada de hace 6 días conserva su archivo; la de hace 8 lo pierde y anota fileDeletedAt  1081ms
+   ✓ reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor accepted  484ms
+   ✓ reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected  496ms
+   ✓ reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws  458ms
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  15:41:35
+   Duration  5.37s (transform 281ms, setup 14ms, collect 774ms, tests 4.30s, environment 0ms, prepare 89ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
