@@ -1,0 +1,46 @@
+# R2 at c1e72c7
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu2.sh test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/6a-hospedaje-finca-tienda
+
+ ✓ test/profile-kinds-route.test.ts (74 tests) 16709ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 1: en R, {"tours":[]} es 422 field_not_for_type y no escribe nada  1877ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: los otros placeType del cuadro  465ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: en L2, el cuerpo entero de GET con updatedAt y kind es 200 changed [] y no escribe  392ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > un valor de solo lectura que GET nunca pudo mostrar ({"updatedAt":"2020-01-01T00:00:00.000Z","kind":"banana"}) es 422 invalid_body, no 409  321ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 2: lectura de las excursiones y el resumen > caso 56: el resumen agrega nombres, el tipo y si hay enlace de reserva, sin cambiar ninguna cifra  402ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 20: los límites de fare  744ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 21: highSeasonMonths [12,1,2] se guarda [1,2,12]; [0], [13], [1,1] y los 12 meses son 422; [] borra  921ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 22: bookingUrl  661ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 24: includes de 12 x 80 es 200; 13 elementos o uno de 81 son 422  356ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 25: durationMinutes y maxGroup  544ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > casos 36 y 37: ids mal formados o repetidos son 422  369ms
+ ✓ test/profile-maps-route.test.ts (42 tests) 6813ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: F muestra farm vacío; una finca con farm lo muestra  329ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: R y T no muestran ningún mapa  483ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en S, el cuerpo entero de GET es 200 changed [] y no escribe  445ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 28: un aviso desconocido, farm null y los límites movidos por uno son 422  368ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 28: los límites que pasan: 5 y 1440 minutos, grupos de 1 y 500, fare de 1000000 pesos y 20000 dólares  317ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 30: un pago o un envío desconocidos y paymentMethods son 422  375ms
+ ✓ src/lib/profile-maps.test.ts (35 tests) 45ms
+
+ Test Files  3 passed (3)
+      Tests  151 passed (151)
+   Start at  02:57:17
+   Duration  25.85s (transform 594ms, setup 31ms, collect 1.11s, tests 23.57s, environment 1ms, prepare 340ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
