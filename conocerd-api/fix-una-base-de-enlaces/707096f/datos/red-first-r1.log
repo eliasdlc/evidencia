@@ -1,0 +1,133 @@
+# R1 at 707096f, with src/lib/email/unsubscribe.ts back at e16bb7b
+# $ pnpm exec vitest run src/lib/email/unsubscribe.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/una-base-de-enlaces
+
+ ❯ src/lib/email/unsubscribe.test.ts (39 tests | 8 failed) 94ms
+   ✓ token de baja > K-1: lo que se acuña para cada lista se verifica con su cuenta y su lista 6ms
+   ✓ token de baja > el formato es el del diseño: un token armado a mano con la clave vigente vale 1ms
+   ✓ token de baja > K-2: un carácter cambiado en el payload o en la firma no vale 11ms
+   ✓ token de baja > K-3: cambiar la lista y volver a firmar con otra clave no vale 1ms
+   ✓ token de baja > K-4: lo firmado con la clave anterior vale solo mientras EMAIL_LINK_SECRET_PREVIOUS está puesta 1ms
+   ✓ token de baja > K-4: una anterior de menos de 32 caracteres no cuenta como clave, aunque firme el token 1ms
+   ✓ token de baja > K-4: sin clave vigente, la anterior sola no verifica nada 1ms
+   ✓ token de baja > K-5: sin clave o con menos de 32 caracteres no se acuña (503) ni se verifica nada 3ms
+   ✓ token de baja > K-6: lo mal formado es null y nunca lanza, aunque venga bien firmado 13ms
+   ✓ token de baja > K-6: los bordes que sí valen: uid de 128, iat a +300 s, iat 1.700.000.000, 399 caracteres 1ms
+   ✓ token de baja > K-6: el tope es 400 caracteres: 399 firmados valen, 401 firmados no 2ms
+   ✓ token de baja > K-7 (U6): el token de muestra no vale nunca, tampoco por la ruta de URLs 1ms
+   ✓ token de baja > K-8: las cabeceras son exactamente dos, con el texto de RFC 8058 1ms
+   ✓ token de baja > las URLs: un toque en el API y la página del panel, con el token codificado 1ms
+   × token de baja > bases de las URLs: las mismas que las de todo correo > "https://x.example:443": la base de la baja es la de las plantillas, para el panel y para la API 19ms
+     → expected 'https://x.example' to be 'https://negocios.conocerd.app' // Object.is equality
+   × token de baja > bases de las URLs: las mismas que las de todo correo > "https://x.example//": la base de la baja es la de las plantillas, para el panel y para la API 2ms
+     → expected 'https://x.example' to be 'https://negocios.conocerd.app' // Object.is equality
+   × token de baja > bases de las URLs: las mismas que las de todo correo > "https://panel.x1": la base de la baja es la de las plantillas, para el panel y para la API 2ms
+     → expected 'https://negocios.conocerd.app' to be 'https://panel.x1' // Object.is equality
+   × token de baja > bases de las URLs: las mismas que las de todo correo > "https://xn--p1ai.xn--p1ai": la base de la baja es la de las plantillas, para el panel y para la API 5ms
+     → expected 'https://negocios.conocerd.app' to be 'https://xn--p1ai.xn--p1ai' // Object.is equality
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "https://a.0x": la base de la baja es la de las plantillas, para el panel y para la API 1ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "https://0x7f.0x1": la base de la baja es la de las plantillas, para el panel y para la API 0ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "https://api.ejemplo.com:0": la base de la baja es la de las plantillas, para el panel y para la API 0ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "https://api.ejemplo.com?": la base de la baja es la de las plantillas, para el panel y para la API 0ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "http://api.ejemplo.com": la base de la baja es la de las plantillas, para el panel y para la API 0ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "negocios.conocerd.app": la base de la baja es la de las plantillas, para el panel y para la API 0ms
+   × token de baja > bases de las URLs: las mismas que las de todo correo > "https://x.example:443": el pie de un correo con la URL de baja se arma sin lanzar 5ms
+     → expected [Function] to not throw an error but 'Error: renderEmail: enlace fuera del …' was thrown
+   × token de baja > bases de las URLs: las mismas que las de todo correo > "https://x.example//": el pie de un correo con la URL de baja se arma sin lanzar 1ms
+     → expected [Function] to not throw an error but 'Error: renderEmail: enlace fuera del …' was thrown
+   × token de baja > bases de las URLs: las mismas que las de todo correo > "https://panel.x1": el pie de un correo con la URL de baja se arma sin lanzar 1ms
+     → expected [Function] to not throw an error but 'Error: renderEmail: enlace fuera del …' was thrown
+   × token de baja > bases de las URLs: las mismas que las de todo correo > "https://xn--p1ai.xn--p1ai": el pie de un correo con la URL de baja se arma sin lanzar 1ms
+     → expected [Function] to not throw an error but 'Error: renderEmail: enlace fuera del …' was thrown
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "https://a.0x": el pie de un correo con la URL de baja se arma sin lanzar 2ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "https://0x7f.0x1": el pie de un correo con la URL de baja se arma sin lanzar 1ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "https://api.ejemplo.com:0": el pie de un correo con la URL de baja se arma sin lanzar 1ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "https://api.ejemplo.com?": el pie de un correo con la URL de baja se arma sin lanzar 0ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "http://api.ejemplo.com": el pie de un correo con la URL de baja se arma sin lanzar 0ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > "negocios.conocerd.app": el pie de un correo con la URL de baja se arma sin lanzar 0ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > ausente o vacío es el de siempre; uno bueno se usa sin barra final 1ms
+   ✓ token de baja > bases de las URLs: las mismas que las de todo correo > con API_PUBLIC_URL en http, la URL de un toque y List-Unsubscribe salen en https 0ms
+   ✓ token de baja > acuñar con un uid que no es un id de documento simple es un error del código 1ms
+   ✓ techo de bajas por IP > diez por minuto; la undécima no; pasado el minuto vuelve a abrir 1ms
+   ✓ techo de bajas por IP > no gasta los intentos de activación de la misma IP 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/unsubscribe.test.ts > token de baja > bases de las URLs: las mismas que las de todo correo > "https://x.example:443": la base de la baja es la de las plantillas, para el panel y para la API
+ FAIL  src/lib/email/unsubscribe.test.ts > token de baja > bases de las URLs: las mismas que las de todo correo > "https://x.example//": la base de la baja es la de las plantillas, para el panel y para la API
+AssertionError: expected 'https://x.example' to be 'https://negocios.conocerd.app' // Object.is equality
+
+Expected: [32m"https://[7mnegocios.conocerd.app[27m"[39m
+Received: [31m"https://[7mx.example[27m"[39m
+
+ ❯ src/lib/email/unsubscribe.test.ts:268:66
+    266| 
+    267|     it.each(DISCREPANTES)('%j: la base de la baja es la de las plantil…
+    268|       expect(unsubscribePanelBaseUrl({ PANEL_BASE_URL: value })).toBe(…
+       |                                                                  ^
+    269|       expect(apiPublicUrl({ API_PUBLIC_URL: value })).toBe(commonApiPu…
+    270|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/lib/email/unsubscribe.test.ts > token de baja > bases de las URLs: las mismas que las de todo correo > "https://panel.x1": la base de la baja es la de las plantillas, para el panel y para la API
+AssertionError: expected 'https://negocios.conocerd.app' to be 'https://panel.x1' // Object.is equality
+
+Expected: [32m"https://[7mpanel.x1[27m"[39m
+Received: [31m"https://[7mnegocios.conocerd.app[27m"[39m
+
+ ❯ src/lib/email/unsubscribe.test.ts:268:66
+    266| 
+    267|     it.each(DISCREPANTES)('%j: la base de la baja es la de las plantil…
+    268|       expect(unsubscribePanelBaseUrl({ PANEL_BASE_URL: value })).toBe(…
+       |                                                                  ^
+    269|       expect(apiPublicUrl({ API_PUBLIC_URL: value })).toBe(commonApiPu…
+    270|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/lib/email/unsubscribe.test.ts > token de baja > bases de las URLs: las mismas que las de todo correo > "https://xn--p1ai.xn--p1ai": la base de la baja es la de las plantillas, para el panel y para la API
+AssertionError: expected 'https://negocios.conocerd.app' to be 'https://xn--p1ai.xn--p1ai' // Object.is equality
+
+Expected: [32m"https://[7mxn--p1ai.xn--p1ai[27m"[39m
+Received: [31m"https://[7mnegocios.conocerd.app[27m"[39m
+
+ ❯ src/lib/email/unsubscribe.test.ts:268:66
+    266| 
+    267|     it.each(DISCREPANTES)('%j: la base de la baja es la de las plantil…
+    268|       expect(unsubscribePanelBaseUrl({ PANEL_BASE_URL: value })).toBe(…
+       |                                                                  ^
+    269|       expect(apiPublicUrl({ API_PUBLIC_URL: value })).toBe(commonApiPu…
+    270|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/lib/email/unsubscribe.test.ts > token de baja > bases de las URLs: las mismas que las de todo correo > "https://x.example:443": el pie de un correo con la URL de baja se arma sin lanzar
+ FAIL  src/lib/email/unsubscribe.test.ts > token de baja > bases de las URLs: las mismas que las de todo correo > "https://x.example//": el pie de un correo con la URL de baja se arma sin lanzar
+ FAIL  src/lib/email/unsubscribe.test.ts > token de baja > bases de las URLs: las mismas que las de todo correo > "https://panel.x1": el pie de un correo con la URL de baja se arma sin lanzar
+ FAIL  src/lib/email/unsubscribe.test.ts > token de baja > bases de las URLs: las mismas que las de todo correo > "https://xn--p1ai.xn--p1ai": el pie de un correo con la URL de baja se arma sin lanzar
+AssertionError: expected [Function] to not throw an error but 'Error: renderEmail: enlace fuera del …' was thrown
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+"Error: renderEmail: enlace fuera del panel y de la API"
+
+ ❯ src/lib/email/unsubscribe.test.ts:285:47
+    283|         footer: { reason: 'Prueba.', unsubscribe: { label: 'Darme de b…
+    284|       };
+    285|       expect(() => renderEmail(doc, env)).not.toThrow();
+       |                                               ^
+    286|     });
+    287| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 31 passed (39)
+   Start at  11:59:03
+   Duration  1.63s (transform 354ms, setup 24ms, collect 1.12s, tests 94ms, environment 0ms, prepare 133ms)
+
