@@ -1,0 +1,97 @@
+# R24 at 5ebbbf2, with m3.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/tours/model.test.ts src/features/negocio/ficha/tours/ToursEditor.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha-tours
+
+ ❯ src/features/negocio/ficha/tours/model.test.ts (27 tests | 1 failed) 182ms
+   ❯ buildToursPatch (5)
+     × a removal leaves the id out and the rest in order 33ms
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx (31 tests | 4 failed) 4833ms
+   ❯ removing an excursion (5)
+     × asks first, then sends the list without it and If-Match with the real updatedAt 105ms
+     × 428 reads the page again and says it changed, removing nothing 78ms
+     × 409 reads the page again and says it changed, removing nothing 88ms
+     × another person removed it meanwhile: says it is gone instead of a blank page 94ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > removing an excursion > asks first, then sends the list without it and If-Match with the real updatedAt
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:544:23
+    542|     await click(button('Quitar esta excursión'));
+    543|     await click(button('Sí, quitarla'));
+    544|     expect(patches()).toHaveLength(1);
+       |                       ^
+    545|     expect(patches()[0]).toEqual({
+    546|       path: '/business/biz-1/profile',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > removing an excursion > 428 reads the page again and says it changed, removing nothing
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > removing an excursion > 409 reads the page again and says it changed, removing nothing
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:580:29
+    578|       await click(button('Quitar esta excursión'));
+    579|       await click(button('Sí, quitarla'));
+    580|       expect(gets().length).toBe(before + 1);
+       |                             ^
+    581|       expect(body()).toContain('Tu página cambió mientras la editabas'…
+    582|       expect(body()).toContain('No quitamos nada');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > removing an excursion > another person removed it meanwhile: says it is gone instead of a blank page
+AssertionError: expected ' Volver a lo que ve la genteCambiar: …' to contain 'Esta excursión ya no está'
+
+Expected: "Esta excursión ya no está"
+Received: " Volver a lo que ve la genteCambiar: Día de playa en el cayoExcursiones de pruebaToca la parte que quieras cambiar. Lo que dice cada una es lo que ve la gente ahora.Nombre y descripciónCambiarDía de playa en el cayoSalidas y duraciónCambiarDura 3 h. Hasta 20 personasQué incluye y qué traerCambiarIncluye: Lancha, Chaleco. Trae: Gorra.PrecioCambiarRD$2,400 o US$40Enlace para reservarCambiar Opcional. Sin enlace, la app no muestra el botón «Reservar».Quitar esta excursiónDeja de salir en la app, con su precio. No se puede deshacer.Quitar esta excursión"
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:599:20
+    597|     await click(button('Quitar esta excursión'));
+    598|     await click(button('Sí, quitarla'));
+    599|     expect(text()).toContain('Esta excursión ya no está');
+       |                    ^
+    600|   });
+    601| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/features/negocio/ficha/tours/model.test.ts > buildToursPatch > a removal leaves the id out and the rest in order
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/features/negocio/ficha/tours/model.test.ts:59:38
+     57|     const patch = buildToursPatch(list, { kind: 'remove', id: 'tBBB' }…
+     58|     expect(patch).toEqual([{ id: 'tAAA' }, { id: 'tCCC' }]);
+     59|     expect(dropsStored(list, patch)).toBe(true);
+       |                                      ^
+     60|   });
+     61|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 53 passed (58)
+   Start at  02:37:40
+   Duration  7.34s (tests 69%, environment 20%, import 9%, transform 2%, worker 1%)
+
