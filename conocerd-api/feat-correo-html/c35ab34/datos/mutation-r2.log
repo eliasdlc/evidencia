@@ -1,0 +1,121 @@
+# R2 at c35ab34, with h2.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu2.sh src/lib/email/render.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run src/lib/email/render.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/correo-html
+
+ ❯ src/lib/email/render.test.ts (39 tests | 1 failed) 37ms
+   ✓ renderEmail: un documento, dos versiones > R-1: los números y las direcciones del texto son los mismos que los del HTML 6ms
+   ✓ renderEmail: un documento, dos versiones > el asunto sale igual que en el documento 1ms
+   ✓ renderEmail: un documento, dos versiones > el texto: saludo, bloques separados por una línea en blanco, títulos en mayúsculas, "Etiqueta: dirección" y el pie 1ms
+   ✓ renderEmail: un documento, dos versiones > un enlace con otra etiqueta se escribe "Etiqueta: dirección" también dentro de un párrafo 1ms
+   ✓ renderEmail: un documento, dos versiones > sin baja, el pie lleva solo el motivo y la dirección de ConoceRD 1ms
+   × renderEmail: escapes y enlaces (H1) > R-2: un nombre con <b>&"' sale escapado en el HTML y tal cual en el texto 11ms
+     → expected '<!DOCTYPE html>\n<html lang="es">\n<h…' not to contain '<b>'
+   ✓ renderEmail: escapes y enlaces (H1) > escapeHtml cubre los cinco caracteres 0ms
+   ✓ renderEmail: escapes y enlaces (H1) > R-3: un botón a http://negocios.conocerd.app/hoy hace fallar renderEmail 1ms
+   ✓ renderEmail: escapes y enlaces (H1) > R-3: un botón a https://evil.example/hoy hace fallar renderEmail 0ms
+   ✓ renderEmail: escapes y enlaces (H1) > R-3: un botón a javascript:alert(1) hace fallar renderEmail 0ms
+   ✓ renderEmail: escapes y enlaces (H1) > R-3: un botón a https://negocios.conocerd.app.evil.example/ hace fallar renderEmail 0ms
+   ✓ renderEmail: escapes y enlaces (H1) > R-3: un botón a https://negocios.conocerd.app@evil.example/ hace fallar renderEmail 0ms
+   ✓ renderEmail: escapes y enlaces (H1) > R-3: un botón a /hoy hace fallar renderEmail 0ms
+   ✓ renderEmail: escapes y enlaces (H1) > R-3: un botón a no es una dirección hace fallar renderEmail 0ms
+   ✓ renderEmail: escapes y enlaces (H1) > R-3: también falla con un enlace de párrafo o una baja fuera del panel o la API 0ms
+   ✓ renderEmail: escapes y enlaces (H1) > acepta el host de la API y los que digan PANEL_BASE_URL y API_PUBLIC_URL 1ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > PANEL_BASE_URL=negocios.conocerd.app: los enlaces al panel por defecto siguen saliendo 2ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > PANEL_BASE_URL=http://localhost:5173: los enlaces al panel por defecto siguen saliendo 0ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > PANEL_BASE_URL=https://: los enlaces al panel por defecto siguen saliendo 0ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > PANEL_BASE_URL=https:negocios.conocerd.app: los enlaces al panel por defecto siguen saliendo 0ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > PANEL_BASE_URL=https://user:test@negocios.conocerd.app: los enlaces al panel por defecto siguen saliendo 0ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > PANEL_BASE_URL=https://negocios.conocerd.app/?x=1: los enlaces al panel por defecto siguen saliendo 0ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > PANEL_BASE_URL=no es una dirección: los enlaces al panel por defecto siguen saliendo 0ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > API_PUBLIC_URL=api.conocerd.app no afecta un correo sin enlace a la API 0ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > API_PUBLIC_URL=http://localhost:3000 no afecta un correo sin enlace a la API 0ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > API_PUBLIC_URL=:::: no afecta un correo sin enlace a la API 0ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > API_PUBLIC_URL mala cae en https://api.conocerd.app para los enlaces a la API 0ms
+   ✓ renderEmail: la configuración nunca rompe un correo (C1) > un enlace a otro host sigue siendo un error de la plantilla, con cualquier entorno 0ms
+   ✓ renderEmail: palabras distintas por versión > una parte { text, html } dice cada cosa en su versión 0ms
+   ✓ renderEmail: palabras distintas por versión > las dos versiones de una parte no pueden diferir en números ni llevar direcciones 0ms
+   ✓ renderEmail: palabras distintas por versión > una nota también acepta partes 0ms
+   ✓ renderEmail: el asunto es una sola línea > quita CR y LF del asunto, en el resultado y en <title> 0ms
+   ✓ renderEmail: HTML apto para correo (R-4) > lang es, title igual al asunto, color-scheme, sin imágenes, scripts ni estilos externos 1ms
+   ✓ renderEmail: HTML apto para correo (R-4) > cada tabla es role="presentation" y el ancho máximo es 600 1ms
+   ✓ renderEmail: HTML apto para correo (R-4) > la vista previa va oculta al principio del cuerpo 0ms
+   ✓ renderEmail: HTML apto para correo (R-4) > cuerpo en Arial 17/25, cifra de al menos 36 px en negrita, botón de al menos 48 px de alto con su texto 1ms
+   ✓ renderEmail: HTML apto para correo (R-4) > usa los colores de la identidad del panel y la marca escrita como texto 0ms
+   ✓ renderEmail: HTML apto para correo (R-4) > el título es un encabezado de verdad, para lectores de pantalla 0ms
+   ✓ renderEmail: HTML apto para correo (R-4) > con 3 citas y 20 filas pesa menos de 90 KB 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/render.test.ts > renderEmail: escapes y enlaces (H1) > R-2: un nombre con <b>&"' sale escapado en el HTML y tal cual en el texto
+AssertionError: expected '<!DOCTYPE html>\n<html lang="es">\n<h…' not to contain '<b>'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- <[7mb>[27m[39m
+[31m+ <[7m!DOCTYPE html>[27m[39m
+[31m+ <html lang="es">[39m
+[31m+ <head>[39m
+[31m+ <meta charset="utf-8">[39m
+[31m+ <meta name="viewport" content="width=device-width, initial-scale=1">[39m
+[31m+ <meta name="x-apple-disable-message-reformatting">[39m
+[31m+ <meta name="color-scheme" content="light only">[39m
+[31m+ <meta name="supported-color-schemes" content="light only">[39m
+[31m+ <title>Tu resumen de <b>&"'</title>[39m
+[31m+ </head>[39m
+[31m+ <body style="margin:0;padding:0;background:#FDF8F0;-webkit-text-size-adjust:100%">[39m
+[31m+ <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#FDF8F0;font-size:1px;line-height:1px">Para <b>&"'&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;</div>[39m
+[31m+ <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FDF8F0" style="background:#FDF8F0"><tr><td align="center" style="padding:20px 10px 32px">[39m
+[31m+ <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:100%;max-width:600px">[39m
+[31m+ <tr><td style="padding:4px 8px 16px;font-family:Arial, Helvetica, sans-serif;font-size:24px;line-height:28px;font-weight:700;color:#0F1A2E">Conoce<span style="color:#E0552F">RD</span></td></tr>[39m
+[31m+ <tr><td bgcolor="#FFFFFF" style="background:#FFFFFF;border:1px solid #E6DFD0;border-radius:22px;padding:28px 22px 24px">[39m
+[31m+ <p style="margin:0 0 16px;font-family:Arial, Helvetica, sans-serif;font-size:17px;line-height:25px;color:#0F1A2E;font-weight:400">Hola, <b>&"':</p>[39m
+[31m+ <p style="margin:0 0 16px;font-family:Arial, Helvetica, sans-serif;font-size:17px;line-height:25px;color:#0F1A2E;font-weight:400"><b>&"'<strong style="font-weight:700;color:#0F1A2E"><b>&"'</strong><a href="https://negocios.conocerd.app/hoy?a=1&b=2" style="color:#B23410;text-decoration:underline"><b>&"'</a></p>[39m
+[31m+ <h2 style="margin:8px 0 10px;font-family:Arial, Helvetica, sans-serif;font-size:16px;line-height:22px;font-weight:700;color:#B23410"><b>&"'</h2>[39m
+[31m+ <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 16px;border-top:1px solid #E6DFD0"><tr><td valign="top" style="padding:14px 14px 0 0;white-space:nowrap;font-family:Arial, Helvetica, sans-serif;font-size:40px;line-height:44px;font-weight:700;color:#0F1A2E"><b>&"'</td><td valign="top" width="100%" style="padding:16px 0 0"><p style="margin:0;font-family:Arial, Helvetica, sans-serif;font-size:17px;line-height:25px;font-weight:700;color:#0F1A2E"><b>&"'</p><p style="margin:4px 0 0;font-family:Arial, Helvetica, sans-serif;font-size:16px;line-height:23px;color:#465066;font-weight:400"><b>&"'</p><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:8px 0 0"><tr><td valign="top" style="padding:4px 12px 4px 0;border-top:1px solid #E6DFD0;font-family:Arial, Helvetica, sans-serif;font-size:16px;line-height:23px;color:#465066;font-weight:400"><b>&"'</td><td valign="top" align="right" style="padding:4px 0;border-top:1px solid #E6DFD0;font-family:Arial, Helvetica, sans-serif;font-size:16px;line-height:23px;font-weight:700;color:#0F1A2E"><b>&"'</td></tr></table></td></tr></table>[39m
+[31m+ <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 20px"><tr><td bgcolor="#0F1A2E" style="background:#0F1A2E;border-radius:999px;mso-padding-alt:16px 28px"><a href="https://negocios.conocerd.app/x" style="display:inline-block;padding:16px 28px 16px 28px;font-family:Arial, Helvetica, sans-serif;font-size:18px;line-height:22px;font-weight:700;color:#FFFFFF;text-decoration:none;border-radius:999px"><b>&"'</a></td></tr></table>[39m
+[31m+ <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 16px"><tr><td style="background:#F4ECDD;border-radius:18px;padding:16px 18px"><p style="margin:0 0 6px;font-family:Arial, Helvetica, sans-serif;font-size:16px;line-height:23px;color:#465066"><strong style="font-weight:700;color:#0F1A2E"><b>&"'</strong>, <b>&"'</p><p style="margin:0;font-family:Arial, Helvetica, sans-serif;font-size:17px;line-height:25px;color:#0F1A2E;font-weight:400">«<b>&"'»</p></td></tr></table>[39m
+[31m+ <p style="margin:0 0 16px;font-family:Arial, Helvetica, sans-serif;font-size:16px;line-height:23px;color:#465066;font-weight:400"><b>&"'</p>[39m
+[31m+ </td></tr>[39m
+[31m+ <tr><td style="padding:20px 8px 0"><p style="margin:0 0 10px;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;color:#465066;font-weight:400"><b>&"'</p><p style="margin:0 0 10px;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;color:#465066;font-weight:400"><a href="https://negocios.conocerd.app/correo/baja?t=a"b" style="color:#465066;text-decoration:underline"><b>&"'</a></p><p style="margin:0;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;color:#465066;font-weight:400">ConoceRD, Santo Domingo, República Dominicana.</p></td></tr>[39m
+[31m+ </table>[39m
+[31m+ </td></tr></table>[39m
+[31m+ </body>[39m
+[31m+ </html>[39m
+[31m+[39m
+
+ ❯ src/lib/email/render.test.ts:127:22
+    125|     const { text, html } = renderEmail(doc, env);
+    126|     expect(text).toContain(`Hola, <b>&"':`);
+    127|     expect(html).not.toContain('<b>');
+       |                      ^
+    128|     expect(html).not.toMatch(/&(?!amp;|lt;|gt;|quot;|#39;|nbsp;|#8199;…
+    129|     const escaped = '&lt;b&gt;&amp;&quot;&#39;';
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 38 passed (39)
+   Start at  11:23:25
+   Duration  475ms (transform 102ms, setup 20ms, collect 105ms, tests 37ms, environment 0ms, prepare 95ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run src/lib/email/render.test.ts" exited with code 1
