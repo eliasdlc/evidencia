@@ -1,0 +1,115 @@
+# R3 at e4af57c, with r2-sends-for-undecided.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-retencion/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-retencion/emu.sh test/owner-requests-notify.test.ts
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18172.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/owner-requests-notify.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-retencion
+
+stdout | test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > la ruta exige admin: otra cuenta recibe 403 y no sale nada (T9)
+[app-check] ausente /admin/owner-requests/<uuid>/notify
+
+stdout | test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > T9: reenviar una aprobación usa la misma clave que el original y no escribe nada
+[app-check] ausente /admin/owner-requests/<uuid>/notify
+
+i  To reset your email address to <email>, follow this link: http://127.0.0.1:19171/emulator/action?mode=recoverEmail&lang=en&oobCode=Wytb3YZ1t7pPjuwyCzAur4nPBa1XBph1dQ__vPAuDDj1Jd1KFwzWDz&apiKey=fake-api-key
+stdout | test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > T9: reenviar un rechazo usa la misma clave, el mismo motivo y la dirección actual de la cuenta
+[app-check] ausente /admin/owner-requests/<uuid>/notify
+
+stdout | test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > T10: un pedido abierto o retirado es 409 not_decided y no sale nada; uno que no existe, 404
+[app-check] ausente /admin/owner-requests/<uuid>/notify
+
+stdout | test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > una cuenta borrada no recibe nada: 200 { sent: false } sin escribir
+[app-check] ausente /admin/owner-requests/<uuid>/notify
+
+stdout | test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor accepted
+[app-check] ausente /admin/owner-requests/<uuid>/notify
+
+stdout | test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected
+[app-check] ausente /admin/owner-requests/<uuid>/notify
+
+stderr | test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected
+[conocerd-api] Resend rechazó un correo: 502
+
+stdout | test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws
+[app-check] ausente /admin/owner-requests/<uuid>/notify
+
+stderr | test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws
+[conocerd-api] el reenvío de un correo de decisión de pedido no salió
+
+ ❯ test/owner-requests-notify.test.ts (9 tests | 2 failed) 3447ms
+   ✓ pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > la ruta exige admin: otra cuenta recibe 403 y no sale nada (T9) 21ms
+   ✓ pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > T9: reenviar una aprobación usa la misma clave que el original y no escribe nada  1174ms
+   ✓ pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > T9: reenviar un rechazo usa la misma clave, el mismo motivo y la dirección actual de la cuenta 186ms
+   × pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > T10: un pedido abierto o retirado es 409 not_decided y no sale nada; uno que no existe, 404 81ms
+     → expected 200 to be 409 // Object.is equality
+   ✓ pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > una cuenta borrada no recibe nada: 200 { sent: false } sin escribir 124ms
+   ✓ pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor accepted  463ms
+   ✓ pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected  407ms
+   ✓ pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws  418ms
+   × planNotify, sin emulador > solo una aprobación o un rechazo con su decisión tienen correo que reenviar 2ms
+     → expected 'ok' to be 'not_decided' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/owner-requests-notify.test.ts > pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > T10: un pedido abierto o retirado es 409 not_decided y no sale nada; uno que no existe, 404
+AssertionError: expected 200 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 200
+
+ ❯ test/owner-requests-notify.test.ts:238:25
+    236| 
+    237|     const open = await callNotify({ db: db(), mailer }, pending);
+    238|     expect(open.status).toBe(409);
+       |                         ^
+    239|     expect(open.body.error).toBe('not_decided');
+    240| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/owner-requests-notify.test.ts > planNotify, sin emulador > solo una aprobación o un rechazo con su decisión tienen correo que reenviar
+AssertionError: expected 'ok' to be 'not_decided' // Object.is equality
+
+Expected: "not_decided"
+Received: "ok"
+
+ ❯ test/owner-requests-notify.test.ts:331:57
+    329|     };
+    330|     expect(code(undefined)).toBe('not_found');
+    331|     expect(code({ status: 'pending', decision: null })).toBe('not_deci…
+       |                                                         ^
+    332|     expect(code({ status: 'awaiting_listing', decision: null })).toBe(…
+    333|     expect(code({ status: 'withdrawn', decision: { kind: 'withdraw' } …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 7 passed (9)
+   Start at  15:29:16
+   Duration  3.91s (transform 361ms, setup 16ms, collect 232ms, tests 3.45s, environment 0ms, prepare 69ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/owner-requests-notify.test.ts" exited with code 1
