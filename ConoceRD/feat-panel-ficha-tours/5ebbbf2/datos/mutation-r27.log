@@ -1,0 +1,102 @@
+# R27 at 5ebbbf2, with m2.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/tours/model.test.ts src/features/negocio/ficha/tours/ToursEditor.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha-tours
+
+ ❯ src/features/negocio/ficha/tours/model.test.ts (27 tests | 1 failed) 33ms
+   ❯ buildToursPatch (5)
+     × a new excursion goes last with no id 9ms
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx (31 tests | 2 failed) 3331ms
+   ❯ adding an excursion (3)
+     × sends the list with a new entry at the end and no id, then opens the one the server made 104ms
+     × asks for a name before any call 100ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > adding an excursion > sends the list with a new entry at the end and no id, then opens the one the server made
+AssertionError: expected { tours: [ { id: 'tAAA' }, …(3) ] } to deeply equal { tours: [ { id: 'tAAA' }, …(3) ] }
+
+- Expected
++ Received
+
+@@ -8,10 +8,11 @@
+      },
+      {
+        "id": "tCCC",
+      },
+      {
++       "id": "new",
+        "name": {
+          "es": "Cascada del limón",
+        },
+      },
+    ],
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:499:32
+    497|
+    498|     expect(patches()).toHaveLength(1);
+    499|     expect(patches()[0]?.body).toEqual({ tours: [{ id: 'tAAA' }, { id:…
+       |                                ^
+    500|     expect('id' in (sent(0)[3] as object)).toBe(false);
+    501|     // The server's own answer is on screen: the new excursion's page.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > adding an excursion > asks for a name before any call
+AssertionError: expected { Object (id, name) } to deeply equal { name: { en: 'Waterfall' } }
+
+- Expected
++ Received
+
+  {
++   "id": "new",
+    "name": {
+      "en": "Waterfall",
+    },
+  }
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:513:24
+    511|     await click(button('Agregar la excursión'));
+    512|     expect(patches()).toHaveLength(1);
+    513|     expect(sent(0)[3]).toEqual({ name: { en: 'Waterfall' } });
+       |                        ^
+    514|   });
+    515|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/features/negocio/ficha/tours/model.test.ts > buildToursPatch > a new excursion goes last with no id
+AssertionError: expected [ Array(4) ] to deeply equal [ Array(4) ]
+
+- Expected
++ Received
+
+@@ -7,10 +7,11 @@
+    },
+    {
+      "id": "tCCC",
+    },
+    {
++     "id": "new",
+      "name": {
+        "es": "Cascada",
+      },
+    },
+  ]
+
+ ❯ src/features/negocio/ficha/tours/model.test.ts:52:19
+     50|   it('a new excursion goes last with no id', () => {
+     51|     const patch = buildToursPatch(list, { kind: 'add', fields: { name:…
+     52|     expect(patch).toEqual([{ id: 'tAAA' }, { id: 'tBBB' }, { id: 'tCCC…
+       |                   ^
+     53|     expect('id' in (patch[3] as object)).toBe(false);
+     54|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 55 passed (58)
+   Start at  02:37:04
+   Duration  3.90s (tests 88%, environment 7%, import 3%, transform 1%)
+
