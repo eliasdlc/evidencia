@@ -1,0 +1,127 @@
+# R4 at 345116f, with c2.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu2.sh src/lib/email test/invitation-email.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run src/lib/email test/invitation-email.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/correo-html
+
+ ✓ src/lib/email/templates.test.ts (297 tests) 3145ms
+   ✓ la base de los enlaces: lo que la regla acepta, el correo lo puede mandar (N1, N2) > propiedad: todo lo que el validador acepta, new URL lo lee igual y la invitación sale con esa base  2987ms
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app el alta de la invitación responde 200 y el correo sale al panel por defecto
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 el alta de la invitación responde 200 y el correo sale al panel por defecto
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// el alta de la invitación responde 200 y el correo sale al panel por defecto
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: el alta de la invitación responde 200 y el correo sale al panel por defecto
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app la renovación sin sesión responde 202, no 500
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 la renovación sin sesión responde 202, no 500
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// la renovación sin sesión responde 202, no 500
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: la renovación sin sesión responde 202, no 500
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations/01mEfV17OrW9KzjQ3skt/resend
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations/mZ9P4NDsK1oFWLuquOdo/resend
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations/EWbDAxTSFiAflfRwSioh/resend
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations/avs1jhExDctUkvDfKydD/resend
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C2: si armar el correo en vivo falla, no se guarda ningún token y no se llama a Resend
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C2: la copia de prueba lleva en el HTML el enlace de muestra, ningún token vivo y el aviso de prueba
+[app-check] ausente /admin/owner-invitations
+
+ ❯ test/invitation-email.test.ts (14 tests | 1 failed) 7320ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app el alta de la invitación responde 200 y el correo sale al panel por defecto  1466ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 el alta de la invitación responde 200 y el correo sale al panel por defecto  759ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// el alta de la invitación responde 200 y el correo sale al panel por defecto  500ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: el alta de la invitación responde 200 y el correo sale al panel por defecto  377ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app la renovación sin sesión responde 202, no 500  793ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 la renovación sin sesión responde 202, no 500 273ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// la renovación sin sesión responde 202, no 500 225ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: la renovación sin sesión responde 202, no 500  641ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app el reenvío del admin no responde 500 y el correo sale  868ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 el reenvío del admin no responde 500 y el correo sale  440ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// el reenvío del admin no responde 500 y el correo sale 279ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: el reenvío del admin no responde 500 y el correo sale 154ms
+   × la invitación en HTML contra el emulador > C2: si armar el correo en vivo falla, no se guarda ningún token y no se llama a Resend 137ms
+     → expected [ …(2) ] to deeply equal [ Array(1) ]
+   ✓ la invitación en HTML contra el emulador > C2: la copia de prueba lleva en el HTML el enlace de muestra, ningún token vivo y el aviso de prueba 130ms
+ ✓ src/lib/email/resend.test.ts (17 tests) 28ms
+ ✓ src/lib/email/render.test.ts (39 tests) 19ms
+ ✓ src/lib/email/oob.test.ts (4 tests) 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/invitation-email.test.ts > la invitación en HTML contra el emulador > C2: si armar el correo en vivo falla, no se guarda ningún token y no se llama a Resend
+AssertionError: expected [ …(2) ] to deeply equal [ Array(1) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "da7067f11c20998838f8f74548fab5ab1336322239596dd0c9ba49d61ce025b8:1794755573449",[22m
+[31m+   "361efb8c1630b887efb3f5b8d72ed63b7d14db1d174fde4c6f2bfb21f4869e1a:1794755573482",[39m
+[2m  ][22m
+
+ ❯ test/invitation-email.test.ts:191:38
+    189|     renderControl.fail = true;
+    190|     await expect(sendDirect(invitation, new Date(Date.now() + 7 * DAY)…
+    191|     expect(await issuedTokensOf(id)).toEqual(before);
+       |                                      ^
+    192|     expect(resendCalls).toBe(0);
+    193|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 370 passed (371)
+   Start at  11:12:42
+   Duration  12.62s (transform 347ms, setup 20ms, collect 795ms, tests 10.53s, environment 1ms, prepare 372ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run src/lib/email test/invitation-email.test.ts" exited with code 1
