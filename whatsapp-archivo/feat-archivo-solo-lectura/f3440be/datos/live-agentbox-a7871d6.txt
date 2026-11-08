@@ -1,0 +1,38 @@
+Live verification on agentbox, 8 Nov 2026: bin/deploy of 25637bd at 15:04 AST and of a7871d6 (the head; it changed only the check) at 15:08.
+Only state, history, check and migration facts: no message text, no message ids, no phone numbers.
+
+== Restart with the stored device: connected in about 2 s (journalctl --user -u whatsapp-archivo)
+time=2026-11-08T15:04:38.914-04:00 level=INFO msg=state state=connecting detail=""
+time=2026-11-08T15:04:39.681-04:00 level=INFO msg=gui listen=127.0.0.1:8791
+time=2026-11-08T15:04:40.420-04:00 level=INFO msg=state state=connected detail=""
+time=2026-11-08T15:04:40.521-04:00 level=INFO msg="offline sync done" count=0
+time=2026-11-08T15:08:16.232-04:00 level=INFO msg=state state=connecting detail=""
+time=2026-11-08T15:08:16.722-04:00 level=INFO msg=gui listen=127.0.0.1:8791
+time=2026-11-08T15:08:17.029-04:00 level=INFO msg=state state=connected detail=""
+time=2026-11-08T15:08:17.033-04:00 level=INFO msg="offline sync done" count=0
+time=2026-11-08T15:09:07.831-04:00 level=INFO msg=state state=connecting detail=""
+time=2026-11-08T15:09:09.182-04:00 level=INFO msg=gui listen=127.0.0.1:8791
+time=2026-11-08T15:09:10.070-04:00 level=INFO msg=state state=connected detail=""
+time=2026-11-08T15:09:10.209-04:00 level=INFO msg="offline sync done" count=0
+
+== Migrations on the existing database
+PRAGMA user_version = 8
+channel (newsletter) chats left: 0
+files by outcome: [('expired', 13), ('saved', 1049), ('too_large', 4), ('unavailable', 2150)]
+
+== serve.lock is held by the running service (a second serve on this data dir refuses)
+flock -n serve.lock: held
+
+== The check during a restart (systemctl --user restart whatsapp-archivo, then archivo check -dry-run 0.2 s later)
+check: ok, after 30.03 s: the first request met the restart, the second one 30 s later answered
+
+== On-demand history request to Elias's own phone, through the new history queue
+time=2026-11-08T15:09:53.723-04:00 level=INFO msg="history chunk queued" type=ON_DEMAND chunk=0 progress=0
+time=2026-11-08T15:09:54.140-04:00 level=INFO msg=history step=start type=ON_DEMAND chunk=0 progress=100 conversations=1 messages=50
+time=2026-11-08T15:09:54.934-04:00 level=INFO msg=history step=done type=ON_DEMAND chunk=0 progress=100 stored=50 skipped=0 took=794ms
+
+== /api/status after it (phone and push name removed)
+{"state": "connected", "since": 1794164950, "qr": false, "linked_at": 1794161499, "activated_at": 1794156296, "totals": {"chats": 75, "messages": 14402, "last_ts": 1794164347}, "history": {"pending": 0, "failed": 0, "oldest_pending": 0, "chunks": 1, "stored": 50, "last_type": "ON_DEMAND", "last_progress": 100, "last_at": 1794164993}, "media": {"saved": 1049, "pending": 0, "expired": 13, "failed": 0, "too_large": 4, "unavailable": 2150}}
+
+== Per-file media warnings since the deploy (the old build logged 2,519 today)
+0
