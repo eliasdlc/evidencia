@@ -1,0 +1,242 @@
+# R3 at 5240a93, with u3.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu.sh src/lib/email/unsubscribe.test.ts src/lib/email/preferences.test.ts src/lib/email/resend.test.ts test/unsubscribe-route.test.ts test/business-me-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9151.
+i  Running script: pnpm exec vitest run src/lib/email/unsubscribe.test.ts src/lib/email/preferences.test.ts src/lib/email/resend.test.ts test/unsubscribe-route.test.ts test/business-me-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/baja-y-preferencias
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > el dueño de A ve solo A, aunque B exista y tenga dueño
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > U-17: sin documento en owners, las dos listas salen encendidas y no se escribe nada
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > cada lista se lee por separado; un valor que no es booleano cuenta como encendido
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > ordena por name.es, cae a name.en, omite destinos borrados y dice qué incluye cada plan
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > una cuenta sin destinos recibe una sesión vacía, no un error
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > tokenStale se enciende tras una concesión que el token todavía no trae
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me > lista las solicitudes propias, la más nueva primero, y nunca las ajenas
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me con personas del negocio (I9) > dueña de D2 y encargada de D1: cada una con su rol y su columna (fila 29)
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me con personas del negocio (I9) > pendiente, vencida y retirada no aparecen (fila 30)
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me con personas del negocio (I9) > si es dueña y miembro del mismo negocio, gana owner
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > GET /business/me con personas del negocio (I9) > lo que lista es lo que la siguiente llamada deja pasar, celda por celda
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > apagar el resumen mensual queda guardado y la sesión lo refleja
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > U-15: apagar los avisos de reseñas toca solo reviewNotices, con source panel
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > U-15: apagar los avisos de reseñas toca solo reviewNotices, con source panel
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > las dos en un PATCH, y volver a encender una apagada por el enlace la deja en panel
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > aceptar la versión vigente de los términos apaga pendingTerms sin tocar el resumen
+[app-check] ausente /business/me
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > rechaza con 422 cuerpos que no son una preferencia válida y no escribe nada
+[app-check] ausente /business/me/preferences
+
+stdout | test/business-me-route.test.ts > panel de negocios contra el emulador > PATCH /business/me/preferences > un cuerpo que no es JSON responde 400
+[app-check] ausente /business/me/preferences
+
+ ✓ test/business-me-route.test.ts (26 tests) 3554ms
+   ✓ panel de negocios contra el emulador > requireBusinessAccess > deja pasar al dueño de un destino registrado y devuelve el documento  690ms
+   ✓ panel de negocios contra el emulador > GET /business/me > un token revocado responde 401 aunque no haya caducado  1117ms
+   ✓ panel de negocios contra el emulador > GET /business/me con personas del negocio (I9) > lo que lista es lo que la siguiente llamada deja pasar, celda por celda  313ms
+stdout | test/unsubscribe-route.test.ts > POST /email/unsubscribe contra el emulador > U-5: apagar, encender en el panel y volver a tocar el enlace lo apaga otra vez
+[app-check] ausente /business/me/preferences
+
+ ❯ test/unsubscribe-route.test.ts (24 tests | 2 failed) 758ms
+   ✓ sin tocar Firestore ni Auth > U-13: GET con t redirige 303 a la página del panel con el mismo t, sin leer nada 6ms
+   ✓ sin tocar Firestore ni Auth > U-13: GET sin t va a /correo/baja; t vacío, repetido o largo también va sin t 2ms
+   ✓ sin tocar Firestore ni Auth > U-13: GET vuelve a codificar t; PANEL_BASE_URL decide el host 1ms
+   ✓ sin tocar Firestore ni Auth > U-13 (C3): con un PANEL_BASE_URL que no es https con host, redirige al panel de siempre, nunca 500 3ms
+   ✓ sin tocar Firestore ni Auth > U-13: HEAD responde lo mismo que GET 1ms
+   ✓ sin tocar Firestore ni Auth > U-13: GET y HEAD funcionan aunque falte EMAIL_LINK_SECRET 0ms
+   ✓ sin tocar Firestore ni Auth > U-6: un token falsificado o alterado es 400 invalid_token 6ms
+   ✓ sin tocar Firestore ni Auth > U-7: sin t, t vacío o t repetido es 400 invalid_token 2ms
+   ✓ sin tocar Firestore ni Auth > U-5: ninguna entrada rara llega a un 5xx 2ms
+   ✓ sin tocar Firestore ni Auth > U-11: sin EMAIL_LINK_SECRET, o con uno corto, es 503 not_configured 1ms
+   ✓ sin tocar Firestore ni Auth > U-12: la undécima en un minuto desde una IP es 429 con Retry-After, cuenten o no los tokens 2ms
+   ✓ sin tocar Firestore ni Auth > U-12: el techo va antes que el secreto: sin clave también cuenta 2ms
+   ✓ U-14: CORS > el preflight desde el panel lo responde proxy.ts 1ms
+   ✓ POST /email/unsubscribe contra el emulador > U-1: el token monthly de O apaga monthlyReport con unsubscribe_link y nada más 114ms
+   ✓ POST /email/unsubscribe contra el emulador > U-2: el token reviews de O apaga solo reviewNotices 22ms
+   ✓ POST /email/unsubscribe contra el emulador > U2: nunca escribe otra cuenta 28ms
+   × POST /email/unsubscribe contra el emulador > U-3: dos veces da el mismo 200 y la segunda no reescribe 44ms
+     → expected false to be true // Object.is equality
+   × POST /email/unsubscribe contra el emulador > U-4: si el dueño ya lo apagó en el panel, no escribe nada y source sigue panel 25ms
+     → expected { monthlyReport: { …(3) } } to deeply equal { monthlyReport: { …(3) } }
+   ✓ POST /email/unsubscribe contra el emulador > U-5: apagar, encender en el panel y volver a tocar el enlace lo apaga otra vez 55ms
+   ✓ POST /email/unsubscribe contra el emulador > U-8: el cuerpo no se lee: formulario de RFC 8058 o JSON que pide otra lista 35ms
+   ✓ POST /email/unsubscribe contra el emulador > U-9: parámetros y cabeceras que nombran otra lista u otra cuenta no cuentan 19ms
+   ✓ POST /email/unsubscribe contra el emulador > U-10: el token de una cuenta que ya no existe da 200 y no crea su documento 6ms
+   ✓ POST /email/unsubscribe contra el emulador > U1: un token firmado con la clave anterior vale mientras EMAIL_LINK_SECRET_PREVIOUS esté puesta 17ms
+   ✓ POST /email/unsubscribe contra el emulador > U-6 contra la base: un token falsificado no escribe nada 5ms
+ ✓ src/lib/email/resend.test.ts (14 tests) 13ms
+ ✓ src/lib/email/unsubscribe.test.ts (21 tests) 20ms
+ ❯ src/lib/email/preferences.test.ts (3 tests | 1 failed) 10ms
+   ✓ preferencias de correo > cada lista tiene su campo, y ausente es encendido 2ms
+   ✓ preferencias de correo > optOut escribe solo el campo de su lista, apagado y con unsubscribe_link 2ms
+   × preferencias de correo > optOut no escribe nada si la lista ya estaba apagada, venga de donde venga 6ms
+     → expected true to be false // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/unsubscribe-route.test.ts > POST /email/unsubscribe contra el emulador > U-3: dos veces da el mismo 200 y la segunda no reescribe
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/unsubscribe-route.test.ts:295:135
+    293|     expect(second.body).toEqual(first.body);
+    294|     const after = await ownerDoc(uid);
+    295|     expect((after?.monthlyReport.changedAt as import('firebase-admin/f…
+       |                                                                                                                                       ^
+    296|     expect(after).toEqual(before);
+    297|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/unsubscribe-route.test.ts > POST /email/unsubscribe contra el emulador > U-4: si el dueño ya lo apagó en el panel, no escribe nada y source sigue panel
+AssertionError: expected { monthlyReport: { …(3) } } to deeply equal { monthlyReport: { …(3) } }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "monthlyReport": {[22m
+[2m      "changedAt": Timestamp {[22m
+[32m-       "_nanoseconds": 0,[39m
+[32m-       "_seconds": 1762000000,[39m
+[31m+       "_nanoseconds": 126000000,[39m
+[31m+       "_seconds": 1794150093,[39m
+[2m      },[22m
+[2m      "enabled": false,[22m
+[32m-     "source": "panel",[39m
+[31m+     "source": "unsubscribe_link",[39m
+[2m    },[22m
+[2m  }[22m
+
+ ❯ test/unsubscribe-route.test.ts:305:33
+    303|     const result = await unsubscribe(tokenFor('monthly', uid));
+    304|     expect(result).toMatchObject({ status: 200, body: { ok: true, list…
+    305|     expect(await ownerDoc(uid)).toEqual({ monthlyReport: panelOff });
+       |                                 ^
+    306|   });
+    307| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/lib/email/preferences.test.ts > preferencias de correo > optOut no escribe nada si la lista ya estaba apagada, venga de donde venga
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ src/lib/email/preferences.test.ts:43:89
+     41|     for (const source of ['panel', 'unsubscribe_link']) {
+     42|       const { tx, set } = recordingTx();
+     43|       expect(optOut(tx, ref, { monthlyReport: { enabled: false, source…
+       |                                                                                         ^
+     44|       expect(set).not.toHaveBeenCalled();
+     45|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed | 3 passed (5)
+      Tests  3 failed | 85 passed (88)
+   Start at  11:01:28
+   Duration  5.95s (transform 275ms, setup 15ms, collect 708ms, tests 4.36s, environment 1ms, prepare 237ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run src/lib/email/unsubscribe.test.ts src/lib/email/preferences.test.ts src/lib/email/resend.test.ts test/unsubscribe-route.test.ts test/business-me-route.test.ts" exited with code 1
