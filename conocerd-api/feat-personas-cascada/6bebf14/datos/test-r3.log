@@ -1,0 +1,38 @@
+# R3 at 6bebf14
+# $ bash /home/decruce/.cache/conocerd-api/feat-personas-cascada/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-personas-cascada/emu.sh test/owner-service.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18192.
+i  Running script: pnpm exec vitest run test/owner-service.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/personas-cascada
+
+stderr | test/owner-service.test.ts > owner-service contra el emulador > C4: si la compensación falla, la línea de bitácora queda marcada y no se borra
+[conocerd-api] compensación incompleta (claims) para YJ2E69wONmgqCa3nJ5UmCxULEXXV; corre scripts/reconcile-ownerships.ts Error: Auth sigue caído
+    at /home/decruce/dev/wt/conocerd-api/feat/personas-cascada/test/owner-service.test.ts:412:30
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at file:///home/decruce/dev/wt/conocerd-api/feat/personas-cascada/node_modules/.pnpm/@vitest+runner@3.2.7/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+stdout | test/owner-service.test.ts > owner-service contra el emulador > F1: una concesión por /claims después de una revocación normal se reporta y no se toca
+[app-check] ausente /claims
+
+ ✓ test/owner-service.test.ts (34 tests) 3737ms
+   ✓ owner-service contra el emulador > GrantHook: su error gana sobre la concesión y no deja nada escrito  564ms
+   ✓ owner-service contra el emulador > C2: la reconciliación termina una revocación a medias en vez de pedir volver a conceder  1217ms
+
+ Test Files  1 passed (1)
+      Tests  34 passed (34)
+   Start at  13:14:21
+   Duration  4.22s (transform 271ms, setup 12ms, collect 318ms, tests 3.74s, environment 0ms, prepare 48ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
