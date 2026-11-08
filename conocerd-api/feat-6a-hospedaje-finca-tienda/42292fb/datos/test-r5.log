@@ -1,0 +1,44 @@
+# R5 at 42292fb
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu.sh test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/6a-hospedaje-finca-tienda
+
+ ✓ test/profile-maps-route.test.ts (42 tests) 9434ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: S muestra stay con sus tres campos del dueño, sin priceFrom ni capacity  1497ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en S, el cuerpo entero de GET es 200 changed [] y no escribe  321ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 31: houseRules sin forma, priceFrom y stay null son 422; houseRules {pets:true} es 200  462ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > houseRules se reemplaza entero, y {} o null lo borran  314ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > las listas: 12 líneas de 80 son 200; 13 líneas o una de 81 son 422; se recortan y no se repiten  310ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 28: un aviso desconocido, farm null y los límites movidos por uno son 422  530ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 28: los límites que pasan: 5 y 1440 minutos, grupos de 1 y 500, fare de 1000000 pesos y 20000 dólares  546ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 30: un pago o un envío desconocidos y paymentMethods son 422  425ms
+ ✓ src/lib/profile-maps.test.ts (35 tests) 65ms
+ ✓ test/profile-kinds-route.test.ts (74 tests) 10202ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 1: en R, {"tours":[]} es 422 field_not_for_type y no escribe nada  550ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: los otros placeType del cuadro  361ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > casos 17 y 18: una excursión nueva sin nombre, o un nombre null, es 422  320ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 20: los límites de fare  604ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 21: highSeasonMonths [12,1,2] se guarda [1,2,12]; [0], [13], [1,1] y los 12 meses son 422; [] borra  433ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 22: bookingUrl  396ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 25: durationMinutes y maxGroup  437ms
+
+ Test Files  3 passed (3)
+      Tests  151 passed (151)
+   Start at  02:45:49
+   Duration  21.72s (transform 458ms, setup 29ms, collect 843ms, tests 19.70s, environment 1ms, prepare 382ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
