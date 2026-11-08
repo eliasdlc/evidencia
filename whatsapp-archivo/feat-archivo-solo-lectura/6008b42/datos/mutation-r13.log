@@ -1,0 +1,19 @@
+# R13 at 6008b42, with r13.patch applied
+# $ bin/test -run TestStuck
+FAIL  check_test.go::TestStuckARestartIsNotADeadService
+FAIL  check_test.go::TestStuckAfterPairingReachesTheCheck
+FAIL  check_test.go::TestStuckStatesAreToldWithin30Minutes
+
+FAILED check_test.go::TestStuckStatesAreToldWithin30Minutes
+    check_test.go:73: connecting 26 min (defect 2, after pairing): alert "", want "disconnected" ()
+    check_test.go:73: replaced, at once: alert "", want "replaced" ()
+    check_test.go:73: history waiting 26 min: alert "", want "history" ()
+
+FAILED check_test.go::TestStuckARestartIsNotADeadService
+    check_test.go:97: a service that answers on the second try was reported "down": 🔴 El servicio del archivo de WhatsApp no responde en agentbox; no se está guardando nada.
+        Revisa: systemctl --user status whatsapp-archivo
+
+FAILED check_test.go::TestStuckAfterPairingReachesTheCheck
+    check_test.go:122: alert "":
+
+0 passed, 3 failed
