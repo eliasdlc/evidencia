@@ -1,0 +1,136 @@
+# R4 at 6221d60, with i9-owner-photos-unverified.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-personas-fotos/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-personas-fotos/emu.sh test/account-delete-owner.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18162.
+i  Running script: pnpm exec vitest run test/account-delete-owner.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-personas-fotos
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo
+[app-check] ausente /business/me
+
+stderr | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe
+[conocerd-api] la cuenta se borró pero no quedó la constancia en accountDeletions
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado
+[app-check] ausente /account-delete
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K4: los permisos propios y el pendiente dirigido a su correo quedan quitados sin correo; el enlace viejo ya no abre nada
+[app-check] ausente /business/members/accept
+
+ ❯ test/account-delete-owner.test.ts (23 tests | 2 failed) 15184ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K1 K2 K3 K5 K6 K7 K10: la dueña se borra, la ficha, las respuestas y las fotos publicadas se quedan; sus pedidos, permisos y datos se van  1709ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo  1803ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina  702ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > un fallo de Auth dentro de revokeOwnership  792ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el retiro de un pedido falla  735ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el borrado de ficheros falla  643ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > falla justo después de los datos de negocio (paso 5)  636ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > recursiveDelete falla  691ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > deleteUser falla  658ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > quitar los permisos propios falla  644ms
+   × borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > olvidar las fotos de dueño falla en el bucket 612ms
+     → promise resolved "{ diaryEntriesDeleted: +0, …(11) }" instead of rejecting
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: una propiedad que ya no está cuando el paso 2 la revoca (`409 not_owner`) cuenta como hecha 186ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K13: con un borrado en curso, otro responde 409 sin escribir; un candado de hace 121 s se toma  705ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K14: una propiedad concedida a mitad del borrado se revoca en la segunda pasada  506ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K15: si la verificación encuentra una concesión dos veces, 500 deletion_incomplete y Auth se queda  618ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K18 K20: un viajero se borra como antes: sin pasos de negocio, cifras nuevas en cero, el informe con sus claves 93ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe  408ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado  406ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K22: el orden: enlaces y sesiones antes de los ficheros, ficheros vacíos antes de limpiar sus documentos, Auth y la constancia al final  402ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K4: los permisos propios y el pendiente dirigido a su correo quedan quitados sin correo; el enlace viejo ya no abre nada  555ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K14: un permiso dado a la persona a mitad del borrado se quita en la segunda pasada  524ms
+   × borrado de una cuenta de negocio contra el emulador > I9: si queda una foto bajo ownerPhotos/{uid}/, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina 404ms
+     → promise resolved "{ diaryEntriesDeleted: +0, …(11) }" instead of rejecting
+   ✓ borrado de una cuenta de negocio contra el emulador > el script de cuentas borradas: en seco solo cuenta; con apply quita permisos y fotos de una cuenta sin Auth; repetirlo no hace nada 80ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > olvidar las fotos de dueño falla en el bucket
+AssertionError: promise resolved "{ diaryEntriesDeleted: +0, …(11) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "businessPhotosRemoved": 0,
++   "diaryEntriesDeleted": 0,
++   "linksRevoked": 3,
++   "membershipsRemoved": 2,
++   "notified": false,
++   "ownerRequestsWithdrawn": 1,
++   "ownershipsRevoked": 2,
++   "peopleRemoved": 2,
++   "photosDeleted": 0,
++   "placeRequestsDeleted": 0,
++   "publishedRoutesDeleted": 0,
++   "reviewsAnonymized": 0,
+  }
+
+ ❯ test/account-delete-owner.test.ts:698:39
+    696|       it(name, async () => {
+    697|         const f = await fixture();
+    698|         await expect(run(f, inject(f))).rejects.toThrow();
+       |                                       ^
+    699|         expect(await exists(f.O.uid)).toBe(true);
+    700|         expect((await digest(f)).lease).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > I9: si queda una foto bajo ownerPhotos/{uid}/, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina
+AssertionError: promise resolved "{ diaryEntriesDeleted: +0, …(11) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "businessPhotosRemoved": 0,
++   "diaryEntriesDeleted": 0,
++   "linksRevoked": 3,
++   "membershipsRemoved": 2,
++   "notified": false,
++   "ownerRequestsWithdrawn": 1,
++   "ownershipsRevoked": 2,
++   "peopleRemoved": 2,
++   "photosDeleted": 0,
++   "placeRequestsDeleted": 0,
++   "publishedRoutesDeleted": 0,
++   "reviewsAnonymized": 0,
+  }
+
+ ❯ test/account-delete-owner.test.ts:1013:24
+    1011|     f.files.stuck.add(`ownerPhotos/${f.O.uid}/`);
+    1012| 
+    1013|     await expect(run(f)).rejects.toMatchObject({ status: 500, code: 's…
+       |                        ^
+    1014|     expect(await exists(f.O.uid)).toBe(true);
+    1015| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 21 passed (23)
+   Start at  14:21:24
+   Duration  15.49s (transform 339ms, setup 9ms, collect 104ms, tests 15.18s, environment 0ms, prepare 58ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/account-delete-owner.test.ts" exited with code 1
