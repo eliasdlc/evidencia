@@ -1,0 +1,417 @@
+# R1 at f23d087
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu3.sh test/reply-translation-route.test.ts test/reviews-route.test.ts src/lib/translation/service.test.ts src/lib/translation/quota.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/reply-translation-route.test.ts test/reviews-route.test.ts src/lib/translation/service.test.ts src/lib/translation/quota.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/5a-traduccion-respuesta
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-1: reseña en inglés: traduce el borrador al inglés y de vuelta al español, sin escribir ningún documento
+[app-check] ausente /business/destino-143ee3fc/reviews/af5768d65ded34d81be75d/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-1: el destino es el idioma de la reseña: una reseña en francés recibe el borrador en francés
+[app-check] ausente /business/destino-47f3dec0/reviews/a5568a868691e4cef9ae9a/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-1: el borrador se manda recortado y cuenta su largo recortado
+[app-check] ausente /business/destino-b2ea9b9a/reviews/a118b00cc9698480b93407/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-2: reseña en español es not_needed, sin proveedor ni contadores
+[app-check] ausente /business/destino-cbb42e24/reviews/a27441ca0c3054b2e95b41/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-2: una reseña sin texto tampoco necesita traducir la respuesta
+[app-check] ausente /business/destino-6aa6c205/reviews/ad3285d2d22ff4373b6e0a/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-3: si el dueño ya escribió en el idioma de la reseña es same_language y cuenta el largo una vez
+[app-check] ausente /business/destino-ccf0097f/reviews/a80a13ad87a4143418f08a/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-4: texto vacío o solo espacios es 422 invalid_body sin contar nada
+[app-check] ausente /business/destino-bc006407/reviews/a80bafa53339b4e50897e2/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-4: texto vacío o solo espacios es 422 invalid_body sin contar nada
+[app-check] ausente /business/destino-bc006407/reviews/a80bafa53339b4e50897e2/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-4: texto vacío o solo espacios es 422 invalid_body sin contar nada
+[app-check] ausente /business/destino-bc006407/reviews/a80bafa53339b4e50897e2/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-5: 1001 caracteres es 422; 1000 pasa y cuenta
+[app-check] ausente /business/destino-0441d3a3/reviews/a224f2834974146a1b7dde/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-5: 1001 caracteres es 422; 1000 pasa y cuenta
+[app-check] ausente /business/destino-0441d3a3/reviews/a224f2834974146a1b7dde/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-6: un sustituto suelto es 422 invalid_body y no reserva nada
+[app-check] ausente /business/destino-6568d9db/reviews/a42cc9c8b32ad411881910/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-7: una clave de más es 422 invalid_body (estricto)
+[app-check] ausente /business/destino-02cf246d/reviews/a68657f982f524c00b740a/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > I1: JSON roto no da 500
+[app-check] ausente /business/destino-50a4dc91/reviews/ac142c9a91a3b4803867b4/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-8: si el tope se alcanza entre las dos llamadas sale translated con back null y solo la primera reserva
+[app-check] ausente /business/destino-d9800d28/reviews/a0b9484c2c29a4ef19fe2e/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-8: un fallo del proveedor en la vuelta también deja back null
+[app-check] ausente /business/destino-51d61bb5/reviews/a390e0450fc8f4760ada5d/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-8: con el tope alcanzado antes de la primera es quota_exhausted sin llamar al proveedor
+[app-check] ausente /business/destino-62b72c85/reviews/a6bd718cbc2854d529777f/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-9: una reseña nunca traducida se traduce y se guarda primero; cuentan las tres llamadas
+[app-check] ausente /business/destino-85675ece/reviews/a488a6e498bc0418e9cd56/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-9: un caché con el hash viejo no cuenta como idioma: se vuelve a traducir la reseña
+[app-check] ausente /business/destino-963f44ee/reviews/adf97ebe0357149eb82b09/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-9: si traducir la reseña falla, la vista previa es unavailable y no traduce el borrador
+[app-check] ausente /business/destino-9783b3c6/reviews/aa193aba75de24676adcc9/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-10: apagada es unavailable/disabled, sin proveedor ni contadores
+[app-check] ausente /business/destino-6ced5516/reviews/a5297d3afb1274b37982ba/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-11: un idioma sin destino en DeepL (ht) es unsupported_language sin contar nada
+[app-check] ausente /business/destino-5925f234/reviews/a08cd2166f8c94f109c886/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T8: una salida mal formada del proveedor en la ida es provider_error y la reserva se queda
+[app-check] ausente /business/destino-019936f4/reviews/a649f815d0c1845f4849f5/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T8: una salida mal formada del proveedor en la ida es provider_error y la reserva se queda
+[app-check] ausente /business/destino-019936f4/reviews/a649f815d0c1845f4849f5/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T8: una salida mal formada del proveedor en la ida es provider_error y la reserva se queda
+[app-check] ausente /business/destino-019936f4/reviews/a649f815d0c1845f4849f5/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T8: una salida mal formada del proveedor en la ida es provider_error y la reserva se queda
+[app-check] ausente /business/destino-019936f4/reviews/a649f815d0c1845f4849f5/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T9: la petición 31 del minuto es 429 too_many_requests con Retry-After y no toca el mes
+[app-check] ausente /business/destino-a08e1012/reviews/af7d2e89414894089937ae/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T9: con 19991 caracteres en el día, un borrador de 10 es 429 translation_daily_limit
+[app-check] ausente /business/destino-6efd01f2/reviews/ab490b8a11a9046329a597/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T5: 401 sin bearer, 403 not_owner ajeno, 403 dashboard_not_included en minimal
+[app-check] ausente /business/destino-ac66f29b/reviews/a3c57eecaed7342bfad115/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T5: 401 sin bearer, 403 not_owner ajeno, 403 dashboard_not_included en minimal
+[app-check] ausente /business/destino-c8dd94b1/reviews/aac985459e3954c9f8c0ab/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T5: un miembro con reviews.reply ve la vista previa; uno de la puerta es 403 role_forbidden
+[app-check] ausente /business/destino-e4819287/reviews/a1e085556b1da4d8998be6/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T5: un miembro con reviews.reply ve la vista previa; uno de la puerta es 403 role_forbidden
+[app-check] ausente /business/destino-e4819287/reviews/a1e085556b1da4d8998be6/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T5: reseña de otro destino, inexistente o retirada es 404; authorId inválido es 422
+[app-check] ausente /business/destino-44b04a86/reviews/a699f589a95fb406e9eba0/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T5: reseña de otro destino, inexistente o retirada es 404; authorId inválido es 422
+[app-check] ausente /business/destino-44b04a86/reviews/a5eb8043913c14c9a82fc7/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T5: reseña de otro destino, inexistente o retirada es 404; authorId inválido es 422
+[app-check] ausente /business/destino-44b04a86/reviews/a3e4776d813ef40d2829bc/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T5: reseña de otro destino, inexistente o retirada es 404; authorId inválido es 422
+[app-check] ausente /business/destino-44b04a86/reviews/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > T5: reseña de otro destino, inexistente o retirada es 404; authorId inválido es 422
+[app-check] ausente /business/destino-44b04a86/reviews/a.b/reply-translation
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > GET /business/{id}/reviews: reply.translation > L-5 y L-6: con el hash de la respuesta de ahora sale la traducción; con otro hash, null
+[app-check] ausente /business/destino-6d6db76b/reviews
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > GET /business/{id}/reviews: reply.translation > L-6: una traducción guardada con forma torcida es null
+[app-check] ausente /business/destino-fa20b875/reviews
+
+stdout | test/reply-translation-route.test.ts > traducción de la respuesta contra el emulador > GET /business/{id}/reviews: reply.translation > T2: apagada, la traducción de la respuesta no se sirve aunque coincida el hash
+[app-check] ausente /business/destino-b60a249d/reviews
+
+ ✓ test/reply-translation-route.test.ts (29 tests) 3166ms
+   ✓ traducción de la respuesta contra el emulador > POST /business/{id}/reviews/{authorId}/reply-translation > P-1: reseña en inglés: traduce el borrador al inglés y de vuelta al español, sin escribir ningún documento  891ms
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > crear una reseña mueve los contadores del lugar en la misma operación
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > reseñar y borrar un lugar mínimo funciona sin destino curado
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > reseñar y borrar un lugar mínimo funciona sin destino curado
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > el catálogo curado conserva precedencia si también existe el lugar mínimo
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > el documento publicado no lleva el uid ni en el campo ni en su nombre
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > el nombre publicado sale de la cuenta, no del cuerpo de la petición
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > reseñar dos veces el mismo lugar edita, no duplica
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > reseñar dos veces el mismo lugar edita, no duplica
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar resta una sola reseña y preserva XP, incluso con replay concurrente
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar resta una sola reseña y preserva XP, incluso con replay concurrente
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar resta una sola reseña y preserva XP, incluso con replay concurrente
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar no crea stats ausentes ni deja un contador negativo
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar no crea stats ausentes ni deja un contador negativo
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar no crea stats ausentes ni deja un contador negativo
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar no crea stats ausentes ni deja un contador negativo
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar no crea stats ausentes ni deja un contador negativo
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar no crea stats ausentes ni deja un contador negativo
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar la reseña devuelve los contadores a donde estaban
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > borrar la reseña devuelve los contadores a donde estaban
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > dos personas suman a los mismos contadores sin pisarse
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > dos personas suman a los mismos contadores sin pisarse
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > no se puede reseñar un lugar que no existe
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > una cuenta sin correo verificado no escribe reseñas
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > una foto del staging de otra persona no se publica ni escribe la reseña
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > voto útil > vota, cuenta, y el segundo intento lo retira
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > voto útil > vota, cuenta, y el segundo intento lo retira
+[app-check] ausente /reviews/helpful
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > voto útil > vota, cuenta, y el segundo intento lo retira
+[app-check] ausente /reviews/helpful
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > voto útil > nadie vota su propia reseña
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > voto útil > nadie vota su propia reseña
+[app-check] ausente /reviews/helpful
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > voto útil > la lista de votantes no publica uids
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > voto útil > la lista de votantes no publica uids
+[app-check] ausente /reviews/helpful
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta del dueño > un dueño de otro destino no puede contestar
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta del dueño > un dueño de otro destino no puede contestar
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta del dueño > el dueño de un destino sin plan tampoco puede: el gate no vive en la UI
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta del dueño > el dueño de un destino sin plan tampoco puede: el gate no vive en la UI
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta del dueño > con el plan que lo incluye, la respuesta queda en la reseña sin publicar el uid del negocio
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta del dueño > con el plan que lo incluye, la respuesta queda en la reseña sin publicar el uid del negocio
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta del dueño > un texto vacío retira la respuesta
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta del dueño > un texto vacío retira la respuesta
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta del dueño > un texto vacío retira la respuesta
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-1: reseña en inglés con alsoTranslate guarda la respuesta y su traducción en una sola escritura
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-1: reseña en inglés con alsoTranslate guarda la respuesta y su traducción en una sola escritura
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-1: el idioma es el de la reseña: una reseña en francés guarda la respuesta en francés
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-1: el idioma es el de la reseña: una reseña en francés guarda la respuesta en francés
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-1: una reseña sin traducir se traduce primero y la respuesta sale en su idioma
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-1: una reseña sin traducir se traduce primero y la respuesta sale en su idioma
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: si el proveedor falla la respuesta sale sola, lo dice, y la traducción vieja se borra
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: si el proveedor falla la respuesta sale sola, lo dice, y la traducción vieja se borra
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: si el proveedor falla la respuesta sale sola, lo dice, y la traducción vieja se borra
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: una salida inválida del proveedor tampoco se guarda
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: una salida inválida del proveedor tampoco se guarda
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: una salida inválida del proveedor tampoco se guarda
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: una salida inválida del proveedor tampoco se guarda
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: una salida inválida del proveedor tampoco se guarda
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: apagada, el tope del mes o el de la cuenta no impiden responder
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: apagada, el tope del mes o el de la cuenta no impiden responder
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: apagada, el tope del mes o el de la cuenta no impiden responder
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-2: apagada, el tope del mes o el de la cuenta no impiden responder
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-3: sin alsoTranslate, o en false, una traducción guardada de antes se borra
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-3: sin alsoTranslate, o en false, una traducción guardada de antes se borra
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-3: sin alsoTranslate, o en false, una traducción guardada de antes se borra
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-3: sin alsoTranslate, o en false, una traducción guardada de antes se borra
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-3: sin alsoTranslate, o en false, una traducción guardada de antes se borra
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-3: repetir el mismo texto sin alsoTranslate también borra la traducción
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-3: repetir el mismo texto sin alsoTranslate también borra la traducción
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-3: repetir el mismo texto sin alsoTranslate también borra la traducción
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > T6: una traducción hecha de otro texto no se guarda junto a la respuesta (la guarda replyToReview, no solo la ruta)
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-4: texto vacío retira la respuesta y su traducción, sin llamar al proveedor
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-4: texto vacío retira la respuesta y su traducción, sin llamar al proveedor
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-4: texto vacío retira la respuesta y su traducción, sin llamar al proveedor
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-4: texto vacío retira la respuesta y su traducción, sin llamar al proveedor
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-5: reseña en español con alsoTranslate no reserva nada y no guarda traducción
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-5: reseña en español con alsoTranslate no reserva nada y no guarda traducción
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-5: si el dueño ya escribió en el idioma de la reseña, sale tal cual y no se guarda traducción
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-5: si el dueño ya escribió en el idioma de la reseña, sale tal cual y no se guarda traducción
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-6: alsoTranslate que no es booleano es 422 invalid_body sin escribir
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-6: alsoTranslate que no es booleano es 422 invalid_body sin escribir
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-6: alsoTranslate que no es booleano es 422 invalid_body sin escribir
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-6: alsoTranslate que no es booleano es 422 invalid_body sin escribir
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-7: si Firestore repite la transacción, el proveedor se llama una sola vez y el resultado es el de Y-1
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-7: si Firestore repite la transacción, el proveedor se llama una sola vez y el resultado es el de Y-1
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > T5: sin el plan que incluye responder es 403 y no se llama al proveedor ni se reserva
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > T5: sin el plan que incluye responder es 403 y no se llama al proveedor ni se reserva
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > T5: un dueño de otro destino es 403 sin llamar al proveedor; una reseña inexistente es 404
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > T5: un dueño de otro destino es 403 sin llamar al proveedor; una reseña inexistente es 404
+[app-check] ausente /review-reply
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > T5: un dueño de otro destino es 403 sin llamar al proveedor; una reseña inexistente es 404
+[app-check] ausente /reviews
+
+stdout | test/reviews-route.test.ts > reseñas contra el emulador > respuesta con traducción (alsoTranslate) > T5: un dueño de otro destino es 403 sin llamar al proveedor; una reseña inexistente es 404
+[app-check] ausente /review-reply
+
+ ✓ test/reviews-route.test.ts (37 tests) 11641ms
+   ✓ reseñas contra el emulador > borrar resta una sola reseña y preserva XP, incluso con replay concurrente  2975ms
+   ✓ reseñas contra el emulador > dos personas suman a los mismos contadores sin pisarse  2876ms
+   ✓ reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-7: si Firestore repite la transacción, el proveedor se llama una sola vez y el resultado es el de Y-1  2242ms
+ ✓ src/lib/translation/quota.test.ts (14 tests) 3894ms
+   ✓ reserveTranslation contra el emulador > T1: reservas simultáneas de cuentas distintas nunca pasan del tope  3514ms
+ ✓ src/lib/translation/service.test.ts (7 tests) 6ms
+
+ Test Files  4 passed (4)
+      Tests  87 passed (87)
+   Start at  10:25:39
+   Duration  20.21s (transform 250ms, setup 14ms, collect 781ms, tests 18.71s, environment 1ms, prepare 217ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
