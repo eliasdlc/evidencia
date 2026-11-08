@@ -1,0 +1,68 @@
+# R15 at 7f7a85a, with r15-i16-listing-unchecked.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-decision/scrub.sh pnpm exec vitest run src/lib/owner-request-decisions.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision
+
+ ❯ src/lib/owner-request-decisions.test.ts (19 tests | 2 failed) 18ms
+   ✓ planApprove (T-approve) > A1: un pedido abierto sin otro dueño se aprueba sin reemplazos 1ms
+   ✓ planApprove (T-approve) > A3 (I5): un pedido que ya no está abierto es 409 not_pending; uno que no existe, 404 0ms
+   ✓ planApprove (T-approve) > A6, A7, A8, A10 (I6): otro dueño exige resolución; sin otro dueño, la resolución no aplica 0ms
+   ✓ planApprove (T-approve) > A18: la propia cuenta como dueña activa no es "otra cuenta" 0ms
+   × planApprove (T-approve) > A12, A13, A14 (I16): el destino del cuerpo tiene que ser el del pedido o el que se creó para él 5ms
+     → expected 'destination_mismatch' to be 'listing_missing' // Object.is equality
+   × planApprove (T-approve) > el orden de los rechazos es el del plan: estado, listado, destino, resolución 1ms
+     → expected 'destination_mismatch' to be 'listing_missing' // Object.is equality
+   ✓ planReject (T-reject) > solo un pedido abierto se rechaza 1ms
+   ✓ el cuerpo de la decisión > aprobar exige una nota de 1 a 500; la resolución es una de dos 2ms
+   ✓ el cuerpo de la decisión > R7: rechazar solo con un código de la lista cerrada 1ms
+   ✓ namesOther (I10) > R3: el correo entero o una palabra del nombre de 3 letras o más, sin mayúsculas ni tildes 3ms
+   ✓ namesOther (I10) > no confunde partes de otras palabras ni nombres de menos de 3 letras 0ms
+   ✓ motivos (una sola lista) > R6: /business/me y el correo leen la misma frase por código; otro solo lleva el mensaje del equipo 0ms
+   ✓ motivos (una sola lista) > las cinco claves que ya había siguen en la lista, más las dos de la foto 1ms
+   ✓ motivos (una sola lista) > I15: foto_revisada es un método de verificación 0ms
+   ✓ los correos de la decisión > A21: aprobado dice "tu página", lleva /entrar, y nada de panel, Laura, WhatsApp de ConoceRD ni llamada 1ms
+   ✓ los correos de la decisión > R1: rechazado lleva la frase del motivo y, con otro, solo el mensaje del equipo 0ms
+   ✓ los correos de la decisión > A8: el aviso a la cuenta reemplazada no nombra a nadie y no dice panel 0ms
+   ✓ los correos de la decisión > con buzón de respuesta, cada correo lo dice 0ms
+   ✓ los correos de la decisión > una clave de idempotencia por pedido y por correo 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/owner-request-decisions.test.ts > planApprove (T-approve) > A12, A13, A14 (I16): el destino del cuerpo tiene que ser el del pedido o el que se creó para él
+AssertionError: expected 'destination_mismatch' to be 'listing_missing' // Object.is equality
+
+Expected: "listing_missing"
+Received: "destination_mismatch"
+
+ ❯ src/lib/owner-request-decisions.test.ts:74:88
+     72|     expect(codeOf(() => planApprove(facts({ bodyDestinationId: 'e' }))…
+     73|     const fresh = { status: 'awaiting_listing', kind: 'new', destinati…
+     74|     expect(codeOf(() => planApprove(facts({ claim: fresh, bodyDestinat…
+       |                                                                                        ^
+     75|     expect(codeOf(() => planApprove(facts({ claim: fresh, listingDesti…
+     76|     expect(planApprove(facts({ claim: fresh, listingDestinationId: 'x'…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/owner-request-decisions.test.ts > planApprove (T-approve) > el orden de los rechazos es el del plan: estado, listado, destino, resolución
+AssertionError: expected 'destination_mismatch' to be 'listing_missing' // Object.is equality
+
+Expected: "listing_missing"
+Received: "destination_mismatch"
+
+ ❯ src/lib/owner-request-decisions.test.ts:81:147
+     79|   it('el orden de los rechazos es el del plan: estado, listado, destin…
+     80|     expect(codeOf(() => planApprove(facts({ claim: { status: 'approved…
+     81|     expect(codeOf(() => planApprove(facts({ claim: { status: 'awaiting…
+       |                                                                                                                                                   ^
+     82|     expect(codeOf(() => planApprove(facts({ bodyDestinationId: 'e', ac…
+     83|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 17 passed (19)
+   Start at  12:47:07
+   Duration  649ms (transform 173ms, setup 10ms, collect 454ms, tests 18ms, environment 0ms, prepare 53ms)
+
