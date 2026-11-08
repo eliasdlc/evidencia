@@ -1,0 +1,148 @@
+# R32 at 5817ced, with m2.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/tipos/model.test.ts src/features/negocio/ficha/tipos/TiposEditor.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha-tipos
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts (23 tests | 2 failed) 50ms
+   ❯ diffTipo (11)
+     × sends nothing when nothing changed, for every part 10ms
+     × house rules go key by key and "Sin decir" is null 2ms
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx (40 tests | 3 failed) 4843ms
+   ❯ each part saves alone (14)
+     × stay, Reglas de la casa: one PATCH with only the changed subfield and If-Match with the version 80ms
+   ❯ clearing (6)
+     × "Sin decir" on a house rule sends null for that key only 132ms
+     × a house rule can change to No, and the three answers are Sí, No and Sin decir 71ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > each part saves alone > stay, Reglas de la casa: one PATCH with only the changed subfield and If-Match with the version
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx:307:42
+    305|       await mount();
+    306|       await openPart(row.part);
+    307|       expect(button(row.save)?.disabled).toBe(true);
+       |                                          ^
+    308|       await row.edit();
+    309|       expect(button(row.save)?.disabled).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > clearing > "Sin decir" on a house rule sends null for that key only
+AssertionError: expected { stay: { houseRules: { …(3) } } } to deeply equal { stay: { houseRules: { …(1) } } }
+
+- Expected
++ Received
+
+  {
+    "stay": {
+      "houseRules": {
++       "children": null,
++       "pets": true,
+        "smoking": null,
+      },
+    },
+  }
+
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx:366:24
+    364|     await pick('Sin decir', 'Fumar');
+    365|     await click(button('Guardar las reglas'));
+    366|     expect(sentBody()).toEqual({ stay: { houseRules: { smoking: null }…
+       |                        ^
+    367|     expect(text()).toContain('Se aceptan mascotas');
+    368|     expect(text()).not.toContain('No se puede fumar');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > clearing > a house rule can change to No, and the three answers are Sí, No and Sin decir
+AssertionError: expected { stay: { houseRules: { …(3) } } } to deeply equal { stay: { houseRules: { …(1) } } }
+
+- Expected
++ Received
+
+  {
+    "stay": {
+      "houseRules": {
++       "children": null,
+        "pets": false,
++       "smoking": false,
+      },
+    },
+  }
+
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx:378:24
+    376|     await pick('No', 'Mascotas');
+    377|     await click(button('Guardar las reglas'));
+    378|     expect(sentBody()).toEqual({ stay: { houseRules: { pets: false } }…
+       |                        ^
+    379|   });
+    380|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/model.test.ts > diffTipo > sends nothing when nothing changed, for every part
+AssertionError: expected { stay: { houseRules: { …(3) } } } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "stay": {
++     "houseRules": {
++       "children": null,
++       "pets": true,
++       "smoking": false,
++     },
++   },
++ }
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts:68:97
+     66|   it('sends nothing when nothing changed, for every part', () => {
+     67|     for (const [profile, kind] of [[stayProfile(), 'stay'], [farmProfi…
+     68|       for (const part of TIPO_PARTS[kind]) expect(diffTipo(profile, ti…
+       |                                                                                                 ^
+     69|     }
+     70|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/model.test.ts > diffTipo > house rules go key by key and "Sin decir" is null
+AssertionError: expected { stay: { houseRules: { …(3) } } } to deeply equal { stay: { houseRules: { …(1) } } }
+
+- Expected
++ Received
+
+  {
+    "stay": {
+      "houseRules": {
+        "children": true,
++       "pets": true,
++       "smoking": false,
+      },
+    },
+  }
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts:91:71
+     89|     const profile = stayProfile();
+     90|     const form = tipoToForm(profile);
+     91|     expect(diffTipo(profile, { ...form, children: 'yes' }, 'reglas')).…
+       |                                                                       ^
+     92|     expect(diffTipo(profile, { ...form, pets: 'no' }, 'reglas')).toEqu…
+     93|     expect(diffTipo(profile, { ...form, smoking: 'unset' }, 'reglas'))…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 58 passed (63)
+   Start at  03:33:57
+   Duration  5.38s (tests 90%, environment 7%, import 2%, transform 1%)
+
