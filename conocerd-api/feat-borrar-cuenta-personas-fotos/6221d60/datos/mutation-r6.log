@@ -1,0 +1,100 @@
+# R6 at 6221d60, with s1-dry-run-writes.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-personas-fotos/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-personas-fotos/emu.sh test/account-delete-owner.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18162.
+i  Running script: pnpm exec vitest run test/account-delete-owner.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-personas-fotos
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo
+[app-check] ausente /business/me
+
+stderr | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe
+[conocerd-api] la cuenta se borró pero no quedó la constancia en accountDeletions
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado
+[app-check] ausente /account-delete
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K4: los permisos propios y el pendiente dirigido a su correo quedan quitados sin correo; el enlace viejo ya no abre nada
+[app-check] ausente /business/members/accept
+
+ ❯ test/account-delete-owner.test.ts (23 tests | 1 failed) 14039ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K1 K2 K3 K5 K6 K7 K10: la dueña se borra, la ficha, las respuestas y las fotos publicadas se quedan; sus pedidos, permisos y datos se van  2065ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo  2100ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina  790ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > un fallo de Auth dentro de revokeOwnership  624ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el retiro de un pedido falla  558ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el borrado de ficheros falla  517ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > falla justo después de los datos de negocio (paso 5)  530ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > recursiveDelete falla  512ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > deleteUser falla  516ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > quitar los permisos propios falla  517ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > olvidar las fotos de dueño falla en el bucket  516ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: una propiedad que ya no está cuando el paso 2 la revoca (`409 not_owner`) cuenta como hecha 114ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K13: con un borrado en curso, otro responde 409 sin escribir; un candado de hace 121 s se toma  579ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K14: una propiedad concedida a mitad del borrado se revoca en la segunda pasada  450ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K15: si la verificación encuentra una concesión dos veces, 500 deletion_incomplete y Auth se queda  523ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K18 K20: un viajero se borra como antes: sin pasos de negocio, cifras nuevas en cero, el informe con sus claves 84ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe  346ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado  308ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K22: el orden: enlaces y sesiones antes de los ficheros, ficheros vacíos antes de limpiar sus documentos, Auth y la constancia al final  310ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K4: los permisos propios y el pendiente dirigido a su correo quedan quitados sin correo; el enlace viejo ya no abre nada  388ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K14: un permiso dado a la persona a mitad del borrado se quita en la segunda pasada  417ms
+   ✓ borrado de una cuenta de negocio contra el emulador > I9: si queda una foto bajo ownerPhotos/{uid}/, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina  456ms
+   × borrado de una cuenta de negocio contra el emulador > el script de cuentas borradas: en seco solo cuenta; con apply quita permisos y fotos de una cuenta sin Auth; repetirlo no hace nada 66ms
+     → expected [ { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) } ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > el script de cuentas borradas: en seco solo cuenta; con apply quita permisos y fotos de una cuenta sin Auth; repetirlo no hace nada
+AssertionError: expected [ { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) } ]
+
+- Expected
++ Received
+
+  [
+    {
+-     "json": "{\"destinationId\":\"destino-<uuid>\",\"email\":\"<email>\",\"role\":\"manager\",\"status\":\"active\",\"uid\":\"cuenta-borrada-<uuid>\",\"invitedBy\":\"otra-duena\",\"invitedAt\":{\"_seconds\":1794162201,\"_nanoseconds\":585000000},\"issuedTokens\":[],\"spentTokens\":[\"c4ca5625dfba17bf6dda692128539dbab02ece29043994e890e5b27562da8730:1794767001585\"],\"expiresAt\":{\"_seconds\":1794767001,\"_nanoseconds\":585000000},\"lastSentAt\":{\"_seconds\":1794162201,\"_nanoseconds\":585000000},\"sendLog\":[1794162201585],\"acceptedAt\":{\"_seconds\":1794162201,\"_nanoseconds\":585000000},\"removedAt\":null,\"removedBy\":null,\"updatedAt\":{\"_seconds\":1794162201,\"_nanoseconds\":585000000}}",
+-     "updateTime": "2026-11-08T18:23:21.587Z",
++     "json": "{\"destinationId\":\"destino-<uuid>\",\"role\":\"manager\",\"uid\":\"cuenta-borrada-<uuid>\",\"invitedBy\":\"otra-duena\",\"invitedAt\":{\"_seconds\":1794162201,\"_nanoseconds\":585000000},\"issuedTokens\":[],\"spentTokens\":[\"c4ca5625dfba17bf6dda692128539dbab02ece29043994e890e5b27562da8730:1794767001585\"],\"expiresAt\":{\"_seconds\":1794767001,\"_nanoseconds\":585000000},\"lastSentAt\":{\"_seconds\":1794162201,\"_nanoseconds\":585000000},\"sendLog\":[1794162201585],\"acceptedAt\":{\"_seconds\":1794162201,\"_nanoseconds\":585000000},\"removedBy\":\"account_deleted\",\"removedAt\":{\"_seconds\":1794162201,\"_nanoseconds\":598000000},\"email\":null,\"status\":\"removed\",\"updatedAt\":{\"_seconds\":1794162201,\"_nanoseconds\":598000000}}",
++     "updateTime": "2026-11-08T18:23:21.607Z",
+    },
+    {
+-     "json": "{\"destinationId\":\"destino-<uuid>\",\"uploadedBy\":\"cuenta-borrada-<uuid>\",\"uploaderRole\":\"manager\",\"caption\":null,\"tourId\":null,\"status\":\"in_review\",\"stagingPath\":\"ownerPhotos/cuenta-borrada-<uuid>/<uuid>.jpg\",\"publishedPath\":null,\"publicUrl\":null,\"createdAt\":{\"_seconds\":1794162201,\"_nanoseconds\":587000000},\"removedAt\":null,\"removedBy\":null,\"fileDeleteAfter\":null,\"fileDeletedAt\":null}",
+-     "updateTime": "2026-11-08T18:23:21.589Z",
++     "json": "{\"destinationId\":\"destino-<uuid>\",\"uploaderRole\":\"manager\",\"caption\":null,\"tourId\":null,\"publishedPath\":null,\"publicUrl\":null,\"createdAt\":{\"_seconds\":1794162201,\"_nanoseconds\":587000000},\"fileDeleteAfter\":{\"_seconds\":1794162201,\"_nanoseconds\":615000000},\"removedBy\":\"account_deleted\",\"removedAt\":{\"_seconds\":1794162201,\"_nanoseconds\":615000000},\"uploadedBy\":null,\"stagingPath\":null,\"status\":\"removed\",\"fileDeletedAt\":{\"_seconds\":1794162201,\"_nanoseconds\":619000000}}",
++     "updateTime": "2026-11-08T18:23:21.621Z",
+    },
+  ]
+
+ ❯ test/account-delete-owner.test.ts:1063:65
+    1061|     const dry = await ownerDeletion.forgetDeletedAccounts(deps, { appl…
+    1062|     expect(dry).toEqual({ uids: [ghost], members: 1, photos: 1, applie…
+    1063|     expect([await frozen(memberPath), await frozen(photoPath)]).toEqua…
+       |                                                                 ^
+    1064|     expect(await files.list(`ownerPhotos/${ghost}/`)).toHaveLength(1);
+    1065| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 22 passed (23)
+   Start at  14:23:07
+   Duration  14.35s (transform 411ms, setup 13ms, collect 95ms, tests 14.04s, environment 0ms, prepare 63ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/account-delete-owner.test.ts" exited with code 1
