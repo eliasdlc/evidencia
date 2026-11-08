@@ -1,0 +1,35 @@
+# R17 at 8fd1f1f, with r15-maximo-por-revision.patch applied
+# $ pnpm exec vitest run src/fotos-dueno/lote.test.ts src/app/destinos/fotos-dueno/acciones.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/admin-pedidos-y-fotos
+
+ ❯ src/fotos-dueno/lote.test.ts (12 tests | 1 failed) 17ms
+     × admite 12 decisiones y no 13 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/fotos-dueno/lote.test.ts > armar la revisión > admite 12 decisiones y no 13
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/fotos-dueno/lote.test.ts:79:50
+     77|     const todas = Object.fromEntries(muchas.map((f) => [f.id, { kind: …
+     78|     expect(armarLote(detalle(muchas.slice(0, 12)), Object.fromEntries(…
+     79|     expect(armarLote(detalle(muchas), todas).ok).toBe(false);
+       |                                                  ^
+     80|   });
+     81| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 19 passed (20)
+   Start at  15:02:13
+   Duration  503ms (transform 129ms, setup 0ms, import 494ms, tests 28ms, environment 0ms)
+
