@@ -1,0 +1,55 @@
+# R33 at 5817ced, with m3.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/tipos/model.test.ts src/features/negocio/ficha/tipos/TiposEditor.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha-tipos
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts (23 tests | 1 failed) 38ms
+   ❯ validateTipo (4)
+     × group 1..500 and duration 5..1440, whole numbers 21ms
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx (40 tests | 1 failed) 3729ms
+   ❯ group and duration (1)
+     × says the duration in hours and minutes, and stops what the API would refuse 68ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/tipos/TiposEditor.test.tsx > group and duration > says the duration in hours and minutes, and stops what the API would refuse
+AssertionError: expected 'Lo que ve la genteCabañas de pruebaEs…' to contain 'entre 1 y 500'
+
+Expected: "entre 1 y 500"
+Received: "Lo que ve la genteCabañas de pruebaEs lo que ve el viajero de tu negocio en la app. Toca «Cambiar» en lo que quieras: cada parte tiene su botón Guardar y sale en la app apenas guardas.WhatsApp del negocioCambiar+18095550142Teléfono para llamarCambiarFalta Todavía no dice nada.Tu horarioCambiarFalta Todavía no dice nada.Qué te hace especialCambiarUn lugar de ejemploCuánto cuesta entrarCambiarFalta Todavía no dice nada.Cómo llegarCambiarFalta Todavía no dice nada.Mejor hora para irCambiarFalta Todavía no dice nada.Qué hay y qué avisosCambiarFalta Todavía no dice nada.InstagramCambiarFalta Todavía no dice nada.Sitio webCambiarFalta Todavía no dice nada.Guardamos grupos y duraciónYa sale así en la app.Tu fincaLo que los grupos preguntan antes de ir. Cada parte se guarda sola.Con cuánto tiempo avisanCambiarAvisan con: 1 día antesGrupos y duraciónCambiar Guardado hace un momentoHasta 501 personas. Dura 3 horasPrecio por personaCambiarRD$500Esto lo cambia el equipoEl nombre, el tipo de negocio y dónde sale en el mapa. Si algo está mal, escríbele al equipo de ConoceRD y lo corregimos contigo."
+
+ ❯ src/features/negocio/ficha/tipos/TiposEditor.test.tsx:492:22
+    490|       await type(field(label), value);
+    491|       await click(button('Guardar grupos y duración'));
+    492|       expect(body()).toContain(message);
+       |                      ^
+    493|       await type(field(label), label.startsWith('Hasta') ? '25' : '90'…
+    494|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/ficha/tipos/model.test.ts > validateTipo > group 1..500 and duration 5..1440, whole numbers
+AssertionError: expected 'Las personas por grupo: tiene que est…' to match /entre 1 y 500/
+
+- Expected:
+/entre 1 y 500/
+
++ Received:
+"Las personas por grupo: tiene que estar entre 1 y 5,000."
+
+ ❯ src/features/negocio/ficha/tipos/model.test.ts:166:75
+    164|     expect(validateTipo({ ...form, maxGroup: '1', durationMinutes: '5'…
+    165|     expect(validateTipo({ ...form, maxGroup: '500', durationMinutes: '…
+    166|     expect(validateTipo({ ...form, maxGroup: '0' }, 'grupo')['maxGroup…
+       |                                                                           ^
+    167|     expect(validateTipo({ ...form, maxGroup: '501' }, 'grupo')['maxGro…
+    168|     expect(validateTipo({ ...form, durationMinutes: '4' }, 'grupo')['d…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 61 passed (63)
+   Start at  03:34:13
+   Duration  4.36s (tests 87%, environment 6%, import 5%, transform 1%)
+
