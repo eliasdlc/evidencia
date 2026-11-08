@@ -1,0 +1,216 @@
+# R9 at ff3635f, with r9-i8-write-after-send.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-decision/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-decision/emu.sh test/owner-requests-decision.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18172.
+i  Running script: pnpm exec vitest run test/owner-requests-decision.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A1 (I4, I15, I17): la concesión, el pedido y las dos colas en el mismo intento; el correo al final
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A2 (I4): si Auth falla, el pedido vuelve a abierto, sin propiedad, sin bitácora y en las dos colas
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stderr | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A2 (I4): si Auth falla, el pedido vuelve a abierto, sin propiedad, sin bitácora y en las dos colas
+[conocerd-api] error no controlado Error: Auth caído
+    at /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision/test/owner-requests-decision.test.ts:321:83
+    at file:///home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision/node_modules/.pnpm/@vitest+runner@3.2.7/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A3 (I5): aprobar otra vez es 409 not_pending y no manda un segundo correo
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A3 (I5): aprobar otra vez es 409 not_pending y no manda un segundo correo
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A6 (I6): con otro dueño y sin resolución es 409 resolution_required y no escribe nada
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A7: add_co_owner deja a las dos cuentas activas
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A8 (I6, I7): replace_owner concede, luego revoca a V con sus tokens, y solo entonces avisa a los dos
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A9 (I7): si la revocación de V falla, 502 replace_incomplete con su uid, U ya es dueño y no sale ningún correo
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stderr | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A9 (I7): si la revocación de V falla, 502 replace_incomplete con su uid, U ya es dueño y no sale ningún correo
+[conocerd-api] reemplazo incompleto pedido=<uuid> destino=destino-<uuid> uid=vybUhqKFUfSWD4chrqIHhakydA94 Error: Auth caído
+    at Object.revoke (/home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision/test/owner-requests-decision.test.ts:437:17)
+    at approveOwnerRequest (/home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision/src/lib/owner-request-decisions.ts:402:18)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision/src/lib/owner-request-decisions.ts:570:11
+    at /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision/src/lib/http.ts:92:14
+    at decide (/home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision/test/owner-requests-decision.test.ts:219:22)
+    at /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision/test/owner-requests-decision.test.ts:441:22
+    at file:///home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision/node_modules/.pnpm/@vitest+runner@3.2.7/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A10: replace_owner sin otro dueño es 422 resolution_not_applicable
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A12, A13, A14 (I16): destino ajeno 422; negocio nuevo sin listado 409; con listado se aprueba contra él
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A12, A13, A14 (I16): destino ajeno 422; negocio nuevo sin listado 409; con listado se aprueba contra él
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A12, A13, A14 (I16): destino ajeno 422; negocio nuevo sin listado 409; con listado se aprueba contra él
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A12, A13, A14 (I16): destino ajeno 422; negocio nuevo sin listado 409; con listado se aprueba contra él
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A15, A16, A17 (I14): cuenta suspendida, borrada o de staff no se aprueba y no se escribe nada
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A15, A16, A17 (I14): cuenta suspendida, borrada o de staff no se aprueba y no se escribe nada
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A15, A16, A17 (I14): cuenta suspendida, borrada o de staff no se aprueba y no se escribe nada
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A18 (I4): si ya era dueño por invitación, sigue habiendo una sola propiedad y el pedido queda aprobado con su bitácora
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A19: un destino borrado antes de aprobar es 422 unknown_destination y el pedido sigue abierto
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A20 (I8): con el correo caído o sin enviar, 200 notified false y el estado al enviar es el final
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stderr | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A20 (I8): con el correo caído o sin enviar, 200 notified false y el estado al enviar es el final
+[conocerd-api] un correo de decisión de pedido no salió
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > I10: la respuesta y el correo al dueño no llevan la nota del equipo
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > Q1: la ruta real exige admin
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R1 (I8, I9, I17): rechazado, fotos borradas y evidenceDeletedAt antes del correo, colas vacías
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R2: otro sin mensaje es 422 owner_message_required
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R3 (I10): un mensaje que nombra al dueño activo o a otro que lo pidió es 422 owner_message_names_other
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R3 (I10): un mensaje que nombra al dueño activo o a otro que lo pidió es 422 owner_message_names_other
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R3 (I10): un mensaje que nombra al dueño activo o a otro que lo pidió es 422 owner_message_names_other
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R3 (I10): un mensaje que nombra al dueño activo o a otro que lo pidió es 422 owner_message_names_other
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R4: si Storage falla, el rechazo queda, el correo sale y evidenceDeletedAt sigue en null
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stderr | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R4: si Storage falla, el rechazo queda, el correo sale y evidenceDeletedAt sigue en null
+[conocerd-api] no se pudieron borrar las fotos de un pedido rechazado
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R5 (I17): después de un rechazo la misma cuenta puede volver a pedir el negocio
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R6 (I10): /business/me muestra la frase del módulo, sin la nota ni el uid del admin
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R6 (I10): /business/me muestra la frase del módulo, sin la nota ni el uid del admin
+[app-check] ausente /business/me
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > R7: un código fuera de la lista es 422 y no escribe
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > un id que no es de pedido o que no existe es 404
+[app-check] ausente /admin/owner-requests/no-es-uuid/decision
+
+stdout | test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > rechazar > un id que no es de pedido o que no existe es 404
+[app-check] ausente /admin/owner-requests/<uuid>/decision
+
+ ❯ test/owner-requests-decision.test.ts (25 tests | 2 failed) 13662ms
+   × pedidos de dueño: decisión, contra los emuladores > aprobar > A1 (I4, I15, I17): la concesión, el pedido y las dos colas en el mismo intento; el correo al final 1015ms
+     → expected '{"claimDoc":{"requestedBy":"QyLg9Zfla…' to be '{"claimDoc":{"requestedBy":"QyLg9Zfla…' // Object.is equality
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A2 (I4): si Auth falla, el pedido vuelve a abierto, sin propiedad, sin bitácora y en las dos colas  356ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A3 (I5): aprobar otra vez es 409 not_pending y no manda un segundo correo 157ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A4, A5 (I5): dos decisiones a la vez: gana una, la otra no escribe ni manda  6266ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A6 (I6): con otro dueño y sin resolución es 409 resolution_required y no escribe nada 136ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A7: add_co_owner deja a las dos cuentas activas 141ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A8 (I6, I7): replace_owner concede, luego revoca a V con sus tokens, y solo entonces avisa a los dos 215ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A9 (I7): si la revocación de V falla, 502 replace_incomplete con su uid, U ya es dueño y no sale ningún correo 101ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A10: replace_owner sin otro dueño es 422 resolution_not_applicable 61ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A11 (I6): dos aprobaciones del mismo negocio a la vez, sin resolución: la segunda ve al primer dueño  3410ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A12, A13, A14 (I16): destino ajeno 422; negocio nuevo sin listado 409; con listado se aprueba contra él 219ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A15, A16, A17 (I14): cuenta suspendida, borrada o de staff no se aprueba y no se escribe nada 148ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A18 (I4): si ya era dueño por invitación, sigue habiendo una sola propiedad y el pedido queda aprobado con su bitácora 99ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A19: un destino borrado antes de aprobar es 422 unknown_destination y el pedido sigue abierto 69ms
+   × pedidos de dueño: decisión, contra los emuladores > aprobar > A20 (I8): con el correo caído o sin enviar, 200 notified false y el estado al enviar es el final 100ms
+     → throw: expected '{"claimDoc":{"requestedBy":"nAEkfgIA2…' to be '{"claimDoc":{"requestedBy":"nAEkfgIA2…' // Object.is equality
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > I10: la respuesta y el correo al dueño no llevan la nota del equipo 75ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > Q1: la ruta real exige admin 5ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > rechazar > R1 (I8, I9, I17): rechazado, fotos borradas y evidenceDeletedAt antes del correo, colas vacías 82ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > rechazar > R2: otro sin mensaje es 422 owner_message_required 34ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > rechazar > R3 (I10): un mensaje que nombra al dueño activo o a otro que lo pidió es 422 owner_message_names_other 145ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > rechazar > R4: si Storage falla, el rechazo queda, el correo sale y evidenceDeletedAt sigue en null 64ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > rechazar > R5 (I17): después de un rechazo la misma cuenta puede volver a pedir el negocio 87ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > rechazar > R6 (I10): /business/me muestra la frase del módulo, sin la nota ni el uid del admin 86ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > rechazar > R7: un código fuera de la lista es 422 y no escribe 45ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > rechazar > un id que no es de pedido o que no existe es 404 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A1 (I4, I15, I17): la concesión, el pedido y las dos colas en el mismo intento; el correo al final
+AssertionError: expected '{"claimDoc":{"requestedBy":"QyLg9Zfla…' to be '{"claimDoc":{"requestedBy":"QyLg9Zfla…' // Object.is equality
+
+Expected: "{"claimDoc":{"requestedBy":"QyLg9ZflaEVZRRa2Va09VFQjrJ9l","requesterEmailAtCreation":"<email>","target":{"kind":"existing","destinationId":"destino-<uuid>"},"destinationId":"destino-<uuid>","relation":"dueno","note":"Soy la dueña desde 2019","evidence":[{"path":"claims/QyLg9ZflaEVZRRa2Va09VFQjrJ9l/<uuid>/1.jpg","contentType":"image/jpeg","size":1024,"md5Hash":"md5","uploadedAt":"2026-11-08T14:46:42.224Z"},{"path":"claims/QyLg9ZflaEVZRRa2Va09VFQjrJ9l/<uuid>/2.jpg","contentType":"image/jpeg","size":1024,"md5Hash":"md5","uploadedAt":"2026-11-08T14:46:42.224Z"}],"contestedAtCreation":false,"placeRequestId":null,"bodyHash":"hash","createdAt":{"_seconds":1794149202,"_nanoseconds":224000000},"evidenceDeletedAt":null,"evidenceDeleteAfter":{"_seconds":1796741202,"_nanoseconds":442000000},"decision":{"kind":"approve","resolution":"none","replacedUids":[],"note":"La foto muestra el letrero y a la dueña detrás del mostrador"},"decidedAt":{"_seconds":1794149202,"_nanoseconds":442000000},"decidedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","status":"approved","notifiedAt":{"_seconds":1794149202,"_nanoseconds":516000000}},"account":{"createdInWindow":1,"windowStart":1794149202238,"open":[],"updatedAt":{"_seconds":1794149202,"_nanoseconds":442000000}},"target":{"open":[],"updatedAt":{"_seconds":1794149202,"_nanoseconds":442000000}},"ownerships":[{"id":"uiVIFmOgHntADdtLIHbS","destinationId":"destino-<uuid>","uid":"QyLg9ZflaEVZRRa2Va09VFQjrJ9l","role":"owner","status":"active","grantedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","via":"owner_request","requestId":"<uuid>","grantedAt":{"_seconds":1794149202,"_nanoseconds":454000000}}],"audits":[{"actorUid":"CE5wYxS1t289h4l4wlxbBlD5gvKL","targetUid":"QyLg9ZflaEVZRRa2Va09VFQjrJ9l","change":{"op":"grant","role":"biz","destinationIds":["destino-<uuid>"]},"resulting":{"biz":["destino-<uuid>"]},"source":"api","origin":{"kind":"owner_request","refId":"<uuid>"},"verification":{"method":"foto_revisada","note":"La foto muestra el letrero y a la dueña detrás del mostrador","verifiedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","evidenceRef":"claims/<uuid>"},"at":null}],"files":["claims/QyLg9ZflaEVZRRa2Va09VFQjrJ9l/<uuid>/1.jpg","claims/QyLg9ZflaEVZRRa2Va09VFQjrJ9l/<uuid>/2.jpg"]}"
+Received: "{"claimDoc":{"requestedBy":"QyLg9ZflaEVZRRa2Va09VFQjrJ9l","requesterEmailAtCreation":"<email>","target":{"kind":"existing","destinationId":"destino-<uuid>"},"destinationId":"destino-<uuid>","relation":"dueno","note":"Soy la dueña desde 2019","evidence":[{"path":"claims/QyLg9ZflaEVZRRa2Va09VFQjrJ9l/<uuid>/1.jpg","contentType":"image/jpeg","size":1024,"md5Hash":"md5","uploadedAt":"2026-11-08T14:46:42.224Z"},{"path":"claims/QyLg9ZflaEVZRRa2Va09VFQjrJ9l/<uuid>/2.jpg","contentType":"image/jpeg","size":1024,"md5Hash":"md5","uploadedAt":"2026-11-08T14:46:42.224Z"}],"contestedAtCreation":false,"placeRequestId":null,"bodyHash":"hash","createdAt":{"_seconds":1794149202,"_nanoseconds":224000000},"evidenceDeletedAt":null,"evidenceDeleteAfter":{"_seconds":1796741202,"_nanoseconds":442000000},"decision":{"kind":"approve","resolution":"none","replacedUids":[],"note":"La foto muestra el letrero y a la dueña detrás del mostrador"},"decidedAt":{"_seconds":1794149202,"_nanoseconds":442000000},"decidedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","status":"approved"},"account":{"createdInWindow":1,"windowStart":1794149202238,"open":[],"updatedAt":{"_seconds":1794149202,"_nanoseconds":442000000}},"target":{"open":[],"updatedAt":{"_seconds":1794149202,"_nanoseconds":442000000}},"ownerships":[{"id":"uiVIFmOgHntADdtLIHbS","destinationId":"destino-<uuid>","uid":"QyLg9ZflaEVZRRa2Va09VFQjrJ9l","role":"owner","status":"active","grantedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","via":"owner_request","requestId":"<uuid>","grantedAt":{"_seconds":1794149202,"_nanoseconds":454000000}}],"audits":[{"actorUid":"CE5wYxS1t289h4l4wlxbBlD5gvKL","targetUid":"QyLg9ZflaEVZRRa2Va09VFQjrJ9l","change":{"op":"grant","role":"biz","destinationIds":["destino-<uuid>"]},"resulting":{"biz":["destino-<uuid>"]},"source":"api","origin":{"kind":"owner_request","refId":"<uuid>"},"verification":{"method":"foto_revisada","note":"La foto muestra el letrero y a la dueña detrás del mostrador","verifiedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","evidenceRef":"claims/<uuid>"},"at":null}],"files":["claims/QyLg9ZflaEVZRRa2Va09VFQjrJ9l/<uuid>/1.jpg","claims/QyLg9ZflaEVZRRa2Va09VFQjrJ9l/<uuid>/2.jpg"]}"
+
+ ❯ test/owner-requests-decision.test.ts:312:22
+    310|       expect(sent.calls.map((call) => call.kind)).toEqual(['approval']…
+    311|       expect(sent.calls[0]!.input).toMatchObject({ requestId, email: u…
+    312|       expect(atSend).toBe(await state(store, u.uid, requestId, d));
+       |                      ^
+    313|       expect(mail.calls).toHaveLength(0);
+    314|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/owner-requests-decision.test.ts > pedidos de dueño: decisión, contra los emuladores > aprobar > A20 (I8): con el correo caído o sin enviar, 200 notified false y el estado al enviar es el final
+AssertionError: throw: expected '{"claimDoc":{"requestedBy":"nAEkfgIA2…' to be '{"claimDoc":{"requestedBy":"nAEkfgIA2…' // Object.is equality
+
+Expected: "{"claimDoc":{"requestedBy":"nAEkfgIA2aLz8drm0K1fiRWrJsts","requesterEmailAtCreation":"<email>","target":{"kind":"existing","destinationId":"destino-<uuid>"},"destinationId":"destino-<uuid>","relation":"dueno","note":"Soy la dueña desde 2019","evidence":[{"path":"claims/nAEkfgIA2aLz8drm0K1fiRWrJsts/<uuid>/1.jpg","contentType":"image/jpeg","size":1024,"md5Hash":"md5","uploadedAt":"2026-11-08T14:46:53.985Z"},{"path":"claims/nAEkfgIA2aLz8drm0K1fiRWrJsts/<uuid>/2.jpg","contentType":"image/jpeg","size":1024,"md5Hash":"md5","uploadedAt":"2026-11-08T14:46:53.985Z"}],"contestedAtCreation":false,"placeRequestId":null,"bodyHash":"hash","createdAt":{"_seconds":1794149213,"_nanoseconds":985000000},"evidenceDeletedAt":null,"evidenceDeleteAfter":{"_seconds":1796741214,"_nanoseconds":27000000},"decision":{"kind":"approve","resolution":"none","replacedUids":[],"note":"La foto muestra el letrero y a la dueña detrás del mostrador"},"decidedAt":{"_seconds":1794149214,"_nanoseconds":27000000},"decidedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","status":"approved","notifiedAt":{"_seconds":1794149214,"_nanoseconds":54000000}},"account":{"createdInWindow":1,"windowStart":1794149213990,"open":[],"updatedAt":{"_seconds":1794149214,"_nanoseconds":27000000}},"target":{"open":[],"updatedAt":{"_seconds":1794149214,"_nanoseconds":27000000}},"ownerships":[{"id":"DX7LFgbtZ5feHQSMk91P","destinationId":"destino-<uuid>","uid":"nAEkfgIA2aLz8drm0K1fiRWrJsts","role":"owner","status":"active","grantedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","via":"owner_request","requestId":"<uuid>","grantedAt":{"_seconds":1794149214,"_nanoseconds":30000000}}],"audits":[{"actorUid":"CE5wYxS1t289h4l4wlxbBlD5gvKL","targetUid":"nAEkfgIA2aLz8drm0K1fiRWrJsts","change":{"op":"grant","role":"biz","destinationIds":["destino-<uuid>"]},"resulting":{"biz":["destino-<uuid>"]},"source":"api","origin":{"kind":"owner_request","refId":"<uuid>"},"verification":{"method":"foto_revisada","note":"La foto muestra el letrero y a la dueña detrás del mostrador","verifiedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","evidenceRef":"claims/<uuid>"},"at":null}],"files":["claims/nAEkfgIA2aLz8drm0K1fiRWrJsts/<uuid>/1.jpg","claims/nAEkfgIA2aLz8drm0K1fiRWrJsts/<uuid>/2.jpg"]}"
+Received: "{"claimDoc":{"requestedBy":"nAEkfgIA2aLz8drm0K1fiRWrJsts","requesterEmailAtCreation":"<email>","target":{"kind":"existing","destinationId":"destino-<uuid>"},"destinationId":"destino-<uuid>","relation":"dueno","note":"Soy la dueña desde 2019","evidence":[{"path":"claims/nAEkfgIA2aLz8drm0K1fiRWrJsts/<uuid>/1.jpg","contentType":"image/jpeg","size":1024,"md5Hash":"md5","uploadedAt":"2026-11-08T14:46:53.985Z"},{"path":"claims/nAEkfgIA2aLz8drm0K1fiRWrJsts/<uuid>/2.jpg","contentType":"image/jpeg","size":1024,"md5Hash":"md5","uploadedAt":"2026-11-08T14:46:53.985Z"}],"contestedAtCreation":false,"placeRequestId":null,"bodyHash":"hash","createdAt":{"_seconds":1794149213,"_nanoseconds":985000000},"evidenceDeletedAt":null,"evidenceDeleteAfter":{"_seconds":1796741214,"_nanoseconds":27000000},"decision":{"kind":"approve","resolution":"none","replacedUids":[],"note":"La foto muestra el letrero y a la dueña detrás del mostrador"},"decidedAt":{"_seconds":1794149214,"_nanoseconds":27000000},"decidedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","status":"approved"},"account":{"createdInWindow":1,"windowStart":1794149213990,"open":[],"updatedAt":{"_seconds":1794149214,"_nanoseconds":27000000}},"target":{"open":[],"updatedAt":{"_seconds":1794149214,"_nanoseconds":27000000}},"ownerships":[{"id":"DX7LFgbtZ5feHQSMk91P","destinationId":"destino-<uuid>","uid":"nAEkfgIA2aLz8drm0K1fiRWrJsts","role":"owner","status":"active","grantedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","via":"owner_request","requestId":"<uuid>","grantedAt":{"_seconds":1794149214,"_nanoseconds":30000000}}],"audits":[{"actorUid":"CE5wYxS1t289h4l4wlxbBlD5gvKL","targetUid":"nAEkfgIA2aLz8drm0K1fiRWrJsts","change":{"op":"grant","role":"biz","destinationIds":["destino-<uuid>"]},"resulting":{"biz":["destino-<uuid>"]},"source":"api","origin":{"kind":"owner_request","refId":"<uuid>"},"verification":{"method":"foto_revisada","note":"La foto muestra el letrero y a la dueña detrás del mostrador","verifiedBy":"CE5wYxS1t289h4l4wlxbBlD5gvKL","evidenceRef":"claims/<uuid>"},"at":null}],"files":["claims/nAEkfgIA2aLz8drm0K1fiRWrJsts/<uuid>/1.jpg","claims/nAEkfgIA2aLz8drm0K1fiRWrJsts/<uuid>/2.jpg"]}"
+
+ ❯ test/owner-requests-decision.test.ts:566:34
+    564|         expect(result.body.notified.requester, behavior).toBe(false);
+    565|         const after = await state(store, u.uid, requestId, d);
+    566|         expect(atSend, behavior).toBe(after);
+       |                                  ^
+    567|         await new Promise((resolve) => setTimeout(resolve, 300));
+    568|         expect(await state(store, u.uid, requestId, d), behavior).toBe…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 23 passed (25)
+   Start at  10:46:40
+   Duration  13.98s (transform 242ms, setup 10ms, collect 106ms, tests 13.66s, environment 0ms, prepare 58ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/owner-requests-decision.test.ts" exited with code 1
