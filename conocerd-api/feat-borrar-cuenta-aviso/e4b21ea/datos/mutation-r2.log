@@ -1,0 +1,88 @@
+# R2 at e4b21ea, with i14-email-to-every-account.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-aviso/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-aviso/emu.sh test/account-deletion-preview.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18162.
+i  Running script: pnpm exec vitest run test/account-deletion-preview.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-aviso
+
+stdout | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V1 V4: cuenta lo que el borrado haría, sin escribir nada y sin nombrar a nadie más
+[app-check] ausente /business/me/deletion-preview
+
+stdout | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V2: si la otra dueña de D2 deja de serlo, D2 pasa a única dueña en la siguiente consulta
+[app-check] ausente /business/me/deletion-preview
+
+stdout | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > V3: un viajero recibe listas vacías y ceros, no un 403
+[app-check] ausente /business/me/deletion-preview
+
+stderr | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el envío lanza
+[conocerd-api] la cuenta se borró pero el correo de confirmación no salió
+
+stderr | test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el proveedor responde 5xx
+[conocerd-api] Resend rechazó un correo: 503
+
+ ❯ test/account-deletion-preview.test.ts (8 tests | 1 failed) 7763ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > V1 V4: cuenta lo que el borrado haría, sin escribir nada y sin nombrar a nadie más  1579ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > V2: si la otra dueña de D2 deja de serlo, D2 pasa a única dueña en la siguiente consulta  538ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > V3: un viajero recibe listas vacías y ceros, no un 403 49ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > V5 K17 I14: el borrado hace lo que la vista previa dijo, y manda un correo, a la dueña, que nombra sus negocios y a nadie más  817ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el envío lanza  953ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el proveedor responde 5xx  1012ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > modo de prueba  1519ms
+   × vista previa del borrado y correo de confirmación contra el emulador > K18: un viajero se borra sin correo 308ms
+     → expected [ { …(4) } ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/account-deletion-preview.test.ts > vista previa del borrado y correo de confirmación contra el emulador > K18: un viajero se borra sin correo
+AssertionError: expected [ { …(4) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "displayName": null,
++     "email": "<email>",
++     "preview": {
++       "businesses": [],
++       "openRequests": 0,
++       "photosInReview": 0,
++       "photosPublished": 0,
++       "replies": 0,
++     },
++     "uid": "pUzLDmQui48sD9XJsDdqGYTDwt0S",
++   },
++ ]
+
+ ❯ test/account-deletion-preview.test.ts:406:19
+    404|     });
+    405| 
+    406|     expect(calls).toEqual([]);
+       |                   ^
+    407|     expect(report.notified).toBe(false);
+    408|   }, SLOW);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  15:20:57
+   Duration  8.18s (transform 577ms, setup 13ms, collect 138ms, tests 7.76s, environment 0ms, prepare 72ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/account-deletion-preview.test.ts" exited with code 1
