@@ -1,0 +1,160 @@
+# R11 at 8fd1f1f, with r05-sin-eleccion-con-otro-dueno.patch applied
+# $ pnpm exec vitest run src/pedidos/decision.test.ts src/app/solicitudes/pedidos/acciones.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/admin-pedidos-y-fotos
+
+ ❯ src/pedidos/decision.test.ts (19 tests | 5 failed) 23ms
+     × exige elegir entre codueño y reemplazo cuando otra cuenta ya es dueña 8ms
+     × manda la resolución add_co_owner elegida 1ms
+     × manda la resolución replace_owner elegida 1ms
+     × rechaza una resolución inventada 1ms
+     × sabe cuándo hay otro dueño 0ms
+ ❯ src/app/solicitudes/pedidos/acciones.test.ts (7 tests | 1 failed) 29ms
+     × con otro dueño y sin elegir, no llama a la API para decidir 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pedidos/decision.test.ts > aprobar un pedido > exige elegir entre codueño y reemplazo cuando otra cuenta ya es dueña
+AssertionError: expected { ok: true, cuerpo: { …(3) } } to deeply equal { ok: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "errores": [
+-     "Otra cuenta ya tiene acceso como dueño: elige agregar codueño o reemplazar dueño",
+-   ],
+-   "ok": false,
++   "cuerpo": {
++     "decision": "approve",
++     "destinationId": "excursiones-de-ejemplo",
++     "note": "Se ve la fachada con el letrero.",
++   },
++   "ok": true,
+  }
+
+ ❯ src/pedidos/decision.test.ts:34:15
+     32|   it('exige elegir entre codueño y reemplazo cuando otra cuenta ya es …
+     33|     const r = construirDecision(aprobar, pedidoConDueno());
+     34|     expect(r).toEqual({ ok: false, errores: ['Otra cuenta ya tiene acc…
+       |               ^
+     35|   });
+     36|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/pedidos/decision.test.ts > aprobar un pedido > manda la resolución add_co_owner elegida
+AssertionError: expected { ok: true, cuerpo: { …(3) } } to deeply equal { ok: true, cuerpo: { …(4) } }
+
+- Expected
++ Received
+
+  {
+    "cuerpo": {
+      "decision": "approve",
+      "destinationId": "excursiones-de-ejemplo",
+      "note": "Se ve la fachada con el letrero.",
+-     "resolution": "add_co_owner",
+    },
+    "ok": true,
+  }
+
+ ❯ src/pedidos/decision.test.ts:39:15
+     37|   it.each(['add_co_owner', 'replace_owner'] as const)('manda la resolu…
+     38|     const r = construirDecision({ ...aprobar, resolucion }, pedidoConD…
+     39|     expect(r).toEqual({
+       |               ^
+     40|       ok: true,
+     41|       cuerpo: { decision: 'approve', destinationId: 'excursiones-de-ej…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/pedidos/decision.test.ts > aprobar un pedido > manda la resolución replace_owner elegida
+AssertionError: expected { ok: true, cuerpo: { …(3) } } to deeply equal { ok: true, cuerpo: { …(4) } }
+
+- Expected
++ Received
+
+  {
+    "cuerpo": {
+      "decision": "approve",
+      "destinationId": "excursiones-de-ejemplo",
+      "note": "Se ve la fachada con el letrero.",
+-     "resolution": "replace_owner",
+    },
+    "ok": true,
+  }
+
+ ❯ src/pedidos/decision.test.ts:39:15
+     37|   it.each(['add_co_owner', 'replace_owner'] as const)('manda la resolu…
+     38|     const r = construirDecision({ ...aprobar, resolucion }, pedidoConD…
+     39|     expect(r).toEqual({
+       |               ^
+     40|       ok: true,
+     41|       cuerpo: { decision: 'approve', destinationId: 'excursiones-de-ej…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/pedidos/decision.test.ts > aprobar un pedido > rechaza una resolución inventada
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/pedidos/decision.test.ts:47:18
+     45|   it('rechaza una resolución inventada', () => {
+     46|     const r = construirDecision({ ...aprobar, resolucion: 'none' }, pe…
+     47|     expect(r.ok).toBe(false);
+       |                  ^
+     48|   });
+     49|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/pedidos/decision.test.ts > el resto > sabe cuándo hay otro dueño
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/pedidos/decision.test.ts:115:44
+    113|   it('sabe cuándo hay otro dueño', () => {
+    114|     expect(hayOtroDueno(pedidoLimpio())).toBe(false);
+    115|     expect(hayOtroDueno(pedidoConDueno())).toBe(true);
+       |                                            ^
+    116|   });
+    117|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/app/solicitudes/pedidos/acciones.test.ts > la acción de decidir > con otro dueño y sin elegir, no llama a la API para decidir
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/app/solicitudes/pedidos/acciones.test.ts:51:18
+     49|     api(pedidoConDueno());
+     50|     const r = await decidir('r-ejemplo-2', null, formulario({ decision…
+     51|     expect(r.ok).toBe(false);
+       |                  ^
+     52|     expect(llamarApi.mock.calls.filter(([, , init]) => init?.method ==…
+     53|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  6 failed | 20 passed (26)
+   Start at  15:01:35
+   Duration  595ms (transform 125ms, setup 0ms, import 528ms, tests 52ms, environment 0ms)
+
