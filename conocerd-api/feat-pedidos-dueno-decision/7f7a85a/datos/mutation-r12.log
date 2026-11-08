@@ -1,0 +1,97 @@
+# R12 at 7f7a85a, with r12-i11-url-one-hour.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-decision/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-decision/emu.sh test/owner-requests-admin.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18172.
+i  Running script: pnpm exec vitest run test/owner-requests-admin.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q1: sin admin, las dos rutas reales son 403; sin token, 401
+[app-check] ausente /admin/owner-requests
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q1: sin admin, las dos rutas reales son 403; sin token, 401
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q2: open lista los abiertos, el más viejo primero, con el listado del negocio nuevo; no-store
+[app-check] ausente /admin/owner-requests
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q3: decided trae los de los últimos 30 días, el más nuevo primero
+[app-check] ausente /admin/owner-requests
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q3: decided trae los de los últimos 30 días, el más nuevo primero
+[app-check] ausente /admin/owner-requests
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q4 (I11): el detalle firma cada foto por 10 minutos con su tipo guardado; no-store
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q5: con las fotos borradas no firma nada y deja los metadatos
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q6: la disputa sale en vivo, con los correos del dueño y del otro pedido (solo para el equipo)
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q7: un pedido de una cuenta borrada sale con exists false y la lista sigue en 200
+[app-check] ausente /admin/owner-requests
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q7: un pedido de una cuenta borrada sale con exists false y la lista sigue en 200
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > un detalle que no existe es 404
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > un detalle que no existe es 404
+[app-check] ausente /admin/owner-requests/no-es-uuid
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > el detalle de un aprobado trae la decisión con la línea de bitácora
+[app-check] ausente /admin/owner-requests/<uuid>
+
+ ❯ test/owner-requests-admin.test.ts (9 tests | 1 failed) 1381ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q1: sin admin, las dos rutas reales son 403; sin token, 401 16ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q2: open lista los abiertos, el más viejo primero, con el listado del negocio nuevo; no-store  621ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q3: decided trae los de los últimos 30 días, el más nuevo primero 84ms
+   × pedidos de dueño: cola y detalle, contra los emuladores > Q4 (I11): el detalle firma cada foto por 10 minutos con su tipo guardado; no-store 54ms
+     → expected 'https://signed.test/claims/LxoppBpI80…' to contain 'X-Goog-Expires=600'
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q5: con las fotos borradas no firma nada y deja los metadatos 36ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q6: la disputa sale en vivo, con los correos del dueño y del otro pedido (solo para el equipo) 69ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q7: un pedido de una cuenta borrada sale con exists false y la lista sigue en 200 59ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > un detalle que no existe es 404 11ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > el detalle de un aprobado trae la decisión con la línea de bitácora 43ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q4 (I11): el detalle firma cada foto por 10 minutos con su tipo guardado; no-store
+AssertionError: expected 'https://signed.test/claims/LxoppBpI80…' to contain 'X-Goog-Expires=600'
+
+Expected: "X-Goog-Expires=600"
+Received: "https://signed.test/claims/LxoppBpI80oQWiQh3laDsDvVXRq2/<uuid>/1.jpg?X-Goog-Expires=3600&response-content-type=image%2Fjpeg"
+
+ ❯ test/owner-requests-admin.test.ts:230:25
+    228|     expect(body.evidence).toHaveLength(2);
+    229|     for (const photo of body.evidence) {
+    230|       expect(photo.url).toContain('X-Goog-Expires=600');
+       |                         ^
+    231|       expect(photo.url).toContain('response-content-type=image%2Fjpeg'…
+    232|       expect(Date.parse(photo.urlExpiresAt as string)).toBeLessThanOrE…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  12:45:27
+   Duration  1.62s (transform 121ms, setup 11ms, collect 60ms, tests 1.38s, environment 0ms, prepare 50ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/owner-requests-admin.test.ts" exited with code 1
