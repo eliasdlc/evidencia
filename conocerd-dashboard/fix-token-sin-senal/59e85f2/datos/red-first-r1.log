@@ -1,0 +1,80 @@
+# R1 at 59e85f2, with src/lib/api.ts back at afb6957
+# $ pnpm exec vitest run src/lib/api.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/fix-token-sin-senal
+
+ ❯ src/lib/api.test.ts (31 tests | 4 failed) 189ms
+   ❯ createApiClient (27)
+     × reports a token refresh that found no signal as a network error, never a raw Firebase error 8ms
+     × reports a first token that found no signal as a network error, without calling the API 3ms
+     × types any other token failure as unexpected, keeping only its code 1ms
+     × types a token failure that is not even an object as unexpected 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > reports a token refresh that found no signal as a network error, never a raw Firebase error
+AssertionError: expected Error: Firebase: Error (auth/network-requ… { code: '…' } to be an instance of ApiError
+ ❯ src/lib/api.test.ts:241:21
+    239|     const failure = await client.request('/business/b1/overview').catc…
+    240|
+    241|     expect(failure).toBeInstanceOf(ApiError);
+       |                     ^
+    242|     expect(failure).toMatchObject({ status: 0, code: 'network' });
+    243|     expect(fetch).toHaveBeenCalledTimes(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > reports a first token that found no signal as a network error, without calling the API
+Error: [2mexpect([22m[31mreceived[39m[2m).toSatisfy()[22m
+
+Expected value to satisfy:
+[32m[Function anonymous][39m
+
+Received:
+[31m[Error: Firebase: Error (auth/network-request-failed).][39m
+ ❯ src/lib/api.test.ts:251:38
+    249|     const client = createApiClient({ baseUrl: BASE, tokens: { idToken:…
+    250|
+    251|     await expect(client.businessMe()).rejects.toSatisfy((error) => err…
+       |                                      ^
+    252|     expect(fetch).not.toHaveBeenCalled();
+    253|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > types any other token failure as unexpected, keeping only its code
+AssertionError: expected Error: Firebase: Error (auth/internal-err… { code: '…' } to be an instance of ApiError
+ ❯ src/lib/api.test.ts:261:21
+    259|     const failure = await client.request('/business/b1/reviews').catch…
+    260|
+    261|     expect(failure).toBeInstanceOf(ApiError);
+       |                     ^
+    262|     expect(failure).toMatchObject({ status: 0, code: 'unexpected', mes…
+    263|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/lib/api.test.ts > createApiClient > types a token failure that is not even an object as unexpected
+Error: [2mexpect([22m[31mreceived[39m[2m).toSatisfy()[22m
+
+Expected value to satisfy:
+[32m[Function anonymous][39m
+
+Received:
+[31m"boom"[39m
+ ❯ src/lib/api.test.ts:268:57
+    266|     const client = createApiClient({ baseUrl: BASE, tokens: { idToken:…
+    267|
+    268|     await expect(client.request('/business/b1/profile')).rejects.toSat…
+       |                                                         ^
+    269|       (error) => error instanceof ApiError && error.code === 'unexpect…
+    270|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 27 passed (31)
+   Start at  09:59:54
+   Duration  362ms (tests 88%, import 7%, transform 4%, worker 2%)
+
