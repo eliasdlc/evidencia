@@ -1,0 +1,87 @@
+# R4 at 345116f
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu2.sh src/lib/email test/invitation-email.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run src/lib/email test/invitation-email.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/correo-html
+
+ ✓ src/lib/email/templates.test.ts (297 tests) 3273ms
+   ✓ la base de los enlaces: lo que la regla acepta, el correo lo puede mandar (N1, N2) > propiedad: todo lo que el validador acepta, new URL lo lee igual y la invitación sale con esa base  3179ms
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app el alta de la invitación responde 200 y el correo sale al panel por defecto
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 el alta de la invitación responde 200 y el correo sale al panel por defecto
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// el alta de la invitación responde 200 y el correo sale al panel por defecto
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: el alta de la invitación responde 200 y el correo sale al panel por defecto
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app la renovación sin sesión responde 202, no 500
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 la renovación sin sesión responde 202, no 500
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// la renovación sin sesión responde 202, no 500
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: la renovación sin sesión responde 202, no 500
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations/avWTahDdb4C1bX7NRWyQ/resend
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=http://localhost:5173 el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations/D2MBjeTvOQb2tZ4vmQXf/resend
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=https:// el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations/jRNtiXWwyU8wn5uc6WEz/resend
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=:::: el reenvío del admin no responde 500 y el correo sale
+[app-check] ausente /admin/owner-invitations/O283ePWXMUHhdITVF0dS/resend
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C2: si armar el correo en vivo falla, no se guarda ningún token y no se llama a Resend
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/invitation-email.test.ts > la invitación en HTML contra el emulador > C2: la copia de prueba lleva en el HTML el enlace de muestra, ningún token vivo y el aviso de prueba
+[app-check] ausente /admin/owner-invitations
+
+ ✓ test/invitation-email.test.ts (14 tests) 2601ms
+   ✓ la invitación en HTML contra el emulador > C1: con PANEL_BASE_URL=negocios.conocerd.app el alta de la invitación responde 200 y el correo sale al panel por defecto  943ms
+ ✓ src/lib/email/render.test.ts (39 tests) 20ms
+ ✓ src/lib/email/resend.test.ts (17 tests) 25ms
+ ✓ src/lib/email/oob.test.ts (4 tests) 13ms
+
+ Test Files  5 passed (5)
+      Tests  371 passed (371)
+   Start at  11:12:23
+   Duration  8.46s (transform 476ms, setup 25ms, collect 1.24s, tests 5.93s, environment 1ms, prepare 426ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
