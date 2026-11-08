@@ -1,0 +1,20 @@
+# R16 at f3440be, with r16.patch applied
+# $ bin/test -race -run TestShutdown
+FAIL  events_test.go::TestShutdownAClosedTabLeavesNoSubscriber
+FAIL  events_test.go::TestShutdownASecondServeOnTheSameDataDirRefuses
+FAIL  events_test.go::TestShutdownIsNotHeldByAnOpenGUI
+FAIL  lifecycle_test.go::TestShutdownWhilePairingIsPrompt
+
+FAILED events_test.go::TestShutdownIsNotHeldByAnOpenGUI
+    events_test.go:73: shutdown with one open GUI: context deadline exceeded
+
+FAILED events_test.go::TestShutdownAClosedTabLeavesNoSubscriber
+    events_test.go:88: timed out waiting for the closed tab to unsubscribe
+
+FAILED events_test.go::TestShutdownASecondServeOnTheSameDataDirRefuses
+    events_test.go:99: a second serve got the lock of a running one
+
+FAILED lifecycle_test.go::TestShutdownWhilePairingIsPrompt
+    lifecycle_test.go:293: Stop hung with a pairing session open
+
+0 passed, 4 failed
