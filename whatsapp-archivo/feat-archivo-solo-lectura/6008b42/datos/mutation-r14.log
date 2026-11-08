@@ -1,0 +1,24 @@
+# R14 at 6008b42, with r14.patch applied
+# $ bin/test -run TestJobs
+FAIL  jobs_test.go::TestJobsANoteThatKillsWhisperIsRetiredAndOthersGoOn
+FAIL  jobs_test.go::TestJobsDigestFailureKeepsTheCursor
+FAIL  jobs_test.go::TestJobsKinoDownKeepsTheTaskForTheNextNight
+FAIL  jobs_test.go::TestJobsTelegramRetriesTransientFailures
+FAIL  jobs_test.go::TestJobsTranscribeSkipsWhileAnotherRunHoldsTheLock
+
+FAILED jobs_test.go::TestJobsTelegramRetriesTransientFailures
+    jobs_test.go:35: a 502 and a 429 are retried: err telegram: HTTP 502 after 1 calls
+
+FAILED jobs_test.go::TestJobsANoteThatKillsWhisperIsRetiredAndOthersGoOn
+    jobs_test.go:90: want the healthy note transcribed and the one that kills Whisper marked failed: map[bad:0 good:0]
+
+FAILED jobs_test.go::TestJobsTranscribeSkipsWhileAnotherRunHoldsTheLock
+    jobs_test.go:108: a second run loaded Whisper while the first held the lock: n 0, err en uso
+
+FAILED jobs_test.go::TestJobsDigestFailureKeepsTheCursor
+    jobs_test.go:124: the cursor moved to 1794189000 after a failed digest: tonight's messages would be skipped
+
+FAILED jobs_test.go::TestJobsKinoDownKeepsTheTaskForTheNextNight
+    jobs_test.go:146: err <nil>, 0 pending, 1 created, kino error "Kino no responde"
+
+0 passed, 5 failed
