@@ -1,0 +1,111 @@
+# R1 at 5ebbbf2, with m4.patch applied
+# $ pnpm exec vitest run src/features/negocio/hoy/derive.test.ts src/features/negocio/hoy/HoyPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha-tours
+
+ ❯ src/features/negocio/hoy/derive.test.ts (20 tests | 2 failed) 34ms
+   ❯ contact math (8)
+     × lists the general row first, then the excursions, most taps first 13ms
+     × falls back to the id only when the excursion has no name 2ms
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx (25 tests | 2 failed) 2380ms
+   ❯ Ver todo tu mes (6)
+     × shows the by-kind breakdown, the general row, and the charts when the API sent days 136ms
+     × names the excursions and shows the Reservar figure when the listing has a booking link 89ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > Ver todo tu mes > shows the by-kind breakdown, the general row, and the charts when the API sent days
+AssertionError: expected ' Volver a HoyTu mes en detalleComedor…' to contain 'Ballenas jorobadas'
+
+Expected: "Ballenas jorobadas"
+Received: " Volver a HoyTu mes en detalleComedor de pruebaNoviembre, hasta hoyEscúchaloEste navegador no sabe leer en voz alta.Tocaron tu botón de WhatsApp7personas este mes2 más que en octubre, cuando fueron 5.Tocaron WhatsApp en tu negocio, en la app. No todos terminan escribiendo. Si la misma persona toca dos veces el mismo día, cuenta una vez.Tocaron WhatsApp7En tu página general1ballenas-jorobadas4dia-de-playa-en-el-cayo223211530Compruébalo en el WhatsApp del negocio: busca «en ConoceRD». No todos los que tocan el botón terminan escribiendo: es normal que encuentres menos mensajes que toques.Estuvieron en tu negocio con la app abierta7personas este mes2 más que en octubre, cuando fueron 5.Estuvieron en tu negocio unos minutos con la app abierta. La app de la persona nos avisa que llegó; no sabemos quién es. Quien entra sin abrir la app no sale aquí. Cada persona cuenta una vez al día.1122111530Otros toques, aparteVan aparte: no se suman a las personas que tocaron tu botón.Pidieron cómo llegar5Tocaron «Cómo llegar» en tu negocio. Pedir cómo llegar no es llegar.Tocaron Reservar3Tocaron «Reservar» en tu negocio, en la app.ballenas-jorobadas3Abrieron una excursión (59 veces)59Abrieron la página de una excursión en la app. Una persona puede ver varias, así que no se suman.En tu página general6ballenas-jorobadas41dia-de-playa-en-el-cayo12Lo tienen guardado ahora mismo21personasTocaron el corazón de tu negocio en la app para tenerlo guardado. Es lo que hay hoy, no solo de este mes.Meses anterioresOctubre: 5 personas tocaron tu botón, y 5 estuvieron en tu negocio con la app abierta.Sirve para comparar temporadas: diciembre con agosto, Semana Santa con septiembre."
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:162:20
+    160|     expect(text()).toContain('Tu mes en detalle');
+    161|     expect(text()).toContain('En tu página general');
+    162|     expect(text()).toContain('Ballenas jorobadas');
+       |                    ^
+    163|     expect(text()).not.toContain('ballenas-jorobadas');
+    164|     expect(text()).toContain('Tocaron WhatsApp');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > Ver todo tu mes > names the excursions and shows the Reservar figure when the listing has a booking link
+AssertionError: expected ' Volver a HoyTu mes en detalleComedor…' to contain 'Día de playa en el cayo'
+
+Expected: "Día de playa en el cayo"
+Received: " Volver a HoyTu mes en detalleComedor de pruebaNoviembre, hasta hoyEscúchaloEste navegador no sabe leer en voz alta.Tocaron tu botón de WhatsApp7personas este mes2 más que en octubre, cuando fueron 5.Tocaron WhatsApp en tu negocio, en la app. No todos terminan escribiendo. Si la misma persona toca dos veces el mismo día, cuenta una vez.Tocaron WhatsApp7En tu página general1ballenas-jorobadas4dia-de-playa-en-el-cayo223211530Compruébalo en el WhatsApp del negocio: busca «en ConoceRD». No todos los que tocan el botón terminan escribiendo: es normal que encuentres menos mensajes que toques.Estuvieron en tu negocio con la app abierta7personas este mes2 más que en octubre, cuando fueron 5.Estuvieron en tu negocio unos minutos con la app abierta. La app de la persona nos avisa que llegó; no sabemos quién es. Quien entra sin abrir la app no sale aquí. Cada persona cuenta una vez al día.1122111530Otros toques, aparteVan aparte: no se suman a las personas que tocaron tu botón.Pidieron cómo llegar5Tocaron «Cómo llegar» en tu negocio. Pedir cómo llegar no es llegar.Tocaron Reservar3Tocaron «Reservar» en tu negocio, en la app.ballenas-jorobadas3Abrieron una excursión (59 veces)59Abrieron la página de una excursión en la app. Una persona puede ver varias, así que no se suman.En tu página general6ballenas-jorobadas41dia-de-playa-en-el-cayo12Lo tienen guardado ahora mismo21personasTocaron el corazón de tu negocio en la app para tenerlo guardado. Es lo que hay hoy, no solo de este mes.Meses anterioresOctubre: 5 personas tocaron tu botón, y 5 estuvieron en tu negocio con la app abierta.Sirve para comparar temporadas: diciembre con agosto, Semana Santa con septiembre."
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:180:20
+    178|     serve({ 'biz-1': withExcursions(PERIOD) });
+    179|     await mount('/hoy?negocio=biz-1&vista=mes');
+    180|     expect(text()).toContain('Día de playa en el cayo');
+       |                    ^
+    181|     expect(text()).toMatch(/Tocaron Reservar/);
+    182|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/features/negocio/hoy/derive.test.ts > contact math > lists the general row first, then the excursions, most taps first
+AssertionError: expected [ { key: 'general', …(3) }, …(2) ] to deeply equal [ { key: 'general', …(3) }, …(2) ]
+
+- Expected
++ Received
+
+@@ -7,14 +7,14 @@
+    },
+    {
+      "count": 4,
+      "key": "ballenas-jorobadas",
+      "kind": "item",
+-     "label": "Ballenas jorobadas",
++     "label": "ballenas-jorobadas",
+    },
+    {
+      "count": 2,
+      "key": "dia-de-playa-en-el-cayo",
+      "kind": "item",
+-     "label": "Día de playa en el cayo",
++     "label": "dia-de-playa-en-el-cayo",
+    },
+  ]
+
+ ❯ src/features/negocio/hoy/derive.test.ts:67:73
+     65|
+     66|   it('lists the general row first, then the excursions, most taps firs…
+     67|     expect(breakdownRows(figureOf(withExcursions(PERIOD), 'whatsapp'))…
+       |                                                                         ^
+     68|       { key: 'general', kind: 'general', label: 'En tu página general'…
+     69|       { key: 'ballenas-jorobadas', kind: 'item', label: 'Ballenas joro…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/features/negocio/hoy/derive.test.ts > contact math > falls back to the id only when the excursion has no name
+AssertionError: expected [ 't-sin-nombre', 't-vacio', …(1) ] to deeply equal [ 't-sin-nombre', 't-vacio', …(1) ]
+
+- Expected
++ Received
+
+  [
+    "t-sin-nombre",
+    "t-vacio",
+-   "Manglares",
++   "t-con-nombre",
+  ]
+
+ ❯ src/features/negocio/hoy/derive.test.ts:76:42
+     74|   it('falls back to the id only when the excursion has no name', () =>…
+     75|     const rows = breakdownRows(figure({ items: [['t-sin-nombre', 3, nu…
+     76|     expect(rows.map((row) => row.label)).toEqual(['t-sin-nombre', 't-v…
+       |                                          ^
+     77|   });
+     78|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 41 passed (45)
+   Start at  02:34:26
+   Duration  3.17s (tests 79%, environment 14%, import 5%, transform 1%)
+
