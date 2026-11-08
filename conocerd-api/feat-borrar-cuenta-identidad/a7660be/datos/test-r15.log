@@ -1,0 +1,57 @@
+# R15 at a7660be
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-identidad/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-identidad/emu.sh test/account-delete-owner.test.ts test/account-delete-route.test.ts src/lib/account-deletion.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18162.
+i  Running script: pnpm exec vitest run test/account-delete-owner.test.ts test/account-delete-route.test.ts src/lib/account-deletion.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-identidad
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo
+[app-check] ausente /business/me
+
+stderr | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe
+[conocerd-api] la cuenta se borró pero no quedó la constancia en accountDeletions
+
+stdout | test/account-delete-owner.test.ts > borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado
+[app-check] ausente /account-delete
+
+ ✓ test/account-delete-owner.test.ts (17 tests) 7409ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K1 K2 K5 K7 K10: la dueña se borra, la ficha y las respuestas se quedan, sus pedidos y datos se van  1243ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo  1566ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > un fallo de Auth dentro de revokeOwnership  346ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el retiro de un pedido falla  334ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el borrado de ficheros falla  310ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > deleteUser falla  362ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K13: con un borrado en curso, otro responde 409 sin escribir; un candado de hace 121 s se toma  456ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K15: si la verificación encuentra una concesión dos veces, 500 deletion_incomplete y Auth se queda  305ms
+ ✓ src/lib/account-deletion.test.ts (4 tests) 5ms
+stdout | test/account-delete-route.test.ts > borrado de cuenta contra el emulador > la reseña sobrevive sin autor y el rating del lugar no se mueve
+[app-check] ausente /reviews
+
+stdout | test/account-delete-route.test.ts > borrado de cuenta contra el emulador > una sesión vieja no puede borrar la cuenta sin volver a identificarse
+[app-check] ausente /account-delete
+
+stdout | test/account-delete-route.test.ts > borrado de cuenta contra el emulador > una sesión vieja no puede borrar la cuenta sin volver a identificarse
+[app-check] ausente /account-delete
+
+ ✓ test/account-delete-route.test.ts (7 tests) 2395ms
+   ✓ borrado de cuenta contra el emulador > la reseña sobrevive sin autor y el rating del lugar no se mueve  320ms
+   ✓ borrado de cuenta contra el emulador > una sesión vieja no puede borrar la cuenta sin volver a identificarse  1121ms
+
+ Test Files  3 passed (3)
+      Tests  28 passed (28)
+   Start at  12:22:12
+   Duration  10.82s (transform 285ms, setup 13ms, collect 470ms, tests 9.81s, environment 1ms, prepare 147ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
