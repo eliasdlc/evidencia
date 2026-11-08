@@ -1,0 +1,49 @@
+# R4 at e4b21ea, with k17-names-member-businesses.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-borrar-cuenta-aviso/scrub.sh pnpm exec vitest run src/lib/email/templates/account-deleted.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/borrar-cuenta-aviso
+
+ ❯ src/lib/email/templates/account-deleted.test.ts (4 tests | 1 failed) 17ms
+   × correo de cuenta borrada > K17: el texto entero de una dueña, con la línea de único dueño solo para el negocio que se queda sin nadie 14ms
+     → expected 'Hola, Ana:\n\nBorramos tu cuenta de C…' to be 'Hola, Ana:\n\nBorramos tu cuenta de C…' // Object.is equality
+   ✓ correo de cuenta borrada > la clave de idempotencia es la del hecho y la cuenta, sin el uid a la vista 2ms
+   ✓ correo de cuenta borrada > sin clave de Resend no sale y lo dice; en modo prueba no cuenta como avisada 1ms
+   ✓ correo de cuenta borrada > una cuenta que solo era miembro: sin negocios que nombrar, sin líneas de lo que se queda 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/templates/account-deleted.test.ts > correo de cuenta borrada > K17: el texto entero de una dueña, con la línea de único dueño solo para el negocio que se queda sin nadie
+AssertionError: expected 'Hola, Ana:\n\nBorramos tu cuenta de C…' to be 'Hola, Ana:\n\nBorramos tu cuenta de C…' // Object.is equality
+
+- Expected
++ Received
+
+@@ -1,10 +1,10 @@
+  Hola, Ana:
+
+  Borramos tu cuenta de ConoceRD, como pediste. Ya no puedes entrar con <email>.
+
+- Ya no manejas Cabañas del Río y Comedor Doña Ana en ConoceRD.
++ Ya no manejas Cabañas del Río, Comedor Doña Ana y Tienda de Otra en ConoceRD.
+
+  Comedor Doña Ana sigue saliendo en la app. El equipo puede darle acceso a otra persona si alguien del negocio lo pide.
+
+  Tus respuestas a reseñas siguen publicadas a nombre del negocio.
+
+
+ ❯ src/lib/email/templates/account-deleted.test.ts:57:23
+     55|     expect(body.from).toBe('ConoceRD Negocios <email>>'…
+     56|     expect(body.subject).toBe('Borramos tu cuenta de ConoceRD');
+     57|     expect(body.text).toBe(
+       |                       ^
+     58|       [
+     59|         'Hola, Ana:',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  15:22:03
+   Duration  376ms (transform 79ms, setup 14ms, collect 92ms, tests 17ms, environment 0ms, prepare 83ms)
+
