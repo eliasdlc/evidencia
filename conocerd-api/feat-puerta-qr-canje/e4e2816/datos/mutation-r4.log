@@ -1,0 +1,57 @@
+# R4 at e4e2816, with i14-read-then-write-outside-transaction.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-puerta-qr-canje/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-puerta-qr-canje/emu.sh test/qr-concurrency.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18182.
+i  Running script: pnpm exec vitest run test/qr-concurrency.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/puerta-qr-canje
+
+ ❯ test/qr-concurrency.test.ts (2 tests | 1 failed) 4283ms
+   × canjes a la vez contra el emulador > I14: dos toques distintos sobre el mismo código a la vez dan un valid y un already_redeemed (fila 46) 937ms
+     → expected [ 'valid', 'valid' ] to deeply equal [ 'already_redeemed', 'valid' ]
+   ✓ canjes a la vez contra el emulador > I16: con un lugar libre en el día, dos códigos a la vez: uno valid y otro exhausted, que queda issued  2929ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/qr-concurrency.test.ts > canjes a la vez contra el emulador > I14: dos toques distintos sobre el mismo código a la vez dan un valid y un already_redeemed (fila 46)
+AssertionError: expected [ 'valid', 'valid' ] to deeply equal [ 'already_redeemed', 'valid' ]
+
+- Expected
++ Received
+
+  [
+-   "already_redeemed",
++   "valid",
+    "valid",
+  ]
+
+ ❯ test/qr-concurrency.test.ts:103:59
+    101|       service.redeemQr(b, { destinationId: id, code: payload, requestI…
+    102|     ]);
+    103|     expect(results.map((result) => result.result).sort()).toEqual(['al…
+       |                                                           ^
+    104| 
+    105|     const redemptions = await db.collection('redemptions').where('dest…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  14:23:11
+   Duration  4.49s (transform 157ms, setup 9ms, collect 44ms, tests 4.28s, environment 0ms, prepare 51ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/qr-concurrency.test.ts" exited with code 1
