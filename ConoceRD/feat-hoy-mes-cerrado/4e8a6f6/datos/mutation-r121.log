@@ -1,0 +1,93 @@
+# R121 at 4e8a6f6, with m1.patch applied
+# $ pnpm exec vitest run src/features/negocio/hoy/period.test.ts src/features/negocio/hoy/HoyPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-hoy-mes-cerrado
+
+ ❯ src/features/negocio/hoy/period.test.ts (9 tests | 2 failed) 9ms
+   ❯ parseMes (8)
+     × refuses a future month 4ms
+     × reads the month in Santo Domingo, not in UTC 1ms
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx (47 tests | 2 failed) 3290ms
+   ❯ a bad ?mes= is the current month (8)
+     × ignores mes=2999-01 silently 62ms
+     × does not carry a bad param into its own links 53ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > a bad ?mes= is the current month > ignores mes=2999-01 silently
+AssertionError: expected [ '2999-01' ] to deeply equal [ '2026-11' ]
+
+- Expected
++ Received
+
+  [
+-   "2026-11",
++   "2999-01",
+  ]
+
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:508:30
+    506|       servePeriods({ [PERIOD]: (id) => modestWithPhone(PERIOD, id) });
+    507|       await mount(`/hoy?mes=${value}`);
+    508|       expect(periodsAsked()).toEqual([PERIOD]);
+       |                              ^
+    509|       expect(text()).toContain('hasta hoy');
+    510|       expect(text()).toContain('Este mes 5 personas');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/features/negocio/hoy/HoyPage.test.tsx > a bad ?mes= is the current month > does not carry a bad param into its own links
+TypeError: Cannot read properties of undefined (reading 'getAttribute')
+ ❯ src/features/negocio/hoy/HoyPage.test.tsx:526:38
+    524|     servePeriods({ [PERIOD]: (id) => modestWithPhone(PERIOD, id) });
+    525|     await mount('/hoy?negocio=biz-1&mes=2999-01');
+    526|     expect((button('Ver todo tu mes') as HTMLAnchorElement).getAttribu…
+       |                                      ^
+    527|   });
+    528| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/features/negocio/hoy/period.test.ts > parseMes > refuses a future month
+AssertionError: expected '2026-12' to be null
+
+- Expected:
+null
+
++ Received:
+"2026-12"
+
+ ❯ src/features/negocio/hoy/period.test.ts:26:38
+     24|
+     25|   it('refuses a future month', () => {
+     26|     expect(parseMes('2026-12', NOW)).toBeNull();
+       |                                      ^
+     27|     expect(parseMes('2027-01', NOW)).toBeNull();
+     28|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/features/negocio/hoy/period.test.ts > parseMes > reads the month in Santo Domingo, not in UTC
+AssertionError: expected '2026-12' to be null
+
+- Expected:
+null
+
++ Received:
+"2026-12"
+
+ ❯ src/features/negocio/hoy/period.test.ts:45:47
+     43|     // 1 Dec 2026, 01:00 UTC is still 30 Nov at 21:00 in Santo Domingo.
+     44|     const lateNovember = Date.UTC(2026, 11, 1, 1, 0, 0);
+     45|     expect(parseMes('2026-12', lateNovember)).toBeNull();
+       |                                               ^
+     46|     expect(parseMes('2026-11', lateNovember)).toBe('2026-11');
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 52 passed (56)
+   Start at  15:49:14
+   Duration  3.68s (tests 91%, environment 6%, import 2%, transform 1%)
+
