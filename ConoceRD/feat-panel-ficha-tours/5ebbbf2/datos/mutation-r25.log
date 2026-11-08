@@ -1,0 +1,45 @@
+# R25 at 5ebbbf2, with m6.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/tours/model.test.ts src/features/negocio/ficha/tours/ToursEditor.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha-tours
+
+ ❯ src/features/negocio/ficha/tours/model.test.ts (27 tests | 1 failed) 61ms
+   ❯ buildToursPatch (5)
+     × a reorder is the same ids in the new order, and never an id that was not read 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/tours/model.test.ts > buildToursPatch > a reorder is the same ids in the new order, and never an id that was not read
+AssertionError: expected [ Array(3) ] to deeply equal [ { id: 'tCCC' }, { id: 'tAAA' } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "id": "tCCC",
+    },
+    {
++     "id": "tZZZ",
++   },
++   {
+      "id": "tAAA",
+    },
+  ]
+
+ ❯ src/features/negocio/ficha/tours/model.test.ts:64:85
+     62|   it('a reorder is the same ids in the new order, and never an id that…
+     63|     expect(buildToursPatch(list, { kind: 'order', ids: ['tCCC', 'tAAA'…
+     64|     expect(buildToursPatch(list, { kind: 'order', ids: ['tCCC', 'tZZZ'…
+       |                                                                                     ^
+     65|   });
+     66|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 57 passed (58)
+   Start at  02:38:07
+   Duration  4.48s (tests 85%, environment 9%, import 4%, transform 1%)
+
