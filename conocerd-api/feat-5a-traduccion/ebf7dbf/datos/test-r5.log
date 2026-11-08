@@ -1,0 +1,284 @@
+# R5 at ebf7dbf
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu2.sh test/translation-route.test.ts src/lib/translation/quota.test.ts src/lib/translation/provider.test.ts src/lib/translation/service.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/translation-route.test.ts src/lib/translation/quota.test.ts src/lib/translation/provider.test.ts src/lib/translation/service.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/5a-traduccion
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-1: apagada no llama al proveedor ni escribe nada
+[app-check] ausente /business/destino-d090618f/reviews/a35c6a7389014400fa8ee1/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-2: encendida con una clave sin :fx es disabled y no sale ningún fetch a DeepL
+[app-check] ausente /business/destino-fbe434bf/reviews/a1823a729c7f5490ab82f7/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-3 y T-4: la primera traduce y cuenta; la segunda sale del caché y solo cuenta en el minuto
+[app-check] ausente /business/destino-23a149e6/reviews/ad6bd864ac6874b2a8e1a5/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-3 y T-4: la primera traduce y cuenta; la segunda sale del caché y solo cuenta en el minuto
+[app-check] ausente /business/destino-23a149e6/reviews/ad6bd864ac6874b2a8e1a5/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-5: editar la reseña por POST /reviews invalida el caché y la siguiente traduce el texto nuevo
+[app-check] ausente /reviews
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-5: editar la reseña por POST /reviews invalida el caché y la siguiente traduce el texto nuevo
+[app-check] ausente /business/destino-278f900a/reviews/gyoSVjDlVP4GNDkb2lVcNp/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-5: editar la reseña por POST /reviews invalida el caché y la siguiente traduce el texto nuevo
+[app-check] ausente /reviews
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-5: editar la reseña por POST /reviews invalida el caché y la siguiente traduce el texto nuevo
+[app-check] ausente /business/destino-278f900a/reviews/gyoSVjDlVP4GNDkb2lVcNp/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-6: una reseña en español cuenta una vez y guarda language es sin texto
+[app-check] ausente /business/destino-e43da453/reviews/a4a27b7fa20cc435496d24/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-6: una reseña en español cuenta una vez y guarda language es sin texto
+[app-check] ausente /business/destino-e43da453/reviews/a4a27b7fa20cc435496d24/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-7: una reseña sin texto es empty, sin proveedor ni contadores
+[app-check] ausente /business/destino-2c606965/reviews/a77c74ea303344d28a0f9f/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-7: una reseña sin texto es empty, sin proveedor ni contadores
+[app-check] ausente /business/destino-77ebf3be/reviews/ad51a0981a8a14d3d9de58/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-8: con used = cap - n + 1 es quota_exhausted y solo se mueve el minuto
+[app-check] ausente /business/destino-d8af7a87/reviews/a98ed423d85e04d7c83ace/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-9: con used = cap - n traduce y deja used == cap
+[app-check] ausente /business/destino-3c585916/reviews/aa89a402f65d943eab0739/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados
+[app-check] ausente /business/destino-6d3862f7/reviews/ac5c59735510748f3a9518/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-11: si el proveedor lanza o se pasa de tiempo es provider_error, lo reservado se queda y no se guarda nada
+[app-check] ausente /business/destino-5ea2c6fd/reviews/a0fac314f54f042e19a790/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-11: si el proveedor lanza o se pasa de tiempo es provider_error, lo reservado se queda y no se guarda nada
+[app-check] ausente /business/destino-a67c5481/reviews/acdf2733e45dc4e7b9bea9/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-12: un 456 del proveedor marca el mes agotado y la siguiente ni lo llama
+[app-check] ausente /business/destino-587da5f4/reviews/a34c7d81fc07b4660b1e71/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-12: un 456 del proveedor marca el mes agotado y la siguiente ni lo llama
+[app-check] ausente /business/destino-587da5f4/reviews/a8742afa226c841cc91f3a/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-13: una salida con sustituto suelto, vacía o de 8001 caracteres es provider_error y no se guarda
+[app-check] ausente /business/destino-e3f67c27/reviews/a5accf0916c9147e09d6e9/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-13: una salida con sustituto suelto, vacía o de 8001 caracteres es provider_error y no se guarda
+[app-check] ausente /business/destino-a329f826/reviews/aa9df9afc5fb74418a76ff/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-13: una salida con sustituto suelto, vacía o de 8001 caracteres es provider_error y no se guarda
+[app-check] ausente /business/destino-349dd6c8/reviews/a75443ee683214abaa14f1/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-13: una salida con sustituto suelto, vacía o de 8001 caracteres es provider_error y no se guarda
+[app-check] ausente /business/destino-31b3d11f/reviews/a5d2fc9e5c43246568dfd2/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-13: una salida de 8000 caracteres justos sí se acepta
+[app-check] ausente /business/destino-c5e44262/reviews/ae728461faccc45eabb0e5/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-14 y T-15: 403 not_owner a quien no es dueño y dashboard_not_included en minimal, sin escribir
+[app-check] ausente /business/destino-e9ce8a7d/reviews/ae91fa4d7dd034c1287022/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-14 y T-15: 403 not_owner a quien no es dueño y dashboard_not_included en minimal, sin escribir
+[app-check] ausente /business/destino-c352bb15/reviews/af63b23aff8034e559beca/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-16 y T-17: reseña de otro destino, inexistente o retirada es 404 not_found
+[app-check] ausente /business/destino-039cea59/reviews/afa838d49f36542f394b00/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-16 y T-17: reseña de otro destino, inexistente o retirada es 404 not_found
+[app-check] ausente /business/destino-039cea59/reviews/accc14c15eab846ac872c4/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-16 y T-17: reseña de otro destino, inexistente o retirada es 404 not_found
+[app-check] ausente /business/destino-039cea59/reviews/a3264d5855a8a48d69b7d2/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-16 y T-17: reseña de otro destino, inexistente o retirada es 404 not_found
+[app-check] ausente /business/destino-039cea59/reviews/a9d15c96606774fd589e21/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-18: un authorId de 65 caracteres, con / o con . es 422 invalid_author_id; 64 caracteres pasa a buscar
+[app-check] ausente /business/destino-07a8b66c/reviews/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-18: un authorId de 65 caracteres, con / o con . es 422 invalid_author_id; 64 caracteres pasa a buscar
+[app-check] ausente /business/destino-07a8b66c/reviews/a/b/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-18: un authorId de 65 caracteres, con / o con . es 422 invalid_author_id; 64 caracteres pasa a buscar
+[app-check] ausente /business/destino-07a8b66c/reviews/a.b/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-18: un authorId de 65 caracteres, con / o con . es 422 invalid_author_id; 64 caracteres pasa a buscar
+[app-check] ausente /business/destino-07a8b66c/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-18: un authorId de 65 caracteres, con / o con . es 422 invalid_author_id; 64 caracteres pasa a buscar
+[app-check] ausente /business/destino-07a8b66c/reviews//translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-18: un authorId de 65 caracteres, con / o con . es 422 invalid_author_id; 64 caracteres pasa a buscar
+[app-check] ausente /business/destino-07a8b66c/reviews/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-19: la petición 31 del minuto es 429 too_many_requests con Retry-After y no toca el mes
+[app-check] ausente /business/destino-5293abbe/reviews/ae5eccd75aa3c42918199f/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-19: con 29 en el minuto la 30 pasa
+[app-check] ausente /business/destino-919150ba/reviews/a74126b5fd12f4bb8a86bb/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-19: un acierto de caché también cuenta en el minuto y también se corta en la 31
+[app-check] ausente /business/destino-f0a41b1a/reviews/a962413fabe2e47ee9c7cf/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-19: un acierto de caché también cuenta en el minuto y también se corta en la 31
+[app-check] ausente /business/destino-f0a41b1a/reviews/a962413fabe2e47ee9c7cf/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-20: con 19990 caracteres en el día, una reseña de 11 es 429 translation_daily_limit y no toca el mes
+[app-check] ausente /business/destino-46b9475e/reviews/a3cb50fc1fa8d4a3a9fdc6/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-20: con 19989 la de 11 cabe
+[app-check] ausente /business/destino-7f1faa9a/reviews/af6f87df5a0ea411789790/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-22: con caché válido y la traducción apagada, disabled y nada servido
+[app-check] ausente /business/destino-3929e8fa/reviews/a5b33c5decfca41208ea56/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-22: con caché válido y la traducción apagada, disabled y nada servido
+[app-check] ausente /business/destino-3929e8fa/reviews/a5b33c5decfca41208ea56/translation
+
+stderr | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-24: la transacción del contador falla con 10: busy, no 500
+[conocerd-api] el contador de traducciones no respondió [33m10[39m
+
+stderr | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-24: la transacción del contador falla con 4: busy, no 500
+[conocerd-api] el contador de traducciones no respondió [33m4[39m
+
+stderr | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-24: la transacción del contador falla con 8: busy, no 500
+[conocerd-api] el contador de traducciones no respondió [33m8[39m
+
+stderr | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-24: la transacción del contador falla con 14: busy, no 500
+[conocerd-api] el contador de traducciones no respondió [33m14[39m
+
+stderr | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-24: la transacción del contador falla con 13: busy, no 500
+[conocerd-api] el contador de traducciones no respondió [33m13[39m
+
+stderr | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-24: la transacción del contador falla con 2: busy, no 500
+[conocerd-api] el contador de traducciones no respondió [33m2[39m
+
+stderr | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-24: la transacción del contador falla con "unknown-shape": busy, no 500
+[conocerd-api] el contador de traducciones no respondió sin código
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-24b: con la traducción ya guardada, un fallo del contador de peticiones también es busy y no sirve el texto
+[app-check] ausente /business/destino-aab2fc17/reviews/ad9ba2bf723ba4a549e52b/translation
+
+stderr | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-24b: con la traducción ya guardada, un fallo del contador de peticiones también es busy y no sirve el texto
+[conocerd-api] el contador de traducciones no respondió [33m14[39m
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-25: si la reseña cambia entre la lectura y la escritura, devuelve la traducción sin guardarla
+[app-check] ausente /business/destino-616a8630/reviews/ab7cbe818b2d44916a2e6b/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T5: un miembro con reviews.read traduce; uno de la puerta es 403 role_forbidden
+[app-check] ausente /business/destino-3a1f0f47/reviews/aca1b9eefa39440439df53/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T5: un miembro con reviews.read traduce; uno de la puerta es 403 role_forbidden
+[app-check] ausente /business/destino-3a1f0f47/reviews/aca1b9eefa39440439df53/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > I1: un cuerpo cualquiera, incluso JSON roto o mal formado, se ignora y no da 500
+[app-check] ausente /business/destino-2e2bcc74/reviews/aa2a059d83f6346ebb68b3/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > I1: un cuerpo cualquiera, incluso JSON roto o mal formado, se ignora y no da 500
+[app-check] ausente /business/destino-2e2bcc74/reviews/aa2a059d83f6346ebb68b3/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > I1: un cuerpo cualquiera, incluso JSON roto o mal formado, se ignora y no da 500
+[app-check] ausente /business/destino-2e2bcc74/reviews/aa2a059d83f6346ebb68b3/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > GET /business/{id}/reviews: translation en cada reseña > L-1, L-2 y L-4: cacheada válida, hash viejo y vacía, sin escribir ni llamar al proveedor
+[app-check] ausente /business/destino-146550af/reviews/a41c731059942495fa30b3/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > GET /business/{id}/reviews: translation en cada reseña > L-1, L-2 y L-4: cacheada válida, hash viejo y vacía, sin escribir ni llamar al proveedor
+[app-check] ausente /business/destino-146550af/reviews/abc315afffd7a4c60b69bc/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > GET /business/{id}/reviews: translation en cada reseña > L-1, L-2 y L-4: cacheada válida, hash viejo y vacía, sin escribir ni llamar al proveedor
+[app-check] ausente /business/destino-146550af/reviews
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > GET /business/{id}/reviews: translation en cada reseña > L-3: apagada, cada reseña dice disabled, también la que tiene caché válido
+[app-check] ausente /business/destino-ecd23498/reviews/a169d0b0add974acc9dab8/translation
+
+stdout | test/translation-route.test.ts > traducción de reseñas contra el emulador > GET /business/{id}/reviews: translation en cada reseña > L-3: apagada, cada reseña dice disabled, también la que tiene caché válido
+[app-check] ausente /business/destino-ecd23498/reviews
+
+ ✓ test/translation-route.test.ts (38 tests) 21695ms
+   ✓ traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-1: apagada no llama al proveedor ni escribe nada  744ms
+   ✓ traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-3 y T-4: la primera traduce y cuenta; la segunda sale del caché y solo cuenta en el minuto  355ms
+   ✓ traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados  17915ms
+ ✓ src/lib/translation/service.test.ts (7 tests) 8ms
+ ✓ src/lib/translation/quota.test.ts (14 tests) 4006ms
+   ✓ reserveTranslation contra el emulador > T1: reservas simultáneas de cuentas distintas nunca pasan del tope  3522ms
+ ✓ src/lib/translation/provider.test.ts (15 tests) 38ms
+
+ Test Files  4 passed (4)
+      Tests  74 passed (74)
+   Start at  03:33:16
+   Duration  27.34s (transform 217ms, setup 14ms, collect 879ms, tests 25.75s, environment 1ms, prepare 213ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
