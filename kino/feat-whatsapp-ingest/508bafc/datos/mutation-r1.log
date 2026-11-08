@@ -1,0 +1,124 @@
+# R1 at 508bafc, with idempotencia.patch applied
+# $ npx vitest run convex/whatsapp.test.ts
+
+ RUN  v4.1.3 /home/decruce/.t3/worktrees/kino/feat-whatsapp-ingest
+
+(node:40179) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ |convex| convex/whatsapp.test.ts (21 tests | 4 failed) 605ms
+     × un reintento devuelve existing y no crea una segunda tarea 17ms
+     × el mismo externalId dos veces en un envío crea una sola 7ms
+     × una tarea completada no se recrea ni se reabre 8ms
+     × una tarea borrada no se recrea 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |convex| convex/whatsapp.test.ts > idempotencia > un reintento devuelve existing y no crea una segunda tarea
+AssertionError: expected { …(2) } to deeply equal { created: [ 'wa:chat1:msg2' ], …(1) }
+
+- Expected
++ Received
+
+  {
+    "created": [
+-     "wa:chat1:msg2",
+-   ],
+-   "existing": [
+      "wa:chat1:msg1",
++     "wa:chat1:msg2",
+    ],
++   "existing": [],
+  }
+
+ ❯ convex/whatsapp.test.ts:150:30
+    148|
+    149|     const res = await subir(t, envio([item(), item({ externalId: 'wa:c…
+    150|     expect(await res.json()).toEqual({ created: ['wa:chat1:msg2'], exi…
+       |                              ^
+    151|     expect(await tareasDe(t, ana.email)).toHaveLength(2);
+    152|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |convex| convex/whatsapp.test.ts > idempotencia > el mismo externalId dos veces en un envío crea una sola
+AssertionError: expected { …(2) } to deeply equal { created: [ 'wa:chat1:msg1' ], …(1) }
+
+- Expected
++ Received
+
+  {
+    "created": [
+      "wa:chat1:msg1",
+-   ],
+-   "existing": [
+      "wa:chat1:msg1",
+    ],
++   "existing": [],
+  }
+
+ ❯ convex/whatsapp.test.ts:157:30
+    155|     const t = await conCuentas();
+    156|     const res = await subir(t, envio([item(), item({ title: 'Repetida'…
+    157|     expect(await res.json()).toEqual({ created: ['wa:chat1:msg1'], exi…
+       |                              ^
+    158|     expect(await tareasDe(t, ana.email)).toHaveLength(1);
+    159|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |convex| convex/whatsapp.test.ts > idempotencia > una tarea completada no se recrea ni se reabre
+AssertionError: expected { created: [ 'wa:chat1:msg1' ], …(1) } to deeply equal { created: [], …(1) }
+
+- Expected
++ Received
+
+  {
+-   "created": [],
+-   "existing": [
++   "created": [
+      "wa:chat1:msg1",
+    ],
++   "existing": [],
+  }
+
+ ❯ convex/whatsapp.test.ts:178:30
+    176|
+    177|     const res = await subir(t, envio());
+    178|     expect(await res.json()).toEqual({ created: [], existing: ['wa:cha…
+       |                              ^
+    179|     const despues = await tareasDe(t, ana.email);
+    180|     expect(despues).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |convex| convex/whatsapp.test.ts > idempotencia > una tarea borrada no se recrea
+AssertionError: expected { created: [ 'wa:chat1:msg1' ], …(1) } to deeply equal { created: [], …(1) }
+
+- Expected
++ Received
+
+  {
+-   "created": [],
+-   "existing": [
++   "created": [
+      "wa:chat1:msg1",
+    ],
++   "existing": [],
+  }
+
+ ❯ convex/whatsapp.test.ts:191:30
+    189|
+    190|     const res = await subir(t, envio());
+    191|     expect(await res.json()).toEqual({ created: [], existing: ['wa:cha…
+       |                              ^
+    192|     const despues = await tareasDe(t, ana.email);
+    193|     expect(despues).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 17 passed (21)
+   Start at  13:13:48
+   Duration  1.10s (transform 445ms, setup 0ms, import 273ms, tests 605ms, environment 59ms)
+
