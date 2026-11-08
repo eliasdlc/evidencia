@@ -1,0 +1,71 @@
+# R7 at f3440be, with r7.patch applied
+# $ bin/test -race -run TestLink
+PASS  lifecycle_test.go::TestLinkPairingByPhoneCodeWaitsForTheQRHandshake
+FAIL  lifecycle_test.go::TestLinkPairingSuccessOutlivesThePairingWindow
+FAIL  lifecycle_test.go::TestLinkPairingTwiceKeepsTheSecondSessionAlive
+PASS  lifecycle_test.go::TestLinkPairingWindowEndsInUnpairedWithAReason
+PASS  lifecycle_test.go::TestLinkUnlinkFromThePhoneThenPairAgain
+FAIL  lifecycle_test.go::TestLinkUnlinkThenALateLoggedOutFromTheOldDevice
+FAIL  lifecycle_test.go::TestLinkUnlinkWhileOfflineSaysWhatIsLeftToDo
+PASS  lifecycle_test.go::TestLinkUnlinkWhilePairingClosesTheSession
+
+FAILED lifecycle_test.go::TestLinkPairingTwiceKeepsTheSecondSessionAlive
+    lifecycle_test.go:53: the second pairing reuses the client that the first session's QR channel disconnects when it is cancelled
+
+FAILED lifecycle_test.go::TestLinkPairingSuccessOutlivesThePairingWindow
+==================
+WARNING: DATA RACE
+Write at 0x00c00021ac88 by goroutine 62:
+  github.com/eliasdlc/whatsapp-archivo/archivo.linkDevice()
+      /home/decruce/dev/personal-projects/whatsapp-archivo/archivo/fake_test.go:217 +0xcf
+  github.com/eliasdlc/whatsapp-archivo/archivo.acceptLink()
+      /home/decruce/dev/personal-projects/whatsapp-archivo/archivo/lifecycle_test.go:21 +0x59
+  github.com/eliasdlc/whatsapp-archivo/archivo.TestLinkPairingSuccessOutlivesThePairingWindow()
+      /home/decruce/dev/personal-projects/whatsapp-archivo/archivo/lifecycle_test.go:90 +0x105
+  testing.tRunner()
+      /home/decruce/.local/share/mise/installs/go/1.27.3/src/testing/testing.go:2195 +0x21c
+  testing.(*T).Run.gowrap1()
+      /home/decruce/.local/share/mise/installs/go/1.27.3/src/testing/testing.go:2260 +0x38
+
+Previous read at 0x00c00021ac88 by goroutine 78:
+  github.com/eliasdlc/whatsapp-archivo/archivo.(*WA).mediaStep()
+      /home/decruce/dev/personal-projects/whatsapp-archivo/archivo/ingest.go:476 +0xbc
+  github.com/eliasdlc/whatsapp-archivo/archivo.(*WA).mediaWorker()
+      /home/decruce/dev/personal-projects/whatsapp-archivo/archivo/ingest.go:461 +0x17c
+  github.com/eliasdlc/whatsapp-archivo/archivo.(*WA).Start.gowrap3()
+      /home/decruce/dev/personal-projects/whatsapp-archivo/archivo/wa.go:288 +0x2e
+
+Goroutine 62 (running) created at:
+  testing.(*T).Run()
+      /home/decruce/.local/share/mise/installs/go/1.27.3/src/testing/testing.go:2260 +0xb12
+  testing.runTests.func1()
+      /home/decruce/.local/share/mise/installs/go/1.27.3/src/testing/testing.go:2744 +0x84
+  testing.tRunner()
+      /home/decruce/.local/share/mise/installs/go/1.27.3/src/testing/testing.go:2195 +0x21c
+  testing.runTests()
+      /home/decruce/.local/share/mise/installs/go/1.27.3/src/testing/testing.go:2742 +0x9e9
+  testing.(*M).Run()
+      /home/decruce/.local/share/mise/installs/go/1.27.3/src/testing/testing.go:2602 +0xf44
+  main.main()
+      _testmain.go:138 +0x164
+
+Goroutine 78 (running) created at:
+  github.com/eliasdlc/whatsapp-archivo/archivo.(*WA).Start()
+      /home/decruce/dev/personal-projects/whatsapp-archivo/archivo/wa.go:288 +0x2bd
+  github.com/eliasdlc/whatsapp-archivo/archivo.TestLinkPairingSuccessOutlivesThePairingWindow()
+      /home/decruce/dev/personal-projects/whatsapp-archivo/archivo/lifecycle_test.go:86 +0x69
+  testing.tRunner()
+      /home/decruce/.local/share/mise/installs/go/1.27.3/src/testing/testing.go:2195 +0x21c
+  testing.(*T).Run.gowrap1()
+      /home/decruce/.local/share/mise/installs/go/1.27.3/src/testing/testing.go:2260 +0x38
+==================
+    lifecycle_test.go:97: the connection whatsmeow keeps after pairing died with the pairing window
+    testing.go:1867: race detected during execution of test
+
+FAILED lifecycle_test.go::TestLinkUnlinkThenALateLoggedOutFromTheOldDevice
+    lifecycle_test.go:137: an event from the replaced client changed the state to "logged_out"
+
+FAILED lifecycle_test.go::TestLinkUnlinkWhileOfflineSaysWhatIsLeftToDo
+    lifecycle_test.go:152: state unpaired, detail "Desvinculado desde la GUI"
+
+4 passed, 4 failed
