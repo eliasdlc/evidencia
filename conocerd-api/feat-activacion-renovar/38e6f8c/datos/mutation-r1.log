@@ -1,0 +1,179 @@
+# R1 at 38e6f8c, with i18-renew-replaces-entries.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-activacion-renovar/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-activacion-renovar/emu-wait.sh test/activation-renew-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18111.
+i  Running script: pnpm exec vitest run test/activation-renew-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/activacion-renovar
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N1: un enlace vencido hace 2 días pide uno nuevo: 202, un correo a la cuenta con otro token, y ese token activa
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N2: después de renovar, el enlace vencido responde 410 token_expired, no 400
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N3: un enlace vencido hace más de 30 días ya no se reconoce después de un reenvío: 400 invalid_token y ningún correo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N3: un enlace vencido hace más de 30 días ya no se reconoce después de un reenvío: 400 invalid_token y ningún correo
+[app-check] ausente /admin/owner-invitations/63I1XVKDet4I3r44S4oq/resend
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N3: un enlace vencido hace más de 30 días ya no se reconoce sin reenvío de por medio: 400 invalid_token y ningún correo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N4: con un reenvío del admin después de vencer (la poda corre), el enlace vencido todavía renueva
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N4: con un reenvío del admin después de vencer (la poda corre), el enlace vencido todavía renueva
+[app-check] ausente /admin/owner-invitations/XMwHzra1WL9xGGbHyr4E/resend
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N5: una firma falsa sobre un id real, o un id desconocido: 400 invalid_token, sin leer la cuenta y sin correo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N6: si la cuenta cambió de correo después de firmar el enlace: 400 invalid_token y nada a ninguna dirección
+[app-check] ausente /admin/owner-invitations
+
+i  To reset your email address to <email>, follow this link: http://127.0.0.1:19101/emulator/action?mode=recoverEmail&lang=en&oobCode=EXRpiyK18fL4JjbTHb33RldLI9Tpvo4ZoLFi2WFjXIpvSbBwP5SW1T&apiKey=fake-api-key
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N6b: si la cuenta cambia de correo mientras se renueva, no sale ningún correo y la respuesta es la misma
+[app-check] ausente /admin/owner-invitations
+
+i  To reset your email address to <email>, follow this link: http://127.0.0.1:19101/emulator/action?mode=recoverEmail&lang=en&oobCode=tR2J0TIolIqokH54DyGVInSweDTql0Uks9wP8WmB_-6fUIr1alaBn1&apiKey=fake-api-key
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N7: una invitación ya usada: 410 token_used y ningún correo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N8: si una activación gana la carrera después de las comprobaciones, la reserva lo ve: 410 token_used y no sale nada
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N9: un enlace que no venció: 202, ningún correo y la invitación igual
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N10: cuenta deshabilitada: 202, ningún correo y la invitación igual
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N10: sin destinos: 202, ningún correo y la invitación igual
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N11: si Resend lost: 202, el token entregado activa, y nada se escribe después del envío
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N11: si Resend delivered:503: 202, el token entregado activa, y nada se escribe después del envío
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N12: si la transacción de la reserva falla: 202, ningún correo, y el enlace vencido sigue respondiendo token_expired
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N13: dos renovaciones en 10 minutos: las dos 202, un solo correo
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N14: seis renovaciones repartidas en 24 horas: cinco correos
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N15: el intento 11 de una IP en un minuto: 429 sin tocar la invitación, que desde otra IP renueva
+[app-check] ausente /admin/owner-invitations
+
+stdout | test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > una cuenta que ya tiene contraseña: 202 y ningún correo
+[app-check] ausente /admin/owner-invitations
+
+ ❯ test/activation-renew-route.test.ts (22 tests | 3 failed) 6336ms
+   ✓ renovar un enlace vencido contra el emulador > N1: un enlace vencido hace 2 días pide uno nuevo: 202, un correo a la cuenta con otro token, y ese token activa  1756ms
+   × renovar un enlace vencido contra el emulador > N2: después de renovar, el enlace vencido responde 410 token_expired, no 400 265ms
+     → expected 400 to be 410 // Object.is equality
+   ✓ renovar un enlace vencido contra el emulador > N3: un enlace vencido hace más de 30 días ya no se reconoce después de un reenvío: 400 invalid_token y ningún correo 203ms
+   ✓ renovar un enlace vencido contra el emulador > N3: un enlace vencido hace más de 30 días ya no se reconoce sin reenvío de por medio: 400 invalid_token y ningún correo 172ms
+   ✓ renovar un enlace vencido contra el emulador > N4: con un reenvío del admin después de vencer (la poda corre), el enlace vencido todavía renueva 244ms
+   ✓ renovar un enlace vencido contra el emulador > N5: una firma falsa sobre un id real, o un id desconocido: 400 invalid_token, sin leer la cuenta y sin correo 120ms
+   ✓ renovar un enlace vencido contra el emulador > N6: si la cuenta cambió de correo después de firmar el enlace: 400 invalid_token y nada a ninguna dirección 119ms
+   ✓ renovar un enlace vencido contra el emulador > N6b: si la cuenta cambia de correo mientras se renueva, no sale ningún correo y la respuesta es la misma 142ms
+   ✓ renovar un enlace vencido contra el emulador > N7: una invitación ya usada: 410 token_used y ningún correo 159ms
+   ✓ renovar un enlace vencido contra el emulador > N8: si una activación gana la carrera después de las comprobaciones, la reserva lo ve: 410 token_used y no sale nada 205ms
+   ✓ renovar un enlace vencido contra el emulador > N9: un enlace que no venció: 202, ningún correo y la invitación igual 106ms
+   ✓ renovar un enlace vencido contra el emulador > N10: cuenta deshabilitada: 202, ningún correo y la invitación igual 160ms
+   ✓ renovar un enlace vencido contra el emulador > N10: sin destinos: 202, ningún correo y la invitación igual 196ms
+   ✓ renovar un enlace vencido contra el emulador > N11: si Resend lost: 202, el token entregado activa, y nada se escribe después del envío 295ms
+   ✓ renovar un enlace vencido contra el emulador > N11: si Resend delivered:503: 202, el token entregado activa, y nada se escribe después del envío 247ms
+   ✓ renovar un enlace vencido contra el emulador > N12: si la transacción de la reserva falla: 202, ningún correo, y el enlace vencido sigue respondiendo token_expired 165ms
+   × renovar un enlace vencido contra el emulador > N13: dos renovaciones en 10 minutos: las dos 202, un solo correo 168ms
+     → expected 400 to be 202 // Object.is equality
+   × renovar un enlace vencido contra el emulador > N14: seis renovaciones repartidas en 24 horas: cinco correos 169ms
+     → El enlace no es válido
+   ✓ renovar un enlace vencido contra el emulador > N15: el intento 11 de una IP en un minuto: 429 sin tocar la invitación, que desde otra IP renueva 159ms
+   ✓ renovar un enlace vencido contra el emulador > una cuenta que ya tiene contraseña: 202 y ningún correo 142ms
+   ✓ renovar un enlace vencido contra el emulador > un cuerpo sin token responde 422 y no cuenta como renovación 3ms
+   ✓ CORS de la renovación > el matcher del proxy cubre /business/activation/renew y el preflight del panel recibe permiso 269ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N2: después de renovar, el enlace vencido responde 410 token_expired, no 400
+AssertionError: expected 400 to be 410 // Object.is equality
+
+- Expected
++ Received
+
+- 410
++ 400
+
+ ❯ expectError test/activation-renew-route.test.ts:123:29
+    121| 
+    122|   async function expectError(response: Response, status: number, code:…
+    123|     expect(response.status).toBe(status);
+       |                             ^
+    124|     await expect(response.json()).resolves.toMatchObject({ error: code…
+    125|   }
+ ❯ test/activation-renew-route.test.ts:205:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N13: dos renovaciones en 10 minutos: las dos 202, un solo correo
+AssertionError: expected 400 to be 202 // Object.is equality
+
+- Expected
++ Received
+
+- 202
++ 400
+
+ ❯ expectSent test/activation-renew-route.test.ts:118:29
+    116|   /** N16: toda respuesta de un token auténtico es este mismo cuerpo, …
+    117|   async function expectSent(response: Response) {
+    118|     expect(response.status).toBe(202);
+       |                             ^
+    119|     expect(await response.text()).toBe(SENT);
+    120|   }
+ ❯ test/activation-renew-route.test.ts:394:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/activation-renew-route.test.ts > renovar un enlace vencido contra el emulador > N14: seis renovaciones repartidas en 24 horas: cinco correos
+ApiError: El enlace no es válido
+ ❯ Object.invalid_token src/lib/invitations.ts:252:24
+    250| 
+    251| const TOKEN_ERRORS: Record<Exclude<TokenCheck, { ok: true }>['code'], …
+    252|   invalid_token: () => new ApiError(400, 'invalid_token', 'El enlace n…
+       |                        ^
+    253|   token_expired: () => new ApiError(410, 'token_expired', 'El enlace v…
+    254|   token_used: () => new ApiError(410, 'token_used', 'Ese enlace ya se …
+ ❯ Module.renewInvitation src/lib/invitations.ts:471:70
+ ❯ test/activation-renew-route.test.ts:408:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 19 passed (22)
+   Start at  02:36:11
+   Duration  8.61s (transform 624ms, setup 63ms, collect 1.56s, tests 6.34s, environment 1ms, prepare 278ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/activation-renew-route.test.ts" exited with code 1
