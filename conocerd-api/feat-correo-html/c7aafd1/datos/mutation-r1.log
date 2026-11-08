@@ -1,0 +1,74 @@
+# R1 at c7aafd1, with h1.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu2.sh src/lib/email/resend.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run src/lib/email/resend.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/correo-html
+
+ ❯ src/lib/email/resend.test.ts (17 tests | 1 failed) 22ms
+   ✓ configuración del correo > sin EMAIL_MODE es modo prueba, y el remitente es siempre el de negocios 1ms
+   ✓ sendEmail > en vivo manda a Resend con la clave, el remitente, texto plano e Idempotency-Key 5ms
+   ✓ sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave 1ms
+   ✓ sendEmail > en vivo, la respuesta de un correo con replyTo propio va a esa dirección y no al buzón global 0ms
+   ✓ sendEmail > en modo prueba, el replyTo propio no se usa: solo se dice a quién iría la respuesta 0ms
+   ✓ sendEmail > en modo prueba sin buzón de prueba no llama a nadie 1ms
+   ✓ sendEmail > sin clave no llama a nadie 0ms
+   ✓ sendEmail > H-4: con html y replyTo propio, Resend recibe los dos, y el replyTo del mensaje gana al del entorno 0ms
+   ✓ sendEmail > el asunto sale en una sola línea aunque la plantilla traiga CR o LF, en vivo y en prueba 1ms
+   ✓ sendEmail > sin html no manda la clave html 0ms
+   ✓ sendEmail > H-5: en modo prueba el HTML abre su cuerpo con el mismo aviso que el texto, escapado, y sale al buzón de prueba 1ms
+   ✓ sendEmail > H-5: el aviso de prueba del HTML también dice a quién iría la respuesta 1ms
+   ✓ sendEmail > H-6: un 429 de cuota diaria trae el nombre de Resend como providerCode, y el log solo el código HTTP 1ms
+   × sendEmail > un nombre de error que no es un código (texto libre, otro tipo) no se copia al resultado 7ms
+     → expected { sent: false, …(3) } to deeply equal { sent: false, …(2) }
+   ✓ sendEmail > un rechazo de Resend es sent: false con el código, sin lanzar 0ms
+   ✓ sendEmail con la red caída > es sent: false sin lanzar y sin poner el error en el log 0ms
+   ✓ idempotencyKey > es estable por hecho, distinta entre hechos y corta aunque las partes no lo sean 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > un nombre de error que no es un código (texto libre, otro tipo) no se copia al resultado
+AssertionError: expected { sent: false, …(3) } to deeply equal { sent: false, …(2) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[31m+   "providerCode": "dueno@example.com",[39m
+[2m    "reason": "provider_error",[22m
+[2m    "sent": false,[22m
+[2m    "status": 409,[22m
+[2m  }[22m
+
+ ❯ src/lib/email/resend.test.ts:205:22
+    203|       const fetch = fakeFetch(409, { name });
+    204|       const result = await sendEmail(message, { config: live, fetch });
+    205|       expect(result).toEqual({ sent: false, reason: 'provider_error', …
+       |                      ^
+    206|     }
+    207|     const notJson = vi.fn(async () => new Response('<html>502</html>',…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  11:14:49
+   Duration  289ms (transform 63ms, setup 15ms, collect 75ms, tests 22ms, environment 0ms, prepare 58ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run src/lib/email/resend.test.ts" exited with code 1
