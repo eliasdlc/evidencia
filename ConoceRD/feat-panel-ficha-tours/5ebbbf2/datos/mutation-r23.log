@@ -1,0 +1,890 @@
+# R23 at 5ebbbf2, with m1.patch applied
+# $ pnpm exec vitest run src/features/negocio/ficha/tours/model.test.ts src/features/negocio/ficha/tours/ToursEditor.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-ficha-tours
+
+ ❯ src/features/negocio/ficha/tours/model.test.ts (27 tests | 3 failed) 99ms
+   ❯ buildToursPatch (5)
+     × sends every stored excursion as { id } alone except the one edited 36ms
+     × a new excursion goes last with no id 4ms
+     × a removal leaves the id out and the rest in order 3ms
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx (31 tests | 8 failed) 5274ms
+   ❯ each part of an excursion saves alone (10)
+     × Nombre y descripción: one PATCH with { id } for the others, only the changed fields, If-Match with the version 202ms
+     × Salidas y duración: one PATCH with { id } for the others, only the changed fields, If-Match with the version 147ms
+     × Qué incluye y qué traer: one PATCH with { id } for the others, only the changed fields, If-Match with the version 184ms
+     × Precio: one PATCH with { id } for the others, only the changed fields, If-Match with the version 162ms
+     × Enlace para reservar: one PATCH with { id } for the others, only the changed fields, If-Match with the version 177ms
+     × keeps the edit of one excursion off the others even when another is edited next 118ms
+   ❯ adding an excursion (3)
+     × sends the list with a new entry at the end and no id, then opens the one the server made 201ms
+   ❯ removing an excursion (5)
+     × asks first, then sends the list without it and If-Match with the real updatedAt 194ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > each part of an excursion saves alone > Nombre y descripción: one PATCH with { id } for the others, only the changed fields, If-Match with the version
+AssertionError: expected { …(4) } to deeply equal { …(4) }
+
+- Expected
++ Received
+
+@@ -6,14 +6,53 @@
+          "notes": {
+            "es": "Si cierra el mar, cambiamos el día.",
+          },
+        },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": {
++           "dop": 2400,
++           "usd": 40,
++         },
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tBBB",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Día de playa en el cayo",
+          },
++         "notes": null,
++         "schedule": null,
++       },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": null,
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tCCC",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Ballenas jorobadas",
++         },
++         "notes": null,
++         "schedule": null,
+        },
+      ],
+    },
+    "headers": {
+      "If-Match": "2026-11-05T12:00:00.000Z",
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:333:28
+    331|
+    332|       expect(patches()).toHaveLength(1);
+    333|       expect(patches()[0]).toEqual({
+       |                            ^
+    334|         path: '/business/biz-1/profile',
+    335|         method: 'PATCH',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > each part of an excursion saves alone > Salidas y duración: one PATCH with { id } for the others, only the changed fields, If-Match with the version
+AssertionError: expected { …(4) } to deeply equal { …(4) }
+
+- Expected
++ Received
+
+@@ -4,14 +4,53 @@
+        {
+          "id": "tAAA",
+          "maxGroup": 12,
+        },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": {
++           "dop": 2400,
++           "usd": 40,
++         },
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tBBB",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Día de playa en el cayo",
+          },
++         "notes": null,
++         "schedule": null,
++       },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": null,
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tCCC",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Ballenas jorobadas",
++         },
++         "notes": null,
++         "schedule": null,
+        },
+      ],
+    },
+    "headers": {
+      "If-Match": "2026-11-05T12:00:00.000Z",
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:333:28
+    331|
+    332|       expect(patches()).toHaveLength(1);
+    333|       expect(patches()[0]).toEqual({
+       |                            ^
+    334|         path: '/business/biz-1/profile',
+    335|         method: 'PATCH',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > each part of an excursion saves alone > Qué incluye y qué traer: one PATCH with { id } for the others, only the changed fields, If-Match with the version
+AssertionError: expected { …(4) } to deeply equal { …(4) }
+
+- Expected
++ Received
+
+@@ -7,14 +7,53 @@
+            "Protector solar",
+          ],
+          "id": "tAAA",
+        },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": {
++           "dop": 2400,
++           "usd": 40,
++         },
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tBBB",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Día de playa en el cayo",
+          },
++         "notes": null,
++         "schedule": null,
++       },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": null,
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tCCC",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Ballenas jorobadas",
++         },
++         "notes": null,
++         "schedule": null,
+        },
+      ],
+    },
+    "headers": {
+      "If-Match": "2026-11-05T12:00:00.000Z",
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:333:28
+    331|
+    332|       expect(patches()).toHaveLength(1);
+    333|       expect(patches()[0]).toEqual({
+       |                            ^
+    334|         path: '/business/biz-1/profile',
+    335|         method: 'PATCH',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > each part of an excursion saves alone > Precio: one PATCH with { id } for the others, only the changed fields, If-Match with the version
+AssertionError: expected { …(4) } to deeply equal { …(4) }
+
+- Expected
++ Received
+
+@@ -10,14 +10,53 @@
+            12,
+          ],
+          "id": "tAAA",
+        },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": {
++           "dop": 2400,
++           "usd": 40,
++         },
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tBBB",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Día de playa en el cayo",
+          },
++         "notes": null,
++         "schedule": null,
++       },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": null,
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tCCC",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Ballenas jorobadas",
++         },
++         "notes": null,
++         "schedule": null,
+        },
+      ],
+    },
+    "headers": {
+      "If-Match": "2026-11-05T12:00:00.000Z",
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:333:28
+    331|
+    332|       expect(patches()).toHaveLength(1);
+    333|       expect(patches()[0]).toEqual({
+       |                            ^
+    334|         path: '/business/biz-1/profile',
+    335|         method: 'PATCH',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > each part of an excursion saves alone > Enlace para reservar: one PATCH with { id } for the others, only the changed fields, If-Match with the version
+AssertionError: expected { …(4) } to deeply equal { …(4) }
+
+- Expected
++ Received
+
+@@ -4,14 +4,53 @@
+        {
+          "bookingUrl": "https://getyourguide.com/excursiones-de-ejemplo",
+          "id": "tAAA",
+        },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": {
++           "dop": 2400,
++           "usd": 40,
++         },
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tBBB",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Día de playa en el cayo",
+          },
++         "notes": null,
++         "schedule": null,
++       },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": null,
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tCCC",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Ballenas jorobadas",
++         },
++         "notes": null,
++         "schedule": null,
+        },
+      ],
+    },
+    "headers": {
+      "If-Match": "2026-11-05T12:00:00.000Z",
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:333:28
+    331|
+    332|       expect(patches()).toHaveLength(1);
+    333|       expect(patches()[0]).toEqual({
+       |                            ^
+    334|         path: '/business/biz-1/profile',
+    335|         method: 'PATCH',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > each part of an excursion saves alone > keeps the edit of one excursion off the others even when another is edited next
+AssertionError: expected [ { id: 'tAAA', …(11) }, …(2) ] to deeply equal [ { id: 'tAAA' }, …(2) ]
+
+- Expected
++ Received
+
+  [
+    {
++     "bookingUrl": null,
++     "bring": [
++       "Gorra",
++     ],
++     "durationMinutes": 180,
++     "fare": {
++       "dop": 3500,
++       "usd": 60,
++     },
++     "fareHighSeason": null,
++     "highSeasonMonths": [],
+      "id": "tAAA",
++     "includes": [
++       "Lancha",
++       "Chaleco",
++     ],
++     "maxGroup": 20,
++     "name": {
++       "en": "Mangrove boat trip",
++       "es": "Manglares en lancha",
++     },
++     "notes": null,
++     "schedule": {
++       "es": "Martes y jueves a las 8:00 a. m.",
++     },
+    },
+    {
+      "bookingUrl": "https://x.example/reservar",
+      "id": "tBBB",
+    },
+    {
++     "bookingUrl": null,
++     "bring": [
++       "Gorra",
++     ],
++     "durationMinutes": 180,
++     "fare": null,
++     "fareHighSeason": null,
++     "highSeasonMonths": [],
+      "id": "tCCC",
++     "includes": [
++       "Lancha",
++       "Chaleco",
++     ],
++     "maxGroup": 20,
++     "name": {
++       "es": "Ballenas jorobadas",
++     },
++     "notes": null,
++     "schedule": null,
+    },
+  ]
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:364:21
+    362|     await type(field('Enlace para reservar'), 'https://x.example/reser…
+    363|     await click(button('Guardar el enlace'));
+    364|     expect(sent(0)).toEqual([{ id: 'tAAA' }, { id: 'tBBB', bookingUrl:…
+       |                     ^
+    365|     // The second save carries the new version the first one returned.
+    366|     await openPart('Enlace para reservar');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > adding an excursion > sends the list with a new entry at the end and no id, then opens the one the server made
+AssertionError: expected { tours: [ …(4) ] } to deeply equal { tours: [ { id: 'tAAA' }, …(3) ] }
+
+- Expected
++ Received
+
+@@ -1,15 +1,78 @@
+  {
+    "tours": [
+      {
++       "bookingUrl": null,
++       "bring": [
++         "Gorra",
++       ],
++       "durationMinutes": 180,
++       "fare": {
++         "dop": 3500,
++         "usd": 60,
++       },
++       "fareHighSeason": null,
++       "highSeasonMonths": [],
+        "id": "tAAA",
++       "includes": [
++         "Lancha",
++         "Chaleco",
++       ],
++       "maxGroup": 20,
++       "name": {
++         "en": "Mangrove boat trip",
++         "es": "Manglares en lancha",
++       },
++       "notes": null,
++       "schedule": {
++         "es": "Martes y jueves a las 8:00 a. m.",
+        },
++     },
+      {
++       "bookingUrl": null,
++       "bring": [
++         "Gorra",
++       ],
++       "durationMinutes": 180,
++       "fare": {
++         "dop": 2400,
++         "usd": 40,
++       },
++       "fareHighSeason": null,
++       "highSeasonMonths": [],
+        "id": "tBBB",
++       "includes": [
++         "Lancha",
++         "Chaleco",
++       ],
++       "maxGroup": 20,
++       "name": {
++         "es": "Día de playa en el cayo",
+        },
++       "notes": null,
++       "schedule": null,
++     },
+      {
++       "bookingUrl": null,
++       "bring": [
++         "Gorra",
++       ],
++       "durationMinutes": 180,
++       "fare": null,
++       "fareHighSeason": null,
++       "highSeasonMonths": [],
+        "id": "tCCC",
++       "includes": [
++         "Lancha",
++         "Chaleco",
++       ],
++       "maxGroup": 20,
++       "name": {
++         "es": "Ballenas jorobadas",
++       },
++       "notes": null,
++       "schedule": null,
+      },
+      {
+        "name": {
+          "es": "Cascada del limón",
+        },
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:499:32
+    497|
+    498|     expect(patches()).toHaveLength(1);
+    499|     expect(patches()[0]?.body).toEqual({ tours: [{ id: 'tAAA' }, { id:…
+       |                                ^
+    500|     expect('id' in (sent(0)[3] as object)).toBe(false);
+    501|     // The server's own answer is on screen: the new excursion's page.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  src/features/negocio/ficha/tours/ToursEditor.test.tsx > removing an excursion > asks first, then sends the list without it and If-Match with the real updatedAt
+AssertionError: expected { …(4) } to deeply equal { …(4) }
+
+- Expected
++ Received
+
+@@ -1,13 +1,55 @@
+  {
+    "body": {
+      "tours": [
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": {
++           "dop": 3500,
++           "usd": 60,
++         },
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tAAA",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "en": "Mangrove boat trip",
++           "es": "Manglares en lancha",
++         },
++         "notes": null,
++         "schedule": {
++           "es": "Martes y jueves a las 8:00 a. m.",
++         },
+        },
+        {
++         "bookingUrl": null,
++         "bring": [
++           "Gorra",
++         ],
++         "durationMinutes": 180,
++         "fare": null,
++         "fareHighSeason": null,
++         "highSeasonMonths": [],
+          "id": "tCCC",
++         "includes": [
++           "Lancha",
++           "Chaleco",
++         ],
++         "maxGroup": 20,
++         "name": {
++           "es": "Ballenas jorobadas",
++         },
++         "notes": null,
++         "schedule": null,
+        },
+      ],
+    },
+    "headers": {
+      "If-Match": "2026-11-05T12:00:00.000Z",
+
+ ❯ src/features/negocio/ficha/tours/ToursEditor.test.tsx:545:26
+    543|     await click(button('Sí, quitarla'));
+    544|     expect(patches()).toHaveLength(1);
+    545|     expect(patches()[0]).toEqual({
+       |                          ^
+    546|       path: '/business/biz-1/profile',
+    547|       method: 'PATCH',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+ FAIL  src/features/negocio/ficha/tours/model.test.ts > buildToursPatch > sends every stored excursion as { id } alone except the one edited
+AssertionError: expected [ { id: 'tAAA', …(11) }, …(2) ] to deeply equal [ { id: 'tAAA' }, …(2) ]
+
+- Expected
++ Received
+
+  [
+    {
++     "bookingUrl": null,
++     "bring": [
++       "Gorra",
++     ],
++     "durationMinutes": 180,
++     "fare": {
++       "dop": 3500,
++       "usd": 60,
++     },
++     "fareHighSeason": null,
++     "highSeasonMonths": [],
+      "id": "tAAA",
++     "includes": [
++       "Lancha",
++       "Chaleco",
++     ],
++     "maxGroup": 20,
++     "name": {
++       "en": "Mangrove boat trip",
++       "es": "Manglares en lancha",
++     },
++     "notes": {
++       "es": "Si cierra el mar o llueve fuerte, cambiamos el día.",
++     },
++     "schedule": {
++       "es": "Martes y jueves a las 8:00 a. m.",
+      },
++   },
+    {
+      "id": "tBBB",
+      "maxGroup": 8,
+    },
+    {
++     "bookingUrl": null,
++     "bring": [
++       "Gorra",
++     ],
++     "durationMinutes": 180,
++     "fare": {
++       "dop": 3500,
++       "usd": 60,
++     },
++     "fareHighSeason": null,
++     "highSeasonMonths": [],
+      "id": "tCCC",
++     "includes": [
++       "Lancha",
++       "Chaleco",
++     ],
++     "maxGroup": 20,
++     "name": {
++       "es": "Ballenas",
++     },
++     "notes": {
++       "es": "Si cierra el mar o llueve fuerte, cambiamos el día.",
++     },
++     "schedule": {
++       "es": "Martes y jueves a las 8:00 a. m.",
++     },
+    },
+  ]
+
+ ❯ src/features/negocio/ficha/tours/model.test.ts:43:90
+     41| describe('buildToursPatch', () => {
+     42|   it('sends every stored excursion as { id } alone except the one edit…
+     43|     expect(buildToursPatch(list, { kind: 'edit', id: 'tBBB', fields: {…
+       |                                                                                          ^
+     44|       { id: 'tAAA' },
+     45|       { id: 'tBBB', maxGroup: 8 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯
+
+ FAIL  src/features/negocio/ficha/tours/model.test.ts > buildToursPatch > a new excursion goes last with no id
+AssertionError: expected [ { id: 'tAAA', …(11) }, …(3) ] to deeply equal [ Array(4) ]
+
+- Expected
++ Received
+
+@@ -1,14 +1,90 @@
+  [
+    {
++     "bookingUrl": null,
++     "bring": [
++       "Gorra",
++     ],
++     "durationMinutes": 180,
++     "fare": {
++       "dop": 3500,
++       "usd": 60,
++     },
++     "fareHighSeason": null,
++     "highSeasonMonths": [],
+      "id": "tAAA",
++     "includes": [
++       "Lancha",
++       "Chaleco",
++     ],
++     "maxGroup": 20,
++     "name": {
++       "en": "Mangrove boat trip",
++       "es": "Manglares en lancha",
++     },
++     "notes": {
++       "es": "Si cierra el mar o llueve fuerte, cambiamos el día.",
+      },
++     "schedule": {
++       "es": "Martes y jueves a las 8:00 a. m.",
++     },
++   },
+    {
++     "bookingUrl": null,
++     "bring": [
++       "Gorra",
++     ],
++     "durationMinutes": 180,
++     "fare": {
++       "dop": 3500,
++       "usd": 60,
++     },
++     "fareHighSeason": null,
++     "highSeasonMonths": [],
+      "id": "tBBB",
++     "includes": [
++       "Lancha",
++       "Chaleco",
++     ],
++     "maxGroup": 20,
++     "name": {
++       "es": "Día de playa",
++     },
++     "notes": {
++       "es": "Si cierra el mar o llueve fuerte, cambiamos el día.",
++     },
++     "schedule": {
++       "es": "Martes y jueves a las 8:00 a. m.",
++     },
+    },
+    {
++     "bookingUrl": null,
++     "bring": [
++       "Gorra",
++     ],
++     "durationMinutes": 180,
++     "fare": {
++       "dop": 3500,
++       "usd": 60,
++     },
++     "fareHighSeason": null,
++     "highSeasonMonths": [],
+      "id": "tCCC",
++     "includes": [
++       "Lancha",
++       "Chaleco",
++     ],
++     "maxGroup": 20,
++     "name": {
++       "es": "Ballenas",
++     },
++     "notes": {
++       "es": "Si cierra el mar o llueve fuerte, cambiamos el día.",
++     },
++     "schedule": {
++       "es": "Martes y jueves a las 8:00 a. m.",
++     },
+    },
+    {
+      "name": {
+        "es": "Cascada",
+      },
+
+ ❯ src/features/negocio/ficha/tours/model.test.ts:52:19
+     50|   it('a new excursion goes last with no id', () => {
+     51|     const patch = buildToursPatch(list, { kind: 'add', fields: { name:…
+     52|     expect(patch).toEqual([{ id: 'tAAA' }, { id: 'tBBB' }, { id: 'tCCC…
+       |                   ^
+     53|     expect('id' in (patch[3] as object)).toBe(false);
+     54|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯
+
+ FAIL  src/features/negocio/ficha/tours/model.test.ts > buildToursPatch > a removal leaves the id out and the rest in order
+AssertionError: expected [ { id: 'tAAA', …(11) }, …(1) ] to deeply equal [ { id: 'tAAA' }, { id: 'tCCC' } ]
+
+- Expected
++ Received
+
+  [
+    {
++     "bookingUrl": null,
++     "bring": [
++       "Gorra",
++     ],
++     "durationMinutes": 180,
++     "fare": {
++       "dop": 3500,
++       "usd": 60,
++     },
++     "fareHighSeason": null,
++     "highSeasonMonths": [],
+      "id": "tAAA",
++     "includes": [
++       "Lancha",
++       "Chaleco",
++     ],
++     "maxGroup": 20,
++     "name": {
++       "en": "Mangrove boat trip",
++       "es": "Manglares en lancha",
++     },
++     "notes": {
++       "es": "Si cierra el mar o llueve fuerte, cambiamos el día.",
++     },
++     "schedule": {
++       "es": "Martes y jueves a las 8:00 a. m.",
+      },
++   },
+    {
++     "bookingUrl": null,
++     "bring": [
++       "Gorra",
++     ],
++     "durationMinutes": 180,
++     "fare": {
++       "dop": 3500,
++       "usd": 60,
++     },
++     "fareHighSeason": null,
++     "highSeasonMonths": [],
+      "id": "tCCC",
++     "includes": [
++       "Lancha",
++       "Chaleco",
++     ],
++     "maxGroup": 20,
++     "name": {
++       "es": "Ballenas",
++     },
++     "notes": {
++       "es": "Si cierra el mar o llueve fuerte, cambiamos el día.",
++     },
++     "schedule": {
++       "es": "Martes y jueves a las 8:00 a. m.",
++     },
+    },
+  ]
+
+ ❯ src/features/negocio/ficha/tours/model.test.ts:58:19
+     56|   it('a removal leaves the id out and the rest in order', () => {
+     57|     const patch = buildToursPatch(list, { kind: 'remove', id: 'tBBB' }…
+     58|     expect(patch).toEqual([{ id: 'tAAA' }, { id: 'tCCC' }]);
+       |                   ^
+     59|     expect(dropsStored(list, patch)).toBe(true);
+     60|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  11 failed | 47 passed (58)
+   Start at  02:36:43
+   Duration  6.38s (tests 86%, environment 8%, import 4%, transform 1%)
+
