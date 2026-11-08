@@ -1,0 +1,187 @@
+# R6 at 4ee1cef, with r6-i8-write-after-send.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-fotos-dueno-retencion/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-fotos-dueno-retencion/emu.sh test/business-photos-sweep.test.ts
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18172.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/business-photos-sweep.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion
+
+stderr | test/business-photos-sweep.test.ts > barrido de fotos del dueño, contra el emulador de Firestore > un fallo de Storage en una foto no frena a las demás, y la corrida siguiente lo termina
+[conocerd-api] barrido de fotos: no se pudieron borrar los archivos de <uuid> Error: Storage caído a propósito
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:431:29
+    at file:///home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/node_modules/.pnpm/@vitest+runner@3.2.7/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > la ruta exige admin: el dueño recibe 403
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > T9: reenvía a cada persona con la misma clave del original, con solo sus fotos, y no escribe nada
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > un lote que no existe es 404 y no sale nada
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > un lote que no existe es 404 y no sale nada
+[app-check] ausente /admin/business-photos/review/no-es-un-uuid/notify
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor accepted
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stderr | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected
+[conocerd-api] Resend rechazó un correo: 502
+
+stderr | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected
+[conocerd-api] Resend rechazó un correo: 502
+
+stdout | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws
+[app-check] ausente /admin/business-photos/review/<uuid>/notify
+
+stderr | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws
+[conocerd-api] no se pudo mandar el correo de fotos revisadas Error: Resend caído a propósito
+    at Object.send (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:664:50)
+    at RecordingMailer.send (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:455:23)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-review.ts:438:30
+    at async Promise.all (index 1)
+    at respond (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-review.ts:604:20)
+    at notifyPhotoBatch (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-notify.ts:54:24)
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-notify.ts:67:20
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/http.ts:92:14
+    at callNotify (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:552:22)
+
+stderr | test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws
+[conocerd-api] no se pudo mandar el correo de fotos revisadas Error: Resend caído a propósito
+    at Object.send (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:664:50)
+    at RecordingMailer.send (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:455:23)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-review.ts:438:30
+    at async Promise.all (index 0)
+    at respond (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-review.ts:604:20)
+    at notifyPhotoBatch (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-notify.ts:54:24)
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/business-photo-notify.ts:67:20
+    at /home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/src/lib/http.ts:92:14
+    at callNotify (/home/decruce/dev/wt/conocerd-api/feat/fotos-dueno-retencion/test/business-photos-sweep.test.ts:552:22)
+
+ ❯ test/business-photos-sweep.test.ts (20 tests | 4 failed) 2819ms
+   ✓ planificadores del barrido, puros > dueFilesOf: una publicada solo pierde su staging, nunca la copia pública 3ms
+   ✓ planificadores del barrido, puros > dueFilesOf: rechazadas y quitadas pierden staging y copia; en revisión nunca; nada antes del plazo 1ms
+   ✓ planificadores del barrido, puros > stagingNeeded, publishedKept y graceOver 1ms
+   ✓ planificadores del barrido, puros > planHeal: vuelve la publicada que faltaba, se va la que no lo está, el equipo en su orden, y nada si ya cuadra 2ms
+   ✓ planificadores del barrido, puros > planHeal: una excursión que ya no está pierde su clave y su foto sigue en imageUrls 1ms
+   ✓ barrido de fotos del dueño, contra el emulador de Firestore > T1: una rechazada de hace 6 días conserva su archivo; la de hace 8 lo pierde y anota fileDeletedAt  785ms
+   ✓ barrido de fotos del dueño, contra el emulador de Firestore > riesgo de #68: en una publicada vencida se borra el staging y nunca la copia pública ni su URL 122ms
+   ✓ barrido de fotos del dueño, contra el emulador de Firestore > una quitada o una sacada de la app pierden staging y copia; una en revisión de 30 h se queda y se cuenta (T5) 138ms
+   ✓ barrido de fotos del dueño, contra el emulador de Firestore > T2 y T3: los huérfanos de más de 24 h se van, los de 2 h se quedan, y lo que una foto necesita no se toca 115ms
+   ✓ barrido de fotos del dueño, contra el emulador de Firestore > T4: la galería vuelve a lo que dicen las fotos, con una línea de bitácora por URL y el equipo en su orden 112ms
+   ✓ barrido de fotos del dueño, contra el emulador de Firestore > T6: una excursión borrada pierde su clave en tourImageUrls y su foto sigue en la galería 99ms
+   ✓ barrido de fotos del dueño, contra el emulador de Firestore > T8: el segundo barrido no escribe nada ni borra nada 191ms
+   ✓ barrido de fotos del dueño, contra el emulador de Firestore > T7: la ruta cron sin CRON_SECRET es 503, con una cabecera mala 401, y en ninguno de los dos toca nada 77ms
+   ✓ barrido de fotos del dueño, contra el emulador de Firestore > un fallo de Storage en una foto no frena a las demás, y la corrida siguiente lo termina 112ms
+   ✓ reenvío de un lote de fotos revisadas, contra los emuladores > la ruta exige admin: el dueño recibe 403 79ms
+   × reenvío de un lote de fotos revisadas, contra los emuladores > T9: reenvía a cada persona con la misma clave del original, con solo sus fotos, y no escribe nada 200ms
+     → expected 1 to be +0 // Object.is equality
+   ✓ reenvío de un lote de fotos revisadas, contra los emuladores > un lote que no existe es 404 y no sale nada 23ms
+   × reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor accepted 178ms
+     → expected '{"docs":[["destinations/negocio-dd553…' to be '{"docs":[["destinations/negocio-dd553…' // Object.is equality
+   × reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected 156ms
+     → expected '{"docs":[["destinations/negocio-b64a7…' to be '{"docs":[["destinations/negocio-b64a7…' // Object.is equality
+   × reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws 160ms
+     → expected '{"docs":[["destinations/negocio-15369…' to be '{"docs":[["destinations/negocio-15369…' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > T9: reenvía a cada persona con la misma clave del original, con solo sus fotos, y no escribe nada
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/business-photos-sweep.test.ts:634:22
+    632|     expect(byUid.get(b.O.uid)).toEqual(['approve']);
+    633|     expect(byUid.get(b.M.uid)).toEqual(['reject']);
+    634|     expect(writes()).toBe(0);
+       |                      ^
+    635|     expect(await stateOf(b.d, b.photos, b.batchId, store)).toBe(before…
+    636|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor accepted
+AssertionError: expected '{"docs":[["destinations/negocio-dd553…' to be '{"docs":[["destinations/negocio-dd553…' // Object.is equality
+
+Expected: "{"docs":[["destinations/negocio-<uuid>",1794168638538,{"name":{"es":"Colmado Marrero"},"province":"La Romana","tier":"registrado","imageUrls":["https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>"]}],["businessPhotoTargets/negocio-<uuid>",1794168638538,{"inReview":[],"published":["<uuid>"],"windowStart":0,"submittedInWindow":2,"updatedAt":{"_seconds":1794168638,"_nanoseconds":532000000}}],["photoReviewBatches/<uuid>",1794168638620,{"destinationId":"negocio-<uuid>","decidedBy":"BmztxIjj1g3JRAMfwzb2bzhvIBkL","bodyHash":"5fce0d335dd501e32ac0b8619fe86173edacbb5f972a558abf94af42a76334cd","photoIds":["<uuid>","<uuid>"],"decisions":[{"photoId":"<uuid>","kind":"approve","reasonCode":null,"ownerMessage":null},{"photoId":"<uuid>","kind":"reject","reasonCode":"otro","ownerMessage":"Tiene un logo encima"}],"decidedAt":{"_seconds":1794168638,"_nanoseconds":532000000},"recipients":[{"uid":"ewQdgFyFt57jZZAELVY7XFNp6Qg4","photoIds":["<uuid>"]},{"uid":"oJiFbgcZuAJxtOHHEgcTgyzR815A","photoIds":["<uuid>"]}],"publishedAfter":1,"cap":12,"resentAt":{"_seconds":1794168638,"_nanoseconds":617000000}}],["businessPhotos/<uuid>",1794168638543,{"destinationId":"negocio-<uuid>","uploadedBy":"ewQdgFyFt57jZZAELVY7XFNp6Qg4","uploaderRole":"owner","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/ewQdgFyFt57jZZAELVY7XFNp6Qg4/<uuid>.jpg","object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":491000000},"removedAt":null,"removedBy":null,"publishToken":"<uuid>","decision":{"kind":"approve","batchId":"<uuid>"},"fileDeleteAfter":{"_seconds":1794168638,"_nanoseconds":532000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":532000000},"publicUrl":"https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>","decidedBy":"BmztxIjj1g3JRAMfwzb2bzhvIBkL","publishedPath":"destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","status":"published","fileDeletedAt":{"_seconds":1794168638,"_nanoseconds":540000000}}],["businessPhotos/<uuid>",1794168638538,{"destinationId":"negocio-<uuid>","uploadedBy":"oJiFbgcZuAJxtOHHEgcTgyzR815A","uploaderRole":"manager","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/oJiFbgcZuAJxtOHHEgcTgyzR815A/<uuid>.jpg","publishedPath":null,"publicUrl":null,"object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":496000000},"removedAt":null,"removedBy":null,"fileDeletedAt":null,"decision":{"kind":"reject","batchId":"<uuid>","reasonCode":"otro","ownerMessage":"Tiene un logo encima"},"fileDeleteAfter":{"_seconds":1794773438,"_nanoseconds":532000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":532000000},"decidedBy":"BmztxIjj1g3JRAMfwzb2bzhvIBkL","status":"rejected"}]],"audits":2,"objects":["destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","ownerPhotos/oJiFbgcZuAJxtOHHEgcTgyzR815A/<uuid>.jpg"]}"
+Received: "{"docs":[["destinations/negocio-<uuid>",1794168638538,{"name":{"es":"Colmado Marrero"},"province":"La Romana","tier":"registrado","imageUrls":["https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>"]}],["businessPhotoTargets/negocio-<uuid>",1794168638538,{"inReview":[],"published":["<uuid>"],"windowStart":0,"submittedInWindow":2,"updatedAt":{"_seconds":1794168638,"_nanoseconds":532000000}}],["photoReviewBatches/<uuid>",1794168638538,{"destinationId":"negocio-<uuid>","decidedBy":"BmztxIjj1g3JRAMfwzb2bzhvIBkL","bodyHash":"5fce0d335dd501e32ac0b8619fe86173edacbb5f972a558abf94af42a76334cd","photoIds":["<uuid>","<uuid>"],"decisions":[{"photoId":"<uuid>","kind":"approve","reasonCode":null,"ownerMessage":null},{"photoId":"<uuid>","kind":"reject","reasonCode":"otro","ownerMessage":"Tiene un logo encima"}],"decidedAt":{"_seconds":1794168638,"_nanoseconds":532000000},"recipients":[{"uid":"ewQdgFyFt57jZZAELVY7XFNp6Qg4","photoIds":["<uuid>"]},{"uid":"oJiFbgcZuAJxtOHHEgcTgyzR815A","photoIds":["<uuid>"]}],"publishedAfter":1,"cap":12}],["businessPhotos/<uuid>",1794168638543,{"destinationId":"negocio-<uuid>","uploadedBy":"ewQdgFyFt57jZZAELVY7XFNp6Qg4","uploaderRole":"owner","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/ewQdgFyFt57jZZAELVY7XFNp6Qg4/<uuid>.jpg","object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":491000000},"removedAt":null,"removedBy":null,"publishToken":"<uuid>","decision":{"kind":"approve","batchId":"<uuid>"},"fileDeleteAfter":{"_seconds":1794168638,"_nanoseconds":532000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":532000000},"publicUrl":"https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>","decidedBy":"BmztxIjj1g3JRAMfwzb2bzhvIBkL","publishedPath":"destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","status":"published","fileDeletedAt":{"_seconds":1794168638,"_nanoseconds":540000000}}],["businessPhotos/<uuid>",1794168638538,{"destinationId":"negocio-<uuid>","uploadedBy":"oJiFbgcZuAJxtOHHEgcTgyzR815A","uploaderRole":"manager","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/oJiFbgcZuAJxtOHHEgcTgyzR815A/<uuid>.jpg","publishedPath":null,"publicUrl":null,"object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":496000000},"removedAt":null,"removedBy":null,"fileDeletedAt":null,"decision":{"kind":"reject","batchId":"<uuid>","reasonCode":"otro","ownerMessage":"Tiene un logo encima"},"fileDeleteAfter":{"_seconds":1794773438,"_nanoseconds":532000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":532000000},"decidedBy":"BmztxIjj1g3JRAMfwzb2bzhvIBkL","status":"rejected"}]],"audits":2,"objects":["destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","ownerPhotos/oJiFbgcZuAJxtOHHEgcTgyzR815A/<uuid>.jpg"]}"
+
+ ❯ test/business-photos-sweep.test.ts:673:51
+    671|         expect(atSend).toHaveLength(2);
+    672|         const after = await stateOf(b.d, b.photos, b.batchId, store);
+    673|         for (const state of atSend) expect(state).toBe(after);
+       |                                                   ^
+    674|         await new Promise((resolve) => setTimeout(resolve, 300));
+    675|         expect(await stateOf(b.d, b.photos, b.batchId, store)).toBe(af…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected
+AssertionError: expected '{"docs":[["destinations/negocio-b64a7…' to be '{"docs":[["destinations/negocio-b64a7…' // Object.is equality
+
+Expected: "{"docs":[["destinations/negocio-<uuid>",1794168638706,{"name":{"es":"Colmado Marrero"},"province":"La Romana","tier":"registrado","imageUrls":["https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>"]}],["businessPhotoTargets/negocio-<uuid>",1794168638706,{"inReview":[],"published":["<uuid>"],"windowStart":0,"submittedInWindow":2,"updatedAt":{"_seconds":1794168638,"_nanoseconds":700000000}}],["photoReviewBatches/<uuid>",1794168638777,{"destinationId":"negocio-<uuid>","decidedBy":"WONm4izU6cKrOI9gsdRvQwnJvm7Y","bodyHash":"5bf410703e689538b2cef9e8aade82118dda213e81d3faa620757575315793e2","photoIds":["<uuid>","<uuid>"],"decisions":[{"photoId":"<uuid>","kind":"approve","reasonCode":null,"ownerMessage":null},{"photoId":"<uuid>","kind":"reject","reasonCode":"otro","ownerMessage":"Tiene un logo encima"}],"decidedAt":{"_seconds":1794168638,"_nanoseconds":700000000},"recipients":[{"uid":"evOdI44myRRJ3DvL8rcNwBOlZsMt","photoIds":["<uuid>"]},{"uid":"ERWbXYVALaE51LvhXYROzk1seNlH","photoIds":["<uuid>"]}],"publishedAfter":1,"cap":12,"resentAt":{"_seconds":1794168638,"_nanoseconds":773000000}}],["businessPhotos/<uuid>",1794168638711,{"destinationId":"negocio-<uuid>","uploadedBy":"evOdI44myRRJ3DvL8rcNwBOlZsMt","uploaderRole":"owner","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/evOdI44myRRJ3DvL8rcNwBOlZsMt/<uuid>.jpg","object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":666000000},"removedAt":null,"removedBy":null,"publishToken":"<uuid>","decision":{"kind":"approve","batchId":"<uuid>"},"fileDeleteAfter":{"_seconds":1794168638,"_nanoseconds":700000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":700000000},"publicUrl":"https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>","decidedBy":"WONm4izU6cKrOI9gsdRvQwnJvm7Y","publishedPath":"destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","status":"published","fileDeletedAt":{"_seconds":1794168638,"_nanoseconds":708000000}}],["businessPhotos/<uuid>",1794168638706,{"destinationId":"negocio-<uuid>","uploadedBy":"ERWbXYVALaE51LvhXYROzk1seNlH","uploaderRole":"manager","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/ERWbXYVALaE51LvhXYROzk1seNlH/<uuid>.jpg","publishedPath":null,"publicUrl":null,"object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":670000000},"removedAt":null,"removedBy":null,"fileDeletedAt":null,"decision":{"kind":"reject","batchId":"<uuid>","reasonCode":"otro","ownerMessage":"Tiene un logo encima"},"fileDeleteAfter":{"_seconds":1794773438,"_nanoseconds":700000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":700000000},"decidedBy":"WONm4izU6cKrOI9gsdRvQwnJvm7Y","status":"rejected"}]],"audits":2,"objects":["destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","ownerPhotos/ERWbXYVALaE51LvhXYROzk1seNlH/<uuid>.jpg"]}"
+Received: "{"docs":[["destinations/negocio-<uuid>",1794168638706,{"name":{"es":"Colmado Marrero"},"province":"La Romana","tier":"registrado","imageUrls":["https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>"]}],["businessPhotoTargets/negocio-<uuid>",1794168638706,{"inReview":[],"published":["<uuid>"],"windowStart":0,"submittedInWindow":2,"updatedAt":{"_seconds":1794168638,"_nanoseconds":700000000}}],["photoReviewBatches/<uuid>",1794168638706,{"destinationId":"negocio-<uuid>","decidedBy":"WONm4izU6cKrOI9gsdRvQwnJvm7Y","bodyHash":"5bf410703e689538b2cef9e8aade82118dda213e81d3faa620757575315793e2","photoIds":["<uuid>","<uuid>"],"decisions":[{"photoId":"<uuid>","kind":"approve","reasonCode":null,"ownerMessage":null},{"photoId":"<uuid>","kind":"reject","reasonCode":"otro","ownerMessage":"Tiene un logo encima"}],"decidedAt":{"_seconds":1794168638,"_nanoseconds":700000000},"recipients":[{"uid":"evOdI44myRRJ3DvL8rcNwBOlZsMt","photoIds":["<uuid>"]},{"uid":"ERWbXYVALaE51LvhXYROzk1seNlH","photoIds":["<uuid>"]}],"publishedAfter":1,"cap":12}],["businessPhotos/<uuid>",1794168638711,{"destinationId":"negocio-<uuid>","uploadedBy":"evOdI44myRRJ3DvL8rcNwBOlZsMt","uploaderRole":"owner","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/evOdI44myRRJ3DvL8rcNwBOlZsMt/<uuid>.jpg","object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":666000000},"removedAt":null,"removedBy":null,"publishToken":"<uuid>","decision":{"kind":"approve","batchId":"<uuid>"},"fileDeleteAfter":{"_seconds":1794168638,"_nanoseconds":700000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":700000000},"publicUrl":"https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>","decidedBy":"WONm4izU6cKrOI9gsdRvQwnJvm7Y","publishedPath":"destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","status":"published","fileDeletedAt":{"_seconds":1794168638,"_nanoseconds":708000000}}],["businessPhotos/<uuid>",1794168638706,{"destinationId":"negocio-<uuid>","uploadedBy":"ERWbXYVALaE51LvhXYROzk1seNlH","uploaderRole":"manager","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/ERWbXYVALaE51LvhXYROzk1seNlH/<uuid>.jpg","publishedPath":null,"publicUrl":null,"object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":670000000},"removedAt":null,"removedBy":null,"fileDeletedAt":null,"decision":{"kind":"reject","batchId":"<uuid>","reasonCode":"otro","ownerMessage":"Tiene un logo encima"},"fileDeleteAfter":{"_seconds":1794773438,"_nanoseconds":700000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":700000000},"decidedBy":"WONm4izU6cKrOI9gsdRvQwnJvm7Y","status":"rejected"}]],"audits":2,"objects":["destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","ownerPhotos/ERWbXYVALaE51LvhXYROzk1seNlH/<uuid>.jpg"]}"
+
+ ❯ test/business-photos-sweep.test.ts:673:51
+    671|         expect(atSend).toHaveLength(2);
+    672|         const after = await stateOf(b.d, b.photos, b.batchId, store);
+    673|         for (const state of atSend) expect(state).toBe(after);
+       |                                                   ^
+    674|         await new Promise((resolve) => setTimeout(resolve, 300));
+    675|         expect(await stateOf(b.d, b.photos, b.batchId, store)).toBe(af…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/business-photos-sweep.test.ts > reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws
+AssertionError: expected '{"docs":[["destinations/negocio-15369…' to be '{"docs":[["destinations/negocio-15369…' // Object.is equality
+
+Expected: "{"docs":[["destinations/negocio-<uuid>",1794168638867,{"name":{"es":"Colmado Marrero"},"province":"La Romana","tier":"registrado","imageUrls":["https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>"]}],["businessPhotoTargets/negocio-<uuid>",1794168638867,{"inReview":[],"published":["<uuid>"],"windowStart":0,"submittedInWindow":2,"updatedAt":{"_seconds":1794168638,"_nanoseconds":860000000}}],["photoReviewBatches/<uuid>",1794168638938,{"destinationId":"negocio-<uuid>","decidedBy":"JKsfpFt15DnM3SOocTuD2dzWIEON","bodyHash":"30474de0d22fdca24fed8589f3a60a54318cc4f06074e61e524d5206a4a280e0","photoIds":["<uuid>","<uuid>"],"decisions":[{"photoId":"<uuid>","kind":"approve","reasonCode":null,"ownerMessage":null},{"photoId":"<uuid>","kind":"reject","reasonCode":"otro","ownerMessage":"Tiene un logo encima"}],"decidedAt":{"_seconds":1794168638,"_nanoseconds":860000000},"recipients":[{"uid":"wYopOGYbnBYxPB4oSXz6Lob0bLjA","photoIds":["<uuid>"]},{"uid":"pxyE9uuUxZTKxsfv6Jraj2MR1bzl","photoIds":["<uuid>"]}],"publishedAfter":1,"cap":12,"resentAt":{"_seconds":1794168638,"_nanoseconds":935000000}}],["businessPhotos/<uuid>",1794168638871,{"destinationId":"negocio-<uuid>","uploadedBy":"wYopOGYbnBYxPB4oSXz6Lob0bLjA","uploaderRole":"owner","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/wYopOGYbnBYxPB4oSXz6Lob0bLjA/<uuid>.jpg","object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":824000000},"removedAt":null,"removedBy":null,"publishToken":"<uuid>","decision":{"kind":"approve","batchId":"<uuid>"},"fileDeleteAfter":{"_seconds":1794168638,"_nanoseconds":860000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":860000000},"publicUrl":"https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>","decidedBy":"JKsfpFt15DnM3SOocTuD2dzWIEON","publishedPath":"destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","status":"published","fileDeletedAt":{"_seconds":1794168638,"_nanoseconds":869000000}}],["businessPhotos/<uuid>",1794168638867,{"destinationId":"negocio-<uuid>","uploadedBy":"pxyE9uuUxZTKxsfv6Jraj2MR1bzl","uploaderRole":"manager","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/pxyE9uuUxZTKxsfv6Jraj2MR1bzl/<uuid>.jpg","publishedPath":null,"publicUrl":null,"object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":829000000},"removedAt":null,"removedBy":null,"fileDeletedAt":null,"decision":{"kind":"reject","batchId":"<uuid>","reasonCode":"otro","ownerMessage":"Tiene un logo encima"},"fileDeleteAfter":{"_seconds":1794773438,"_nanoseconds":860000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":860000000},"decidedBy":"JKsfpFt15DnM3SOocTuD2dzWIEON","status":"rejected"}]],"audits":2,"objects":["destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","ownerPhotos/pxyE9uuUxZTKxsfv6Jraj2MR1bzl/<uuid>.jpg"]}"
+Received: "{"docs":[["destinations/negocio-<uuid>",1794168638867,{"name":{"es":"Colmado Marrero"},"province":"La Romana","tier":"registrado","imageUrls":["https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>"]}],["businessPhotoTargets/negocio-<uuid>",1794168638867,{"inReview":[],"published":["<uuid>"],"windowStart":0,"submittedInWindow":2,"updatedAt":{"_seconds":1794168638,"_nanoseconds":860000000}}],["photoReviewBatches/<uuid>",1794168638867,{"destinationId":"negocio-<uuid>","decidedBy":"JKsfpFt15DnM3SOocTuD2dzWIEON","bodyHash":"30474de0d22fdca24fed8589f3a60a54318cc4f06074e61e524d5206a4a280e0","photoIds":["<uuid>","<uuid>"],"decisions":[{"photoId":"<uuid>","kind":"approve","reasonCode":null,"ownerMessage":null},{"photoId":"<uuid>","kind":"reject","reasonCode":"otro","ownerMessage":"Tiene un logo encima"}],"decidedAt":{"_seconds":1794168638,"_nanoseconds":860000000},"recipients":[{"uid":"wYopOGYbnBYxPB4oSXz6Lob0bLjA","photoIds":["<uuid>"]},{"uid":"pxyE9uuUxZTKxsfv6Jraj2MR1bzl","photoIds":["<uuid>"]}],"publishedAfter":1,"cap":12}],["businessPhotos/<uuid>",1794168638871,{"destinationId":"negocio-<uuid>","uploadedBy":"wYopOGYbnBYxPB4oSXz6Lob0bLjA","uploaderRole":"owner","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/wYopOGYbnBYxPB4oSXz6Lob0bLjA/<uuid>.jpg","object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":824000000},"removedAt":null,"removedBy":null,"publishToken":"<uuid>","decision":{"kind":"approve","batchId":"<uuid>"},"fileDeleteAfter":{"_seconds":1794168638,"_nanoseconds":860000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":860000000},"publicUrl":"https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/destinations%2Fnegocio-<uuid>%2Fowner-photos%2F<uuid>.jpg?alt=media&token=<uuid>","decidedBy":"JKsfpFt15DnM3SOocTuD2dzWIEON","publishedPath":"destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","status":"published","fileDeletedAt":{"_seconds":1794168638,"_nanoseconds":869000000}}],["businessPhotos/<uuid>",1794168638867,{"destinationId":"negocio-<uuid>","uploadedBy":"pxyE9uuUxZTKxsfv6Jraj2MR1bzl","uploaderRole":"manager","caption":"Frente","tourId":null,"stagingPath":"ownerPhotos/pxyE9uuUxZTKxsfv6Jraj2MR1bzl/<uuid>.jpg","publishedPath":null,"publicUrl":null,"object":{"size":1000,"md5Hash":null,"width":64,"height":48},"bodyHash":"sembrada","createdAt":{"_seconds":1794168578,"_nanoseconds":829000000},"removedAt":null,"removedBy":null,"fileDeletedAt":null,"decision":{"kind":"reject","batchId":"<uuid>","reasonCode":"otro","ownerMessage":"Tiene un logo encima"},"fileDeleteAfter":{"_seconds":1794773438,"_nanoseconds":860000000},"decidedAt":{"_seconds":1794168638,"_nanoseconds":860000000},"decidedBy":"JKsfpFt15DnM3SOocTuD2dzWIEON","status":"rejected"}]],"audits":2,"objects":["destinations/negocio-<uuid>/owner-photos/<uuid>.jpg","ownerPhotos/pxyE9uuUxZTKxsfv6Jraj2MR1bzl/<uuid>.jpg"]}"
+
+ ❯ test/business-photos-sweep.test.ts:673:51
+    671|         expect(atSend).toHaveLength(2);
+    672|         const after = await stateOf(b.d, b.photos, b.batchId, store);
+    673|         for (const state of atSend) expect(state).toBe(after);
+       |                                                   ^
+    674|         await new Promise((resolve) => setTimeout(resolve, 300));
+    675|         expect(await stateOf(b.d, b.photos, b.batchId, store)).toBe(af…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 16 passed (20)
+   Start at  16:10:35
+   Duration  3.45s (transform 290ms, setup 16ms, collect 417ms, tests 2.82s, environment 0ms, prepare 66ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/business-photos-sweep.test.ts" exited with code 1
