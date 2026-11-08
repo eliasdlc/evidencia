@@ -1,0 +1,74 @@
+# R1 at a6e96c4, with src/lib/email/templates/member-permission.ts back at 258c1af
+# $ bash /home/decruce/.cache/conocerd-api/fix-correo-permiso-numeros/scrub.sh pnpm exec vitest run src/lib/members.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/correo-permiso-numeros
+
+ ❯ src/lib/members.test.ts (14 tests | 1 failed) 26ms
+   ✓ el enlace del permiso (I5) > tiene la forma <memberId>.<firma> y el id se lee de vuelta 4ms
+   ✓ el enlace del permiso (I5) > abre su permiso pendiente antes de vencer 2ms
+   ✓ el enlace del permiso (I5) > vence a su hora exacta (fila 15) 1ms
+   ✓ el enlace del permiso (I5) > una firma cambiada, otro secreto, otro negocio u otro correo no abren nada (fila 20) 1ms
+   ✓ el enlace del permiso (I5) > un enlace de invitación de dueño con los mismos campos no abre un permiso (D3, fila 20) 0ms
+   ✓ el enlace del permiso (I5) > un token que no está entre los emitidos no abre, aunque la firma sea buena 0ms
+   ✓ el enlace del permiso (I5) > cada enlace vence a su hora aunque haya otro que venza después (fila 18) 1ms
+   ✓ el enlace del permiso (I5) > aceptado, el enlace gastado dice quién aceptó; uno vivo en un aceptado no es de nadie (filas 16 y 17) 1ms
+   ✓ emailHint (G6) > dos letras, ***, @ y el dominio entero 0ms
+   ✓ emailHint (G6) > con una parte local de menos de 3 letras, solo la primera 0ms
+   ✓ el correo del permiso (sección 1.5) > asunto con y sin nombre del dueño 1ms
+   × el correo del permiso (sección 1.5) > cada permiso dice lo suyo, con el enlace, la cuenta propia y el día límite 11ms
+     → expected 'Hola:\n\nAna te dio permiso para mane…' not to match /vieron la página/
+   ✓ el correo del permiso (sección 1.5) > sin WhatsApp de ConoceRD, sin teléfono, sin "Laura" y sin raya larga (D4) 1ms
+   ✓ por dónde sale el permiso > sin clave, nada; modo prueba con buzón, muestra; en vivo, el enlace real 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/members.test.ts > el correo del permiso (sección 1.5) > cada permiso dice lo suyo, con el enlace, la cuenta propia y el día límite
+AssertionError: expected 'Hola:\n\nAna te dio permiso para mane…' not to match /vieron la página/
+
+- Expected: 
+/vieron la página/
+
++ Received: 
+"Hola:
+
+Ana te dio permiso para manejar la página de Negocio de ejemplo en ConoceRD, la app de viajes por República Dominicana. Es gratis.
+
+LO QUE PUEDES HACER
+- contestar las reseñas, los comentarios que la gente deja en la app.
+- cambiar lo que ve la gente: el horario, el WhatsApp y qué hace especial al negocio.
+- ver los números del mes: cuántos vieron la página y tocaron el botón de WhatsApp.
+Lo único que no puedes es dar permisos a otras personas: eso lo hace Ana.
+
+Entrar a la página de Negocio de ejemplo: https://negocios.conocerd.app/permiso?t=EJEMPLO
+
+Entras con lo tuyo: tu Gmail o una contraseña que crees tú. Ana no te pasa la suya y nadie te la va a pedir.
+
+Tienes 7 días para entrar la primera vez, hasta el martes 8 de diciembre. Si se pasan los 7 días, pídele a Ana que te lo mande otra vez.
+
+¿ESTE CORREO ES DE VERDAD?
+Sale de <email>. Si dudas, pregúntale a Ana, o responde a este correo o escribe a <email>. Nunca te pedimos tu contraseña, tu tarjeta ni dinero por mensaje ni por llamada.
+
+El equipo de ConoceRD
+
+--
+Te escribimos porque Ana, del negocio Negocio de ejemplo, te dio permiso desde su página. Si no lo esperabas, no toques nada: el permiso se vence solo.
+Este correo llegó a <email>.
+ConoceRD, Santo Domingo, República Dominicana.
+"
+
+ ❯ src/lib/members.test.ts:170:25
+    168|     expect(manager).toContain('ver los números del mes');
+    169|     // El panel no cuenta quién vio la página (decisión de la sesión 4…
+    170|     expect(manager).not.toMatch(/vieron la página/);
+       |                         ^
+    171|     expect(manager).toContain('cuánta gente estuvo en el negocio con l…
+    172|     const reviews = memberPermissionEmail({ ...base, role: 'reviews' }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  10:17:12
+   Duration  1.20s (transform 227ms, setup 27ms, collect 747ms, tests 26ms, environment 0ms, prepare 131ms)
+
