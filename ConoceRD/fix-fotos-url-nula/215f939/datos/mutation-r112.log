@@ -1,0 +1,60 @@
+# R112 at 215f939, with m2.patch applied
+# $ pnpm exec vitest run src/features/negocio/fotos/model.test.ts src/features/negocio/fotos/FotosPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/fix-fotos-url-nula
+
+ ❯ src/features/negocio/fotos/model.test.ts (36 tests | 1 failed) 31ms
+   ❯ isPhotoList (3)
+     × accepts a rejected photo with no URL, and refuses a URL that is neither text nor null 9ms
+stderr | src/features/negocio/fotos/FotosPage.test.tsx > Tus fotos, a rejected photo whose file is gone > shows a plain tile with its status and the day it leaves the list, and asks for no picture
+The current testing environment is not configured to support act(...)
+
+stderr | src/features/negocio/fotos/FotosPage.test.tsx > Tus fotos, a rejected photo whose file is gone > shows a plain tile with its status and the day it leaves the list, and asks for no picture
+The current testing environment is not configured to support act(...)
+
+stderr | src/features/negocio/fotos/FotosPage.test.tsx > Tus fotos, a rejected photo whose file is gone > shows a plain tile with its status and the day it leaves the list, and asks for no picture
+The current testing environment is not configured to support act(...)
+
+ ❯ src/features/negocio/fotos/FotosPage.test.tsx (47 tests | 1 failed) 3344ms
+   ❯ Tus fotos, a rejected photo whose file is gone (1)
+     × shows a plain tile with its status and the day it leaves the list, and asks for no picture 61ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/fotos/FotosPage.test.tsx > Tus fotos, a rejected photo whose file is gone > shows a plain tile with its status and the day it leaves the list, and asks for no picture
+AssertionError: expected null not to be null
+ ❯ src/features/negocio/fotos/FotosPage.test.tsx:642:86
+    640|     await mount();
+    641|     expect(document.querySelector('img')).toBeNull();
+    642|     expect(document.querySelector('[role="img"][aria-label^="Con el le…
+       |                                                                                      ^
+    643|     expect(body()).toContain('La quitamos de la app: tiene el letrero …
+    644|     expect(body()).toContain('La quitamos de tu lista el');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/fotos/model.test.ts > isPhotoList > accepts a rejected photo with no URL, and refuses a URL that is neither text nor null
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/features/negocio/fotos/model.test.ts:256:52
+    254|   it('accepts a rejected photo with no URL, and refuses a URL that is …
+    255|     const gone = { ...photo('a'), status: 'rejected', url: null, urlEx…
+    256|     expect(isPhotoList({ ...ok, photos: [gone] })).toBe(true);
+       |                                                    ^
+    257|     expect(isPhotoList({ ...ok, photos: [{ ...gone, url: 7 }] })).toBe…
+    258|     expect(isPhotoList({ ...ok, photos: [{ ...gone, url: undefined }] …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 81 passed (83)
+   Start at  13:11:41
+   Duration  4.01s (tests 85%, environment 8%, import 5%, transform 2%)
+
