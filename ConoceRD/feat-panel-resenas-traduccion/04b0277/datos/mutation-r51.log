@@ -1,0 +1,57 @@
+# R51 at 04b0277, with m1.patch applied
+# $ pnpm exec vitest run src/features/negocio/resenas/Traduccion.test.tsx src/features/negocio/resenas/ResenasPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat-panel-resenas-traduccion
+
+ ❯ src/features/negocio/resenas/Traduccion.test.tsx (39 tests | 2 failed) 1587ms
+   ❯ what the list says (8)
+     × with the feature off shows no button and no message on any card 63ms
+   ❯ asking for a translation (11)
+     × a { status: 'unavailable', …(1) } answer leaves no extra text and no button 54ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/resenas/Traduccion.test.tsx > what the list says > with the feature off shows no button and no message on any card
+AssertionError: expected [ <button …(2)></button>, …(2) ] to have a length of +0 but got 3
+
+- Expected
++ Received
+
+- 0
++ 3
+
+ ❯ src/features/negocio/resenas/Traduccion.test.tsx:184:53
+    182|     await mount();
+    183|     expect(host?.querySelectorAll('article')).toHaveLength(3);
+    184|     expect(buttons(/Traducir|traducción|Intentar/)).toHaveLength(0);
+       |                                                     ^
+    185|     expect(text()).not.toMatch(/traduc|traductor/i);
+    186|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/resenas/Traduccion.test.tsx > asking for a translation > a { status: 'unavailable', …(1) } answer leaves no extra text and no button
+AssertionError: expected [ Array(1) ] to have a length of +0 but got 1
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ src/features/negocio/resenas/Traduccion.test.tsx:288:42
+    286|     await mount();
+    287|     await click(buttons('Traducir al español')[0]);
+    288|     expect(buttons(/Traducir|Intentar/)).toHaveLength(0);
+       |                                          ^
+    289|     expect(text()).not.toContain('Traducido');
+    290|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 73 passed (75)
+   Start at  04:11:03
+   Duration  2.48s (tests 86%, environment 11%, import 3%)
+
