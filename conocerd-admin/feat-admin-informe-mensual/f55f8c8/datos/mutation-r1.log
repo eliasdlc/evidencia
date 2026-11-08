@@ -1,0 +1,32 @@
+# R1 at f55f8c8, with i1.patch applied
+# $ pnpm exec vitest run src/informe/modelo.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/admin-informe-mensual
+
+ ❯ src/informe/modelo.test.ts (9 tests | 1 failed) 14ms
+     × el mes por defecto es el último cerrado en la hora de Santo Domingo 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/informe/modelo.test.ts > mes > el mes por defecto es el último cerrado en la hora de Santo Domingo
+AssertionError: expected '2026-10' to be '2026-09' // Object.is equality
+
+Expected: "2026-09"
+Received: "2026-10"
+
+ ❯ src/informe/modelo.test.ts:26:61
+     24|     expect(mesPorDefecto(new Date('2026-11-07T03:00:00Z'))).toBe('2026…
+     25|     // 1 nov a las 00:30 UTC todavía es 31 oct (20:30) en Santo Doming…
+     26|     expect(mesPorDefecto(new Date('2026-11-01T00:30:00Z'))).toBe('2026…
+       |                                                             ^
+     27|     // En enero el último cerrado es diciembre del año anterior.
+     28|     expect(mesPorDefecto(new Date('2027-01-15T12:00:00Z'))).toBe('2026…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  15:16:45
+   Duration  205ms (transform 41ms, setup 0ms, import 51ms, tests 14ms, environment 0ms)
+
