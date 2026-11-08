@@ -1,0 +1,413 @@
+# R1 at 42292fb, with q-n1.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu.sh test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/6a-hospedaje-finca-tienda
+
+ ❯ test/profile-kinds-route.test.ts (74 tests | 2 failed) 12821ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 1: en R, {"tours":[]} es 422 field_not_for_type y no escribe nada  1755ms
+   × ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 2: en T, {"stay":{"includes":["Wifi"]}} es 422 field_not_for_type y no escribe nada 249ms
+     → expected { status: 200, body: { …(2) } } to match object { status: 422, …(1) }
+(16 matching properties omitted from actual)
+   × ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 4: en S, {"craft":{"products":["x"]},"description":{"es":"Hola"}} es 422 field_not_for_type y no escribe nada 144ms
+     → expected { status: 200, body: { …(2) } } to match object { status: 422, …(1) }
+(16 matching properties omitted from actual)
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 5: en F, {"tours":null} es 422 field_not_for_type y no escribe nada 114ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 3: la puerta va antes del eco: X con sus tours guardados tal cual es 422 field_not_for_type 109ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: GET de T trae kind tours y ninguna clave propia de otro tipo 42ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: GET de L trae kind tours y ninguna clave propia de otro tipo 37ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: GET de L2 trae kind tours y ninguna clave propia de otro tipo 47ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: GET de S trae kind stay y ninguna clave propia de otro tipo 53ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: GET de S2 trae kind stay y ninguna clave propia de otro tipo 50ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: GET de F trae kind farm y ninguna clave propia de otro tipo 42ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: GET de X trae kind farm y ninguna clave propia de otro tipo 38ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: GET de C trae kind craft y ninguna clave propia de otro tipo 34ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: GET de R trae kind dining y ninguna clave propia de otro tipo 38ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 6: los otros placeType del cuadro  367ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 7: si el tipo cambia entre la lectura de la ruta y la transacción, 409 stale_profile sin escribir 92ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: en T, el cuerpo entero de GET con updatedAt y kind es 200 changed [] y no escribe 131ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: en L, el cuerpo entero de GET con updatedAt y kind es 200 changed [] y no escribe 123ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: en L2, el cuerpo entero de GET con updatedAt y kind es 200 changed [] y no escribe 138ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: en S, el cuerpo entero de GET con updatedAt y kind es 200 changed [] y no escribe 128ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: en S2, el cuerpo entero de GET con updatedAt y kind es 200 changed [] y no escribe 140ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: en F, el cuerpo entero de GET con updatedAt y kind es 200 changed [] y no escribe 129ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: en X, el cuerpo entero de GET con updatedAt y kind es 200 changed [] y no escribe 127ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: en C, el cuerpo entero de GET con updatedAt y kind es 200 changed [] y no escribe 150ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: en R, el cuerpo entero de GET con updatedAt y kind es 200 changed [] y no escribe 137ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 8: T muestra el updatedAt U1 y lo acepta de vuelta 38ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 14: un updatedAt distinto del mostrado es 409 stale_profile (copia vieja) y no escribe 152ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 15: un kind distinto del mostrado es 409 stale_profile y no escribe 93ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > un valor de solo lectura que GET nunca pudo mostrar ({"updatedAt":5}) es 422 invalid_body, no 409 88ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > un valor de solo lectura que GET nunca pudo mostrar ({"updatedAt":{"a":1}}) es 422 invalid_body, no 409 96ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > un valor de solo lectura que GET nunca pudo mostrar ({"kind":{}}) es 422 invalid_body, no 409 89ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > un valor de solo lectura que GET nunca pudo mostrar ({"kind":"banana"}) es 422 invalid_body, no 409 88ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > un valor de solo lectura que GET nunca pudo mostrar ({"kind":7}) es 422 invalid_body, no 409 83ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > un valor de solo lectura que GET nunca pudo mostrar ({"updatedAt":""}) es 422 invalid_body, no 409 80ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > un valor de solo lectura que GET nunca pudo mostrar ({"updatedAt":"banana"}) es 422 invalid_body, no 409 104ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > un valor de solo lectura que GET nunca pudo mostrar ({"updatedAt":"2020-01-01"}) es 422 invalid_body, no 409 95ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > un valor de solo lectura que GET nunca pudo mostrar ({"updatedAt":"2020-01-01T00:00:00.000Z","kind":"banana"}) es 422 invalid_body, no 409 86ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > solo updatedAt y kind, sin campos de la ficha, sigue siendo 422 63ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 2: lectura de las excursiones y el resumen > caso 6: T muestra sus excursiones como OwnerTour, sin meetingPoint ni languages 36ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 2: lectura de las excursiones y el resumen > caso 6: L muestra su excursión vieja con un id provisional, fare del price y los 13 includes 36ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 2: lectura de las excursiones y el resumen > caso 6: un operador sin excursiones muestra tours []; X (finca) no muestra sus tours sueltos 66ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 2: lectura de las excursiones y el resumen > caso 38: L2 dos veces: 5 excursiones, ids válidos, distintos e iguales en las dos lecturas 54ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 2: lectura de las excursiones y el resumen > caso 56: el resumen agrega nombres, el tipo y si hay enlace de reserva, sin cambiar ninguna cifra 190ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 2: lectura de las excursiones y el resumen > caso 56: el nombre es es, si no en; sin enlace de reserva hasBooking es false; otro tipo no lleva nombres 115ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 9: L con GET.tours de vuelta es 200 [] y la excursión sigue sin id 134ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 10: L con GET.tours[0] y notes nuevas escribe notes, adopta el id y conserva includes y price 122ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 11: T con valores iguales a los mostrados es 200 [] sin escribir 104ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > casos 17 y 18: una excursión nueva sin nombre, o un nombre null, es 422 208ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 19: name.es de 80 caracteres es 200; de 81 es 422 176ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 20: los límites de fare  662ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 21: highSeasonMonths [12,1,2] se guarda [1,2,12]; [0], [13], [1,1] y los 12 meses son 422; [] borra  559ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 22: bookingUrl  466ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 23: 12 excursiones son 200; 13 son 422 152ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 24: includes de 12 x 80 es 200; 13 elementos o uno de 81 son 422 285ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 25: durationMinutes y maxGroup  524ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 26: una excursión con price, meetingPoint o languages es 422, aunque sean los guardados 187ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 32: constructor en un nombre, __proto__ dentro de una excursión y 21 niveles son 422, nunca 500 183ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > casos 33 y 40: una excursión nueva recibe un id del servidor y su toque de Reservar cuenta aparte 182ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 34: renombrar tA conserva su id y sus claves guardadas 77ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 35: un id bien formado que no es de ninguna excursión es 409 stale_profile 80ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > casos 36 y 37: ids mal formados o repetidos son 422  342ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 39: un id provisional viejo, después de que la excursión cambió por fuera, es 409 108ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 41: reordenar con If-Match deja B, A y tA conserva sus claves guardadas 112ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > casos 42 y 57: quitar tB con If-Match lo borra, y su toque de Reservar va a general 142ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 43: quitar una excursión sin If-Match es 428 if_match_required 79ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 44: quitar una excursión con un If-Match viejo es 409 88ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 45: borrar bookingUrl sin quitar nada no pide If-Match 81ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 46: tours [] con If-Match borra la clave 85ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 47: L2 con notes en la primera, sin If-Match: la basura se va sin 428 y cada excursión guarda su id mostrado 108ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 48: fare nuevo en L borra el price viejo y adopta el id 88ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 49: fare null en L borra el price y no deja fare 115ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 54: un campo de la ficha y las excursiones en un PATCH: una línea con las dos rutas, antes y después 84ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > caso 54: tours [] deja after null en la bitácora 88ms
+   ✓ ficha por tipo de negocio contra el emulador > pase 3: escritura de las excursiones > vaciar un campo borra su clave: schedule null, includes [], durationMinutes null 183ms
+ ❯ test/profile-maps-route.test.ts (42 tests | 3 failed) 7250ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: S muestra stay con sus tres campos del dueño, sin priceFrom ni capacity  361ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: S2 (stay es un texto) muestra stay vacío 46ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: un stay con valores, y con otros que no tienen la forma, se lee con tolerancia 47ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: F muestra farm vacío; una finca con farm lo muestra 109ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: C muestra craft sin paymentMethods; acceptsCommissions es true solo si está guardado true 69ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 6: R y T no muestran ningún mapa 95ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en S, el cuerpo entero de GET es 200 changed [] y no escribe 173ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en S2, el cuerpo entero de GET es 200 changed [] y no escribe 128ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en F, el cuerpo entero de GET es 200 changed [] y no escribe 141ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en C, el cuerpo entero de GET es 200 changed [] y no escribe 116ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en un stay con valores que hoy no pasarían, el cuerpo entero de GET es 200 changed [] y no escribe 125ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en una finca llena, el cuerpo entero de GET es 200 changed [] y no escribe 108ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 1: lectura de los mapas > caso 8: en una tienda llena, el cuerpo entero de GET es 200 changed [] y no escribe 110ms
+   × ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 2: T con stay es 422 field_not_for_type y no escribe nada 123ms
+     → expected { status: 200, body: { …(2) } } to match object { status: 422, …(1) }
+(16 matching properties omitted from actual)
+   × ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 4: S con craft y description es 422 field_not_for_type, ni siquiera description 89ms
+     → expected { status: 200, body: { …(2) } } to match object { status: 422, …(1) }
+(16 matching properties omitted from actual)
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > casos 12 y 51: includes [] es eco; bring se escribe por ruta y [] borra la clave; priceFrom y capacity quedan 156ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 31: houseRules sin forma, priceFrom y stay null son 422; houseRules {pets:true} es 200  363ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > houseRules se reemplaza entero, y {} o null lo borran 290ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > las listas: 12 líneas de 80 son 200; 13 líneas o una de 81 son 422; se recortan y no se repiten 296ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 53: S2 (stay es un texto) con includes escribe stay como un mapa de lo del dueño 84ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > un hotel sin stay recibe stay con solo lo escrito 91ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > vaciar lo último que tiene stay borra la clave entera: no queda un mapa vacío 78ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > el eco va dentro del mapa: 13 includes guardados vuelven sin error y bring se escribe 90ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > el eco compara también con lo guardado: unas houseRules guardadas con una clave de más vuelven sin error 89ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > un valor nuevo que al recortarse es lo guardado no escribe; stay {} tampoco 140ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 54: un campo de la ficha y dos subcampos en un PATCH: una línea con las tres rutas 89ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 32: __proto__ dentro de stay y 21 niveles son 422, nunca 500 146ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 27: F con advanceNotice one_week escribe farm.advanceNotice 85ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 28: un aviso desconocido, farm null y los límites movidos por uno son 422  534ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 28: los límites que pasan: 5 y 1440 minutos, grupos de 1 y 500, fare de 1000000 pesos y 20000 dólares  449ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > null borra cada subcampo, y una finca que queda sin nada pierde la clave farm 145ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > el eco va dentro del mapa: un aviso guardado que hoy no existe vuelve sin error 145ms
+   × ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 1 en finca: farm en un comedor es 422 field_not_for_type 81ms
+     → expected { status: 200, body: { …(2) } } to match object { status: 422, …(1) }
+(15 matching properties omitted from actual)
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 13: C con acceptsCommissions true y materials guardados es 200 [] sin escribir 84ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 13: la forma guardada también es un eco aunque GET la muestre distinta 89ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > casos 29 y 50: payments sin repetir y en su orden; escribirlo borra paymentMethods y deja materials 185ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 50: payments [card] en C directo 66ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > un PATCH de otro subcampo no borra paymentMethods 72ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 30: un pago o un envío desconocidos y paymentMethods son 422  377ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 52: acceptsCommissions false borra la clave; true la guarda 191ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > shipping none se guarda; null lo borra; productos y materiales de 12 x 80 204ms
+   ✓ ficha de hospedaje, finca y tienda contra el emulador > pase 4: tienda > caso 54: payments en la bitácora con su antes y su después 92ms
+ ✓ src/lib/profile-maps.test.ts (35 tests) 56ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/profile-kinds-route.test.ts > ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 2: en T, {"stay":{"includes":["Wifi"]}} es 422 field_not_for_type y no escribe nada
+ FAIL  test/profile-kinds-route.test.ts > ficha por tipo de negocio contra el emulador > pase 1: tipo, puerta y eco de solo lectura > caso 4: en S, {"craft":{"products":["x"]},"description":{"es":"Hola"}} es 422 field_not_for_type y no escribe nada
+AssertionError: expected { status: 200, body: { …(2) } } to match object { status: 422, …(1) }
+(16 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "body": {[22m
+[32m-     "error": "field_not_for_type",[39m
+[31m+     "changed": [[39m
+[31m+       "stay.includes",[39m
+[31m+     ],[39m
+[31m+     "profile": {[39m
+[31m+       "bestTimeToVisit": null,[39m
+[31m+       "description": null,[39m
+[31m+       "entryFee": null,[39m
+[31m+       "howToGetThere": null,[39m
+[31m+       "instagram": null,[39m
+[31m+       "kind": "tours",[39m
+[31m+       "openingHours": null,[39m
+[31m+       "phone": null,[39m
+[31m+       "services": [],[39m
+[31m+       "tours": [[39m
+[31m+         {[39m
+[31m+           "bookingUrl": "https://reservas.example.com/a",[39m
+[31m+           "bring": [],[39m
+[31m+           "durationMinutes": null,[39m
+[31m+           "fare": {[39m
+[31m+             "dop": 3500,[39m
+[31m+             "usd": 60,[39m
+[2m            },[22m
+[32m-   "status": 422,[39m
+[31m+           "fareHighSeason": null,[39m
+[31m+           "highSeasonMonths": [],[39m
+[31m+           "id": "tA",[39m
+[31m+           "includes": [],[39m
+[31m+           "maxGroup": null,[39m
+[31m+           "name": {[39m
+[31m+             "es": "Manglares",[39m
+[31m+           },[39m
+[31m+           "notes": null,[39m
+[31m+           "schedule": null,[39m
+[31m+         },[39m
+[31m+         {[39m
+[31m+           "bookingUrl": null,[39m
+[31m+           "bring": [],[39m
+[31m+           "durationMinutes": null,[39m
+[31m+           "fare": null,[39m
+[31m+           "fareHighSeason": null,[39m
+[31m+           "highSeasonMonths": [],[39m
+[31m+           "id": "tB",[39m
+[31m+           "includes": [],[39m
+[31m+           "maxGroup": null,[39m
+[31m+           "name": {[39m
+[31m+             "es": "Cayo",[39m
+[31m+           },[39m
+[31m+           "notes": null,[39m
+[31m+           "schedule": null,[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "updatedAt": "2026-11-08T06:40:47.538Z",[39m
+[31m+       "warnings": [],[39m
+[31m+       "website": null,[39m
+[31m+       "whatsapp": null,[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "status": 200,[39m
+[2m  }[22m
+
+ ❯ test/profile-kinds-route.test.ts:172:44
+    170|       const { id, token } = await seedOf(seedName);
+    171|       const before = await stored(id);
+    172|       expect(await patch(id, token, body)).toMatchObject({ status: 422…
+       |                                            ^
+    173|       await expectNoWrite(id, before);
+    174|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/profile-maps-route.test.ts > ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 2: T con stay es 422 field_not_for_type y no escribe nada
+AssertionError: expected { status: 200, body: { …(2) } } to match object { status: 422, …(1) }
+(16 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "body": {[22m
+[32m-     "error": "field_not_for_type",[39m
+[31m+     "changed": [[39m
+[31m+       "stay.includes",[39m
+[31m+     ],[39m
+[31m+     "profile": {[39m
+[31m+       "bestTimeToVisit": null,[39m
+[31m+       "description": null,[39m
+[31m+       "entryFee": null,[39m
+[31m+       "howToGetThere": null,[39m
+[31m+       "instagram": null,[39m
+[31m+       "kind": "tours",[39m
+[31m+       "openingHours": null,[39m
+[31m+       "phone": null,[39m
+[31m+       "services": [],[39m
+[31m+       "tours": [[39m
+[31m+         {[39m
+[31m+           "bookingUrl": null,[39m
+[31m+           "bring": [],[39m
+[31m+           "durationMinutes": null,[39m
+[31m+           "fare": null,[39m
+[31m+           "fareHighSeason": null,[39m
+[31m+           "highSeasonMonths": [],[39m
+[31m+           "id": "tA",[39m
+[31m+           "includes": [],[39m
+[31m+           "maxGroup": null,[39m
+[31m+           "name": {[39m
+[31m+             "es": "Manglares",[39m
+[31m+           },[39m
+[31m+           "notes": null,[39m
+[31m+           "schedule": null,[39m
+[31m+         },[39m
+[31m+         {[39m
+[31m+           "bookingUrl": null,[39m
+[31m+           "bring": [],[39m
+[31m+           "durationMinutes": null,[39m
+[31m+           "fare": null,[39m
+[31m+           "fareHighSeason": null,[39m
+[31m+           "highSeasonMonths": [],[39m
+[31m+           "id": "tB",[39m
+[31m+           "includes": [],[39m
+[31m+           "maxGroup": null,[39m
+[31m+           "name": {[39m
+[31m+             "es": "Cayo",[39m
+[31m+           },[39m
+[31m+           "notes": null,[39m
+[31m+           "schedule": null,[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "updatedAt": "2026-11-08T06:41:00.599Z",[39m
+[31m+       "warnings": [],[39m
+[31m+       "website": null,[39m
+[31m+       "whatsapp": null,[39m
+[31m+     },[39m
+[2m    },[22m
+[32m-   "status": 422,[39m
+[31m+   "status": 200,[39m
+[2m  }[22m
+
+ ❯ test/profile-maps-route.test.ts:281:72
+    279|       const { id, token } = await seedOf('T');
+    280|       const before = await stored(id);
+    281|       expect(await patch(id, token, { stay: { includes: ['Wifi'] } }))…
+       |                                                                        ^
+    282|       await expectNoWrite(id, before);
+    283|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/profile-maps-route.test.ts > ficha de hospedaje, finca y tienda contra el emulador > pase 2: hospedaje > caso 4: S con craft y description es 422 field_not_for_type, ni siquiera description
+AssertionError: expected { status: 200, body: { …(2) } } to match object { status: 422, …(1) }
+(16 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "body": {[22m
+[32m-     "error": "field_not_for_type",[39m
+[31m+     "changed": [[39m
+[31m+       "description",[39m
+[31m+       "craft.products",[39m
+[31m+     ],[39m
+[31m+     "profile": {[39m
+[31m+       "bestTimeToVisit": null,[39m
+[31m+       "description": {[39m
+[31m+         "es": "Hola",[39m
+[31m+       },[39m
+[31m+       "entryFee": null,[39m
+[31m+       "howToGetThere": null,[39m
+[31m+       "instagram": null,[39m
+[31m+       "kind": "stay",[39m
+[31m+       "openingHours": null,[39m
+[31m+       "phone": null,[39m
+[31m+       "services": [],[39m
+[31m+       "stay": {[39m
+[31m+         "bring": [],[39m
+[31m+         "houseRules": null,[39m
+[31m+         "includes": [],[39m
+[2m        },[22m
+[32m-   "status": 422,[39m
+[31m+       "updatedAt": "2026-11-08T06:41:00.714Z",[39m
+[31m+       "warnings": [],[39m
+[31m+       "website": null,[39m
+[31m+       "whatsapp": null,[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "status": 200,[39m
+[2m  }[22m
+
+ ❯ test/profile-maps-route.test.ts:288:99
+    286|       const { id, token } = await seedOf('S');
+    287|       const before = await stored(id);
+    288|       expect(await patch(id, token, { craft: { products: ['x'] }, desc…
+       |                                                                                                   ^
+    289|         status: 422,
+    290|         body: { error: 'field_not_for_type' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  test/profile-maps-route.test.ts > ficha de hospedaje, finca y tienda contra el emulador > pase 3: finca > caso 1 en finca: farm en un comedor es 422 field_not_for_type
+AssertionError: expected { status: 200, body: { …(2) } } to match object { status: 422, …(1) }
+(15 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "body": {[22m
+[32m-     "error": "field_not_for_type",[39m
+[31m+     "changed": [[39m
+[31m+       "farm.maxGroup",[39m
+[31m+     ],[39m
+[31m+     "profile": {[39m
+[31m+       "bestTimeToVisit": null,[39m
+[31m+       "description": null,[39m
+[31m+       "entryFee": null,[39m
+[31m+       "howToGetThere": null,[39m
+[31m+       "instagram": null,[39m
+[31m+       "kind": "dining",[39m
+[31m+       "openingHours": null,[39m
+[31m+       "phone": null,[39m
+[31m+       "services": [],[39m
+[31m+       "updatedAt": "2026-11-08T06:41:04.068Z",[39m
+[31m+       "warnings": [],[39m
+[31m+       "website": null,[39m
+[31m+       "whatsapp": null,[39m
+[2m      },[22m
+[32m-   "status": 422,[39m
+[31m+   },[39m
+[31m+   "status": 200,[39m
+[2m  }[22m
+
+ ❯ test/profile-maps-route.test.ts:495:65
+    493|       const { id, token } = await seedOf('R');
+    494|       const before = await stored(id);
+    495|       expect(await patch(id, token, { farm: { maxGroup: 5 } })).toMatc…
+       |                                                                 ^
+    496|       await expectNoWrite(id, before);
+    497|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  5 failed | 146 passed (151)
+   Start at  02:40:43
+   Duration  22.61s (transform 484ms, setup 28ms, collect 1.03s, tests 20.13s, environment 1ms, prepare 489ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/profile-maps-route.test.ts src/lib/profile-maps.test.ts test/profile-kinds-route.test.ts" exited with code 1
