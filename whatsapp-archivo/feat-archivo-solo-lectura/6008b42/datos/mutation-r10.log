@@ -1,0 +1,17 @@
+# R10 at 6008b42, with r10.patch applied
+# $ bin/test -run TestHistory
+FAIL  ingest_test.go::TestHistoryChunkIsLoggedWhenItStartsAndEnds
+FAIL  ingest_test.go::TestHistoryChunkWritesInOneTransactionPerChat
+FAIL  ingest_test.go::TestHistoryDownloadFailureRetriesThenGivesUpVisibly
+
+FAILED ingest_test.go::TestHistoryChunkIsLoggedWhenItStartsAndEnds
+    ingest_test.go:95: want a start line, then a done line:
+        time=2026-11-08T15:42:07.208-04:00 level=INFO msg=history step=done type=RECENT chunk=2 progress=40 stored=5 skipped=1 took=746ms
+
+FAILED ingest_test.go::TestHistoryChunkWritesInOneTransactionPerChat
+    ingest_test.go:119: 300 history messages took 31.468s; a 4,738 message chunk would take 8m17s
+
+FAILED ingest_test.go::TestHistoryDownloadFailureRetriesThenGivesUpVisibly
+    ingest_test.go:136: after a network error the chunk waits for a retry: {Pending:0 Failed:1 OldestPending:0 Chunks:0 Stored:0 LastType: LastProgress:0 LastAt:0 LastError:connection reset by peer}
+
+0 passed, 3 failed
