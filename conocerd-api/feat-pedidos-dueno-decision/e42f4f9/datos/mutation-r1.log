@@ -1,0 +1,106 @@
+# R1 at e42f4f9, with r1-open-view-order.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-decision/scrub.sh bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-decision/emu.sh test/owner-requests-admin.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 18132.
+i  Running script: pnpm exec vitest run test/owner-requests-admin.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-decision
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q1: sin admin, las dos rutas reales son 403; sin token, 401
+[app-check] ausente /admin/owner-requests
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q1: sin admin, las dos rutas reales son 403; sin token, 401
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q2: open lista los abiertos, el más viejo primero, con el listado del negocio nuevo; no-store
+[app-check] ausente /admin/owner-requests
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q3: decided trae los de los últimos 30 días, el más nuevo primero
+[app-check] ausente /admin/owner-requests
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q3: decided trae los de los últimos 30 días, el más nuevo primero
+[app-check] ausente /admin/owner-requests
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q4 (I11): el detalle firma cada foto por 10 minutos con su tipo guardado; no-store
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q5: con las fotos borradas no firma nada y deja los metadatos
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q6: la disputa sale en vivo, con los correos del dueño y del otro pedido (solo para el equipo)
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q7: un pedido de una cuenta borrada sale con exists false y la lista sigue en 200
+[app-check] ausente /admin/owner-requests
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q7: un pedido de una cuenta borrada sale con exists false y la lista sigue en 200
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > un detalle que no existe es 404
+[app-check] ausente /admin/owner-requests/<uuid>
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > un detalle que no existe es 404
+[app-check] ausente /admin/owner-requests/no-es-uuid
+
+stdout | test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > el detalle de un aprobado trae la decisión con la línea de bitácora
+[app-check] ausente /admin/owner-requests/<uuid>
+
+ ❯ test/owner-requests-admin.test.ts (9 tests | 1 failed) 1838ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q1: sin admin, las dos rutas reales son 403; sin token, 401 23ms
+   × pedidos de dueño: cola y detalle, contra los emuladores > Q2: open lista los abiertos, el más viejo primero, con el listado del negocio nuevo; no-store 862ms
+     → expected [ …(3) ] to deeply equal [ …(3) ]
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q3: decided trae los de los últimos 30 días, el más nuevo primero 120ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q4 (I11): el detalle firma cada foto por 10 minutos con su tipo guardado; no-store 61ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q5: con las fotos borradas no firma nada y deja los metadatos 48ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q6: la disputa sale en vivo, con los correos del dueño y del otro pedido (solo para el equipo) 89ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > Q7: un pedido de una cuenta borrada sale con exists false y la lista sigue en 200 80ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > un detalle que no existe es 404 12ms
+   ✓ pedidos de dueño: cola y detalle, contra los emuladores > el detalle de un aprobado trae la decisión con la línea de bitácora 65ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/owner-requests-admin.test.ts > pedidos de dueño: cola y detalle, contra los emuladores > Q2: open lista los abiertos, el más viejo primero, con el listado del negocio nuevo; no-store
+AssertionError: expected [ …(3) ] to deeply equal [ …(3) ]
+
+- Expected
++ Received
+
+  [
+-   "<uuid>",
+-   "<uuid>",
+    "<uuid>",
++   "<uuid>",
++   "<uuid>",
+  ]
+
+ ❯ test/owner-requests-admin.test.ts:184:41
+    182|     const seeded: string[] = [newest, oldest, fresh, decided, withdraw…
+    183|     const mine = body.items.filter((item) => seeded.includes(item.id));
+    184|     expect(mine.map((item) => item.id)).toEqual([oldest, fresh, newest…
+       |                                         ^
+    185|     for (const item of body.items) expect(['pending', 'awaiting_listin…
+    186|     expect(mine[1]).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  10:25:18
+   Duration  2.09s (transform 139ms, setup 13ms, collect 60ms, tests 1.84s, environment 0ms, prepare 53ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/owner-requests-admin.test.ts" exited with code 1
