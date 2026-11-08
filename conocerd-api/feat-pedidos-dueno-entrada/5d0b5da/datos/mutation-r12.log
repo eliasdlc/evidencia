@@ -1,0 +1,68 @@
+# R12 at 5d0b5da, with r12-i13-replay-by-id.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/feat-pedidos-dueno-entrada/scrub.sh pnpm exec vitest run src/lib/owner-requests.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/pedidos-dueno-entrada
+
+stderr | src/lib/owner-requests.test.ts > sendRequestReceivedEmail > sin clave no sale nada; un 5xx o el modo prueba no cuentan como enviado
+[conocerd-api] Resend rechazó un correo: 503
+
+ ❯ src/lib/owner-requests.test.ts (33 tests | 1 failed) 22ms
+   ✓ evidencia: rutas (I3) > C4, C5: solo la carpeta del propio uid y del propio requestId 1ms
+   ✓ evidencia: rutas (I3) > C6: n de 1 a 99 sin cero delante, solo .jpg; 7.jpg (un reintento) sí 0ms
+   ✓ evidencia: rutas (I3) > C10: de 1 a 5 rutas distintas, si no 422 evidence_invalid 0ms
+   ✓ evidencia: objetos (I3) > C7: un objeto que no está es 422 0ms
+   ✓ evidencia: objetos (I3) > C8: el tipo guardado manda, no la extensión 0ms
+   ✓ evidencia: objetos (I3) > C9: 10 MB exactos es 422; un byte menos pasa 0ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > acepta los dos tipos de negocio del panel 2ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > C23: coordenadas, un tipo fuera de la lista o un pueblo de una letra son 422 1ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > el requestId es un UUID v4 y el destino un id sin barras 0ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > el WhatsApp queda en dígitos, de 7 a 15 0ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > relation sale de la lista del panel 0ms
+   ✓ cuerpo del pedido (forma de requests.ts del panel) > la huella no depende del orden de las claves 1ms
+   ✓ planCreate > crea con la cuenta y el negocio al día 0ms
+   ✓ planCreate > I13, C24: el mismo id, la misma cuenta y la misma huella es una repetición 0ms
+   × planCreate > I13, C25: el mismo id con otro cuerpo o de otra cuenta es 409 request_id_taken 5ms
+     → expected 'ok' to be '409 request_id_taken' // Object.is equality
+   ✓ planCreate > C21: un destino que no existe es 422 unknown_destination 0ms
+   ✓ planCreate > C13, C14: ya dueño por el token o por una propiedad activa es 409 already_owner 0ms
+   ✓ planCreate > I1, C11: un segundo pedido abierto de la misma cuenta al mismo negocio es 409 request_exists 0ms
+   ✓ planCreate > C20: un negocio con 10 abiertos es 409 listing_queue_full 0ms
+   ✓ planCreate > I2, C15: con 3 abiertos el cuarto es 429 too_many_requests 0ms
+   ✓ planCreate > I2, C17: el undécimo en la ventana es 429; la ventana vencida empieza de cero 0ms
+   ✓ planCreate > C28: 39 negocios en el token y 1 abierto es 409 too_many_businesses 0ms
+   ✓ planCreate > C18, C19: otro dueño activo u otro pedido abierto lo marcan disputado 0ms
+   ✓ planCreate > un negocio nuevo no toca la lista de ningún negocio y sí la cuenta 0ms
+   ✓ planWithdraw > W2: ajeno o inexistente es 404, nunca 403 0ms
+   ✓ planWithdraw > W3: decidido es 409 not_pending; abierto pasa 0ms
+   ✓ correo de pedido recibido (I12, C29) > dice los días de la foto con el número que recibe, no con uno escrito 0ms
+   ✓ correo de pedido recibido (I12, C29) > la frase de retención es la del plan, palabra por palabra 0ms
+   ✓ correo de pedido recibido (I12, C29) > ninguna variante menciona a Laura, WhatsApp, llamadas ni el panel 2ms
+   ✓ correo de pedido recibido (I12, C29) > C18: la variante disputada lo dice sin nombrar a nadie 0ms
+   ✓ correo de pedido recibido (I12, C29) > dice a qué dirección llegó 0ms
+   ✓ sendRequestReceivedEmail > C24: la clave es una por pedido, igual en cada repetición 3ms
+   ✓ sendRequestReceivedEmail > sin clave no sale nada; un 5xx o el modo prueba no cuentan como enviado 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/owner-requests.test.ts > planCreate > I13, C25: el mismo id con otro cuerpo o de otra cuenta es 409 request_id_taken
+AssertionError: expected 'ok' to be '409 request_id_taken' // Object.is equality
+
+Expected: "409 request_id_taken"
+Received: "ok"
+
+ ❯ src/lib/owner-requests.test.ts:167:95
+    165| 
+    166|   it('I13, C25: el mismo id con otro cuerpo o de otra cuenta es 409 re…
+    167|     expect(codeOf(() => planCreate(facts({ stored: { requestedBy: U, b…
+       |                                                                                               ^
+    168|     expect(codeOf(() => planCreate(facts({ stored: { requestedBy: 'V',…
+    169|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 32 passed (33)
+   Start at  04:08:19
+   Duration  339ms (transform 69ms, setup 11ms, collect 145ms, tests 22ms, environment 0ms, prepare 49ms)
+
