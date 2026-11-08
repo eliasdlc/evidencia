@@ -1,0 +1,163 @@
+# R3 at 2d89ac9
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu.sh test/owner-report-route.test.ts src/lib/email/resend.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/owner-report-route.test.ts src/lib/email/resend.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/5a-reporte-equipo
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-1: guarda el reporte en la cola, avisa al equipo con respuesta al dueño y marca teamNotifiedAt
+[app-check] ausente /business/negocio-3f0b8677/reviews/autor-fe19fc55/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-2: repetir el reporte da 200 con la fecha del primero, sin escribir ni mandar nada
+[app-check] ausente /business/negocio-d399bb88/reviews/autor-08f2d05f/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-2: repetir el reporte da 200 con la fecha del primero, sin escribir ni mandar nada
+[app-check] ausente /business/negocio-d399bb88/reviews/autor-08f2d05f/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-3: después de que el equipo lo cerró, o retiró la reseña, sigue siendo alreadyReported
+[app-check] ausente /business/negocio-6f8dd0e6/reviews/autor-bd683b48/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-3: después de que el equipo lo cerró, o retiró la reseña, sigue siendo alreadyReported
+[app-check] ausente /business/negocio-6f8dd0e6/reviews/autor-bd683b48/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-3: después de que el equipo lo cerró, o retiró la reseña, sigue siendo alreadyReported
+[app-check] ausente /business/negocio-6f8dd0e6/reviews/autor-bd683b48/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-4: un motivo fuera de la lista es 422 y no escribe
+[app-check] ausente /business/negocio-b851ee7b/reviews/autor-446257a1/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-5: nota de 501 es 422; de 500 se guarda; solo espacios se guarda sin nota
+[app-check] ausente /business/negocio-e149b27b/reviews/autor-04129a17/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-5: nota de 501 es 422; de 500 se guarda; solo espacios se guarda sin nota
+[app-check] ausente /business/negocio-e149b27b/reviews/autor-04129a17/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-5: nota de 501 es 422; de 500 se guarda; solo espacios se guarda sin nota
+[app-check] ausente /business/negocio-c6cfbe9b/reviews/autor-8836ba91/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-6: un sustituto suelto en la nota es 422 antes de tocar nada (I1)
+[app-check] ausente /business/negocio-4e6b7921/reviews/autor-b22a9617/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-7: una clave de más, __proto__ incluida, es 422; un cuerpo que no es JSON es 400; nada se escribe
+[app-check] ausente /business/negocio-54a31ba0/reviews/autor-9c564db8/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-7: una clave de más, __proto__ incluida, es 422; un cuerpo que no es JSON es 400; nada se escribe
+[app-check] ausente /business/negocio-54a31ba0/reviews/autor-9c564db8/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-7: una clave de más, __proto__ incluida, es 422; un cuerpo que no es JSON es 400; nada se escribe
+[app-check] ausente /business/negocio-54a31ba0/reviews/autor-9c564db8/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-7: una clave de más, __proto__ incluida, es 422; un cuerpo que no es JSON es 400; nada se escribe
+[app-check] ausente /business/negocio-54a31ba0/reviews/autor-9c564db8/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-8: reportar una reseña escrita por la misma cuenta es 409 own_review
+[app-check] ausente /business/negocio-0a8782c6/reviews/QR4mlYbON-aii3G8RRNLDI/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-9: quien no es dueño es 403 not_owner; un plan sin panel es 403 dashboard_not_included
+[app-check] ausente /business/negocio-71df2e0b/reviews/autor-87e24009/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-9: quien no es dueño es 403 not_owner; un plan sin panel es 403 dashboard_not_included
+[app-check] ausente /business/negocio-05002e44/reviews/autor-ea748fd0/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-9 bis: pide reviews.read como la lista de reseñas; la puerta no puede, "Solo reseñas" sí
+[app-check] ausente /business/negocio-faafd754/reviews/autor-6ce03b28/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-9 bis: pide reviews.read como la lista de reseñas; la puerta no puede, "Solo reseñas" sí
+[app-check] ausente /business/negocio-faafd754/reviews/autor-6ce03b28/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-10: reseña que no existe, de otro destino o retirada es 404 not_found
+[app-check] ausente /business/negocio-a01166e3/reviews/nadie/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-10: reseña que no existe, de otro destino o retirada es 404 not_found
+[app-check] ausente /business/negocio-a01166e3/reviews/autor-c41df4bb/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-10: reseña que no existe, de otro destino o retirada es 404 not_found
+[app-check] ausente /business/negocio-a01166e3/reviews/autor-ef7f9dfc/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-10: reseña que no existe, de otro destino o retirada es 404 not_found
+[app-check] ausente /business/negocio-a01166e3/reviews/autor-a0718e7c/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > un authorId fuera del patrón es 422 invalid_author_id; sin bearer es 401
+[app-check] ausente /business/negocio-2155a6e6/reviews/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > un authorId fuera del patrón es 422 invalid_author_id; sin bearer es 401
+[app-check] ausente /business/negocio-2155a6e6/reviews/a/b/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > un authorId fuera del patrón es 422 invalid_author_id; sin bearer es 401
+[app-check] ausente /business/negocio-2155a6e6/reviews/a.b/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > un authorId fuera del patrón es 422 invalid_author_id; sin bearer es 401
+[app-check] ausente /business/negocio-2155a6e6/reviews//report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > un authorId fuera del patrón es 422 invalid_author_id; sin bearer es 401
+[app-check] ausente /business/negocio-2155a6e6/reviews/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-11: si Resend falla, el reporte queda igual en la cola y sin teamNotifiedAt
+[app-check] ausente /business/negocio-5df0c96b/reviews/autor-86949cfa/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-11 bis: un fallo inesperado dentro de after() no sale de la tarea
+[app-check] ausente /business/negocio-5402403d/reviews/autor-b6e4972a/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-12: el reporte 20 del día pasa; el 21 es 429 y no escribe
+[app-check] ausente /business/negocio-4f1618ed/reviews/autor-8a0e4b2f/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-12: el reporte 20 del día pasa; el 21 es 429 y no escribe
+[app-check] ausente /business/negocio-4f1618ed/reviews/autor-8a0e4b2f/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-12: el reporte 20 del día pasa; el 21 es 429 y no escribe
+[app-check] ausente /business/negocio-4f1618ed/reviews/autor-a44341db/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-12 bis: repetir un reporte no gasta cupo
+[app-check] ausente /business/negocio-a40d87cc/reviews/autor-9c023660/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-12 bis: repetir un reporte no gasta cupo
+[app-check] ausente /business/negocio-a40d87cc/reviews/autor-9c023660/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-13: después de reportar, el dueño contesta la reseña y el reporte no cambia
+[app-check] ausente /business/negocio-f7946635/reviews/autor-9dd3785c/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-13: después de reportar, el dueño contesta la reseña y el reporte no cambia
+[app-check] ausente /review-reply
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-14: dos reportes iguales a la vez dan un 201 y un 200, un documento y un correo
+[app-check] ausente /business/negocio-1f7e3f9c/reviews/autor-4fb04685/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-14: dos reportes iguales a la vez dan un 201 y un 200, un documento y un correo
+[app-check] ausente /business/negocio-1f7e3f9c/reviews/autor-4fb04685/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-15: si el dueño ya la reportó desde la app (/reports), es alreadyReported con esa fecha
+[app-check] ausente /reports
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > R-15: si el dueño ya la reportó desde la app (/reports), es alreadyReported con esa fecha
+[app-check] ausente /business/negocio-f7b87070/reviews/autor-e70dfe64/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > modo prueba: el correo va solo al buzón de prueba, sin reply_to, y queda marcado test
+[app-check] ausente /business/negocio-6560bd8f/reviews/autor-d0af74e8/report
+
+stdout | test/owner-report-route.test.ts > POST /business/{id}/reviews/{authorId}/report contra el emulador > sin clave de Resend no sale nada y el reporte llega igual a la cola
+[app-check] ausente /business/negocio-2982e558/reviews/autor-8cc11c1b/report
+
+ ✓ test/owner-report-route.test.ts (27 tests) 5959ms
+   ✓ POST /business/{id}/reviews/{authorId}/report contra el emulador > R-1: guarda el reporte en la cola, avisa al equipo con respuesta al dueño y marca teamNotifiedAt  1074ms
+   ✓ POST /business/{id}/reviews/{authorId}/report contra el emulador > R-14: dos reportes iguales a la vez dan un 201 y un 200, un documento y un correo  2973ms
+ ✓ src/lib/email/resend.test.ts (10 tests) 87ms
+
+ Test Files  2 passed (2)
+      Tests  37 passed (37)
+   Start at  04:00:16
+   Duration  7.64s (transform 261ms, setup 17ms, collect 595ms, tests 6.05s, environment 0ms, prepare 183ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
