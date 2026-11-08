@@ -1,0 +1,54 @@
+# R6 at 45b22e1, with c1.patch applied
+# $ bash /home/decruce/.cache/conocerd-api/panel-datos-s2/emu3.sh src/lib/cron-auth.test.ts
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-conocerd. This may result in unexpected behavior.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run src/lib/cron-auth.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/aviso-resena-nueva
+
+ ❯ src/lib/cron-auth.test.ts (4 tests | 1 failed) 11ms
+   ✓ requireCronSecret > deja pasar el bearer exacto 3ms
+   ✓ requireCronSecret > sin cabecera, con otro secreto, con otro esquema o con espacios de más es 401 unauthorized 1ms
+   × requireCronSecret > sin CRON_SECRET, o vacío, no pasa nadie: 503 cron_not_configured, también con "Bearer " vacío 5ms
+     → expected '401 unauthorized' to be '503 cron_not_configured' // Object.is equality
+   ✓ requireCronSecret > lee CRON_SECRET de process.env por defecto, en cada llamada 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/cron-auth.test.ts > requireCronSecret > sin CRON_SECRET, o vacío, no pasa nadie: 503 cron_not_configured, también con "Bearer " vacío
+AssertionError: expected '401 unauthorized' to be '503 cron_not_configured' // Object.is equality
+
+Expected: [32m"[7m503 cron_not_configur[27med"[39m
+Received: [31m"[7m401 unauthoriz[27med"[39m
+
+ ❯ src/lib/cron-auth.test.ts:49:45
+     47| 
+     48|   it('sin CRON_SECRET, o vacío, no pasa nadie: 503 cron_not_configured…
+     49|     expect(outcome(`Bearer ${SECRET}`, {})).toBe('503 cron_not_configu…
+       |                                             ^
+     50|     expect(outcome('Bearer ', {})).toBe('503 cron_not_configured');
+     51|     expect(outcome('Bearer ', { CRON_SECRET: '' })).toBe('503 cron_not…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  15:03:39
+   Duration  256ms (transform 33ms, setup 11ms, collect 24ms, tests 11ms, environment 0ms, prepare 50ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run src/lib/cron-auth.test.ts" exited with code 1
