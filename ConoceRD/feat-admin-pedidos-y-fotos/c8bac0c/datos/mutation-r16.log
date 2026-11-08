@@ -1,0 +1,44 @@
+# R16 at c8bac0c, with r14-mensaje-solo-con-otro.patch applied
+# $ pnpm exec vitest run src/fotos-dueno/lote.test.ts src/app/destinos/fotos-dueno/acciones.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/admin-pedidos-y-fotos
+
+ ❯ src/fotos-dueno/lote.test.ts (12 tests | 1 failed) 14ms
+     × el mensaje solo viaja con el motivo "otro" 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/fotos-dueno/lote.test.ts > armar la revisión > el mensaje solo viaja con el motivo "otro"
+AssertionError: expected { ok: true, …(1) } to deeply equal { ok: true, …(1) }
+
+- Expected
++ Received
+
+@@ -1,9 +1,10 @@
+  {
+    "decisiones": [
+      {
+        "decision": "reject",
++       "ownerMessage": "esto no se manda",
+        "photoId": "p1",
+        "reasonCode": "borrosa",
+      },
+      {
+        "decision": "reject",
+
+ ❯ src/fotos-dueno/lote.test.ts:48:15
+     46|       p2: { kind: 'reject', motivo: 'otro', mensaje: ' Es de otro loca…
+     47|     });
+     48|     expect(r).toEqual({
+       |               ^
+     49|       ok: true,
+     50|       decisiones: [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 19 passed (20)
+   Start at  15:10:53
+   Duration  502ms (transform 112ms, setup 0ms, import 461ms, tests 33ms, environment 0ms)
+
