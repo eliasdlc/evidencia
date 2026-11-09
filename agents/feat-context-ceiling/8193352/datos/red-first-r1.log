@@ -1,0 +1,25 @@
+# R1 at 8193352, with hooks/context-ceiling.py, hooks/context-ceiling.sh, hooks/registry.json back at f967416
+# $ python3 -m unittest tests/test_context_ceiling.py -k Notice
+.FF
+======================================================================
+FAIL: test_once_at_250k (tests.test_context_ceiling.Notice.test_once_at_250k)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 79, in test_once_at_250k
+    self.assertEqual(first.returncode, 0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 127 != 0
+
+======================================================================
+FAIL: test_prompt_gives_it_when_a_turn_starts_past_250k (tests.test_context_ceiling.Notice.test_prompt_gives_it_when_a_turn_starts_past_250k)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 88, in test_prompt_gives_it_when_a_turn_starts_past_250k
+    self.assertIn("250K", self.run_hook("UserPromptSubmit", prompt="sigue").stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '250K' not found in ''
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.009s
+
+FAILED (failures=2)
