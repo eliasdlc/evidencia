@@ -1,0 +1,134 @@
+# R3 at 8193352, with hooks/context-ceiling.py, hooks/context-ceiling.sh, hooks/registry.json back at f967416
+# $ python3 -m unittest tests/test_context_ceiling.py -k Stop
+FFFFFFF
+======================================================================
+FAIL: test_a_launch_counts (tests.test_context_ceiling.Stop.test_a_launch_counts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 230, in test_a_launch_counts
+    self.assertPasses(self.run_hook("Stop"))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 52, in assertPasses
+    self.assertEqual((r.returncode, r.stderr), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (127, 'bash: /home/decruce/.t3/worktrees/a[94 chars]y\n') != (0, '')
+
+First differing element 0:
+127
+0
+
++ (0, '')
+- (127,
+-  'bash: '
+-  '/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/hooks/context-ceiling.sh: '
+-  'No such file or directory\n')
+
+======================================================================
+FAIL: test_a_note_never_written_does_not (tests.test_context_ceiling.Stop.test_a_note_never_written_does_not)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 241, in test_a_note_never_written_does_not
+    self.assertDenied(self.run_hook("Stop"), "wrote no handoff")
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 55, in assertDenied
+    self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 127 != 2 : bash: /home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/hooks/context-ceiling.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_a_note_on_disk_counts (tests.test_context_ceiling.Stop.test_a_note_on_disk_counts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 237, in test_a_note_on_disk_counts
+    self.assertPasses(self.run_hook("Stop"))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 52, in assertPasses
+    self.assertEqual((r.returncode, r.stderr), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (127, 'bash: /home/decruce/.t3/worktrees/a[94 chars]y\n') != (0, '')
+
+First differing element 0:
+127
+0
+
++ (0, '')
+- (127,
+-  'bash: '
+-  '/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/hooks/context-ceiling.sh: '
+-  'No such file or directory\n')
+
+======================================================================
+FAIL: test_a_refused_launch_does_not_count (tests.test_context_ceiling.Stop.test_a_refused_launch_does_not_count)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 248, in test_a_refused_launch_does_not_count
+    self.assertDenied(self.run_hook("Stop"), "wrote no handoff")
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 55, in assertDenied
+    self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 127 != 2 : bash: /home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/hooks/context-ceiling.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_blocks_without_handoff (tests.test_context_ceiling.Stop.test_blocks_without_handoff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 222, in test_blocks_without_handoff
+    self.assertDenied(self.run_hook("Stop"), "310,000", "wrote no handoff")
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 55, in assertDenied
+    self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 127 != 2 : bash: /home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/hooks/context-ceiling.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_passes_below_the_ceiling (tests.test_context_ceiling.Stop.test_passes_below_the_ceiling)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 226, in test_passes_below_the_ceiling
+    self.assertPasses(self.run_hook("Stop"))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 52, in assertPasses
+    self.assertEqual((r.returncode, r.stderr), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (127, 'bash: /home/decruce/.t3/worktrees/a[94 chars]y\n') != (0, '')
+
+First differing element 0:
+127
+0
+
++ (0, '')
+- (127,
+-  'bash: '
+-  '/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/hooks/context-ceiling.sh: '
+-  'No such file or directory\n')
+
+======================================================================
+FAIL: test_stop_hook_active_lets_it_through (tests.test_context_ceiling.Stop.test_stop_hook_active_lets_it_through)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 252, in test_stop_hook_active_lets_it_through
+    self.assertPasses(self.run_hook("Stop", stop_hook_active=True))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 52, in assertPasses
+    self.assertEqual((r.returncode, r.stderr), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (127, 'bash: /home/decruce/.t3/worktrees/a[94 chars]y\n') != (0, '')
+
+First differing element 0:
+127
+0
+
++ (0, '')
+- (127,
+-  'bash: '
+-  '/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/hooks/context-ceiling.sh: '
+-  'No such file or directory\n')
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.020s
+
+FAILED (failures=7)
