@@ -1,0 +1,60 @@
+# R1 at 80f8089, with bin/mcp.py, hooks/mcp-health.sh, mcp/registry.json, workspaces/product/.mcp.json back at 7d8edc0
+# $ python3 -m unittest tests.test_mcp.SyncTests
+FF.F
+======================================================================
+FAIL: test_adds_what_the_registry_places_here_and_removes_retired (tests.test_mcp.SyncTests.test_adds_what_the_registry_places_here_and_removes_retired)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-mcp-per-workspace-589b28246a80c99a/tests/test_mcp.py", line 65, in test_adds_what_the_registry_places_here_and_removes_retired
+    self.assertFalse(any(c[:4] == ['claude', 'mcp', 'add-json', '-s'] and 'zoho_projects' in c for c in plan))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_nothing_to_do_when_the_host_matches (tests.test_mcp.SyncTests.test_nothing_to_do_when_the_host_matches)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-mcp-per-workspace-589b28246a80c99a/tests/test_mcp.py", line 77, in test_nothing_to_do_when_the_host_matches
+    self.assertEqual(mcp.sync_plan(self.registry, 'agentbox', {'whatsapp': 'user'},
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                   {'zoho_projects', 'kino', 'whatsapp'}), [])
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [['claude', 'mcp', 'add-json', '-s', 'user[220 chars]"}']] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+['claude', 'mcp', 'add-json', '-s', 'user', 'zoho_projects', '{"type": "stdio", "command": "/home/decruce/.local/bin/zoho-projects-mcp", "args": []}']
+
++ []
+- [['claude',
+-   'mcp',
+-   'add-json',
+-   '-s',
+-   'user',
+-   'zoho_projects',
+-   '{"type": "stdio", "command": "/home/decruce/.local/bin/zoho-projects-mcp", '
+-   '"args": []}'],
+-  ['claude',
+-   'mcp',
+-   'add-json',
+-   '-s',
+-   'user',
+-   'kino',
+-   '{"type": "http", "url": "https://www.usekino.dev/api/mcp"}']]
+
+======================================================================
+FAIL: test_zoho_and_kino_leave_user_scope_for_the_product_workspace (tests.test_mcp.SyncTests.test_zoho_and_kino_leave_user_scope_for_the_product_workspace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-mcp-per-workspace-589b28246a80c99a/tests/test_mcp.py", line 82, in test_zoho_and_kino_leave_user_scope_for_the_product_workspace
+    self.assertEqual(self.registry['servers'][name]['claude']['scope'], 'workspace:product')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'user' != 'workspace:product'
+- user
++ workspace:product
+
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.005s
+
+FAILED (failures=3)
