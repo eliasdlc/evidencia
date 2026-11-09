@@ -1,0 +1,25 @@
+# R2 at ca9c9ac, with m2.patch applied
+# $ python3 -m pytest -q -p no:cacheprovider tests/test_agent_model.py -k effort
+.F                                                                       [100%]
+=================================== FAILURES ===================================
+_______________ AgentModelTests.test_effort_warning_three_steps ________________
+
+self = <test_agent_model.AgentModelTests testMethod=test_effort_warning_three_steps>
+
+    def test_effort_warning_three_steps(self):
+        # 1. passes silently: the typed subagent, and general-purpose on other work
+        self.assertEqual(self.warning(self.call("implementer", description="Implement the parser")), "")
+        self.assertEqual(self.warning(self.call("general-purpose", description="Search the repo for hooks")), "")
+        # 2. warns (exit 0, never denies) and names the type to use
+        for desc, kind in (("Implement the parser", "implementer"), ("Fix flaky test", "implementer"),
+                           ("Audit hook usage", "analyst"), ("Review PR 12", "delivery-reviewer"),
+                           ("Design the cache", "architect"), ("Diagnose slow build", "architect")):
+            for subagent in (None, "general-purpose"):
+                text = self.warning(self.call(subagent, description=desc))
+>               self.assertIn(f"Launch `{kind}`", text, (desc, subagent))
+E               AssertionError: 'Launch `implementer`' not found in '' : ('Implement the parser', None)
+
+tests/test_agent_model.py:158: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_agent_model.py::AgentModelTests::test_effort_warning_three_steps
+1 failed, 1 passed, 10 deselected in 0.50s
