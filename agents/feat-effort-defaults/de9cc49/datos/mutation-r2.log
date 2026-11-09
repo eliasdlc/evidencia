@@ -1,0 +1,40 @@
+# R2 at de9cc49, with m2.patch applied
+# $ python3 -m pytest -q -p no:cacheprovider tests/test_agent_model.py -k effort
+F.F                                                                      [100%]
+=================================== FAILURES ===================================
+______ AgentModelTests.test_a_call_that_sets_its_own_effort_is_not_warned ______
+
+self = <test_agent_model.AgentModelTests testMethod=test_a_call_that_sets_its_own_effort_is_not_warned>
+
+    def test_a_call_that_sets_its_own_effort_is_not_warned(self):
+        payload = {"tool_name": "Agent", "tool_input": {"description": "Implement the parser", "effort": "medium"}}
+        run = lambda p: subprocess.run(["bash", str(HOOK)], input=json.dumps(p), capture_output=True, text=True,
+                                       env={**os.environ, "HOME": str(self.home)})
+        self.assertEqual((run(payload).returncode, run(payload).stdout), (0, ""))
+        del payload["tool_input"]["effort"]
+>       self.assertIn("Launch `implementer`", run(payload).stdout)
+E       AssertionError: 'Launch `implementer`' not found in ''
+
+tests/test_agent_model.py:176: AssertionError
+_______________ AgentModelTests.test_effort_warning_three_steps ________________
+
+self = <test_agent_model.AgentModelTests testMethod=test_effort_warning_three_steps>
+
+    def test_effort_warning_three_steps(self):
+        # 1. passes silently: the typed subagent, and general-purpose on other work
+        self.assertEqual(self.warning(self.call("implementer", description="Implement the parser")), "")
+        self.assertEqual(self.warning(self.call("general-purpose", description="Search the repo for hooks")), "")
+        # 2. warns (exit 0, never denies) and names the type to use
+        for desc, kind in (("Implement the parser", "implementer"), ("Fix flaky test", "implementer"),
+                           ("Audit hook usage", "analyst"), ("Review PR 12", "delivery-reviewer"),
+                           ("Design the cache", "architect")):
+            for subagent in (None, "general-purpose"):
+                text = self.warning(self.call(subagent, description=desc))
+>               self.assertIn(f"Launch `{kind}`", text, (desc, subagent))
+E               AssertionError: 'Launch `implementer`' not found in '' : ('Implement the parser', None)
+
+tests/test_agent_model.py:158: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_agent_model.py::AgentModelTests::test_a_call_that_sets_its_own_effort_is_not_warned
+FAILED tests/test_agent_model.py::AgentModelTests::test_effort_warning_three_steps
+2 failed, 1 passed, 10 deselected in 0.72s
