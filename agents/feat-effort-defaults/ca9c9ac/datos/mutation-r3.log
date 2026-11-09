@@ -1,0 +1,37 @@
+# R3 at ca9c9ac, with m3.patch applied
+# $ python3 -m pytest -q -p no:cacheprovider tests/test_delegation.py -k xhigh
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ DelegationTests.test_xhigh_needs_a_quote_of_elias_pass_fail_pass _______
+
+self = <test_delegation.DelegationTests testMethod=test_xhigh_needs_a_quote_of_elias_pass_fail_pass>
+
+    def test_xhigh_needs_a_quote_of_elias_pass_fail_pass(self):
+        data = d.execution_catalog(self.root / 'absent-cache')
+        for model in data['models']:
+            if model['id'] == 'gpt-6.1-sol':
+                model['efforts'] = [*model['efforts'], 'xhigh'] if 'xhigh' not in model['efforts'] else model['efforts']
+        self.pool.data = data
+        xhigh = {**self.request, 'effort': 'xhigh'}
+        quoted = {**xhigh, 'context': 'Elias said: "go xhigh on this"', 'effort_quote': 'go xhigh on this'}
+        # 1. passes with the quote present in the brief, and lower efforts need none
+>       ident, _, _ = self.pool.reserve(quoted, self.session)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_delegation.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+bin/delegation.py:475: in reserve
+    require(set(request) <= fields, 'REQUEST_FIELDS')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+condition = False, rule = 'REQUEST_FIELDS'
+
+    def require(condition, rule):
+        if not condition:
+>           raise Blocked(rule)
+E           delegation.Blocked: REQUEST_FIELDS
+
+bin/delegation.py:39: Blocked
+=========================== short test summary info ============================
+FAILED tests/test_delegation.py::DelegationTests::test_xhigh_needs_a_quote_of_elias_pass_fail_pass
+1 failed, 38 deselected in 0.11s
