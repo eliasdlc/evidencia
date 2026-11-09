@@ -1,0 +1,80 @@
+# R4 at 2d5937e, with hooks/context-ceiling.py, hooks/context-ceiling.sh, hooks/registry.json back at 4cd56ba
+# $ python3 -m unittest tests/test_context_ceiling.py -k Override -k Registry
+FFFF
+======================================================================
+FAIL: test_a_notification_is_not_his_words (tests.test_context_ceiling.Override.test_a_notification_is_not_his_words)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 201, in test_a_notification_is_not_his_words
+    self.assertDenied(self.bash("npm test"), "300K")
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 55, in assertDenied
+    self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 127 != 2 : bash: /home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/hooks/context-ceiling.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_lifts_only_its_thread_and_tolerates_words (tests.test_context_ceiling.Override.test_lifts_only_its_thread_and_tolerates_words)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 192, in test_lifts_only_its_thread_and_tolerates_words
+    self.assertPasses(self.bash("npm test"))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 52, in assertPasses
+    self.assertEqual((r.returncode, r.stderr), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (127, 'bash: /home/decruce/.t3/worktrees/a[94 chars]y\n') != (0, '')
+
+First differing element 0:
+127
+0
+
++ (0, '')
+- (127,
+-  'bash: '
+-  '/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/hooks/context-ceiling.sh: '
+-  'No such file or directory\n')
+
+======================================================================
+FAIL: test_the_stop_hook_honors_it (tests.test_context_ceiling.Override.test_the_stop_hook_honors_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 206, in test_the_stop_hook_honors_it
+    self.assertPasses(self.run_hook("Stop"))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 52, in assertPasses
+    self.assertEqual((r.returncode, r.stderr), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (127, 'bash: /home/decruce/.t3/worktrees/a[94 chars]y\n') != (0, '')
+
+First differing element 0:
+127
+0
+
++ (0, '')
+- (127,
+-  'bash: '
+-  '/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/hooks/context-ceiling.sh: '
+-  'No such file or directory\n')
+
+======================================================================
+FAIL: test_three_entries (tests.test_context_ceiling.Registry.test_three_entries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-context-ceiling-9f211744f1b2826f/tests/test_context_ceiling.py", line 321, in test_three_entries
+    self.assertEqual(sorted(mine), [("PreToolUse", ""), ("Stop", ""), ("UserPromptSubmit", "")])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [('PreToolUse', ''), ('Stop', ''), ('UserPromptSubmit', '')]
+
+Second list contains 3 additional elements.
+First extra element 0:
+('PreToolUse', '')
+
+- []
++ [('PreToolUse', ''), ('Stop', ''), ('UserPromptSubmit', '')]
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.018s
+
+FAILED (failures=4)
