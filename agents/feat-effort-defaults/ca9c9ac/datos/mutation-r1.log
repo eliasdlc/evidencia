@@ -1,0 +1,18 @@
+# R1 at ca9c9ac, with m1.patch applied
+# $ python3 -m pytest -q -p no:cacheprovider tests/test_configuration.py -k opus_effort
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____ ConfigurationTests.test_opus_effort_is_enforced_from_the_repo_settings ____
+
+self = <test_configuration.ConfigurationTests testMethod=test_opus_effort_is_enforced_from_the_repo_settings>
+
+    def test_opus_effort_is_enforced_from_the_repo_settings(self):
+        policy = json.loads((Path(__file__).parents[1] / 'settings/claude.json').read_text())
+>       self.assertEqual(policy['enforce']['modelSettings']['claude-opus-5-5'], {'effortLevel': 'medium'})
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'modelSettings'
+
+tests/test_configuration.py:458: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_configuration.py::ConfigurationTests::test_opus_effort_is_enforced_from_the_repo_settings
+1 failed, 29 deselected in 0.06s
