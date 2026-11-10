@@ -10,3 +10,14 @@ FAILED (errors=1)
 $ same, fix as committed
 Ran 31 tests in 2.430s
 OK
+
+# Mutation 2 at 5c58a71: other_host() always answers laptop, so --all from the laptop would ssh to itself
+594c594
+<     return 'laptop' if socket.gethostname() == 'agentbox' else 'agentbox'
+---
+>     return 'laptop'
+$ python3 -m unittest discover -s tests -p test_configuration.py (mutation 2)
+FAIL: test_update_all_activates_the_other_machine_over_ssh (test_configuration.ConfigurationTests.test_update_all_activates_the_other_machine_over_ssh)
+AssertionError: Lists differ: ['laptop', '~/.local/bin/agents update'] != ['agentbox', '~/.local/bin/agents update']
+Ran 31 tests in 2.749s
+FAILED (failures=1)
