@@ -1,0 +1,142 @@
+# R3 at 03d043e, with hooks/agent-model.py, hooks/agent-model.sh, hooks/registry.json back at ed9da38
+# $ python3 -m unittest tests/test_agent_model.py
+....FFF.EFF..
+======================================================================
+ERROR: test_the_rewrite_keeps_every_other_field (tests.test_agent_model.AgentModelTests.test_the_rewrite_keeps_every_other_field)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 70, in test_the_rewrite_keeps_every_other_field
+    out = json.loads(result.stdout)["hookSpecificOutput"]
+          ~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+FAIL: test_only_the_structured_fields_count (tests.test_agent_model.AgentModelTests.test_only_the_structured_fields_count)
+The prompt says "use model opus"; with no model field nothing changes.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 148, in test_only_the_structured_fields_count
+    self.assertIn("runs on sonnet", self.stripped(self.call("implementer", "opus", tool="Task")),
+                                    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 51, in stripped
+    self.assertEqual((result.returncode, result.stderr), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (2, 'agent-model: `implementer` runs on so[215 chars].\n') != (0, '')
+
+First differing element 0:
+2
+0
+
++ (0, '')
+- (2,
+-  'agent-model: `implementer` runs on sonnet (its definition in '
+-  '~/.claude/agents/implementer.md), and this call asks for opus. Drop `model` '
+-  'from the call; the type decides its model (model-delegation, Which model). '
+-  'Work that needs Opus goes to `architect`.\n')
+
+======================================================================
+FAIL: test_the_effort_warning_is_gone (tests.test_agent_model.AgentModelTests.test_the_effort_warning_is_gone)
+Opus main effort is enforced at medium (settings/claude.json), so a
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 158, in test_the_effort_warning_is_gone
+    self.assertPasses(self.call("general-purpose", description="Implement the parser"))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 47, in assertPasses
+    self.assertEqual((result.returncode, result.stderr, result.stdout), (0, "", ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (0, '', '{"hookSpecificOutput": {"hookEventName": [315 chars]}\n') != (0, '', '')
+
+First differing element 2:
+'{"hookSpecificOutput": {"hookEventName": [314 chars]}}\n'
+''
+
++ (0, '', '')
+- (0,
+-  '',
+-  '{"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": '
+-  '"agent-model: this looks like implementer work, and `general-purpose` runs '
+-  "at the parent's effort. Launch `implementer` instead: its definition carries "
+-  'the model and the effort of the class (model-delegation, class table). Keep '
+-  '`general-purpose` for work outside those classes."}}\n')
+
+======================================================================
+FAIL: test_the_frontmatter_is_read_as_written (tests.test_agent_model.AgentModelTests.test_the_frontmatter_is_read_as_written)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 92, in test_the_frontmatter_is_read_as_written
+    self.assertIn("runs on sonnet", self.stripped(self.call("quoted", "opus")))
+                                    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 51, in stripped
+    self.assertEqual((result.returncode, result.stderr), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (2, 'agent-model: `quoted` runs on sonnet [205 chars].\n') != (0, '')
+
+First differing element 0:
+2
+0
+
++ (0, '')
+- (2,
+-  'agent-model: `quoted` runs on sonnet (its definition in '
+-  '~/.claude/agents/quoted.md), and this call asks for opus. Drop `model` from '
+-  'the call; the type decides its model (model-delegation, Which model). Work '
+-  'that needs Opus goes to `architect`.\n')
+
+======================================================================
+FAIL: test_the_type_decides_by_family (tests.test_agent_model.AgentModelTests.test_the_type_decides_by_family)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 80, in test_the_type_decides_by_family
+    self.assertIn("runs on sonnet", self.stripped(self.call("implementer", model)), model)
+                                    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 51, in stripped
+    self.assertEqual((result.returncode, result.stderr), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (2, 'agent-model: `implementer` runs on so[226 chars].\n') != (0, '')
+
+First differing element 0:
+2
+0
+
++ (0, '')
+- (2,
+-  'agent-model: `implementer` runs on sonnet (its definition in '
+-  '~/.claude/agents/implementer.md), and this call asks for claude-opus-5-5. '
+-  'Drop `model` from the call; the type decides its model (model-delegation, '
+-  'Which model). Work that needs Opus goes to `architect`.\n')
+
+======================================================================
+FAIL: test_three_steps (tests.test_agent_model.AgentModelTests.test_three_steps)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 62, in test_three_steps
+    note = self.stripped(self.call("architect", "sonnet"))
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_agent_model.py", line 51, in stripped
+    self.assertEqual((result.returncode, result.stderr), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (2, 'agent-model: `architect` runs on opus[211 chars].\n') != (0, '')
+
+First differing element 0:
+2
+0
+
++ (0, '')
+- (2,
+-  'agent-model: `architect` runs on opus (its definition in '
+-  '~/.claude/agents/architect.md), and this call asks for sonnet. Drop `model` '
+-  'from the call; the type decides its model (model-delegation, Which model). '
+-  'Work that needs Opus goes to `architect`.\n')
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.623s
+
+FAILED (failures=5, errors=1)
