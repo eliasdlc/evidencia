@@ -1,0 +1,16 @@
+# Mutation of hooks/agent-model.py at 6d32db7: the foreground rewrite applies only to an explicit run_in_background true
+$ diff
+150c150
+<     if inp.get("run_in_background") is not False:
+---
+>     if inp.get("run_in_background") is True:
+$ python3 tests/test_agent_model.py (mutated)
+ERROR: test_the_rewrite_keeps_the_effort_warning_and_never_rescues_a_refusal (__main__.AgentModelTests.test_the_rewrite_keeps_the_effort_warning_and_never_rescues_a_refusal)
+KeyError: 'updatedInput'
+FAIL: test_every_child_runs_in_the_foreground_three_steps (__main__.AgentModelTests.test_every_child_runs_in_the_foreground_three_steps)
+AssertionError: None != {'description': 'Search the repo', 'promp[59 chars]alse} : {'description': 'Search the repo', 'prompt': 'p', 'subagent_type': 'Explore'}
+Ran 15 tests in 6.352s
+FAILED (failures=1, errors=1)
+$ python3 tests/test_agent_model.py (fix as committed)
+
+OK
