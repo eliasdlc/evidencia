@@ -1,0 +1,21 @@
+Three step runs at 03d043e, hooks run as the harness runs them (bash hooks/<name>.sh, JSON payload on stdin)
+## context-ceiling, subagent (R1)
+1. child transcript at 120K:
+exit=0
+2. child transcript at a fabricated 260K:
+Context ceiling (subagent, 250K): return your result now: what is done, what is left, file state. Every tool is denied for this child from here.
+exit=2
+3. child back at 120K:
+exit=0
+## agent-model, model removed (R3)
+1. architect, no model:
+exit=0
+2. architect, fabricated model: sonnet:
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "allow", "updatedInput": {"subagent_type": "architect", "run_in_background": false, "prompt": "p"}, "additionalContext": "agent-model: `model: sonnet` was removed from this call, so `architect` runs on opus, the model of its definition (~/.claude/agents/architect.md). Launch typed subagents without `model`; work that needs Opus goes to `architect`."}}
+exit=0
+3. architect, model dropped:
+exit=0
+## agent-model, Opus refusal kept (R3)
+general-purpose, model: opus:
+agent-model: `general-purpose` has no model of its own here, and Opus work goes to `architect`. Launch `architect` with no `model`, or drop `model: opus` from this call.
+exit=2
