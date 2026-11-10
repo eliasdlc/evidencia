@@ -1,0 +1,13 @@
+Red first: this PR's test files run against origin/dev ef4a977 code, then at the head 1f22b04.
+$ python3 -m pytest -q -rf tests/test_delegation.py tests/test_scorecard.py tests/test_class_watch.py   # on origin/dev code
+E           delegation.Blocked: MODEL_INVALID
+E           delegation.Blocked: EFFORT_XHIGH: only when Elias asks; put his words in effort_quote and repeat them in context
+FAILED tests/test_delegation.py::DelegationTests::test_fable_needs_a_quote_of_elias_pass_fail_pass
+FAILED tests/test_delegation.py::DelegationTests::test_only_host_cache_extends_cli_models_and_adapter_efforts
+FAILED tests/test_scorecard.py::ScorecardTest::test_child_runs_per_class_model_and_effort_with_pr_outcomes
+FAILED tests/test_scorecard.py::ScorecardTest::test_pr_states_reads_merged_and_reverts_from_gh
+FAILED tests/test_class_watch.py::ClassWatchTests::test_the_agent_runs_on_sonnet_medium
+5 failed, 92 passed, 14 subtests passed in 1.82s
+
+$ python3 -m pytest -q tests/test_delegation.py tests/test_scorecard.py tests/test_class_watch.py   # at the head
+97 passed, 14 subtests passed in 1.57s
