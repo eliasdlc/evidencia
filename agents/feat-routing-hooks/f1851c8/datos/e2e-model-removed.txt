@@ -1,0 +1,7 @@
+End to end R3: does updatedInput without model make the child run on its type's model?
+Claude Code 2.1.322 (Claude Code); main --model sonnet; this branch's hooks/agent-model.py wired via --settings with HOME holding probe-opus.md (model: opus).
+The Agent call as the model sent it:
+  "name":"Agent","input":{"description":"Probe settings read","subagent_type":"probe-opus","model":"haiku","run_in_background":false,"prompt":"Read settings.json then reply DONE."}
+Model the child ran on (its transcript): "model":"claude-opus-5-5"
+Hook note the caller received:
+  agent-model: `model: haiku` was removed from this call, so `probe-opus` runs on opus, the model of its definition (~/.claude/agents/probe-opus.md). Launch typed subagents without `model`; work that needs Opus goes to `architect`.
