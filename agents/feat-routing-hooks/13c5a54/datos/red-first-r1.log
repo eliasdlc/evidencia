@@ -1,0 +1,63 @@
+# R1 at 13c5a54, with hooks/context-ceiling.py, hooks/registry.json back at 2b6f624
+# $ python3 -m unittest tests/test_context_ceiling.py
+........................FF.E.F.....
+======================================================================
+ERROR: test_one_notice_at_150k_per_child (tests.test_context_ceiling.Subagent.test_one_notice_at_150k_per_child)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_context_ceiling.py", line 166, in test_one_notice_at_150k_per_child
+    self.assertIn("past 150K", json.loads(first.stdout)["hookSpecificOutput"]["additionalContext"])
+                               ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+FAIL: test_a_workflow_child_is_found_too (tests.test_context_ceiling.Subagent.test_a_workflow_child_is_found_too)
+Review round 1 of PR 206: a Workflow run writes its children under
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_context_ceiling.py", line 179, in test_a_workflow_child_is_found_too
+    self.assertDenied(self.call(), "return your result now")
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_context_ceiling.py", line 55, in assertDenied
+    self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : 
+
+======================================================================
+FAIL: test_every_tool_is_denied_and_nothing_lifts_it (tests.test_context_ceiling.Subagent.test_every_tool_is_denied_and_nothing_lifts_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_context_ceiling.py", line 158, in test_every_tool_is_denied_and_nothing_lifts_it
+    self.assertDenied(self.call(name, **inp), "return your result now")
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_context_ceiling.py", line 55, in assertDenied
+    self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : 
+
+======================================================================
+FAIL: test_three_steps (tests.test_context_ceiling.Subagent.test_three_steps)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_context_ceiling.py", line 148, in test_three_steps
+    self.assertDenied(self.call(), "Context ceiling (subagent, 250K)",
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      "return your result now: what is done, what is left, file state")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/.t3/worktrees/agents/feat-routing-hooks-401311e661eeb65e/tests/test_context_ceiling.py", line 55, in assertDenied
+    self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : 
+
+----------------------------------------------------------------------
+Ran 35 tests in 7.240s
+
+FAILED (failures=3, errors=1)
