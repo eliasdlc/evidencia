@@ -1,0 +1,12 @@
+# Mutation at 5c58a71: bin/configuration.py runs the test suite again during activation
+468a469,470
+>             if (source / 'tests').is_dir():
+>                 run(sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', cwd=source)
+$ python3 -m unittest discover -s tests -p test_configuration.py (mutated)
+ERROR: test_activation_leaves_the_suite_to_ci (test_configuration.ConfigurationTests.test_activation_leaves_the_suite_to_ci)
+subprocess.TimeoutExpired: Command '('/usr/bin/python3', '-m', 'unittest', 'discover', '-s', 'tests')' timed out after 5 seconds
+Ran 31 tests in 7.373s
+FAILED (errors=1)
+$ same, fix as committed
+Ran 31 tests in 2.430s
+OK
