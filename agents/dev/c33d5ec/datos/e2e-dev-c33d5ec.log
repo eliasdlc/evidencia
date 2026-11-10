@@ -1,0 +1,68 @@
+# E2E of eliasdlc/agents dev at c33d5ec before release to main, 2026-11-10, sandbox home under the session scratchpad (never ~/.claude)
+## P0 sandbox: S-01..S-05 PASS (installed c33d5ec, full-send and full-stop present, retro absent, 0 links into ~/.claude, live generation ed624b5 unchanged before and after)
+## P1 context-ceiling: 55 PASS, 1 FAIL (CC-54: python3 -m unittest tests.test_context_ceiling imports pirate-get's site-packages tests module; discover -s tests -p test_context_ceiling.py OK)
+## P2 other hooks: 40 PASS, 2 FAIL (MK-13, UT-02: same import shadowing; each module OK through discover)
+## P3 CLI and suites: 31 PASS, 3 FAIL (EF-04, UT-04: same shadowing; SC-05: plan expected a cache file for a transcript the scorecard excludes before scanning). UT-01 full suite: Ran 814 tests, OK
+## P4 content checks: 22 PASS, 0 FAIL
+## Shadowing verification
+$ python3 -c "import tests;print(tests.__file__)"
+/usr/lib/python3.14/site-packages/tests/__init__.py
+$ pacman -Qo .../site-packages/tests/__init__.py
+/usr/lib/python3.14/site-packages/tests/__init__.py is owned by pirate-get 0.4.2-1
+test_context_ceiling: OK
+test_mode_keyword: OK
+test_agent_model: OK
+test_design_identity: OK
+test_turn_close: OK
+test_standing_rule_glossary: OK
+test_session_hooks: OK
+test_delegation: OK
+test_configuration: OK
+test_spike: OK
+test_scorecard: OK
+test_run: OK
+test_mcp: OK
+## P5 routing evals (claude -p --model sonnet, 3 runs per case, pass: should-load 2-3/3, should-not 0-1/3)
+RE-00 probe: PASS
+| full-send | keyword-end | load | 3/3 | PASS |
+| full-send | with-takeover | load | 3/3 | PASS |
+| full-send | uppercase-typo | load | 3/3 | PASS |
+| full-send | mid-message | load | 3/3 | PASS |
+| full-send | spanish-dictation | load | 3/3 | PASS |
+| full-send | after-checks | load | 3/3 | PASS |
+| full-send | no-keyword | not | 0/3 | PASS |
+| full-send | other-mode | not | 0/3 | PASS |
+| full-send | about-the-word | not | 0/3 | PASS |
+| full-send | write-about-modes | not | 0/3 | PASS |
+| full-stop | keyword-end | load | 3/3 | PASS |
+| full-stop | with-takeover | load | 3/3 | PASS |
+| full-stop | uppercase-typo | load | 3/3 | PASS |
+| full-stop | mid-message | load | 3/3 | PASS |
+| full-stop | spanish-dictation | load | 3/3 | PASS |
+| full-stop | never-names-merge | load | 3/3 | PASS |
+| full-stop | no-keyword | not | 0/3 | PASS |
+| full-stop | other-mode | not | 0/3 | PASS |
+| full-stop | punctuation | not | 0/3 | PASS |
+| full-stop | pause-request | not | 0/3 | PASS |
+| design-grammar | flutter-build-screen | load | 3/3 | PASS |
+| design-grammar | spanish-looks-ai | load | 3/3 | PASS |
+| design-grammar | never-names-it | load | 3/3 | PASS |
+| design-grammar | web-redesign | load | 3/3 | PASS |
+| design-grammar | component-in-brief | load | 0/3 | FAIL |
+| design-grammar | hooks-in-general | not | 0/3 | PASS |
+| design-grammar | firestore-rules | not | 0/3 | PASS |
+| design-grammar | pr-description | not | 0/3 | PASS |
+| design-grammar | mechanism-explainer | not | 0/3 | PASS |
+| design-grammar | spacing-word-nonvisual | not | 0/3 | PASS |
+| design-grammar | figma-social-post | not | 3/3 | FAIL |
+| development-workflow | full-send | load | 3/3 | PASS |
+| development-workflow | full-stop | load | 2/3 | PASS |
+| development-workflow | merge | load | 3/3 | PASS |
+| development-workflow | implement | load | 0/3 | FAIL |
+| development-workflow | needs-eye | load | 3/3 | PASS |
+| development-workflow | question | not | 0/3 | PASS |
+| development-workflow | read-only | not | 0/3 | PASS |
+| development-workflow | stop-word | not | 0/3 | PASS |
+## P5 FAIL analysis
+design-grammar component-in-brief 0/3 and development-workflow implement 0/3: every run stopped before any tool, saying the cwd (an empty scratch folder) is in no workspace; rerun 3x from the sandbox ConoceRD workspace home: component-in-brief 3/3 (design-grammar, visual-briefing), implement 1/3 (skills [], [scrum], [development-workflow, scrum]); the trigger text 'Use before implementing' is identical on origin/main and origin/dev
+design-grammar figma-social-post (should not load) 3/3: skills_called in order were [figma-assets, design-grammar] in all three runs, which is what the case's own check asks (figma-assets first, design-grammar only through it); the harness counts any call as loaded
