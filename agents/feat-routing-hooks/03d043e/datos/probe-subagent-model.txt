@@ -1,0 +1,11 @@
+Probe R2: does CLAUDE_CODE_SUBAGENT_MODEL (non-FORCE) leave a typed subagent's frontmatter model alone?
+Claude Code 2.1.322 (Claude Code)
+Run: CLAUDE_CODE_SUBAGENT_MODEL=sonnet claude -p --model haiku, three foreground Agent calls with no model parameter, project .claude/agents:
+  probe-opus.md  model: opus
+  probe-plain.md (no model)
+  Explore.md     model: haiku (override of the built-in)
+Model per subagent transcript (<session>/subagents/agent-<id>.jsonl, assistant entries):
+  probe-opus (isBuiltIn=False) -> claude-opus-5-5
+  probe-plain (isBuiltIn=False) -> claude-sonnet-5-5
+  Explore (isBuiltIn=False) -> claude-haiku-5-5
+Reading: frontmatter opus stayed on Opus (the variable does not override it); no model went to Sonnet (the variable applies); the Explore override ran on Haiku.
