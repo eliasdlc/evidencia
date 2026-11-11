@@ -1,0 +1,17 @@
+# R1 at f14bd6c, with r1-first-pick.patch applied
+# $ POSTPLAN_TEST_DATABASE_URL=postgres://postgres:x@127.0.0.1:55432/postgres node --test --test-reporter=./test/support/proof-reporter.mjs test/pg-store.test.js
+PASS test/pg-store.test.js > saveRound creates, then keeps the owner and the draft fixed
+FAIL test/pg-store.test.js > recordPick: the first pick per question wins
+  AssertionError: Expected values to be strictly equal:
+  
+  true !== false
+  
+PASS test/pg-store.test.js > recordPick refuses what the routes refuse
+PASS test/pg-store.test.js > a re-upload keeps the picks, and questions freeze once picked
+PASS test/pg-store.test.js > a disabled draft reads as not live
+PASS test/pg-store.test.js > recordPick refuses a round whose draft was deleted or disabled
+PASS test/pg-store.test.js > a pick confirmed during a re-upload waits for it instead of deadlocking
+PASS test/pg-store.test.js > a stored round whose question keys are in another order still matches
+PASS test/pg-store.test.js > concurrent initDb calls on a fresh database all resolve
+
+Tests  8 passed | 1 failed | 0 skipped
