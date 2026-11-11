@@ -1,0 +1,35 @@
+# R2 at 788913a, with R2.patch applied
+# $ python3 -m unittest tests.test_proof_gate.ShadowTests
+E./home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/bin/proof.py:1617: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpf1g1t68y/body.md' mode='r' encoding='UTF-8'>
+  body = open(args[1]).read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..
+======================================================================
+ERROR: test_a_failing_shadow_never_changes_the_verdict (tests.test_proof_gate.ShadowTests.test_a_failing_shadow_never_changes_the_verdict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 277, in test_a_failing_shadow_never_changes_the_verdict
+    self.assertEqual(self.verdict(["12", "--repo", "eliasdlc/x"], AGENTS_PROOF_SHADOW="sync",
+                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                  AGENTS_PROOF_SHADOW_LOG=str(self.log / "not-a-dir" / "x.jsonl")), plain)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 250, in verdict
+    code = proof.main(argv)
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/bin/proof.py", line 1572, in main
+    proof_shadow.after(list(argv), code, out.getvalue())
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/bin/proof_shadow.py", line 84, in after
+    record(payload) if mode == "sync" else spawn(payload)
+    ~~~~~~^^^^^^^^^
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/bin/proof_shadow.py", line 123, in record
+    path.parent.mkdir(parents=True, exist_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/pathlib/__init__.py", line 1012, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+NotADirectoryError: [Errno 20] Not a directory: '/tmp/tmpdzqaqc54/shadow.jsonl/not-a-dir'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.874s
+
+FAILED (errors=1)
