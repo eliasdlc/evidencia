@@ -1,0 +1,36 @@
+# R1 at 5cdb29c, with r1.patch applied
+# $ pnpm exec vitest run src/lib/feed.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/feed.test.ts (30 tests | 1 failed) 28ms
+   ❯ campaigns (5)
+     × leaves the posts of a deleted campaign in the feed, in no campaign, and keeps the campaigns when a post is deleted 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/feed.test.ts > campaigns > leaves the posts of a deleted campaign in the feed, in no campaign, and keeps the campaigns when a post is deleted
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/lib/feed.test.ts:342:53
+    340|     const without = removeCampaign(feed, 'promos')
+    341|     expect(names(without)).toEqual(['Menú'])
+    342|     expect('campaign' in without.posts['bebidas']!).toBe(false)
+       |                                                     ^
+    343|     expect(without.posts['pan']!.campaign).toBe('menu')
+    344|     expect(without.grid).toEqual(feed.grid)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 29 passed (30)
+   Start at  18:48:30
+   Duration  145ms (tests 59%, import 22%, transform 12%, worker 7%)
+
