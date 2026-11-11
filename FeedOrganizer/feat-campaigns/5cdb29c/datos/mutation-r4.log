@@ -1,0 +1,68 @@
+# R4 at 5cdb29c, with r4.patch applied
+# $ pnpm exec vitest run src/lib/storage.test.ts src/lib/copy.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/storage.test.ts (14 tests | 2 failed) 18ms
+   ❯ opening what the browser had saved (10)
+     × makes the feed saved before several feeds existed the first feed, and leaves the old save as it was 10ms
+     × opens a feed saved before there were campaigns with none, and keeps the campaigns of one saved with them 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/storage.test.ts > opening what the browser had saved > makes the feed saved before several feeds existed the first feed, and leaves the old save as it was
+AssertionError: expected { posts: { …(3) }, …(3) } to deeply equal { posts: { …(3) }, …(4) }
+
+- Expected
++ Received
+
+@@ -1,7 +1,6 @@
+  {
+-   "campaigns": [],
+    "grid": [
+      "a",
+      "b",
+    ],
+    "live": [
+
+ ❯ src/lib/storage.test.ts:37:50
+     35|     const library = await openLibrary(store)
+     36|     expect(library).toEqual({ current: FIRST_FEED_ID, list: [{ id: FIR…
+     37|     expect(await loadFeed(FIRST_FEED_ID, store)).toEqual(opened)
+       |                                                  ^
+     38|     // The version before this one reads only the old key: it still fi…
+     39|     expect(data.get(OLD_FEED_KEY)).toEqual(savedBefore)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/storage.test.ts > opening what the browser had saved > opens a feed saved before there were campaigns with none, and keeps the campaigns of one saved with them
+AssertionError: expected { posts: { …(3) }, …(3) } to deeply equal { posts: { …(3) }, …(4) }
+
+- Expected
++ Received
+
+@@ -1,7 +1,6 @@
+  {
+-   "campaigns": [],
+    "grid": [
+      "a",
+      "b",
+    ],
+    "live": [
+
+ ❯ src/lib/storage.test.ts:92:44
+     90|     }
+     91|     const { store, data } = memoryStore({ [feedKey('viejo')]: savedBef…
+     92|     expect(await loadFeed('viejo', store)).toEqual(opened)
+       |                                            ^
+     93|     expect(await loadFeed('nuevo', store)).toEqual(withCampaigns)
+     94|     // Reading changes nothing in the store: the feed takes its new sh…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 20 passed (22)
+   Start at  18:48:52
+   Duration  152ms (tests 34%, transform 29%, import 28%, worker 9%)
+
