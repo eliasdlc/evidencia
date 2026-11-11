@@ -1,0 +1,57 @@
+# R2 at 5cdb29c, with r2.patch applied
+# $ pnpm exec vitest run src/lib/feed.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/feed.test.ts (30 tests | 1 failed) 35ms
+   ❯ campaigns (5)
+     × makes a campaign of each folder that groups the folders of posts, and uses the one the feed already has by that name 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/feed.test.ts > campaigns > makes a campaign of each folder that groups the folders of posts, and uses the one the feed already has by that name
+AssertionError: expected [ [ 'Aviso', undefined ], …(4) ] to deeply equal [ [ 'Aviso', undefined ], …(4) ]
+
+- Expected
++ Received
+
+@@ -3,19 +3,19 @@
+      "Aviso",
+      undefined,
+    ],
+    [
+      "Cafes",
+-     "Menu",
++     undefined,
+    ],
+    [
+      "Dos por uno",
+-     "Promos",
++     undefined,
+    ],
+    [
+      "Sorteo",
+-     "Promos",
++     undefined,
+    ],
+    [
+      "Suelta",
+      undefined,
+    ],
+
+ ❯ src/lib/feed.test.ts:356:59
+    354|       'posts/suelta.png',
+    355|     ])
+    356|     expect(found.map((post) => [post.title, post.group])).toEqual([
+       |                                                           ^
+    357|       // A folder of images directly inside the picked one is a post, …
+    358|       ['Aviso', undefined],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 29 passed (30)
+   Start at  18:48:35
+   Duration  195ms (transform 42%, tests 39%, import 15%, worker 4%)
+
