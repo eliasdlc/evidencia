@@ -1,0 +1,159 @@
+# R1 at 22c21f0, with src/lib/visit-radius.ts, src/lib/visits.ts back at a090948
+# $ pnpm exec vitest run src/lib/visits.test.ts -t "radio de visita por tipo"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/radio-visita-por-tipo
+
+ ❯ src/lib/visits.test.ts (66 tests | 9 failed | 55 skipped) 13ms
+   ↓ contrato T88 > valida dos muestras dentro del radio separadas por tres minutos
+   ↓ contrato T88 > rechaza cuerpos con XP, uid, radios y destino arbitrario en el payload
+   ↓ contrato T88 > rechaza muestras a diez minutos, futuras y desordenadas
+   ↓ contrato T88 > rechaza movimiento a 15km/h y dwell menor de tres minutos
+   ↓ contrato T88 > no ignora un teletransporte fuera del radio entre dos muestras válidas
+   ↓ contrato T88 > rechaza un sitio lejano, ausente o con coordenadas corruptas
+   ↓ contrato T88 > cuenta la visita en la llegada cuando el pin está lejos, como la caseta de un pico
+   ↓ contrato T88 > ignora una llegada corrupta o con las claves cortas
+   × radio de visita por tipo > playa: valida justo dentro de 500 m y rechaza justo fuera 8ms
+     → expected 'radius_policy_pending' to be 'validated' // Object.is equality
+   × radio de visita por tipo > beach: valida justo dentro de 500 m y rechaza justo fuera 1ms
+     → expected 'radius_policy_pending' to be 'validated' // Object.is equality
+   × radio de visita por tipo > Playa: valida justo dentro de 500 m y rechaza justo fuera 0ms
+     → expected 'radius_policy_pending' to be 'validated' // Object.is equality
+   × radio de visita por tipo > parque: valida justo dentro de 1000 m y rechaza justo fuera 0ms
+     → expected 'radius_policy_pending' to be 'validated' // Object.is equality
+   × radio de visita por tipo > park: valida justo dentro de 1000 m y rechaza justo fuera 0ms
+     → expected 'radius_policy_pending' to be 'validated' // Object.is equality
+   × radio de visita por tipo > parque_nacional: valida justo dentro de 1000 m y rechaza justo fuera 0ms
+     → expected 'radius_policy_pending' to be 'validated' // Object.is equality
+   ✓ radio de visita por tipo > museo: valida justo dentro de 150 m y rechaza justo fuera 0ms
+   × radio de visita por tipo > lee el tipo de category y de categories, no solo de placeType 0ms
+     → expected 'radius_policy_pending' to be 'validated' // Object.is equality
+   × radio de visita por tipo > con varios tipos gana el primero en placeType, category, categories 0ms
+     → expected 'radius_policy_pending' to be 'validated' // Object.is equality
+   ✓ radio de visita por tipo > un tipo con nombre de propiedad de Object no cambia el radio 0ms
+   × radio de visita por tipo > el radio ampliado mantiene la regla de velocidad cerca del pin, la permanencia y las muestras 0ms
+     → expected 'radius_policy_pending' to be 'speed' // Object.is equality
+   ↓ ruta de llegada dentro del radio ampliado > un fix rápido entre el radio base y el del tipo no rechaza la visita que luego se queda
+   ↓ ruta de llegada dentro del radio ampliado > un fix rápido cerca del pin sigue rechazando, de cualquier tipo
+   ↓ ruta de llegada dentro del radio ampliado > un fix rápido cerca de un acceso, lejos del pin, rechaza igual
+   ↓ ruta de llegada dentro del radio ampliado > la permanencia no puede empezar en un fix rápido
+   ↓ ruta de llegada dentro del radio ampliado > un fix rápido en medio de la permanencia la reinicia
+   ↓ ruta de llegada dentro del radio ampliado > fixes rápidos continuos dentro del radio durante tres minutos no suman permanencia
+   ↓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.5 desde catálogo
+   ↓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.51 desde catálogo
+   ↓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.52 desde catálogo
+   ↓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.53 desde catálogo
+   ↓ llegadas de catálogo y permanencia por target > no requiere snapshot o modo del cliente, y rechaza esos campos
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: no array
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: null
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: more than six
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: duplicate ID
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty ID
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: path ID
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: whitespace ID
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: unknown type
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty name
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: wrong name
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty English
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: unknown locale
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty modes
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: duplicate modes
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: unknown mode
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: short coordinate keys
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: NaN
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: Infinity
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: outside RD
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: extra fields
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: mixed valid and corrupt
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {}
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"defaultArrivalPointId":"missing"}
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"defaultArrivalPointId":"trail"}
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"defaultArrivalPointId":{"id":"north"}}
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"arrivalPoint":{"latitude":18.51,"longitude":-69.9}}
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"arrivalPoint":{"lat":18.5,"lng":-69.9}}
+   ↓ llegadas de catálogo y permanencia por target > default huérfano impide usar la proyección legacy como escape
+   ↓ llegadas de catálogo y permanencia por target > acepta default únicamente peatonal cuando toda la lista es peatonal
+   ↓ llegadas de catálogo y permanencia por target > deduplica coordenadas compartidas sin mezclar permanencia de otros targets
+   ↓ llegadas de catálogo y permanencia por target > dos llegadas distintas no suman tres minutos de permanencia
+   ↓ llegadas de catálogo y permanencia por target > salir de un target rompe su intervalo aunque luego vuelva
+   ↓ llegadas de catálogo y permanencia por target > un intervalo continuo completo en una llegada basta aunque haya muestras exteriores después
+   ↓ llegadas de catálogo y permanencia por target > un destino con varios accesos usa el radio del tipo en cada uno
+   ↓ llegadas de catálogo y permanencia por target > en una playa con accesos, dos accesos distintos no suman permanencia
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/visits.test.ts > radio de visita por tipo > playa: valida justo dentro de 500 m y rechaza justo fuera
+ FAIL  src/lib/visits.test.ts > radio de visita por tipo > beach: valida justo dentro de 500 m y rechaza justo fuera
+ FAIL  src/lib/visits.test.ts > radio de visita por tipo > Playa: valida justo dentro de 500 m y rechaza justo fuera
+ FAIL  src/lib/visits.test.ts > radio de visita por tipo > parque: valida justo dentro de 1000 m y rechaza justo fuera
+ FAIL  src/lib/visits.test.ts > radio de visita por tipo > park: valida justo dentro de 1000 m y rechaza justo fuera
+ FAIL  src/lib/visits.test.ts > radio de visita por tipo > parque_nacional: valida justo dentro de 1000 m y rechaza justo fuera
+AssertionError: expected 'radius_policy_pending' to be 'validated' // Object.is equality
+
+Expected: [32m"validated"[39m
+Received: [31m"radius_policy_pending"[39m
+
+ ❯ src/lib/visits.test.ts:67:71
+     65|     ['museo', 150],
+     66|   ])('%s: valida justo dentro de %i m y rechaza justo fuera', (placeTy…
+     67|     expect(validateVisit(body(), away(radius - 5, {placeType}), now)).…
+       |                                                                       ^
+     68|     expect(validateVisit(body(), away(radius + 5, {placeType}), now)).…
+     69|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  src/lib/visits.test.ts > radio de visita por tipo > lee el tipo de category y de categories, no solo de placeType
+AssertionError: expected 'radius_policy_pending' to be 'validated' // Object.is equality
+
+Expected: [32m"validated"[39m
+Received: [31m"radius_policy_pending"[39m
+
+ ❯ src/lib/visits.test.ts:72:8
+     70|   it('lee el tipo de category y de categories, no solo de placeType', …
+     71|     expect(validateVisit(body(), away(400, {placeType: 'balneario', ca…
+     72|       .toBe('validated');
+       |        ^
+     73|     expect(validateVisit(body(), away(400, {placeType: undefined, cate…
+     74|     expect(validateVisit(body(), away(400, {placeType: 'balneario', ca…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  src/lib/visits.test.ts > radio de visita por tipo > con varios tipos gana el primero en placeType, category, categories
+AssertionError: expected 'radius_policy_pending' to be 'validated' // Object.is equality
+
+Expected: [32m"validated"[39m
+Received: [31m"radius_policy_pending"[39m
+
+ ❯ src/lib/visits.test.ts:78:97
+     76|   });
+     77|   it('con varios tipos gana el primero en placeType, category, categor…
+     78|     expect(validateVisit(body(), away(700, {placeType: 'parque', categ…
+       |                                                                                                 ^
+     79|     expect(validateVisit(body(), away(700, {placeType: 'playa', catego…
+     80|       .toBe('outside_radius');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  src/lib/visits.test.ts > radio de visita por tipo > el radio ampliado mantiene la regla de velocidad cerca del pin, la permanencia y las muestras
+AssertionError: expected 'radius_policy_pending' to be 'speed' // Object.is equality
+
+Expected: [32m"speed"[39m
+Received: [31m"radius_policy_pending"[39m
+
+ ❯ src/lib/visits.test.ts:92:72
+     90|   it('el radio ampliado mantiene la regla de velocidad cerca del pin, …
+     91|     const value = body(); value.samples[0]!.speed = 15 / 3.6;
+     92|     expect(validateVisit(value, away(100, {placeType: 'playa'}), now))…
+       |                                                                        ^
+     93|     const short = body(); short.samples[0]!.timestamp += 2;
+     94|     expect(validateVisit(short, away(400, {placeType: 'playa'}), now))…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed | 2 passed | 55 skipped (66)
+   Start at  17:43:28
+   Duration  268ms (transform 42ms, setup 10ms, collect 70ms, tests 13ms, environment 0ms, prepare 54ms)
+
