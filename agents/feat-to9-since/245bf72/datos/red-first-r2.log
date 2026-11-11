@@ -1,0 +1,141 @@
+# R2 at 245bf72, with bin/scorecard.py, bin/to9.py back at 1775333
+# $ python3 -m unittest tests.test_to9.SinceTests
+EEFEusage: agents to9 [-h] [--json] [--no-remote]
+agents to9: error: unrecognized arguments: --since 2026-11-10T16:43:21Z
+EEEEEEEE
+======================================================================
+ERROR: test_a_count_is_projected_and_judged_past_the_floor (tests.test_to9.SinceTests.test_a_count_is_projected_and_judged_past_the_floor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 623, in test_a_count_is_projected_and_judged_past_the_floor
+    rows = self.since_rows(tot, [f"2026-11-1{d}T14:00:00" for d in (1, 2, 3, 4, 5)] * 2, now)
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 618, in since_rows
+    return to9.since_rows(SINCE, now, tot, fake_hosts(starts), sc, "this host", False, refuse)
+           ^^^^^^^^^^^^^^
+AttributeError: module 'to9' has no attribute 'since_rows'
+
+======================================================================
+ERROR: test_a_row_below_its_floor_says_too_early_and_never_judges (tests.test_to9.SinceTests.test_a_row_below_its_floor_says_too_early_and_never_judges)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 635, in test_a_row_below_its_floor_says_too_early_and_never_judges
+    rows = self.since_rows(tot, ["2026-11-11T14:00:00"] * 3, now)
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 618, in since_rows
+    return to9.since_rows(SINCE, now, tot, fake_hosts(starts), sc, "this host", False, refuse)
+           ^^^^^^^^^^^^^^
+AttributeError: module 'to9' has no attribute 'since_rows'
+
+======================================================================
+ERROR: test_below_the_floor_the_status_is_na_and_above_it_the_target_judges (tests.test_to9.SinceTests.test_below_the_floor_the_status_is_na_and_above_it_the_target_judges)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 602, in test_below_the_floor_the_status_is_na_and_above_it_the_target_judges
+    early = to9.since_row("A", "Rules", "9 restatements", "<= 5 a month", False, 4, 2.0, SINCE, "src")
+            ^^^^^^^^^^^^^
+AttributeError: module 'to9' has no attribute 'since_row'
+
+======================================================================
+ERROR: test_default_output_is_unchanged_and_since_adds_rows_without_touching_the_others (tests.test_to9.SinceTests.test_default_output_is_unchanged_and_since_adds_rows_without_touching_the_others)
+Golden: without the flag a row has exactly its five keys and measure reads no since window; with it every
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 686, in test_default_output_is_unchanged_and_since_adds_rows_without_touching_the_others
+    self.assertEqual(to9.main(["--no-remote", "--since", (dt.datetime.now(dt.timezone.utc)
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                                           - dt.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")]), 0)
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/bin/to9.py", line 907, in main
+    a = ap.parse_args(argv)
+  File "/usr/lib/python3.14/argparse.py", line 2020, in parse_args
+    self.error(msg)
+    ~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.14/argparse.py", line 2797, in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/argparse.py", line 2784, in exit
+    _sys.exit(status)
+    ~~~~~~~~~^^^^^^^^
+SystemExit: 2
+
+======================================================================
+ERROR: test_no_answer_from_any_host_is_na_not_zero (tests.test_to9.SinceTests.test_no_answer_from_any_host_is_na_not_zero)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 651, in test_no_answer_from_any_host_is_na_not_zero
+    rows = self.since_rows({}, [], SINCE + dt.timedelta(days=9))
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 618, in since_rows
+    return to9.since_rows(SINCE, now, tot, fake_hosts(starts), sc, "this host", False, refuse)
+           ^^^^^^^^^^^^^^
+AttributeError: module 'to9' has no attribute 'since_rows'
+
+======================================================================
+ERROR: test_projection_math (tests.test_to9.SinceTests.test_projection_math)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 584, in test_projection_math
+    self.assertEqual(to9.project(4, 2), 60)               # 4 events in 2 days: 60 a month
+                     ^^^^^^^^^^^
+AttributeError: module 'to9' has no attribute 'project'
+
+======================================================================
+ERROR: test_the_first_call_median_reads_only_sessions_started_after_the_time (tests.test_to9.SinceTests.test_the_first_call_median_reads_only_sessions_started_after_the_time)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 659, in test_the_first_call_median_reads_only_sessions_started_after_the_time
+    rows = self.since_rows({"since": {"first": "2026-11-11", "metrics": {}, "children": {}}}, starts, now)
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 618, in since_rows
+    return to9.since_rows(SINCE, now, tot, fake_hosts(starts), sc, "this host", False, refuse)
+           ^^^^^^^^^^^^^^
+AttributeError: module 'to9' has no attribute 'since_rows'
+
+======================================================================
+ERROR: test_the_floor_is_3_days_and_the_sample_and_names_the_date_it_is_met (tests.test_to9.SinceTests.test_the_floor_is_3_days_and_the_sample_and_names_the_date_it_is_met)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 589, in test_the_floor_is_3_days_and_the_sample_and_names_the_date_it_is_met
+    self.assertEqual(to9.reading("A", 10, 3.0, SINCE), "")                       # exactly at the floor
+                     ^^^^^^^^^^^
+AttributeError: module 'to9' has no attribute 'reading'. Did you mean: 'rating'?
+
+======================================================================
+ERROR: test_the_real_meter_with_and_without_since_agrees_on_every_base_row (tests.test_to9.SinceTests.test_the_real_meter_with_and_without_since_agrees_on_every_base_row)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 700, in test_the_real_meter_with_and_without_since_agrees_on_every_base_row
+    early = to9.measure(use_remote=False, runner=refuse, since=dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=30))
+TypeError: measure() got an unexpected keyword argument 'since'
+
+======================================================================
+ERROR: test_the_time_is_parsed_as_utc_and_a_bad_one_is_refused (tests.test_to9.SinceTests.test_the_time_is_parsed_as_utc_and_a_bad_one_is_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 575, in test_the_time_is_parsed_as_utc_and_a_bad_one_is_refused
+    self.assertEqual(to9.parse_since("2026-11-11T13:23:00Z", now), SINCE)
+                     ^^^^^^^^^^^^^^^
+AttributeError: module 'to9' has no attribute 'parse_since'
+
+======================================================================
+ERROR: test_untyped_children_count_only_untyped_ones (tests.test_to9.SinceTests.test_untyped_children_count_only_untyped_ones)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 646, in test_untyped_children_count_only_untyped_ones
+    e = self.since_rows(tot, ["2026-11-12T10:00:00"] * 10, now)["E"]
+        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 618, in since_rows
+    return to9.since_rows(SINCE, now, tot, fake_hosts(starts), sc, "this host", False, refuse)
+           ^^^^^^^^^^^^^^
+AttributeError: module 'to9' has no attribute 'since_rows'
+
+======================================================================
+FAIL: test_a_since_row_is_no_part_in_the_count (tests.test_to9.SinceTests.test_a_since_row_is_no_part_in_the_count)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a7ab44b213e5cc809/tests/test_to9.py", line 667, in test_a_since_row_is_no_part_in_the_count
+    self.assertIn("1 of 1 parts", to9.render(rows))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '1 of 1 parts' not found in 'agents to9: 2 of 2 parts at their 9 (2026-11-11, agentbox)\n\nA                    met     1\n                             target <= 5\n                             source s\nA Rules since        met     1\n                             target <= 5\n                             source s'
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.271s
+
+FAILED (failures=1, errors=11)
