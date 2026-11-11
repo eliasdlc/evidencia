@@ -1,0 +1,36 @@
+# R4 at aaefc30, with r4.patch applied
+# $ pnpm exec vitest run src/lib/copy.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/copy.test.ts (7 tests | 1 failed) 12ms
+   ❯ the copy of a feed (7)
+     × opens again as the same feed, every image under a new id 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/copy.test.ts > the copy of a feed > opens again as the same feed, every image under a new id
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/lib/copy.test.ts:66:48
+     64|     const now = Object.values(opened.posts).flatMap((other) => other.i…
+     65|     expect(now).toHaveLength(8)
+     66|     expect(now.some((id) => original.has(id))).toBe(false)
+       |                                                ^
+     67|   })
+     68|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  18:25:58
+   Duration  165ms (transform 55%, import 20%, tests 19%, worker 6%)
+
