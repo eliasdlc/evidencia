@@ -1,0 +1,73 @@
+# R1 at 788913a, with R1.patch applied
+# $ python3 -m unittest tests.test_proof_gate.RuleTests tests.test_proof_gate.AgreementTests
+F.E.....FFFF
+======================================================================
+ERROR: test_red_first_rules (tests.test_proof_gate.RuleTests.test_red_first_rules)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 171, in test_red_first_rules
+    self.assertEqual(judged(GOOD, in_base=lambda sha: True)[0].split(":")[0], "RED_FIRST")
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+======================================================================
+FAIL: test_passes_fails_passes (tests.test_proof_gate.RuleTests.test_passes_fails_passes) (rule='RED_FIRST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 142, in test_passes_fails_passes
+    self.assertIn(rule, codes(judged(body)), judged(body))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'RED_FIRST' not found in set() : []
+
+======================================================================
+FAIL: test_real_bodies_agree_but_for_the_dropped_rules (tests.test_proof_gate.AgreementTests.test_real_bodies_agree_but_for_the_dropped_rules) (pr='conocerd-275')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 73, in test_real_bodies_agree_but_for_the_dropped_rules
+    self.assertEqual({c: n for c, n in old_codes.items() if c not in proof_shadow.DROPPED},
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     dict(Counter(f.split(":", 1)[0] for f in new)), (old, new))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'CAPTURE_MISSING': 1, 'RED_FIRST': 7} != {'CAPTURE_MISSING': 1}
+- {'CAPTURE_MISSING': 1, 'RED_FIRST': 7}
++ {'CAPTURE_MISSING': 1} : (['R1: a render row needs a capture image in its Evidence cell', 'body line 52: R1: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix', 'body line 54: R2: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix', 'body line 55: R2: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix', 'body line 56: R3: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix', 'body line 57: R4: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix', 'body line 58: R4: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix', 'body line 59: R4: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix', 'body line 77: `firestore.rules:279-281`: commit  is not known here'], ['CAPTURE_MISSING: R1: a render row needs a capture image in its Evidence cell'])
+
+======================================================================
+FAIL: test_real_bodies_agree_but_for_the_dropped_rules (tests.test_proof_gate.AgreementTests.test_real_bodies_agree_but_for_the_dropped_rules) (pr='conocerd-282')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 73, in test_real_bodies_agree_but_for_the_dropped_rules
+    self.assertEqual({c: n for c, n in old_codes.items() if c not in proof_shadow.DROPPED},
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     dict(Counter(f.split(":", 1)[0] for f in new)), (old, new))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'RED_FIRST': 1} != {}
+- {'RED_FIRST': 1}
++ {} : (['body line 60: R2: could not read red-first-r2.log: HTTP Error 404: Not Found', 'body line 60: R2: could not read test-r2.log: HTTP Error 404: Not Found', 'body line 60: R2: the Evidence cell claims +190 but none of the logs it links shows a test count', 'body line 25: `arrival_wait_restore_host.dart:37`: commit  is not known here', 'body line 26: `active_trip_provider.dart:2127`: commit  is not known here', 'body line 27: `active_trip_provider.dart:2826`: commit  is not known here', 'body line 34: `live_schedule_provider.dart:269`: commit  is not known here', 'body line 34: `arrival_wait_provider.dart:226`: commit  is not known here', 'body line 72: `active_trip_screen.dart:266`: commit  is not known here', 'body line 77: `active_trip_repository.dart:230`: commit  is not known here'], [])
+
+======================================================================
+FAIL: test_real_bodies_agree_but_for_the_dropped_rules (tests.test_proof_gate.AgreementTests.test_real_bodies_agree_but_for_the_dropped_rules) (pr='conocerd-api-82')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 73, in test_real_bodies_agree_but_for_the_dropped_rules
+    self.assertEqual({c: n for c, n in old_codes.items() if c not in proof_shadow.DROPPED},
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     dict(Counter(f.split(":", 1)[0] for f in new)), (old, new))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'PROOF_AT': 1, 'RED_FIRST': 3} != {'PROOF_AT': 1}
+- {'PROOF_AT': 1, 'RED_FIRST': 3}
++ {'PROOF_AT': 1} : (["no 'Proof at <sha7>' line: say which commit the proof was taken on", 'body line 45: R1: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix', 'body line 46: R2: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix', 'body line 47: R3: a test row needs a red-first or mutation log (red-first*.log or mutation*.log, published with agents evidence --dir datos) showing the test fail without the fix'], ["PROOF_AT: no 'Proof at <sha7>' line: say which commit the proof was taken on"])
+
+======================================================================
+FAIL: test_real_bodies_agree_but_for_the_dropped_rules (tests.test_proof_gate.AgreementTests.test_real_bodies_agree_but_for_the_dropped_rules)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 78, in test_real_bodies_agree_but_for_the_dropped_rules
+    self.assertTrue(kept and dropped, (kept, dropped))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Counter() is not true : (Counter(), Counter({'CITE': 1}))
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.057s
+
+FAILED (failures=5, errors=1)
