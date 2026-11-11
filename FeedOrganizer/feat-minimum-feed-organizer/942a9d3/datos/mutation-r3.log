@@ -1,0 +1,118 @@
+# R3 at 942a9d3, with r3-persist.patch applied
+# $ pnpm exec playwright test e2e/feed.spec.ts
+[WebServer] $ vite
+
+Running 8 tests using 8 workers
+
+  ✓  2 [laptop] › e2e/feed.spec.ts:153:1 › a fourth pin is rejected, publishing renumbers, and a delete asks first (4.6s)
+  ✓  4 [phone] › e2e/feed.spec.ts:153:1 › a fourth pin is rejected, publishing renumbers, and a delete asks first (4.9s)
+  ✓  7 [laptop] › e2e/feed.spec.ts:140:1 › a published post does not move, and a pending one does not go below it (4.9s)
+  ✓  6 [phone] › e2e/feed.spec.ts:140:1 › a published post does not move, and a pending one does not go below it (6.6s)
+  ✘  3 [laptop] › e2e/feed.spec.ts:110:1 › the seed derives the upload order, a drag renumbers it, and a reload keeps it (9.8s)
+ FAIL  e2e/feed.spec.ts > laptop > the seed derives the upload order, a drag renumbers it, and a reload keeps it
+  ✘  1 [laptop] › e2e/feed.spec.ts:179:1 › added images become pending posts with an editable caption, and the plan exports numbered (10.8s)
+ FAIL  e2e/feed.spec.ts > laptop > added images become pending posts with an editable caption, and the plan exports numbered
+  ✘  8 [phone] › e2e/feed.spec.ts:179:1 › added images become pending posts with an editable caption, and the plan exports numbered (10.8s)
+ FAIL  e2e/feed.spec.ts > phone > added images become pending posts with an editable caption, and the plan exports numbered
+  ✘  5 [phone] › e2e/feed.spec.ts:110:1 › the seed derives the upload order, a drag renumbers it, and a reload keeps it (11.0s)
+ FAIL  e2e/feed.spec.ts > phone > the seed derives the upload order, a drag renumbers it, and a reload keeps it
+
+
+  1) [laptop] › e2e/feed.spec.ts:110:1 › the seed derives the upload order, a drag renumbers it, and a reload keeps it 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 10
+    Received: -1
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      131 |   await shot(page, 'r1-grid-after-drag')
+      132 |
+    > 133 |   await expect.poll(() => savedPending(page)).toBe(10)
+          |                                               ^
+      134 |   await page.reload()
+      135 |   await expect(tiles(page)).toHaveCount(23)
+      136 |   await expectOrder(page, moved)
+        at /home/decruce/dev/projects/feed-organizer/e2e/feed.spec.ts:133:47
+
+    Error Context: test-results/feed-the-seed-derives-the--9474a-rs-it-and-a-reload-keeps-it-laptop/error-context.md
+
+  2) [laptop] › e2e/feed.spec.ts:179:1 › added images become pending posts with an editable caption, and the plan exports numbered 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('list', { name: 'Orden de subida' }).getByRole('listitem').nth(10)
+    Expected substring: "Caption escrito a mano."
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('list', { name: 'Orden de subida' }).getByRole('listitem').nth(10) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Orden de subida' }).getByRole('listitem').nth(10)
+
+
+      190 |   await expect(uploads(page).nth(10)).toContainText('Caption escrito a mano.')
+      191 |   await page.reload()
+    > 192 |   await expect(uploads(page).nth(10)).toContainText('Caption escrito a mano.')
+          |                                       ^
+      193 |
+      194 |   const download = page.waitForEvent('download')
+      195 |   await page.getByRole('button', { name: 'Exportar plan' }).click()
+        at /home/decruce/dev/projects/feed-organizer/e2e/feed.spec.ts:192:39
+
+    Error Context: test-results/feed-added-images-become-p-720e7-d-the-plan-exports-numbered-laptop/error-context.md
+
+  3) [phone] › e2e/feed.spec.ts:110:1 › the seed derives the upload order, a drag renumbers it, and a reload keeps it 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 10
+    Received: -1
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      131 |   await shot(page, 'r1-grid-after-drag')
+      132 |
+    > 133 |   await expect.poll(() => savedPending(page)).toBe(10)
+          |                                               ^
+      134 |   await page.reload()
+      135 |   await expect(tiles(page)).toHaveCount(23)
+      136 |   await expectOrder(page, moved)
+        at /home/decruce/dev/projects/feed-organizer/e2e/feed.spec.ts:133:47
+
+    Error Context: test-results/feed-the-seed-derives-the--9474a-rs-it-and-a-reload-keeps-it-phone/error-context.md
+
+  4) [phone] › e2e/feed.spec.ts:179:1 › added images become pending posts with an editable caption, and the plan exports numbered 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('list', { name: 'Orden de subida' }).getByRole('listitem').nth(10)
+    Expected substring: "Caption escrito a mano."
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('list', { name: 'Orden de subida' }).getByRole('listitem').nth(10) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Orden de subida' }).getByRole('listitem').nth(10)
+
+
+      190 |   await expect(uploads(page).nth(10)).toContainText('Caption escrito a mano.')
+      191 |   await page.reload()
+    > 192 |   await expect(uploads(page).nth(10)).toContainText('Caption escrito a mano.')
+          |                                       ^
+      193 |
+      194 |   const download = page.waitForEvent('download')
+      195 |   await page.getByRole('button', { name: 'Exportar plan' }).click()
+        at /home/decruce/dev/projects/feed-organizer/e2e/feed.spec.ts:192:39
+
+    Error Context: test-results/feed-added-images-become-p-720e7-d-the-plan-exports-numbered-phone/error-context.md
+
+  4 failed
+    [laptop] › e2e/feed.spec.ts:110:1 › the seed derives the upload order, a drag renumbers it, and a reload keeps it 
+    [laptop] › e2e/feed.spec.ts:179:1 › added images become pending posts with an editable caption, and the plan exports numbered 
+    [phone] › e2e/feed.spec.ts:110:1 › the seed derives the upload order, a drag renumbers it, and a reload keeps it 
+    [phone] › e2e/feed.spec.ts:179:1 › added images become pending posts with an editable caption, and the plan exports numbered 
+  4 passed (12.8s)
