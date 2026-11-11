@@ -1,0 +1,144 @@
+# R1 at aaefc30, with r1.patch applied
+# $ pnpm exec vitest run src/lib/storage.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/storage.test.ts (13 tests | 2 failed) 19ms
+   ❯ opening what the browser had saved (9)
+     × makes the feed saved before several feeds existed the first feed, and leaves the old save as it was 10ms
+     × reads a save from when the pending and the published were two lists, pending above published 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/storage.test.ts > opening what the browser had saved > makes the feed saved before several feeds existed the first feed, and leaves the old save as it was
+AssertionError: expected { posts: {}, pinned: [], …(2) } to deeply equal { posts: { …(3) }, …(3) }
+
+- Expected
++ Received
+
+  {
+-   "grid": [
+-     "a",
+-     "b",
+-   ],
+-   "live": [
+-     "b",
+-   ],
+-   "pinned": [
+-     "c",
+-   ],
+-   "posts": {
+-     "a": {
+-       "caption": "Abrimos el lunes.",
+-       "id": "a",
+-       "images": [
+-         "img-a",
+-       ],
+-       "status": "pendiente",
+-       "title": "Aviso",
+-     },
+-     "b": {
+-       "caption": "",
+-       "id": "b",
+-       "images": [
+-         "img-b1",
+-         "img-b2",
+-       ],
+-       "status": "publicado",
+-       "title": "Equipo",
+-     },
+-     "c": {
+-       "caption": "De 8 a 6.",
+-       "id": "c",
+-       "images": [
+-         "img-c",
+-       ],
+-       "status": "publicado",
+-       "title": "Horario",
+-     },
+-   },
++   "grid": [],
++   "live": [],
++   "pinned": [],
++   "posts": {},
+  }
+
+ ❯ src/lib/storage.test.ts:35:50
+     33|     const library = await openLibrary(store)
+     34|     expect(library).toEqual({ current: FIRST_FEED_ID, list: [{ id: FIR…
+     35|     expect(await loadFeed(FIRST_FEED_ID, store)).toEqual(savedBefore)
+       |                                                  ^
+     36|     // The version before this one reads only the old key: it still fi…
+     37|     expect(data.get(OLD_FEED_KEY)).toEqual(savedBefore)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/storage.test.ts > opening what the browser had saved > reads a save from when the pending and the published were two lists, pending above published
+AssertionError: expected { posts: {}, pinned: [], …(2) } to deeply equal { posts: { …(3) }, …(3) }
+
+- Expected
++ Received
+
+  {
+-   "grid": [
+-     "a",
+-     "b",
+-   ],
+-   "live": [
+-     "b",
+-   ],
+-   "pinned": [
+-     "c",
+-   ],
+-   "posts": {
+-     "a": {
+-       "caption": "Abrimos el lunes.",
+-       "id": "a",
+-       "images": [
+-         "img-a",
+-       ],
+-       "status": "pendiente",
+-       "title": "Aviso",
+-     },
+-     "b": {
+-       "caption": "",
+-       "id": "b",
+-       "images": [
+-         "img-b1",
+-         "img-b2",
+-       ],
+-       "status": "publicado",
+-       "title": "Equipo",
+-     },
+-     "c": {
+-       "caption": "De 8 a 6.",
+-       "id": "c",
+-       "images": [
+-         "img-c",
+-       ],
+-       "status": "publicado",
+-       "title": "Horario",
+-     },
+-   },
++   "grid": [],
++   "live": [],
++   "pinned": [],
++   "posts": {},
+  }
+
+ ❯ src/lib/storage.test.ts:45:52
+     43|     const { store, data } = memoryStore({ [OLD_FEED_KEY]: twoLists })
+     44|     const library = await openLibrary(store)
+     45|     expect(await loadFeed(library.current, store)).toEqual(savedBefore)
+       |                                                    ^
+     46|     expect(data.get(OLD_FEED_KEY)).toEqual(twoLists)
+     47|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 11 passed (13)
+   Start at  18:25:41
+   Duration  208ms (transform 57%, tests 21%, import 17%, worker 5%)
+
