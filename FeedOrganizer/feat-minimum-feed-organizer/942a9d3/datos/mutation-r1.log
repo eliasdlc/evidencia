@@ -1,0 +1,69 @@
+# R1 at 942a9d3, with r1-rules.patch applied
+# $ pnpm exec vitest run src/lib/feed.test.ts
+
+ RUN  v5.1.0 /home/decruce/dev/projects/feed-organizer
+
+ ❯ src/lib/feed.test.ts (13 tests | 2 failed) 25ms
+   ❯ published posts stay below the pending ones (3)
+     × ignores a drag of a published post, onto a pending or onto another published 10ms
+   ❯ pinning (2)
+     × rejects a fourth pinned post and leaves the feed as it was 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/feed.test.ts > published posts stay below the pending ones > ignores a drag of a published post, onto a pending or onto another published
+AssertionError: expected { posts: { …(23) }, …(3) } to be { posts: { …(23) }, …(3) } // Object.is equality
+
+- Expected
++ Received
+
+@@ -224,12 +224,12 @@
+        "status": "pendiente",
+        "title": "06-mercancia/02-gorra-exclusiva",
+      },
+    },
+    "published": [
+-     "03-charlistas/20-fulvio-moya",
+      "03-charlistas/19-shailyn-ortiz",
++     "03-charlistas/20-fulvio-moya",
+      "03-charlistas/18-pedro-de-la-cruz",
+      "03-charlistas/17-rafael-almonte",
+      "03-charlistas/16-freddy-pena",
+      "03-charlistas/15-cristian-de-la-hoz",
+      "03-charlistas/14-wilson-toribio",
+
+ ❯ src/lib/feed.test.ts:84:94
+     82|     const feed = seedFeed()
+     83|     expect(movePost(feed, '03-charlistas/20-fulvio-moya', '05-horario/…
+     84|     expect(movePost(feed, '03-charlistas/20-fulvio-moya', '03-charlist…
+       |                                                                                              ^
+     85|   })
+     86|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/feed.test.ts > pinning > rejects a fourth pinned post and leaves the feed as it was
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/lib/feed.test.ts:113:23
+    111|     const feed = seedFeed()
+    112|     const result = pin(feed, '03-charlistas/20-fulvio-moya')
+    113|     expect(result.ok).toBe(false)
+       |                       ^
+    114|     expect(feed.pinned).toHaveLength(3)
+    115|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 11 passed (13)
+   Start at  12:49:54
+   Duration  179ms (tests 45%, transform 25%, import 22%, worker 8%)
+
