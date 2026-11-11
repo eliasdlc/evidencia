@@ -1,0 +1,46 @@
+# R2 at a2b3cff, with r2.patch applied
+# $ pnpm exec vitest run src/lib/feed.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/feed.test.ts (24 tests | 1 failed) 25ms
+   ❯ folder import (10)
+     × adds the posts of a folder on top of the grid, its first post first to go up, and keeps what the feed had 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/feed.test.ts > folder import > adds the posts of a folder on top of the grid, its first post first to go up, and keeps what the feed had
+AssertionError: expected [ 'uno', 'dos', 'tres', …(17) ] to deeply equal [ 'tres', 'dos', 'uno', …(17) ]
+
+- Expected
++ Received
+
+@@ -1,9 +1,9 @@
+  [
+-   "tres",
+-   "dos",
+    "uno",
++   "dos",
++   "tres",
+    "suelta-2",
+    "suelta-1",
+    "sorteo",
+    "regalo",
+    "llevar",
+
+ ❯ src/lib/feed.test.ts:190:23
+    188|     const incoming = ['uno', 'dos', 'tres'].map((id): Post => ({ id, t…
+    189|     const feed = addInUploadOrder(before, incoming)
+    190|     expect(feed.grid).toEqual(['tres', 'dos', 'uno', ...before.grid])
+       |                       ^
+    191|     expect(feed.pinned).toEqual(before.pinned)
+    192|     expect(feed.live).toEqual(before.live)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 23 passed (24)
+   Start at  17:56:58
+   Duration  162ms (transform 43%, tests 36%, import 16%, worker 5%)
+
