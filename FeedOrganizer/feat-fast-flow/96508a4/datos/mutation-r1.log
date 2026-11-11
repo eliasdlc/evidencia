@@ -1,0 +1,42 @@
+# R1 at 96508a4, with r1.patch applied
+# $ pnpm exec vitest run src/lib/history.test.ts src/lib/storage.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/storage.test.ts (17 tests | 1 failed) 16ms
+   ❯ opening what the browser had saved (13)
+     × keeps the images a feed stopped using until it is opened again, and then deletes the ones it still does not use 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/storage.test.ts > opening what the browser had saved > keeps the images a feed stopped using until it is opened again, and then deletes the ones it still does not use
+AssertionError: expected [ 'feed:uno', 'image:img-a', …(2) ] to deeply equal [ 'feed:uno', 'image:img-a', …(4) ]
+
+- Expected
++ Received
+
+  [
+    "feed:uno",
+    "image:img-a",
+-   "image:img-b1",
+-   "image:img-b2",
+    "image:img-c",
+    "image:img-otro",
+  ]
+
+ ❯ src/lib/storage.test.ts:132:37
+    130|     expect(await openStoredFeed('uno', store)).toEqual(opened)
+    131|     // Only the one no post uses is gone. The image of another feed wa…
+    132|     expect([...data.keys()].sort()).toEqual([feedKey('uno'), 'image:im…
+       |                                     ^
+    133|     // Opened again, with nothing listed, it deletes nothing.
+    134|     await openStoredFeed('uno', store)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 21 passed (22)
+   Start at  19:31:21
+   Duration  170ms (transform 31%, import 30%, tests 28%, worker 10%, environment 1%)
+
