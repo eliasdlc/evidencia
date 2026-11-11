@@ -1,0 +1,76 @@
+# R2 at 14d1e27, with R2.patch applied
+# $ python3 -m unittest tests.test_proof_gate.ShadowTests tests.test_proof_gate.PinTests
+E./home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/bin/proof.py:1617: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpffi1b18d/body.md' mode='r' encoding='UTF-8'>
+  body = open(args[1]).read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..F.FF...
+======================================================================
+ERROR: test_a_failing_shadow_never_changes_the_verdict (tests.test_proof_gate.ShadowTests.test_a_failing_shadow_never_changes_the_verdict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 278, in test_a_failing_shadow_never_changes_the_verdict
+    self.assertEqual(self.verdict(["12", "--repo", "eliasdlc/x"], AGENTS_PROOF_SHADOW="sync",
+                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                  AGENTS_PROOF_SHADOW_LOG=str(self.log / "not-a-dir" / "x.jsonl")), plain)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 251, in verdict
+    code = proof.main(argv)
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/bin/proof.py", line 1572, in main
+    proof_shadow.after(list(argv), code, out.getvalue())
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/bin/proof_shadow.py", line 100, in after
+    record(payload) if mode == "sync" else spawn(payload)
+    ~~~~~~^^^^^^^^^
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/bin/proof_shadow.py", line 179, in record
+    path.parent.mkdir(parents=True, exist_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/pathlib/__init__.py", line 1012, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+NotADirectoryError: [Errno 20] Not a directory: '/tmp/tmpbo6atsr0/shadow.jsonl/not-a-dir'
+
+======================================================================
+FAIL: test_a_head_that_moved_is_not_compared (tests.test_proof_gate.PinTests.test_a_head_that_moved_is_not_compared)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 376, in test_a_head_that_moved_is_not_compared
+    self.assertEqual((row["agree"], row["new"]["verdict"]), (None, "not run"))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (False, 'pass') != (None, 'not run')
+
+First differing element 0:
+False
+None
+
+- (False, 'pass')
++ (None, 'not run')
+
+======================================================================
+FAIL: test_a_pr_merged_after_the_verdict_is_judged_against_the_base_before_the_merge (tests.test_proof_gate.PinTests.test_a_pr_merged_after_the_verdict_is_judged_against_the_base_before_the_merge)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 365, in test_a_pr_merged_after_the_verdict_is_judged_against_the_base_before_the_merge
+    self.assertEqual((row["new"]["verdict"], row["new"]["codes"], row["agree"]), ("red", ["PROOF_AT"], True), row)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ('pass', [], False) != ('red', ['PROOF_AT'], True)
+
+First differing element 0:
+'pass'
+'red'
+
+- ('pass', [], False)
++ ('red', ['PROOF_AT'], True) : {'time': '2030-01-02T00:00:05Z', 'host': 'agentbox', 'decider': 'proof', 'repo': 'eliasdlc/x', 'pr': 12, 'head': 'f00ba12', 'old': {'verdict': 'red', 'codes': ['PROOF_AT'], 'failures': ['the proof at a1b2c3d is stale: product code changed after it (lib/export.dart)']}, 'created': '2026-11-12T09:00:00Z', 'new': {'verdict': 'pass', 'codes': [], 'failures': []}, 'agree': False, 'only_old': ['PROOF_AT'], 'only_new': []}
+
+======================================================================
+FAIL: test_a_second_shadow_of_the_same_pr_and_head_does_not_stack (tests.test_proof_gate.PinTests.test_a_second_shadow_of_the_same_pr_and_head_does_not_stack)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a6bd808af0014f8e6/tests/test_proof_gate.py", line 391, in test_a_second_shadow_of_the_same_pr_and_head_does_not_stack
+    self.assertEqual(self.record()["agree"], True)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False != True
+
+----------------------------------------------------------------------
+Ran 11 tests in 1.107s
+
+FAILED (failures=3, errors=1)
