@@ -1,0 +1,41 @@
+# R3 at f746736, with bin/scorecard.py back at 8180de4
+# $ python3 -m unittest discover -s tests -p test_scorecard.py
+E....F...........E.
+======================================================================
+ERROR: test_a_dormant_project_counts_in_usage_and_in_no_target_metric (test_scorecard.ScorecardTest.test_a_dormant_project_counts_in_usage_and_in_no_target_metric)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/t3-892d7309-470a92261ef09d95/tests/test_scorecard.py", line 262, in test_a_dormant_project_counts_in_usage_and_in_no_target_metric
+    self.assertEqual((d["ctx_hi"], d["hook_total"], d["closings"], d["still_broken"]), (0.0, 0, 0, 0))
+                                                    ~^^^^^^^^^^^^
+KeyError: 'closings'
+
+======================================================================
+ERROR: test_turns_that_needed_him_asked_with_the_tool_or_buried_in_prose (test_scorecard.ScorecardTest.test_turns_that_needed_him_asked_with_the_tool_or_buried_in_prose)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/t3-892d7309-470a92261ef09d95/tests/test_scorecard.py", line 102, in test_turns_that_needed_him_asked_with_the_tool_or_buried_in_prose
+    self.assertEqual(d["closings"], 8)               # a turn's last text only, sidechains apart
+                     ~^^^^^^^^^^^^
+KeyError: 'closings'
+
+======================================================================
+FAIL: test_corrections_are_read_again_with_the_hooks_patterns (test_scorecard.ScorecardTest.test_corrections_are_read_again_with_the_hooks_patterns)
+10 Nov 2026: relays from a parent agent and approvals that also said
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/agents/t3-892d7309-470a92261ef09d95/tests/test_scorecard.py", line 207, in test_corrections_are_read_again_with_the_hooks_patterns
+    self.assertEqual(sc.corrections(30, TODAY, self.log), {"stop": 2})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'stop': 6} != {'stop': 2}
+- {'stop': 6}
+?          ^
+
++ {'stop': 2}
+?          ^
+
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.019s
+
+FAILED (failures=1, errors=2)
