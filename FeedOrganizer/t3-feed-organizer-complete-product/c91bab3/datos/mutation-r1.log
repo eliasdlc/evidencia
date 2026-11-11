@@ -1,0 +1,89 @@
+# R1 at c91bab3, with r1.patch applied
+# $ pnpm exec vitest run src/lib/feed.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/feed.test.ts (18 tests | 3 failed) 28ms
+   ❯ any grid post moves anywhere (7)
+     × moves a published post above a pending one, and lists it to move on Instagram 7ms
+     × moves a pending post below a published one: it goes up and then moves on Instagram 1ms
+     × names a post moved to the top of the grid with nothing before it 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/feed.test.ts > any grid post moves anywhere > moves a published post above a pending one, and lists it to move on Instagram
+AssertionError: expected [ 'pendiente', 'pendiente', …(1) ] to deeply equal [ 'pendiente', 'publicado', …(1) ]
+
+- Expected
++ Received
+
+  [
+    "pendiente",
+-   "publicado",
+    "pendiente",
++   "publicado",
+  ]
+
+ ❯ src/lib/feed.test.ts:102:41
+    100|     // Fulvio is dropped on the Gorra, the lowest pending: he takes it…
+    101|     const feed = movePost(seed, fulvio, gorra)
+    102|     expect(statuses(feed).slice(8, 11)).toEqual(['pendiente', 'publica…
+       |                                         ^
+    103|     expect(uploadOrder(feed)).toEqual(uploadOrder(seed))
+    104|     // One move does it either way; the list names the Gorra, to move …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/lib/feed.test.ts > any grid post moves anywhere > moves a pending post below a published one: it goes up and then moves on Instagram
+AssertionError: expected [ …(3) ] to deeply equal [ Array(3) ]
+
+- Expected
++ Received
+
+  [
++   "06-mercancia/02-gorra-exclusiva",
+    "03-charlistas/20-fulvio-moya",
+    "03-charlistas/19-shailyn-ortiz",
+-   "06-mercancia/02-gorra-exclusiva",
+  ]
+
+ ❯ src/lib/feed.test.ts:113:36
+    111|     // The Gorra is dropped on Shailyn (second published): it ends up …
+    112|     const feed = movePost(seed, gorra, shailyn)
+    113|     expect(feed.grid.slice(9, 12)).toEqual([fulvio, shailyn, gorra])
+       |                                    ^
+    114|     expect(uploadNumber(feed, gorra)).toBe(1)
+    115|     expect(moves(feed)).toEqual([[gorra, shailyn]])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/lib/feed.test.ts > any grid post moves anywhere > names a post moved to the top of the grid with nothing before it
+AssertionError: expected [] to deeply equal [ [ …(2) ] ]
+
+- Expected
++ Received
+
+- [
+-   [
+-     "03-charlistas/18-pedro-de-la-cruz",
+-     undefined,
+-   ],
+- ]
++ []
+
+ ❯ src/lib/feed.test.ts:124:74
+    122|
+    123|   it('names a post moved to the top of the grid with nothing before it…
+    124|     expect(moves(movePost(seedFeed(), pedro, '05-horario/02-bloque-1')…
+       |                                                                          ^
+    125|   })
+    126|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 15 passed (18)
+   Start at  17:33:43
+   Duration  183ms (tests 51%, import 25%, transform 17%, worker 7%)
+
