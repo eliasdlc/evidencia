@@ -1,0 +1,273 @@
+# R1 at f681e9a, with .proof/fix/standing-rule-one-detector.toml, bin/enforcers.json, hooks/registry.json, hooks/standing-rule.py back at 08f5efa
+# $ python3 -m unittest tests.test_standing_rule
+FsF.FFFFFFFFFFFFFFFFFFF
+======================================================================
+FAIL: test_a_message_that_defines_and_restates_gets_both_paragraphs (tests.test_standing_rule.StandingRule.test_a_message_that_defines_and_restates_gets_both_paragraphs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 108, in test_a_message_that_defines_and_restates_gets_both_paragraphs
+    self.assertIn("repeating something he already said", out)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'repeating something he already said' not found in 'Standing instruction: Elias is defining a term or correcting a slip ("me refiero", "quise decir"). In this same turn, write the term in the project\'s `## Glossary` as `term: meaning. _Avoid_: wrong synonyms.` (the contract\'s Glossary, or the workspace CLAUDE.md when the project has none), then quote the written line back to him, so he defines it once.\n'
+
+======================================================================
+FAIL: test_an_unloadable_contract_never_fails (tests.test_standing_rule.StandingRule.test_an_unloadable_contract_never_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 127, in test_an_unloadable_contract_never_fails
+    self.assertEqual((result.returncode, result.stdout), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (1, '') != (0, '')
+
+First differing element 0:
+1
+0
+
+- (1, '')
+?  ^
+
++ (0, '')
+?  ^
+
+
+======================================================================
+FAIL: test_each_phrase_adds_the_reminder_and_never_blocks (tests.test_standing_rule.StandingRule.test_each_phrase_adds_the_reminder_and_never_blocks) (prompt='te lo habia dicho en una sesion que la pva esta desactualizada')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 65, in test_each_phrase_adds_the_reminder_and_never_blocks
+    self.assertIn("Standing instruction", result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Standing instruction' not found in ''
+
+======================================================================
+FAIL: test_each_phrase_adds_the_reminder_and_never_blocks (tests.test_standing_rule.StandingRule.test_each_phrase_adds_the_reminder_and_never_blocks) (prompt='te habia dicho que marsof en ingles ya estaba incluido')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 65, in test_each_phrase_adds_the_reminder_and_never_blocks
+    self.assertIn("Standing instruction", result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Standing instruction' not found in ''
+
+======================================================================
+FAIL: test_each_phrase_adds_the_reminder_and_never_blocks (tests.test_standing_rule.StandingRule.test_each_phrase_adds_the_reminder_and_never_blocks) (prompt='ya decidimos que va en dev')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 65, in test_each_phrase_adds_the_reminder_and_never_blocks
+    self.assertIn("Standing instruction", result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Standing instruction' not found in ''
+
+======================================================================
+FAIL: test_each_phrase_adds_the_reminder_and_never_blocks (tests.test_standing_rule.StandingRule.test_each_phrase_adds_the_reminder_and_never_blocks) (prompt='de ahora en adelante los PRs van en ingles')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 65, in test_each_phrase_adds_the_reminder_and_never_blocks
+    self.assertIn("Standing instruction", result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Standing instruction' not found in ''
+
+======================================================================
+FAIL: test_each_phrase_adds_the_reminder_and_never_blocks (tests.test_standing_rule.StandingRule.test_each_phrase_adds_the_reminder_and_never_blocks) (prompt='from now on use pnpm')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 65, in test_each_phrase_adds_the_reminder_and_never_blocks
+    self.assertIn("Standing instruction", result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Standing instruction' not found in ''
+
+======================================================================
+FAIL: test_everything_else_is_silent (tests.test_standing_rule.StandingRule.test_everything_else_is_silent) (prompt='otra vez lo mismo')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 72, in test_everything_else_is_silent
+    self.assertEqual((result.returncode, result.stdout), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (0, 'Standing instruction: Elias is repeating [239 chars].\n') != (0, '')
+
+First differing element 1:
+'Standing instruction: Elias is repeating [238 chars]e.\n'
+''
+
++ (0, '')
+- (0,
+-  'Standing instruction: Elias is repeating or fixing something he already '
+-  'said. In this same turn, write the rule where the project keeps it (its '
+-  'Facts, its Glossary, its DESIGN.md taste ledger, or the skill that owns it), '
+-  'then quote the written line back to him, so he says it once.\n')
+
+======================================================================
+FAIL: test_everything_else_is_silent (tests.test_standing_rule.StandingRule.test_everything_else_is_silent) (prompt='lo intente una y otra vez')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 72, in test_everything_else_is_silent
+    self.assertEqual((result.returncode, result.stdout), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (0, 'Standing instruction: Elias is repeating [239 chars].\n') != (0, '')
+
+First differing element 1:
+'Standing instruction: Elias is repeating [238 chars]e.\n'
+''
+
++ (0, '')
+- (0,
+-  'Standing instruction: Elias is repeating or fixing something he already '
+-  'said. In this same turn, write the rule where the project keeps it (its '
+-  'Facts, its Glossary, its DESIGN.md taste ledger, or the skill that owns it), '
+-  'then quote the written line back to him, so he says it once.\n')
+
+======================================================================
+FAIL: test_the_hook_decides_with_the_meter_detector (tests.test_standing_rule.StandingRule.test_the_hook_decides_with_the_meter_detector) (prompt='te lo habia dicho en una sesion que la pva esta desactualizada')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 92, in test_the_hook_decides_with_the_meter_detector
+    self.assertEqual(contract.restated(prompt) or new_rule, fires)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True != False
+
+======================================================================
+FAIL: test_the_hook_decides_with_the_meter_detector (tests.test_standing_rule.StandingRule.test_the_hook_decides_with_the_meter_detector) (prompt='te habia dicho que marsof en ingles ya estaba incluido')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 92, in test_the_hook_decides_with_the_meter_detector
+    self.assertEqual(contract.restated(prompt) or new_rule, fires)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True != False
+
+======================================================================
+FAIL: test_the_hook_decides_with_the_meter_detector (tests.test_standing_rule.StandingRule.test_the_hook_decides_with_the_meter_detector) (prompt='ya decidimos que va en dev')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 92, in test_the_hook_decides_with_the_meter_detector
+    self.assertEqual(contract.restated(prompt) or new_rule, fires)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True != False
+
+======================================================================
+FAIL: test_the_hook_decides_with_the_meter_detector (tests.test_standing_rule.StandingRule.test_the_hook_decides_with_the_meter_detector) (prompt='de ahora en adelante los PRs van en ingles')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 92, in test_the_hook_decides_with_the_meter_detector
+    self.assertEqual(contract.restated(prompt) or new_rule, fires)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True != False
+
+======================================================================
+FAIL: test_the_hook_decides_with_the_meter_detector (tests.test_standing_rule.StandingRule.test_the_hook_decides_with_the_meter_detector) (prompt='from now on use pnpm')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 92, in test_the_hook_decides_with_the_meter_detector
+    self.assertEqual(contract.restated(prompt) or new_rule, fires)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True != False
+
+======================================================================
+FAIL: test_the_hook_decides_with_the_meter_detector (tests.test_standing_rule.StandingRule.test_the_hook_decides_with_the_meter_detector) (prompt='otra vez lo mismo')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 92, in test_the_hook_decides_with_the_meter_detector
+    self.assertEqual(contract.restated(prompt) or new_rule, fires)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False != True
+
+======================================================================
+FAIL: test_the_hook_decides_with_the_meter_detector (tests.test_standing_rule.StandingRule.test_the_hook_decides_with_the_meter_detector) (prompt='lo intente una y otra vez')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 92, in test_the_hook_decides_with_the_meter_detector
+    self.assertEqual(contract.restated(prompt) or new_rule, fires)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False != True
+
+======================================================================
+FAIL: test_the_reminder_names_the_place_by_project_kind (tests.test_standing_rule.StandingRule.test_the_reminder_names_the_place_by_project_kind)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 77, in test_the_reminder_names_the_place_by_project_kind
+    self.assertIn(place, out)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: '`## Facts`' not found in 'Standing instruction: Elias is repeating or fixing something he already said. In this same turn, write the rule where the project keeps it (its Facts, its Glossary, its DESIGN.md taste ledger, or the skill that owns it), then quote the written line back to him, so he says it once.\n'
+
+======================================================================
+FAIL: test_valid_json_that_is_not_an_object_never_fails (tests.test_standing_rule.StandingRule.test_valid_json_that_is_not_an_object_never_fails) (raw='[1]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 115, in test_valid_json_that_is_not_an_object_never_fails
+    self.assertEqual((result.returncode, result.stdout), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (1, '') != (0, '')
+
+First differing element 0:
+1
+0
+
+- (1, '')
+?  ^
+
++ (0, '')
+?  ^
+
+
+======================================================================
+FAIL: test_valid_json_that_is_not_an_object_never_fails (tests.test_standing_rule.StandingRule.test_valid_json_that_is_not_an_object_never_fails) (raw='1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 115, in test_valid_json_that_is_not_an_object_never_fails
+    self.assertEqual((result.returncode, result.stdout), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (1, '') != (0, '')
+
+First differing element 0:
+1
+0
+
+- (1, '')
+?  ^
+
++ (0, '')
+?  ^
+
+
+======================================================================
+FAIL: test_valid_json_that_is_not_an_object_never_fails (tests.test_standing_rule.StandingRule.test_valid_json_that_is_not_an_object_never_fails) (raw='"te dije"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 115, in test_valid_json_that_is_not_an_object_never_fails
+    self.assertEqual((result.returncode, result.stdout), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (1, '') != (0, '')
+
+First differing element 0:
+1
+0
+
+- (1, '')
+?  ^
+
++ (0, '')
+?  ^
+
+
+======================================================================
+FAIL: test_valid_json_that_is_not_an_object_never_fails (tests.test_standing_rule.StandingRule.test_valid_json_that_is_not_an_object_never_fails) (raw='null')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/agents/.claude/worktrees/agent-a2e7c7c78bfef2783/tests/test_standing_rule.py", line 115, in test_valid_json_that_is_not_an_object_never_fails
+    self.assertEqual((result.returncode, result.stdout), (0, ""))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (1, '') != (0, '')
+
+First differing element 0:
+1
+0
+
+- (1, '')
+?  ^
+
++ (0, '')
+?  ^
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 4.285s
+
+FAILED (failures=21, skipped=1)
