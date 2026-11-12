@@ -1,0 +1,447 @@
+# R1 at e886a8b, with r1-default-english.patch applied
+# $ node --test --test-reporter=./test/support/proof-reporter.mjs test/answers.test.js
+PASS test/answers.test.js > names the question and option, escaped, and writes nothing
+PASS test/answers.test.js > carries its own strict CSP
+PASS test/answers.test.js > the style hash in the CSP matches the page's one style block
+PASS test/answers.test.js > the submit button stays unclickable for the first second, by CSS alone
+PASS test/answers.test.js > without a session shows the sign-in page, never the question
+PASS test/answers.test.js > a session of a subject outside the allowlist is no session
+PASS test/answers.test.js > refuses a question answered in the chat and out of range indexes
+PASS test/answers.test.js > a deleted or disabled draft takes its round down
+PASS test/answers.test.js > a draft deleted after the confirm page records nothing
+FAIL test/answers.test.js > after a pick, shows the pick that stands instead of a form
+  AssertionError: The input did not match the regular expression /Tu elección anterior se mantiene/. Input:
+  
+  '<!doctype html>\n' +
+    '<html lang="en">\n' +
+    '<head>\n' +
+    '  <meta charset="utf-8">\n' +
+    '  <meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+    '  <title>Your earlier pick stands</title>\n' +
+    '  <style>\n' +
+    '    body { margin: 0; background: #f8fafc; color: #111827; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }\n' +
+    '    main { max-width: 860px; margin: 32px auto 80px; padding: 0 20px; }\n' +
+    '    main.narrow { max-width: 560px; }\n' +
+    '    main.center { text-align: center; margin-top: 96px; }\n' +
+    '    h1 { font-size: 30px; margin: 0 0 14px; }\n' +
+    '    h2 { font-size: 17px; margin: 30px 0 6px; }\n' +
+    '    p { line-height: 1.6; }\n' +
+    '    a { color: #1d4ed8; }\n' +
+    '    code { background: #eef2f7; border: 1px solid #d1d5db; border-radius: 5px; padding: 1px 5px; font-size: 14px; }\n' +
+    '    .muted { color: #6b7280; }\n' +
+    '    .small { font-size: 13px; }\n' +
+    '    .button { display: inline-block; background: #111827; color: #fff; border: 0; border-radius: 8px; padding: 10px 18px; font-size: 15px; text-decoration: none; cursor: pointer; }\n' +
+    '    .linklike { background: none; border: 0; color: #1d4ed8; cursor: pointer; font-size: 13px; padding: 0; margin-left: 10px; text-decoration: underline; }\n' +
+    '    .top { display: flex; justify-content: space-between; align-items: center; max-width: 860px; margin: 0 auto; padding: 14px 20px; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .top nav a { margin-right: 16px; text-decoration: none; color: #374151; }\n' +
+    '    .top nav a.active { color: #111827; font-weight: 600; }\n' +
+    '    .top form { display: inline-flex; align-items: center; gap: 8px; }\n' +
+    '    .avatar { width: 26px; height: 26px; border-radius: 50%; vertical-align: middle; }\n' +
+    '    .repo-link { font-weight: 400; text-decoration: none; margin-left: 6px; }\n' +
+    '    .row-meta a { color: #6b7280; }\n' +
+    '    .pii { filter: blur(4px); border-radius: 3px; transition: filter .15s ease; cursor: pointer; }\n' +
+    '    .pii:hover, .pii:focus { filter: none; outline: none; }\n' +
+    '    .row { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .row-title { font-weight: 600; text-decoration: none; }\n' +
+    '    .row-meta { white-space: nowrap; }\n' +
+    '    .pill { font-size: 11px; border-radius: 999px; padding: 2px 8px; margin-left: 6px; }\n' +
+    '    .pill.warn { background: #fef3c7; color: #92400e; }\n' +
+    '    table { width: 100%; border-collapse: collapse; margin-top: 14px; }\n' +
+    '    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }\n' +
+    '    th { color: #6b7280; font-weight: 600; font-size: 12px; text-transform: uppercase; }\n' +
+    '    .keybox { display: flex; gap: 10px; align-items: center; background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 14px; margin: 14px 0; }\n' +
+    '    .keybox code { flex: 1; word-break: break-all; background: none; border: 0; font-size: 15px; }\n' +
+    '    .card { background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 16px; margin: 18px 0; text-align: left; }\n' +
+    '    .card .label { color: #6b7280; font-size: 12px; font-weight: 600; text-transform: uppercase; margin: 0; }\n' +
+    '    .card .value { font-size: 17px; margin: 2px 0 12px; overflow-wrap: anywhere; }\n' +
+    '    .card .value:last-child { margin-bottom: 0; }\n' +
+    '    @keyframes arm-submit { from { visibility: hidden; } to { visibility: hidden; } }\n' +
+    '    .arm { animation: arm-submit 1s linear backwards; }\n' +
+    '    .notice { background: #fef3c7; color: #92400e; border-radius: 8px; padding: 10px 14px; }\n' +
+    '    .lang { display: inline-block; min-width: 48px; padding: 14px 0; font-size: 14px; color: #6b7280; }\n' +
+    '  </style>\n' +
+    '</head>\n' +
+    '<body>\n' +
+    '      <main class="narrow">\n' +
+    '        <h1>Your earlier pick stands</h1>\n' +
+    '        \n' +
+    '        <div class="card">\n' +
+    '          <p class="label">Question</p>\n' +
+    '          <p class="value">Which &lt;b&gt;database&lt;/b&gt;?</p>\n' +
+    '          <p class="label">Pick</p>\n' +
+    '          <p class="value">Postgres</p>\n' +
+    '          <p class="label">Recorded</p><p class="value">2026-11-11 12:00 UTC</p>\n' +
+    '        </div>\n' +
+    '        <p class="notice">You tapped <strong>SQLite &amp; co</strong>, but a question keeps its first pick. To change it, say so in the thread.</p>\n' +
+    '        <p><a class="lang" href="/a/r0und_Id-0123456789abcdefXYZ/0/1?lang=es" lang="es" hreflang="es">Español</a></p>\n' +
+    '      </main>\n' +
+    '    </body>\n' +
+    '</html>'
+  
+FAIL test/answers.test.js > records the pick and shows what is stored
+  AssertionError: The input did not match the regular expression /Elección guardada/. Input:
+  
+  '<!doctype html>\n' +
+    '<html lang="en">\n' +
+    '<head>\n' +
+    '  <meta charset="utf-8">\n' +
+    '  <meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+    '  <title>Pick recorded</title>\n' +
+    '  <style>\n' +
+    '    body { margin: 0; background: #f8fafc; color: #111827; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }\n' +
+    '    main { max-width: 860px; margin: 32px auto 80px; padding: 0 20px; }\n' +
+    '    main.narrow { max-width: 560px; }\n' +
+    '    main.center { text-align: center; margin-top: 96px; }\n' +
+    '    h1 { font-size: 30px; margin: 0 0 14px; }\n' +
+    '    h2 { font-size: 17px; margin: 30px 0 6px; }\n' +
+    '    p { line-height: 1.6; }\n' +
+    '    a { color: #1d4ed8; }\n' +
+    '    code { background: #eef2f7; border: 1px solid #d1d5db; border-radius: 5px; padding: 1px 5px; font-size: 14px; }\n' +
+    '    .muted { color: #6b7280; }\n' +
+    '    .small { font-size: 13px; }\n' +
+    '    .button { display: inline-block; background: #111827; color: #fff; border: 0; border-radius: 8px; padding: 10px 18px; font-size: 15px; text-decoration: none; cursor: pointer; }\n' +
+    '    .linklike { background: none; border: 0; color: #1d4ed8; cursor: pointer; font-size: 13px; padding: 0; margin-left: 10px; text-decoration: underline; }\n' +
+    '    .top { display: flex; justify-content: space-between; align-items: center; max-width: 860px; margin: 0 auto; padding: 14px 20px; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .top nav a { margin-right: 16px; text-decoration: none; color: #374151; }\n' +
+    '    .top nav a.active { color: #111827; font-weight: 600; }\n' +
+    '    .top form { display: inline-flex; align-items: center; gap: 8px; }\n' +
+    '    .avatar { width: 26px; height: 26px; border-radius: 50%; vertical-align: middle; }\n' +
+    '    .repo-link { font-weight: 400; text-decoration: none; margin-left: 6px; }\n' +
+    '    .row-meta a { color: #6b7280; }\n' +
+    '    .pii { filter: blur(4px); border-radius: 3px; transition: filter .15s ease; cursor: pointer; }\n' +
+    '    .pii:hover, .pii:focus { filter: none; outline: none; }\n' +
+    '    .row { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .row-title { font-weight: 600; text-decoration: none; }\n' +
+    '    .row-meta { white-space: nowrap; }\n' +
+    '    .pill { font-size: 11px; border-radius: 999px; padding: 2px 8px; margin-left: 6px; }\n' +
+    '    .pill.warn { background: #fef3c7; color: #92400e; }\n' +
+    '    table { width: 100%; border-collapse: collapse; margin-top: 14px; }\n' +
+    '    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }\n' +
+    '    th { color: #6b7280; font-weight: 600; font-size: 12px; text-transform: uppercase; }\n' +
+    '    .keybox { display: flex; gap: 10px; align-items: center; background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 14px; margin: 14px 0; }\n' +
+    '    .keybox code { flex: 1; word-break: break-all; background: none; border: 0; font-size: 15px; }\n' +
+    '    .card { background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 16px; margin: 18px 0; text-align: left; }\n' +
+    '    .card .label { color: #6b7280; font-size: 12px; font-weight: 600; text-transform: uppercase; margin: 0; }\n' +
+    '    .card .value { font-size: 17px; margin: 2px 0 12px; overflow-wrap: anywhere; }\n' +
+    '    .card .value:last-child { margin-bottom: 0; }\n' +
+    '    @keyframes arm-submit { from { visibility: hidden; } to { visibility: hidden; } }\n' +
+    '    .arm { animation: arm-submit 1s linear backwards; }\n' +
+    '    .notice { background: #fef3c7; color: #92400e; border-radius: 8px; padding: 10px 14px; }\n' +
+    '    .lang { display: inline-block; min-width: 48px; padding: 14px 0; font-size: 14px; color: #6b7280; }\n' +
+    '  </style>\n' +
+    '</head>\n' +
+    '<body>\n' +
+    '      <main class="narrow">\n' +
+    '        <h1>Pick recorded</h1>\n' +
+    '        \n' +
+    '        <div class="card">\n' +
+    '          <p class="label">Question</p>\n' +
+    '          <p class="value">Which &lt;b&gt;database&lt;/b&gt;?</p>\n' +
+    '          <p class="label">Pick</p>\n' +
+    '          <p class="value">SQLite &amp; co</p>\n' +
+    '          <p class="label">Recorded</p><p class="value">2026-11-11 12:00 UTC</p>\n' +
+    '        </div>\n' +
+    '        <p class="muted">The waiting agent reads it from here. If the thread still shows the question after a minute, answer it there.</p>\n' +
+    '        <p><a class="lang" href="/a/r0und_Id-0123456789abcdefXYZ/0/1?lang=es" lang="es" hreflang="es">Español</a></p>\n' +
+    '      </main>\n' +
+    '    </body>\n' +
+    '</html>'
+  
+FAIL test/answers.test.js > the first pick wins and a second is reported as standing
+  AssertionError: The input did not match the regular expression /Tu elección anterior se mantiene/. Input:
+  
+  '<!doctype html>\n' +
+    '<html lang="en">\n' +
+    '<head>\n' +
+    '  <meta charset="utf-8">\n' +
+    '  <meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+    '  <title>Your earlier pick stands</title>\n' +
+    '  <style>\n' +
+    '    body { margin: 0; background: #f8fafc; color: #111827; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }\n' +
+    '    main { max-width: 860px; margin: 32px auto 80px; padding: 0 20px; }\n' +
+    '    main.narrow { max-width: 560px; }\n' +
+    '    main.center { text-align: center; margin-top: 96px; }\n' +
+    '    h1 { font-size: 30px; margin: 0 0 14px; }\n' +
+    '    h2 { font-size: 17px; margin: 30px 0 6px; }\n' +
+    '    p { line-height: 1.6; }\n' +
+    '    a { color: #1d4ed8; }\n' +
+    '    code { background: #eef2f7; border: 1px solid #d1d5db; border-radius: 5px; padding: 1px 5px; font-size: 14px; }\n' +
+    '    .muted { color: #6b7280; }\n' +
+    '    .small { font-size: 13px; }\n' +
+    '    .button { display: inline-block; background: #111827; color: #fff; border: 0; border-radius: 8px; padding: 10px 18px; font-size: 15px; text-decoration: none; cursor: pointer; }\n' +
+    '    .linklike { background: none; border: 0; color: #1d4ed8; cursor: pointer; font-size: 13px; padding: 0; margin-left: 10px; text-decoration: underline; }\n' +
+    '    .top { display: flex; justify-content: space-between; align-items: center; max-width: 860px; margin: 0 auto; padding: 14px 20px; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .top nav a { margin-right: 16px; text-decoration: none; color: #374151; }\n' +
+    '    .top nav a.active { color: #111827; font-weight: 600; }\n' +
+    '    .top form { display: inline-flex; align-items: center; gap: 8px; }\n' +
+    '    .avatar { width: 26px; height: 26px; border-radius: 50%; vertical-align: middle; }\n' +
+    '    .repo-link { font-weight: 400; text-decoration: none; margin-left: 6px; }\n' +
+    '    .row-meta a { color: #6b7280; }\n' +
+    '    .pii { filter: blur(4px); border-radius: 3px; transition: filter .15s ease; cursor: pointer; }\n' +
+    '    .pii:hover, .pii:focus { filter: none; outline: none; }\n' +
+    '    .row { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .row-title { font-weight: 600; text-decoration: none; }\n' +
+    '    .row-meta { white-space: nowrap; }\n' +
+    '    .pill { font-size: 11px; border-radius: 999px; padding: 2px 8px; margin-left: 6px; }\n' +
+    '    .pill.warn { background: #fef3c7; color: #92400e; }\n' +
+    '    table { width: 100%; border-collapse: collapse; margin-top: 14px; }\n' +
+    '    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }\n' +
+    '    th { color: #6b7280; font-weight: 600; font-size: 12px; text-transform: uppercase; }\n' +
+    '    .keybox { display: flex; gap: 10px; align-items: center; background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 14px; margin: 14px 0; }\n' +
+    '    .keybox code { flex: 1; word-break: break-all; background: none; border: 0; font-size: 15px; }\n' +
+    '    .card { background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 16px; margin: 18px 0; text-align: left; }\n' +
+    '    .card .label { color: #6b7280; font-size: 12px; font-weight: 600; text-transform: uppercase; margin: 0; }\n' +
+    '    .card .value { font-size: 17px; margin: 2px 0 12px; overflow-wrap: anywhere; }\n' +
+    '    .card .value:last-child { margin-bottom: 0; }\n' +
+    '    @keyframes arm-submit { from { visibility: hidden; } to { visibility: hidden; } }\n' +
+    '    .arm { animation: arm-submit 1s linear backwards; }\n' +
+    '    .notice { background: #fef3c7; color: #92400e; border-radius: 8px; padding: 10px 14px; }\n' +
+    '    .lang { display: inline-block; min-width: 48px; padding: 14px 0; font-size: 14px; color: #6b7280; }\n' +
+    '  </style>\n' +
+    '</head>\n' +
+    '<body>\n' +
+    '      <main class="narrow">\n' +
+    '        <h1>Your earlier pick stands</h1>\n' +
+    '        \n' +
+    '        <div class="card">\n' +
+    '          <p class="label">Question</p>\n' +
+    '          <p class="value">Which &lt;b&gt;database&lt;/b&gt;?</p>\n' +
+    '          <p class="label">Pick</p>\n' +
+    '          <p class="value">SQLite &amp; co</p>\n' +
+    '          <p class="label">Recorded</p><p class="value">2026-11-11 12:00 UTC</p>\n' +
+    '        </div>\n' +
+    '        <p class="notice">You tapped <strong>Postgres</strong>, but a question keeps its first pick. To change it, say so in the thread.</p>\n' +
+    '        <p><a class="lang" href="/a/r0und_Id-0123456789abcdefXYZ/0/0?lang=es" lang="es" hreflang="es">Español</a></p>\n' +
+    '      </main>\n' +
+    '    </body>\n' +
+    '</html>'
+  
+PASS test/answers.test.js > refuses no session
+PASS test/answers.test.js > refuses a stranger's session
+PASS test/answers.test.js > refuses Origin: null (the sandboxed draft page)
+PASS test/answers.test.js > refuses a foreign Origin
+PASS test/answers.test.js > refuses no Origin at all
+PASS test/answers.test.js > refuses a fingerprint of other questions
+PASS test/answers.test.js > refuses a question stored as not answerable
+PASS test/answers.test.js > refuses out of range indexes
+FAIL test/answers.test.js > Spanish by default, with a link to the same page in English
+  AssertionError: The input did not match the regular expression /<html lang="es">/. Input:
+  
+  '<!doctype html>\n' +
+    '<html lang="en">\n' +
+    '<head>\n' +
+    '  <meta charset="utf-8">\n' +
+    '  <meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+    '  <title>Confirm your pick</title>\n' +
+    '  <style>\n' +
+    '    body { margin: 0; background: #f8fafc; color: #111827; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }\n' +
+    '    main { max-width: 860px; margin: 32px auto 80px; padding: 0 20px; }\n' +
+    '    main.narrow { max-width: 560px; }\n' +
+    '    main.center { text-align: center; margin-top: 96px; }\n' +
+    '    h1 { font-size: 30px; margin: 0 0 14px; }\n' +
+    '    h2 { font-size: 17px; margin: 30px 0 6px; }\n' +
+    '    p { line-height: 1.6; }\n' +
+    '    a { color: #1d4ed8; }\n' +
+    '    code { background: #eef2f7; border: 1px solid #d1d5db; border-radius: 5px; padding: 1px 5px; font-size: 14px; }\n' +
+    '    .muted { color: #6b7280; }\n' +
+    '    .small { font-size: 13px; }\n' +
+    '    .button { display: inline-block; background: #111827; color: #fff; border: 0; border-radius: 8px; padding: 10px 18px; font-size: 15px; text-decoration: none; cursor: pointer; }\n' +
+    '    .linklike { background: none; border: 0; color: #1d4ed8; cursor: pointer; font-size: 13px; padding: 0; margin-left: 10px; text-decoration: underline; }\n' +
+    '    .top { display: flex; justify-content: space-between; align-items: center; max-width: 860px; margin: 0 auto; padding: 14px 20px; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .top nav a { margin-right: 16px; text-decoration: none; color: #374151; }\n' +
+    '    .top nav a.active { color: #111827; font-weight: 600; }\n' +
+    '    .top form { display: inline-flex; align-items: center; gap: 8px; }\n' +
+    '    .avatar { width: 26px; height: 26px; border-radius: 50%; vertical-align: middle; }\n' +
+    '    .repo-link { font-weight: 400; text-decoration: none; margin-left: 6px; }\n' +
+    '    .row-meta a { color: #6b7280; }\n' +
+    '    .pii { filter: blur(4px); border-radius: 3px; transition: filter .15s ease; cursor: pointer; }\n' +
+    '    .pii:hover, .pii:focus { filter: none; outline: none; }\n' +
+    '    .row { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .row-title { font-weight: 600; text-decoration: none; }\n' +
+    '    .row-meta { white-space: nowrap; }\n' +
+    '    .pill { font-size: 11px; border-radius: 999px; padding: 2px 8px; margin-left: 6px; }\n' +
+    '    .pill.warn { background: #fef3c7; color: #92400e; }\n' +
+    '    table { width: 100%; border-collapse: collapse; margin-top: 14px; }\n' +
+    '    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }\n' +
+    '    th { color: #6b7280; font-weight: 600; font-size: 12px; text-transform: uppercase; }\n' +
+    '    .keybox { display: flex; gap: 10px; align-items: center; background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 14px; margin: 14px 0; }\n' +
+    '    .keybox code { flex: 1; word-break: break-all; background: none; border: 0; font-size: 15px; }\n' +
+    '    .card { background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 16px; margin: 18px 0; text-align: left; }\n' +
+    '    .card .label { color: #6b7280; font-size: 12px; font-weight: 600; text-transform: uppercase; margin: 0; }\n' +
+    '    .card .value { font-size: 17px; margin: 2px 0 12px; overflow-wrap: anywhere; }\n' +
+    '    .card .value:last-child { margin-bottom: 0; }\n' +
+    '    @keyframes arm-submit { from { visibility: hidden; } to { visibility: hidden; } }\n' +
+    '    .arm { animation: arm-submit 1s linear backwards; }\n' +
+    '    .notice { background: #fef3c7; color: #92400e; border-radius: 8px; padding: 10px 14px; }\n' +
+    '    .lang { display: inline-block; min-width: 48px; padding: 14px 0; font-size: 14px; color: #6b7280; }\n' +
+    '  </style>\n' +
+    '</head>\n' +
+    '<body>\n' +
+    '      <main class="narrow">\n' +
+    '        <h1>Confirm your pick</h1>\n' +
+    '        \n' +
+    '        <div class="card">\n' +
+    '          <p class="label">Question</p>\n' +
+    '          <p class="value">Which &lt;b&gt;database&lt;/b&gt;?</p>\n' +
+    '          <p class="label">Option</p>\n' +
+    '          <p class="value">SQLite &amp; co</p>\n' +
+    '          \n' +
+    '        </div>\n' +
+    '        <form method="post" action="/a/r0und_Id-0123456789abcdefXYZ/0/1">\n' +
+    '          <input type="hidden" name="fingerprint" value="OpqgVfj4HFCQm4UQykFvQm">\n' +
+    '          <button class="button arm" type="submit">Record this pick</button>\n' +
+    '        </form>\n' +
+    '        <p class="muted small">The first pick per question is final from this page. To change it later, say so in the thread.</p>\n' +
+    '        <p><a class="lang" href="/a/r0und_Id-0123456789abcdefXYZ/0/1?lang=es" lang="es" hreflang="es">Español</a></p>\n' +
+    '      </main>\n' +
+    '    </body>\n' +
+    '</html>'
+  
+PASS test/answers.test.js > ?lang=en switches to English and keeps it in a cookie
+PASS test/answers.test.js > the cookie alone keeps English, on the confirmation and on the recorded page
+PASS test/answers.test.js > ?lang=es switches back over an English cookie
+FAIL test/answers.test.js > a language it does not have is ignored, in the link and in the cookie
+  AssertionError: The input did not match the regular expression /Confirma tu elección/. Input:
+  
+  '<!doctype html>\n' +
+    '<html lang="en">\n' +
+    '<head>\n' +
+    '  <meta charset="utf-8">\n' +
+    '  <meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+    '  <title>Confirm your pick</title>\n' +
+    '  <style>\n' +
+    '    body { margin: 0; background: #f8fafc; color: #111827; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }\n' +
+    '    main { max-width: 860px; margin: 32px auto 80px; padding: 0 20px; }\n' +
+    '    main.narrow { max-width: 560px; }\n' +
+    '    main.center { text-align: center; margin-top: 96px; }\n' +
+    '    h1 { font-size: 30px; margin: 0 0 14px; }\n' +
+    '    h2 { font-size: 17px; margin: 30px 0 6px; }\n' +
+    '    p { line-height: 1.6; }\n' +
+    '    a { color: #1d4ed8; }\n' +
+    '    code { background: #eef2f7; border: 1px solid #d1d5db; border-radius: 5px; padding: 1px 5px; font-size: 14px; }\n' +
+    '    .muted { color: #6b7280; }\n' +
+    '    .small { font-size: 13px; }\n' +
+    '    .button { display: inline-block; background: #111827; color: #fff; border: 0; border-radius: 8px; padding: 10px 18px; font-size: 15px; text-decoration: none; cursor: pointer; }\n' +
+    '    .linklike { background: none; border: 0; color: #1d4ed8; cursor: pointer; font-size: 13px; padding: 0; margin-left: 10px; text-decoration: underline; }\n' +
+    '    .top { display: flex; justify-content: space-between; align-items: center; max-width: 860px; margin: 0 auto; padding: 14px 20px; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .top nav a { margin-right: 16px; text-decoration: none; color: #374151; }\n' +
+    '    .top nav a.active { color: #111827; font-weight: 600; }\n' +
+    '    .top form { display: inline-flex; align-items: center; gap: 8px; }\n' +
+    '    .avatar { width: 26px; height: 26px; border-radius: 50%; vertical-align: middle; }\n' +
+    '    .repo-link { font-weight: 400; text-decoration: none; margin-left: 6px; }\n' +
+    '    .row-meta a { color: #6b7280; }\n' +
+    '    .pii { filter: blur(4px); border-radius: 3px; transition: filter .15s ease; cursor: pointer; }\n' +
+    '    .pii:hover, .pii:focus { filter: none; outline: none; }\n' +
+    '    .row { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .row-title { font-weight: 600; text-decoration: none; }\n' +
+    '    .row-meta { white-space: nowrap; }\n' +
+    '    .pill { font-size: 11px; border-radius: 999px; padding: 2px 8px; margin-left: 6px; }\n' +
+    '    .pill.warn { background: #fef3c7; color: #92400e; }\n' +
+    '    table { width: 100%; border-collapse: collapse; margin-top: 14px; }\n' +
+    '    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }\n' +
+    '    th { color: #6b7280; font-weight: 600; font-size: 12px; text-transform: uppercase; }\n' +
+    '    .keybox { display: flex; gap: 10px; align-items: center; background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 14px; margin: 14px 0; }\n' +
+    '    .keybox code { flex: 1; word-break: break-all; background: none; border: 0; font-size: 15px; }\n' +
+    '    .card { background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 16px; margin: 18px 0; text-align: left; }\n' +
+    '    .card .label { color: #6b7280; font-size: 12px; font-weight: 600; text-transform: uppercase; margin: 0; }\n' +
+    '    .card .value { font-size: 17px; margin: 2px 0 12px; overflow-wrap: anywhere; }\n' +
+    '    .card .value:last-child { margin-bottom: 0; }\n' +
+    '    @keyframes arm-submit { from { visibility: hidden; } to { visibility: hidden; } }\n' +
+    '    .arm { animation: arm-submit 1s linear backwards; }\n' +
+    '    .notice { background: #fef3c7; color: #92400e; border-radius: 8px; padding: 10px 14px; }\n' +
+    '    .lang { display: inline-block; min-width: 48px; padding: 14px 0; font-size: 14px; color: #6b7280; }\n' +
+    '  </style>\n' +
+    '</head>\n' +
+    '<body>\n' +
+    '      <main class="narrow">\n' +
+    '        <h1>Confirm your pick</h1>\n' +
+    '        \n' +
+    '        <div class="card">\n' +
+    '          <p class="label">Question</p>\n' +
+    '          <p class="value">Which &lt;b&gt;database&lt;/b&gt;?</p>\n' +
+    '          <p class="label">Option</p>\n' +
+    '          <p class="value">SQLite &amp; co</p>\n' +
+    '          \n' +
+    '        </div>\n' +
+    '        <form method="post" action="/a/r0und_Id-0123456789abcdefXYZ/0/1">\n' +
+    '          <input type="hidden" name="fingerprint" value="OpqgVfj4HFCQm4UQykFvQm">\n' +
+    '          <button class="button arm" type="submit">Record this pick</button>\n' +
+    '        </form>\n' +
+    '        <p class="muted small">The first pick per question is final from this page. To change it later, say so in the thread.</p>\n' +
+    '        <p><a class="lang" href="/a/r0und_Id-0123456789abcdefXYZ/0/1?lang=es" lang="es" hreflang="es">Español</a></p>\n' +
+    '      </main>\n' +
+    '    </body>\n' +
+    '</html>'
+  
+FAIL test/answers.test.js > the sign-in prompt and a refusal follow the language too
+  AssertionError: The input did not match the regular expression /Entra para responder esta pregunta\./. Input:
+  
+  '<!doctype html>\n' +
+    '<html lang="en">\n' +
+    '<head>\n' +
+    '  <meta charset="utf-8">\n' +
+    '  <meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+    '  <title>Postplan</title>\n' +
+    '  <style>\n' +
+    '    body { margin: 0; background: #f8fafc; color: #111827; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }\n' +
+    '    main { max-width: 860px; margin: 32px auto 80px; padding: 0 20px; }\n' +
+    '    main.narrow { max-width: 560px; }\n' +
+    '    main.center { text-align: center; margin-top: 96px; }\n' +
+    '    h1 { font-size: 30px; margin: 0 0 14px; }\n' +
+    '    h2 { font-size: 17px; margin: 30px 0 6px; }\n' +
+    '    p { line-height: 1.6; }\n' +
+    '    a { color: #1d4ed8; }\n' +
+    '    code { background: #eef2f7; border: 1px solid #d1d5db; border-radius: 5px; padding: 1px 5px; font-size: 14px; }\n' +
+    '    .muted { color: #6b7280; }\n' +
+    '    .small { font-size: 13px; }\n' +
+    '    .button { display: inline-block; background: #111827; color: #fff; border: 0; border-radius: 8px; padding: 10px 18px; font-size: 15px; text-decoration: none; cursor: pointer; }\n' +
+    '    .linklike { background: none; border: 0; color: #1d4ed8; cursor: pointer; font-size: 13px; padding: 0; margin-left: 10px; text-decoration: underline; }\n' +
+    '    .top { display: flex; justify-content: space-between; align-items: center; max-width: 860px; margin: 0 auto; padding: 14px 20px; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .top nav a { margin-right: 16px; text-decoration: none; color: #374151; }\n' +
+    '    .top nav a.active { color: #111827; font-weight: 600; }\n' +
+    '    .top form { display: inline-flex; align-items: center; gap: 8px; }\n' +
+    '    .avatar { width: 26px; height: 26px; border-radius: 50%; vertical-align: middle; }\n' +
+    '    .repo-link { font-weight: 400; text-decoration: none; margin-left: 6px; }\n' +
+    '    .row-meta a { color: #6b7280; }\n' +
+    '    .pii { filter: blur(4px); border-radius: 3px; transition: filter .15s ease; cursor: pointer; }\n' +
+    '    .pii:hover, .pii:focus { filter: none; outline: none; }\n' +
+    '    .row { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }\n' +
+    '    .row-title { font-weight: 600; text-decoration: none; }\n' +
+    '    .row-meta { white-space: nowrap; }\n' +
+    '    .pill { font-size: 11px; border-radius: 999px; padding: 2px 8px; margin-left: 6px; }\n' +
+    '    .pill.warn { background: #fef3c7; color: #92400e; }\n' +
+    '    table { width: 100%; border-collapse: collapse; margin-top: 14px; }\n' +
+    '    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }\n' +
+    '    th { color: #6b7280; font-weight: 600; font-size: 12px; text-transform: uppercase; }\n' +
+    '    .keybox { display: flex; gap: 10px; align-items: center; background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 14px; margin: 14px 0; }\n' +
+    '    .keybox code { flex: 1; word-break: break-all; background: none; border: 0; font-size: 15px; }\n' +
+    '    .card { background: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 16px; margin: 18px 0; text-align: left; }\n' +
+    '    .card .label { color: #6b7280; font-size: 12px; font-weight: 600; text-transform: uppercase; margin: 0; }\n' +
+    '    .card .value { font-size: 17px; margin: 2px 0 12px; overflow-wrap: anywhere; }\n' +
+    '    .card .value:last-child { margin-bottom: 0; }\n' +
+    '    @keyframes arm-submit { from { visibility: hidden; } to { visibility: hidden; } }\n' +
+    '    .arm { animation: arm-submit 1s linear backwards; }\n' +
+    '    .notice { background: #fef3c7; color: #92400e; border-radius: 8px; padding: 10px 14px; }\n' +
+    '    .lang { display: inline-block; min-width: 48px; padding: 14px 0; font-size: 14px; color: #6b7280; }\n' +
+    '  </style>\n' +
+    '</head>\n' +
+    '<body>\n' +
+    '      <main class="narrow center">\n' +
+    '        <h1>Postplan</h1>\n' +
+    '        <p class="muted">Sign in to answer this question.</p>\n' +
+    '        <p><a class="button" href="/auth/sign-in?next=%2Fa%2Fr0und_Id-0123456789abcdefXYZ%2F0%2F1">Continue with shoo</a></p>\n' +
+    '        <p><a class="lang" href="/a/r0und_Id-0123456789abcdefXYZ/0/1?lang=es" lang="es" hreflang="es">Español</a></p>\n' +
+    '      </main>\n' +
+    '    </body>\n' +
+    '</html>'
+  
+PASS test/answers.test.js > returns the contract for the owning account's key
+PASS test/answers.test.js > another account's key cannot read the round, and sees no difference from a missing one
+PASS test/answers.test.js > refuses a missing or unknown key
+PASS test/answers.test.js > another account cannot overwrite the round through the store
+PASS test/answers.test.js > a re-upload of the same draft keeps the picks
+PASS test/answers.test.js > a keyless upload cannot create a round
+PASS test/answers.test.js > a NUL in a question is a 422 invalid_round, not a 500
+PASS test/answers.test.js > an invalid round is refused before anything is written
+
+Tests  28 passed | 6 failed | 0 skipped
