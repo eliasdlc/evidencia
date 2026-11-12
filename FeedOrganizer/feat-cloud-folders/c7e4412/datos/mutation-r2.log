@@ -1,0 +1,41 @@
+# R2 at c7e4412, with r2.patch applied
+# $ pnpm exec vitest run src/lib/oauth.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/oauth.test.ts (9 tests | 1 failed) 149ms
+   ❯ the window that asks for a sign-in (2)
+     × takes only the answer that carries the state it made, whatever else is said on the channel 84ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/oauth.test.ts > the window that asks for a sign-in > takes only the answer that carries the state it made, whatever else is said on the channel
+AssertionError: expected { …(2) } to deeply equal { …(3) }
+
+- Expected
++ Received
+
+  {
+-   "access_token": "ya29.abc",
+-   "expires_in": "3599",
+-   "state": "fo-G98hxKmMPZy8NtnHXBOgXmlLNipT6iWK",
++   "access_token": "de-otro",
++   "state": "fo-de-otra-ventana-0123456789abcdef",
+  }
+
+ ❯ src/lib/oauth.test.ts:35:26
+     33|     other.postMessage(null)
+     34|     other.postMessage({ state, access_token: 'ya29.abc', expires_in: '…
+     35|     expect(await answer).toEqual({ state, access_token: 'ya29.abc', ex…
+       |                          ^
+     36|     other.close()
+     37|     expect(popup.close).toHaveBeenCalledOnce()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  22:12:54
+   Duration  277ms (tests 85%, import 9%, transform 4%, worker 2%)
+
