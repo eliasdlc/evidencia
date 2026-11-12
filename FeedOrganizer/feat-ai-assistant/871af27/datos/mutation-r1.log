@@ -1,0 +1,66 @@
+# R1 at 871af27, with r1.patch applied
+# $ pnpm exec vitest run src/lib/storage.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/storage.test.ts (20 tests | 2 failed) 16ms
+   ❯ the connections this browser keeps (3)
+     × are saved under a key of their own and read back, and deleting a feed leaves them 5ms
+     × are forgotten by saving none 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/storage.test.ts > the connections this browser keeps > are saved under a key of their own and read back, and deleting a feed leaves them
+AssertionError: expected undefined to deeply equal { ai: { key: 'sk-ant-prueba', …(1) } }
+
+- Expected:
+{
+  "ai": {
+    "key": "sk-ant-prueba",
+    "model": "claude-sonnet-5-5",
+  },
+}
+
++ Received:
+undefined
+
+ ❯ src/lib/storage.test.ts:205:34
+    203|     expect(await loadSettings(store)).toEqual({})
+    204|     await saveSettings({ ai: { key: '  sk-ant-prueba  ', model: 'claud…
+    205|     expect(data.get('settings')).toEqual({ ai: { key: 'sk-ant-prueba',…
+       |                                  ^
+    206|     // The key is in the settings and nowhere else: saving it wrote on…
+    207|     expect([...data.keys()].sort()).toEqual([feedKey('uno'), 'settings…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/storage.test.ts > the connections this browser keeps > are forgotten by saving none
+AssertionError: expected { ai: { key: 'sk-ant-prueba', …(1) } } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "ai": {
++     "key": "sk-ant-prueba",
++     "model": "claude-opus-5-5",
++   },
++ }
+
+ ❯ src/lib/storage.test.ts:225:34
+    223|     const { store, data } = memoryStore({ settings: { ai: { key: 'sk-a…
+    224|     await saveSettings({}, store)
+    225|     expect(data.get('settings')).toEqual({})
+       |                                  ^
+    226|   })
+    227| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 18 passed (20)
+   Start at  20:31:18
+   Duration  168ms (transform 36%, import 31%, tests 27%, worker 6%)
+
