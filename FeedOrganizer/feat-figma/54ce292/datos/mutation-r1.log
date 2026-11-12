@@ -1,0 +1,40 @@
+# R1 at 54ce292, with r1.patch applied
+# $ pnpm exec vitest run src/lib/storage.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/storage.test.ts (21 tests | 1 failed) 15ms
+   ❯ the connections this browser keeps (4)
+     × keep each connection on its own: the token of Figma beside the key, trimmed, and one that is empty is no connection 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/storage.test.ts > the connections this browser keeps > keep each connection on its own: the token of Figma beside the key, trimmed, and one that is empty is no connection
+AssertionError: expected {} to deeply equal { figma: { token: 'figd_prueba' } }
+
+- Expected
++ Received
+
+- {
+-   "figma": {
+-     "token": "figd_prueba",
+-   },
+- }
++ {}
+
+ ❯ src/lib/storage.test.ts:231:39
+    229|     // Taking one connection away leaves the other.
+    230|     await saveSettings({ figma: { token: 'figd_prueba' } }, store)
+    231|     expect(await loadSettings(store)).toEqual({ figma: { token: 'figd_…
+       |                                       ^
+    232|     expect(readSettings({ ai: { key: '' }, figma: { token: 'figd_prueb…
+    233|     expect(readSettings({ ai: { key: 'sk-ant-prueba', model: 'claude-o…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  21:05:45
+   Duration  141ms (tests 37%, import 33%, transform 19%, worker 12%)
+
