@@ -1,0 +1,56 @@
+# R1 at cbe95e5, with r1.patch applied
+# $ pnpm exec vitest run src/lib/mcp.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/mcp.test.ts (14 tests | 2 failed) 65ms
+   ❯ what the connected assistant changes (7)
+     × is the caption of a post, as one step that Deshacer names as the assistant’s 22ms
+     × lands on the feed as it is when it lands, not as it was when it was asked 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/mcp.test.ts > what the connected assistant changes > is the caption of a post, as one step that Deshacer names as the assistant’s
+AssertionError: expected '' to be 'Hoy hay pan de agua.\n\n#pan' // Object.is equality
+
+- Expected
++ Received
+
+- Hoy hay pan de agua.
+-
+- #pan
+
+ ❯ src/lib/mcp.test.ts:86:45
+     84|   it('is the caption of a post, as one step that Deshacer names as the…
+     85|     const written = ask('set_caption', { id: 'a', caption: 'Hoy hay pa…
+     86|     expect(after(written).posts.a!.caption).toBe('Hoy hay pan de agua.…
+       |                                             ^
+     87|     expect(written.change!.label).toBe('escribir el caption de Post a …
+     88|     expect(written.change!.notice).toBe('Tu asistente escribió el capt…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/mcp.test.ts > what the connected assistant changes > lands on the feed as it is when it lands, not as it was when it was asked
+AssertionError: expected '' to be 'Nuevo' // Object.is equality
+
+- Expected
++ Received
+
+- Nuevo
+
+ ❯ src/lib/mcp.test.ts:154:56
+    152|     const meanwhile: Feed = { ...feed, grid: ['d', 'a', 'b', 'c'] }
+    153|     expect(after(written, meanwhile).grid).toEqual(['d', 'a', 'b', 'c'…
+    154|     expect(after(written, meanwhile).posts.a!.caption).toBe('Nuevo')
+       |                                                        ^
+    155|     // The post was deleted in between: nothing changes.
+    156|     const gone: Feed = { ...feed, posts: { ...feed.posts, a: undefined…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 12 passed (14)
+   Start at  23:32:23
+   Duration  445ms (tests 46%, import 32%, transform 15%, worker 6%)
+
