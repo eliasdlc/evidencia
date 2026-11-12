@@ -1,0 +1,39 @@
+# R4 at 54ce292, with r4.patch applied
+# $ pnpm exec vitest run src/lib/figma.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/figma.test.ts (13 tests | 1 failed) 20ms
+   ❯ a post that came from Figma (4)
+     × takes the new render in the place of the old one, keeps the image added by hand, and can be asked again 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/figma.test.ts > a post that came from Figma > takes the new render in the place of the old one, keeps the image added by hand, and can be asked again
+AssertionError: expected [ 'i-mano', 'i-2b' ] to deeply equal [ 'i-2b', 'i-mano' ]
+
+- Expected
++ Received
+
+  [
+-   "i-2b",
+    "i-mano",
++   "i-2b",
+  ]
+
+ ❯ src/lib/figma.test.ts:144:43
+    142|   it('takes the new render in the place of the old one, keeps the imag…
+    143|     const fresh = refreshImages(feed, { 'i-2': 'i-2b', 'i-1': 'i-1b', …
+    144|     expect(fresh.posts['equipo']!.images).toEqual(['i-2b', 'i-mano'])
+       |                                           ^
+    145|     expect(fresh.posts['equipo']!.figma).toEqual({ file: 'AbC123', fra…
+    146|     // A post that did not come from Figma is not touched, even when a…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  21:06:09
+   Duration  156ms (tests 42%, import 30%, transform 21%, worker 7%)
+
