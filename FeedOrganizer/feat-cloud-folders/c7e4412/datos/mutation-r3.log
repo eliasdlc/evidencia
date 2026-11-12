@@ -1,0 +1,38 @@
+# R3 at c7e4412, with r3.patch applied
+# $ pnpm exec vitest run src/lib/cloudFolder.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/cloudFolder.test.ts (7 tests | 1 failed) 56ms
+   ❯ a request with the session (2)
+     × goes only to the API it is for, with the session, and follows no answer that sends it elsewhere 29ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/cloudFolder.test.ts > a request with the session > goes only to the API it is for, with the session, and follows no answer that sends it elsewhere
+AssertionError: promise resolved "Response { status: 200, statusText: '', headers: Headers { 'content-type': 'text/plain;charset=UTF-8' }, body: ReadableStream { locked: false, state: 'readable', supportsBYOB: true }, bodyUsed: false, ok: true, redirected: false, type: 'default', url: '' }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
+- }
++ Response {}
+
+ ❯ src/lib/cloudFolder.test.ts:135:74
+    133|       'drive/v3/files',
+    134|     ]) {
+    135|       await expect(askCloud('Google Drive', BASE, elsewhere, 'ya29.abc…
+       |                                                                          ^
+    136|     }
+    137|     expect(fetched).toHaveBeenCalledTimes(1)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  22:12:59
+   Duration  200ms (tests 68%, import 17%, transform 10%, worker 5%)
+
