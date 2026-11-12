@@ -1,0 +1,37 @@
+# R6 at dd727ee, with mutar-vista.patch applied
+# $ pnpm vitest run src/catalogo/importar-vista.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/t776-profile-updated-at
+
+ ❯ src/catalogo/importar-vista.test.ts (2 tests | 1 failed) 21ms
+     × no lleva clases de Firestore ni la escritura preparada 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/catalogo/importar-vista.test.ts > el informe de revisión que viaja al navegador > no lleva clases de Firestore ni la escritura preparada
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "informe.filas.0.escritura.datos.profileUpdatedAt es Timestamp",
++ ]
+
+ ❯ src/catalogo/importar-vista.test.ts:47:54
+     45|   it('no lleva clases de Firestore ni la escritura preparada', () => {
+     46|     expect(soloPlano(informe)).not.toEqual([]); // el informe del serv…
+     47|     expect(soloPlano(informeParaNavegador(informe))).toEqual([]);
+       |                                                      ^
+     48|   });
+     49|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  23:49:28
+   Duration  1.16s (transform 290ms, setup 0ms, import 890ms, tests 21ms, environment 0ms)
+
