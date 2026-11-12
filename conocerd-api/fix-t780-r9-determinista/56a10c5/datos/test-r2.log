@@ -1,0 +1,45 @@
+# R2 at 56a10c5
+# $ firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "node_modules/.bin/vitest run test/contact-signals.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: node_modules/.bin/vitest run test/contact-signals.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/t780-r9-determinista
+
+stderr | test/contact-signals.test.ts > señales de contacto contra el emulador > HTTP > R8: HTTP responde 422 a los ids reservados sin tocar Firestore, y un INVALID_ARGUMENT que se cuele también es 422
+[conocerd-api] error no controlado Error: boom
+    at [90m/home/decruce/dev/wt/conocerd-api/fix/t780-r9-determinista/[39mtest/contact-signals.test.ts:324:62
+[90m    at processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+    at [90mfile:///home/decruce/dev/wt/conocerd-api/fix/t780-r9-determinista/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@3.2.7/node_modules/[4m@vitest/runner[24m/dist/chunk-hooks.js:752:20
+
+ ✓ test/contact-signals.test.ts (33 tests) 9652ms
+   ✓ señales de contacto contra el emulador > R2: el primer toque cuenta, el segundo del mismo día no, y el del día siguiente sí  1218ms
+   ✓ señales de contacto contra el emulador > R4: N cuentas distintas a la vez suman exactamente N, y una cuenta repetida a la vez suma 1  3369ms
+   ✓ señales de contacto contra el emulador > R7: 60 aperturas de ficha no gastan el presupuesto de los toques, y cada uno tiene su tope  922ms
+   ✓ señales de contacto contra el emulador > R7: los toques tienen su propio tope por día y el día siguiente empieza de cero  810ms
+   ✓ señales de contacto contra el emulador > R7: 62 ids inventados por una cuenta dan exactamente 1 toque en general y ningún cubo nuevo  453ms
+   ✓ señales de contacto contra el emulador > R9: el día de Santo Domingo sale de receivedAt > R9: tras reintentos de la transacción el día sigue siendo el de receivedAt, no el del reloj  1451ms
+
+ Test Files  1 passed (1)
+      Tests  33 passed (33)
+   Start at  00:18:40
+   Duration  10.13s (transform 227ms, setup 20ms, collect 237ms, tests 9.65s, environment 0ms, prepare 58ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
