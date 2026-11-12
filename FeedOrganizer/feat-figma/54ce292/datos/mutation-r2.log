@@ -1,0 +1,155 @@
+# R2 at 54ce292, with r2.patch applied
+# $ pnpm exec vitest run src/lib/figma.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/figma.test.ts (13 tests | 2 failed) 27ms
+   ❯ a page of Figma read as a folder (6)
+     × gives every frame the path of its image, numbered as the canvas reads, and leaves out what is hidden or is not a frame 9ms
+     × becomes posts by the rule of the folder: a frame is a post, a section of frames a carousel, a section of sections their campaign 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/figma.test.ts > a page of Figma read as a folder > gives every frame the path of its image, numbered as the canvas reads, and leaves out what is hidden or is not a frame
+AssertionError: expected [ [ …(3) ], [ …(3) ], [ …(3) ], …(5) ] to deeply equal [ [ …(3) ], [ …(3) ], [ …(3) ], …(5) ]
+
+- Expected
++ Received
+
+  [
+    [
+-     "Noviembre/001-Aviso de apertura.png",
+-     "1:1",
++     "Noviembre/001-Promos/001-Tarjeta cliente/001-b.png",
++     "5:21",
+      1,
+    ],
+    [
+-     "Noviembre/002-Horario.png",
+-     "1:2",
++     "Noviembre/001-Promos/001-Tarjeta cliente/002-a.png",
++     "5:20",
+      1,
+    ],
+    [
+-     "Noviembre/003-Equipo/001-Slide 1.png",
+-     "2:1",
++     "Noviembre/001-Promos/002-Dos por uno.png",
++     "5:1",
+      1,
+    ],
+    [
+-     "Noviembre/003-Equipo/002-Slide 2.png",
+-     "2:2",
++     "Noviembre/002-Horario.png",
++     "1:2",
+      1,
+    ],
+    [
+-     "Noviembre/004-Historia.png",
+-     "1:3",
+-     2,
++     "Noviembre/003-Aviso de apertura.png",
++     "1:1",
++     1,
+    ],
+    [
+-     "Noviembre/005-Promos/001-Dos por uno.png",
+-     "5:1",
++     "Noviembre/004-Equipo/001-Slide 2.png",
++     "2:2",
+      1,
+    ],
+    [
+-     "Noviembre/005-Promos/002-Tarjeta cliente/001-a.png",
+-     "5:20",
++     "Noviembre/004-Equipo/002-Slide 1.png",
++     "2:1",
+      1,
+    ],
+    [
+-     "Noviembre/005-Promos/002-Tarjeta cliente/002-b.png",
+-     "5:21",
+-     1,
++     "Noviembre/005-Historia.png",
++     "1:3",
++     2,
+    ],
+  ]
+
+ ❯ src/lib/figma.test.ts:73:80
+     71|
+     72|   it('gives every frame the path of its image, numbered as the canvas …
+     73|     expect(framePaths(page).map((each) => [each.path, each.node, each.…
+       |                                                                                ^
+     74|       ['Noviembre/001-Aviso de apertura.png', '1:1', 1],
+     75|       ['Noviembre/002-Horario.png', '1:2', 1],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/figma.test.ts > a page of Figma read as a folder > becomes posts by the rule of the folder: a frame is a post, a section of frames a carousel, a section of sections their campaign
+AssertionError: expected [ [ 'Promos', 1, undefined ], …(5) ] to deeply equal [ …(6) ]
+
+- Expected
++ Received
+
+  [
+    [
+-     "Aviso de apertura",
++     "Promos",
+      1,
+      undefined,
+    ],
+    [
++     "Tarjeta cliente",
++     2,
++     "Promos",
++   ],
++   [
+      "Horario",
+      1,
+      undefined,
+    ],
+    [
+-     "Equipo",
+-     2,
++     "Aviso de apertura",
++     1,
+      undefined,
+    ],
+    [
+-     "Historia",
+-     1,
++     "Equipo",
++     2,
+      undefined,
+    ],
+    [
+-     "Promos",
++     "Historia",
+      1,
+      undefined,
+-   ],
+-   [
+-     "Tarjeta cliente",
+-     2,
+-     "Promos",
+    ],
+  ]
+
+ ❯ src/lib/figma.test.ts:89:79
+     87|   it('becomes posts by the rule of the folder: a frame is a post, a se…
+     88|     const posts = findPosts(framePaths(page).map((each) => each.path))
+     89|     expect(posts.map((post) => [post.title, post.images.length, post.g…
+       |                                                                               ^
+     90|       ['Aviso de apertura', 1, undefined],
+     91|       ['Horario', 1, undefined],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 11 passed (13)
+   Start at  21:05:50
+   Duration  165ms (tests 48%, import 25%, transform 19%, worker 8%)
+
