@@ -1,0 +1,21 @@
+MUTATION: the purge deletes the withdrawal marker
+00:00 +0: loading /home/decruce/dev/projects/ConoceRD/app/.claude/worktrees/agent-a8c740a4d5d5b6fa9/test/features/auth/local_data_purge_test.dart
+00:00 +0: LocalDataPurge un retiro de consentimiento sin confirmar sobrevive al cierre de sesión
+00:00 +0 -1: LocalDataPurge un retiro de consentimiento sin confirmar sobrevive al cierre de sesión [E]
+  Expected: not null
+    Actual: <null>
+00:00 +0 -1: Some tests failed.
+diff --git i/lib/features/auth/data/services/local_data_purge.dart w/lib/features/auth/data/services/local_data_purge.dart
+index b8948c36..1655a848 100644
+--- i/lib/features/auth/data/services/local_data_purge.dart
++++ w/lib/features/auth/data/services/local_data_purge.dart
+@@ -162,7 +162,8 @@ class LocalDataPurge {
+         await prefs.remove(key);
+       }
+       for (final key in prefs.getKeys().toList()) {
+-        if (key.startsWith(routeProgressPrefix) ||
++        if (key.startsWith(LegalConsentWithdrawalStore.keyPrefix) ||
++            key.startsWith(routeProgressPrefix) ||
+             key.startsWith(kBenefitCodeKeyPrefix)) {
+           await prefs.remove(key);
+         }
