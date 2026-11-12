@@ -1,0 +1,90 @@
+# R1 at 56a10c5, with mutar-sin-abort.patch applied
+# $ firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "node_modules/.bin/vitest run test/contact-signals.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: node_modules/.bin/vitest run test/contact-signals.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/t780-r9-determinista
+
+stderr | test/contact-signals.test.ts > señales de contacto contra el emulador > HTTP > R8: HTTP responde 422 a los ids reservados sin tocar Firestore, y un INVALID_ARGUMENT que se cuele también es 422
+[conocerd-api] error no controlado Error: boom
+    at [90m/home/decruce/dev/wt/conocerd-api/fix/t780-r9-determinista/[39mtest/contact-signals.test.ts:324:62
+[90m    at processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+    at [90mfile:///home/decruce/dev/wt/conocerd-api/fix/t780-r9-determinista/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@3.2.7/node_modules/[4m@vitest/runner[24m/dist/chunk-hooks.js:752:20
+
+ ❯ test/contact-signals.test.ts (33 tests | 1 failed) 10488ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId . es inválido 2ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId .. es inválido 0ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId __a__ es inválido 0ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId __name__ es inválido 0ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId ____ es inválido 0ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > destinationId a/b es inválido 0ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > itemId __a__ es inválido 0ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > itemId __name__ es inválido 0ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > itemId .. es inválido 0ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > itemId . es inválido 0ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > itemId a/b es inválido 0ms
+   ✓ R8: ids que Firestore no admite se rechazan antes de tocarlo > los ids normales, incluso con guiones bajos sueltos, siguen valiendo 0ms
+   ✓ R1: cuerpo de /signals/contact > acepta los cinco canales y una excursión opcional 0ms
+   ✓ R1: cuerpo de /signals/contact > rechaza canal desconocido, campos de más, excursión mal formada y la reservada "general" 0ms
+   ✓ R1: cuerpo de /signals/contact > la clave separa canal, excursión y el cubo general 0ms
+   ✓ señales de contacto contra el emulador > R2: el primer toque cuenta, el segundo del mismo día no, y el del día siguiente sí  688ms
+   ✓ señales de contacto contra el emulador > R2: el mismo día del mes siguiente no queda bloqueado por el marcador 49ms
+   ✓ señales de contacto contra el emulador > R5: los cinco canales cuentan y el reparto por excursión suma el total de cada canal 261ms
+   ✓ señales de contacto contra el emulador > R3: un dueño del destino no cuenta, un destino ausente es not_curated y ninguno escribe 52ms
+   ✓ señales de contacto contra el emulador > R4: N cuentas distintas a la vez suman exactamente N, y una cuenta repetida a la vez suma 1  3337ms
+   ✓ señales de contacto contra el emulador > R7: 60 aperturas de ficha no gastan el presupuesto de los toques, y cada uno tiene su tope  719ms
+   ✓ señales de contacto contra el emulador > R7: los toques tienen su propio tope por día y el día siguiente empieza de cero  638ms
+   ✓ señales de contacto contra el emulador > R7: 62 ids inventados por una cuenta dan exactamente 1 toque en general y ningún cubo nuevo  504ms
+   ✓ señales de contacto contra el emulador > R7: un id que el destino declara tiene su propio cubo, una vez por canal y día 33ms
+   ✓ señales de contacto contra el emulador > R9: el día de Santo Domingo sale de receivedAt > R9: 19:59 y 20:01 de Santo Domingo son el mismo día aunque UTC cambie de día: un solo toque 23ms
+   × señales de contacto contra el emulador > R9: el día de Santo Domingo sale de receivedAt > R9: tras reintentos de la transacción el día sigue siendo el de receivedAt, no el del reloj 3355ms
+     → expected 15 to be greater than or equal to 16
+   ✓ señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > un contacto deja intactos los campos de visitas y una visita deja intactos los de contactos 55ms
+   ✓ señales de contacto contra el emulador > R6: contactos y visitas comparten documento sin pisarse > la reconstrucción de visitas deja intactos los contactos, también en un mes que solo tiene contactos 146ms
+   ✓ señales de contacto contra el emulador > HTTP > R1: 200 con el resultado, y la segunda llamada del día lo dice 83ms
+   ✓ señales de contacto contra el emulador > HTTP > R1: 401 sin token y 422 con un cuerpo mal formado, sin escribir nada 24ms
+   ✓ señales de contacto contra el emulador > HTTP > R8: HTTP responde 422 a los ids reservados sin tocar Firestore, y un INVALID_ARGUMENT que se cuele también es 422 19ms
+   ✓ señales de contacto contra el emulador > HTTP > R3: el dueño con el claim biz recibe owner por HTTP 17ms
+   ✓ señales de contacto contra el emulador > HTTP > R1: App Check se observa y no se exige hasta activar CONTACT_SIGNALS_REQUIRE_APP_CHECK 30ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/contact-signals.test.ts > señales de contacto contra el emulador > R9: el día de Santo Domingo sale de receivedAt > R9: tras reintentos de la transacción el día sigue siendo el de receivedAt, no el del reloj
+AssertionError: expected 15 to be greater than or equal to 16
+ ❯ test/contact-signals.test.ts:237:26
+    235|         const results = await Promise.all(Array.from({length: calls}, …
+    236|         expect(results.filter(result => result.counted)).toHaveLength(…
+    237|         expect(attempts).toBeGreaterThanOrEqual(2 * calls); // hubo re…
+       |                          ^
+    238|       } finally { spy.mockRestore(); vi.restoreAllMocks(); }
+    239|       expect((await month('2026-02'))?.contacts).toEqual({call: 1});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 32 passed (33)
+   Start at  00:18:15
+   Duration  10.81s (transform 139ms, setup 12ms, collect 154ms, tests 10.49s, environment 0ms, prepare 51ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "node_modules/.bin/vitest run test/contact-signals.test.ts" exited with code 1
