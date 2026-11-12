@@ -1,0 +1,40 @@
+# R1 at c7e4412, with r1.patch applied
+# $ pnpm exec vitest run src/lib/storage.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/storage.test.ts (22 tests | 1 failed) 17ms
+   ❯ the connections this browser keeps (5)
+     × keep of a cloud only the ID of its client, held to the shape that cloud writes, and never a session 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/storage.test.ts > the connections this browser keeps > keep of a cloud only the ID of its client, held to the shape that cloud writes, and never a session
+AssertionError: expected { Object (google) } to deeply equal {}
+
+- Expected
++ Received
+
+- {}
++ {
++   "google": {
++     "clientId": "https://evil.example/?x=.apps.googleusercontent.com",
++   },
++ }
+
+ ❯ src/lib/storage.test.ts:246:107
+    244|     expect(JSON.stringify(data.get('settings'))).not.toContain('sesion…
+    245|     // A text that only ends as an ID does is no connection, and neith…
+    246|     expect(readSettings({ google: { clientId: 'https://evil.example/?x…
+       |                                                                                                           ^
+    247|     expect(readSettings({ microsoft: { clientId: 7 } })).toEqual({})
+    248|     expect(readSettings({ google: { clientId: microsoft }, microsoft: …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 passed (22)
+   Start at  22:12:49
+   Duration  166ms (transform 42%, import 29%, tests 24%, worker 5%)
+
