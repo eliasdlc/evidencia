@@ -1,0 +1,73 @@
+# R4 at f86b6e5, with r4.patch applied
+# $ pnpm exec vitest run src/lib/feed.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ src/lib/feed.test.ts (35 tests | 2 failed) 32ms
+   ❯ folder import (12)
+     × reads a folder dropped alone as the picked folder, every batch of every folder inside it 7ms
+     × reads several things dropped at once as the inside of one folder: a folder of posts is their campaign, a loose image a post 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/feed.test.ts > folder import > reads a folder dropped alone as the picked folder, every batch of every folder inside it
+AssertionError: expected [ 'promos/01-dos-por-uno/imagen.png' ] to deeply equal [ …(5) ]
+
+- Expected
++ Received
+
+  [
+    "promos/01-dos-por-uno/imagen.png",
+-   "promos/01-dos-por-uno/caption.txt",
+-   "promos/02-sorteo/1.png",
+-   "promos/02-sorteo/2.png",
+-   "promos/portada.png",
+  ]
+
+ ❯ src/lib/feed.test.ts:325:31
+    323|   it('reads a folder dropped alone as the picked folder, every batch o…
+    324|     const files = await droppedFiles([promos(dropped('/promos/portada.…
+    325|     expect([...files.keys()]).toEqual([
+       |                               ^
+    326|       'promos/01-dos-por-uno/imagen.png',
+    327|       'promos/01-dos-por-uno/caption.txt',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/feed.test.ts > folder import > reads several things dropped at once as the inside of one folder: a folder of posts is their campaign, a loose image a post
+AssertionError: expected [ [ 'Dos por uno', 'Promos' ], …(1) ] to deeply equal [ [ 'Dos por uno', 'Promos' ], …(2) ]
+
+- Expected
++ Received
+
+@@ -2,13 +2,9 @@
+    [
+      "Dos por uno",
+      "Promos",
+    ],
+    [
+-     "Sorteo",
+-     "Promos",
+-   ],
+-   [
+      "Suelta",
+      undefined,
+    ],
+  ]
+
+ ❯ src/lib/feed.test.ts:341:82
+    339|   it('reads several things dropped at once as the inside of one folder…
+    340|     const files = await droppedFiles([promos(), dropped('/suelta.png')…
+    341|     expect(findPosts([...files.keys()]).map((post) => [post.title, pos…
+       |                                                                                  ^
+    342|       ['Dos por uno', 'Promos'],
+    343|       ['Sorteo', 'Promos'],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 33 passed (35)
+   Start at  20:17:16
+   Duration  152ms (tests 59%, import 22%, transform 13%, worker 6%)
+
