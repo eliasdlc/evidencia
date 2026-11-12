@@ -1,0 +1,229 @@
+# R2 at fdd6bff, with src/lib/visits.ts back at b1188d3
+# $ pnpm vitest run src/lib/visits.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/fix/t778-stale-samples
+
+ ❯ src/lib/visits.test.ts (78 tests | 8 failed) 68ms
+   ✓ contrato T88 > valida dos muestras dentro del radio separadas por tres minutos 5ms
+   ✓ contrato T88 > rechaza cuerpos con XP, uid, radios y destino arbitrario en el payload 8ms
+   ✓ contrato T88 > rechaza una tanda a diez minutos, y muestras futuras y desordenadas 1ms
+   ✓ contrato T88 > rechaza movimiento a 15km/h y dwell menor de tres minutos 1ms
+   ✓ contrato T88 > no ignora un teletransporte fuera del radio entre dos muestras válidas 0ms
+   ✓ contrato T88 > rechaza un sitio lejano, ausente o con coordenadas corruptas 1ms
+   ✓ contrato T88 > cuenta la visita en la llegada cuando el pin está lejos, como la caseta de un pico 1ms
+   ✓ contrato T88 > ignora una llegada corrupta o con las claves cortas 1ms
+   ✓ radio de visita por tipo > playa: valida justo dentro de 500 m y rechaza justo fuera 1ms
+   ✓ radio de visita por tipo > beach: valida justo dentro de 500 m y rechaza justo fuera 1ms
+   ✓ radio de visita por tipo > Playa: valida justo dentro de 500 m y rechaza justo fuera 0ms
+   ✓ radio de visita por tipo > parque: valida justo dentro de 1000 m y rechaza justo fuera 0ms
+   ✓ radio de visita por tipo > park: valida justo dentro de 1000 m y rechaza justo fuera 0ms
+   ✓ radio de visita por tipo > parque_nacional: valida justo dentro de 1000 m y rechaza justo fuera 0ms
+   ✓ radio de visita por tipo > museo: valida justo dentro de 150 m y rechaza justo fuera 0ms
+   ✓ radio de visita por tipo > lee el tipo de category y de categories, no solo de placeType 1ms
+   ✓ radio de visita por tipo > con varios tipos gana el primero en placeType, category, categories 0ms
+   ✓ radio de visita por tipo > un tipo con nombre de propiedad de Object no cambia el radio 1ms
+   ✓ radio de visita por tipo > el radio ampliado mantiene la regla de velocidad cerca del pin, la permanencia y las muestras 0ms
+   ✓ ruta de llegada dentro del radio ampliado > un fix rápido entre el radio base y el del tipo no rechaza la visita que luego se queda 0ms
+   ✓ ruta de llegada dentro del radio ampliado > un fix rápido cerca del pin sigue rechazando, de cualquier tipo 0ms
+   ✓ ruta de llegada dentro del radio ampliado > un fix rápido cerca de un acceso, lejos del pin, rechaza igual 3ms
+   ✓ ruta de llegada dentro del radio ampliado > la permanencia no puede empezar en un fix rápido 0ms
+   ✓ ruta de llegada dentro del radio ampliado > un fix rápido en medio de la permanencia la reinicia 0ms
+   ✓ ruta de llegada dentro del radio ampliado > fixes rápidos continuos dentro del radio durante tres minutos no suman permanencia 0ms
+   ✓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.5 desde catálogo 1ms
+   ✓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.51 desde catálogo 1ms
+   ✓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.52 desde catálogo 1ms
+   ✓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.53 desde catálogo 0ms
+   ✓ llegadas de catálogo y permanencia por target > no requiere snapshot o modo del cliente, y rechaza esos campos 2ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: no array 1ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: null 1ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty 1ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: more than six 1ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: duplicate ID 1ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty ID 1ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: path ID 1ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: whitespace ID 1ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: unknown type 1ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty name 2ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: wrong name 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty English 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: unknown locale 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty modes 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: duplicate modes 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: unknown mode 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: short coordinate keys 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: NaN 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: Infinity 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: outside RD 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: extra fields 0ms
+   ✓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: mixed valid and corrupt 0ms
+   ✓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {} 0ms
+   ✓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"defaultArrivalPointId":"missing"} 0ms
+   ✓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"defaultArrivalPointId":"trail"} 0ms
+   ✓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"defaultArrivalPointId":{"id":"north"}} 0ms
+   ✓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"arrivalPoint":{"latitude":18.51,"longitude":-69.9}} 0ms
+   ✓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"arrivalPoint":{"lat":18.5,"lng":-69.9}} 0ms
+   ✓ llegadas de catálogo y permanencia por target > default huérfano impide usar la proyección legacy como escape 0ms
+   ✓ llegadas de catálogo y permanencia por target > acepta default únicamente peatonal cuando toda la lista es peatonal 0ms
+   ✓ llegadas de catálogo y permanencia por target > deduplica coordenadas compartidas sin mezclar permanencia de otros targets 0ms
+   ✓ llegadas de catálogo y permanencia por target > dos llegadas distintas no suman tres minutos de permanencia 0ms
+   ✓ llegadas de catálogo y permanencia por target > salir de un target rompe su intervalo aunque luego vuelva 0ms
+   ✓ llegadas de catálogo y permanencia por target > un intervalo continuo completo en una llegada basta aunque haya muestras exteriores después 0ms
+   ✓ llegadas de catálogo y permanencia por target > un destino con varios accesos usa el radio del tipo en cada uno 1ms
+   ✓ llegadas de catálogo y permanencia por target > en una playa con accesos, dos accesos distintos no suman permanencia 0ms
+   × antigüedad de las muestras (T778) > valida una estancia de 30 minutos con muestras continuas hasta ahora 11ms
+     → expected 'stale_samples' to be 'validated' // Object.is equality
+   × antigüedad de las muestras (T778) > valida la estancia aunque termine un poco antes de recibirla 1ms
+     → expected 'stale_samples' to be 'validated' // Object.is equality
+   ✓ antigüedad de las muestras (T778) > sigue rechazando una tanda vieja: la llegada misma tiene diez minutos o más 0ms
+   ✓ antigüedad de las muestras (T778) > rechaza una estancia vieja con una sola muestra fresca pegada al final 0ms
+   × antigüedad de las muestras (T778) > trata un hueco de exactamente diez minutos como antiguo y uno menor como continuo 1ms
+     → expected 'stale_samples' to be 'validated' // Object.is equality
+   × antigüedad de las muestras (T778) > no vuelve válida una estancia larga con muestras futuras ni desordenadas 1ms
+     → expected 'stale_samples' to be 'sample_order' // Object.is equality
+   × antigüedad de las muestras (T778) > valida con la muestra más reciente a un milisegundo de ser antigua 1ms
+     → expected 'stale_samples' to be 'validated' // Object.is equality
+   ✓ antigüedad de las muestras (T778) > no deja reclamar una estancia vieja rellenando la cadena cada menos de diez minutos 0ms
+   × antigüedad de las muestras (T778) > acepta una cadena de exactamente dos horas y rechaza la que pasa por un milisegundo 1ms
+     → expected 'stale_samples' to be 'validated' // Object.is equality
+   × antigüedad de las muestras (T778) > un lote desordenado no se lee como antiguo: gana sample_order 1ms
+     → expected 'stale_samples' to be 'sample_order' // Object.is equality
+   × antigüedad de las muestras (T778) > en una estancia larga el movimiento rápido y el teletransporte siguen mandando 1ms
+     → expected 'stale_samples' to be 'speed' // Object.is equality
+   ✓ antigüedad de las muestras (T778) > documenta que velocidad 0 o menos de 15 km/h dentro del radio valida la permanencia 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/visits.test.ts > antigüedad de las muestras (T778) > valida una estancia de 30 minutos con muestras continuas hasta ahora
+AssertionError: expected 'stale_samples' to be 'validated' // Object.is equality
+
+Expected: [32m"validated"[39m
+Received: [31m"stale_samples"[39m
+
+ ❯ src/lib/visits.test.ts:265:52
+    263|     const value = withSamples(stay(now - 30 * MINUTE, now - 1));
+    264|     expect(value.samples.length).toBeGreaterThan(50);
+    265|     expect(validateVisit(value, destination, now)).toBe('validated');
+       |                                                    ^
+    266|   });
+    267|   it('valida la estancia aunque termine un poco antes de recibirla', (…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/lib/visits.test.ts > antigüedad de las muestras (T778) > valida la estancia aunque termine un poco antes de recibirla
+AssertionError: expected 'stale_samples' to be 'validated' // Object.is equality
+
+Expected: [32m"validated"[39m
+Received: [31m"stale_samples"[39m
+
+ ❯ src/lib/visits.test.ts:268:101
+    266|   });
+    267|   it('valida la estancia aunque termine un poco antes de recibirla', (…
+    268|     expect(validateVisit(withSamples(stay(now - 40 * MINUTE, now - 9 *…
+       |                                                                                                     ^
+    269|   });
+    270|   it('sigue rechazando una tanda vieja: la llegada misma tiene diez mi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/lib/visits.test.ts > antigüedad de las muestras (T778) > trata un hueco de exactamente diez minutos como antiguo y uno menor como continuo
+AssertionError: expected 'stale_samples' to be 'validated' // Object.is equality
+
+Expected: [32m"validated"[39m
+Received: [31m"stale_samples"[39m
+
+ ❯ src/lib/visits.test.ts:282:73
+    280|       ...stay(now - 15 * MINUTE + ms, now - 1)]);
+    281|     expect(validateVisit(hueco(10 * MINUTE), destination, now)).toBe('…
+    282|     expect(validateVisit(hueco(10 * MINUTE - 1_000), destination, now)…
+       |                                                                         ^
+    283|   });
+    284|   it('no vuelve válida una estancia larga con muestras futuras ni deso…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/lib/visits.test.ts > antigüedad de las muestras (T778) > no vuelve válida una estancia larga con muestras futuras ni desordenadas
+AssertionError: expected 'stale_samples' to be 'sample_order' // Object.is equality
+
+Expected: [32m"s[7mample_order[27m"[39m
+Received: [31m"s[7mtale_samples[27m"[39m
+
+ ❯ src/lib/visits.test.ts:288:71
+    286|     expect(validateVisit(withSamples(futura), destination, now)).toBe(…
+    287|     const desordenada = stay(now - 30 * MINUTE, now - 1); desordenada[…
+    288|     expect(validateVisit(withSamples(desordenada), destination, now)).…
+       |                                                                       ^
+    289|   });
+    290|   it('valida con la muestra más reciente a un milisegundo de ser antig…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/lib/visits.test.ts > antigüedad de las muestras (T778) > valida con la muestra más reciente a un milisegundo de ser antigua
+AssertionError: expected 'stale_samples' to be 'validated' // Object.is equality
+
+Expected: [32m"validated"[39m
+Received: [31m"stale_samples"[39m
+
+ ❯ src/lib/visits.test.ts:293:52
+    291|     const value = withSamples(stay(now - 599_999 - 20 * MINUTE, now - …
+    292|     expect(value.samples[value.samples.length - 1]!.timestamp).toBe(no…
+    293|     expect(validateVisit(value, destination, now)).toBe('validated');
+       |                                                    ^
+    294|   });
+    295|   it('no deja reclamar una estancia vieja rellenando la cadena cada me…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/lib/visits.test.ts > antigüedad de las muestras (T778) > acepta una cadena de exactamente dos horas y rechaza la que pasa por un milisegundo
+AssertionError: expected 'stale_samples' to be 'validated' // Object.is equality
+
+Expected: [32m"validated"[39m
+Received: [31m"stale_samples"[39m
+
+ ❯ src/lib/visits.test.ts:308:67
+    306|         timestamp: Math.round(oldest + (i * spanMs) / (n - 1))})));
+    307|     };
+    308|     expect(validateVisit(cadena(120 * MINUTE), destination, now)).toBe…
+       |                                                                   ^
+    309|     expect(validateVisit(cadena(120 * MINUTE + 1), destination, now)).…
+    310|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/lib/visits.test.ts > antigüedad de las muestras (T778) > un lote desordenado no se lee como antiguo: gana sample_order
+AssertionError: expected 'stale_samples' to be 'sample_order' // Object.is equality
+
+Expected: [32m"s[7mample_order[27m"[39m
+Received: [31m"s[7mtale_samples[27m"[39m
+
+ ❯ src/lib/visits.test.ts:317:52
+    315|       {latitude: 18.5, longitude: -69.9, timestamp: now - 9 * MINUTE, …
+    316|     ]);
+    317|     expect(validateVisit(value, destination, now)).toBe('sample_order'…
+       |                                                    ^
+    318|   });
+    319|   it('en una estancia larga el movimiento rápido y el teletransporte s…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  src/lib/visits.test.ts > antigüedad de las muestras (T778) > en una estancia larga el movimiento rápido y el teletransporte siguen mandando
+AssertionError: expected 'stale_samples' to be 'speed' // Object.is equality
+
+Expected: [32m"s[7mpeed[27m"[39m
+Received: [31m"s[7mtale_samples[27m"[39m
+
+ ❯ src/lib/visits.test.ts:321:66
+    319|   it('en una estancia larga el movimiento rápido y el teletransporte s…
+    320|     const rapida = stay(now - 30 * MINUTE, now - 1); rapida[20]!.speed…
+    321|     expect(validateVisit(withSamples(rapida), destination, now)).toBe(…
+       |                                                                  ^
+    322|     const salto = stay(now - 30 * MINUTE, now - 1); salto[20]!.latitud…
+    323|     expect(validateVisit(withSamples(salto), destination, now)).toBe('…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 70 passed (78)
+   Start at  23:19:20
+   Duration  734ms (transform 112ms, setup 17ms, collect 208ms, tests 68ms, environment 0ms, prepare 136ms)
+
