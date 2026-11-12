@@ -1,0 +1,62 @@
+# R5 at cbe95e5, with r5.patch applied
+# $ pnpm exec vitest run mcp/http.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ mcp/http.test.ts (13 tests | 1 failed) 347ms
+   ❯ the door of the page (8)
+     × is one page at a time: the last one to listen answers, and the one before is told and can answer no more 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/http.test.ts > the door of the page > is one page at a time: the last one to listen answers, and the one before is told and can answer no more
+Error: the stream ended
+ ❯ Object.next mcp/http.test.ts:88:23
+     86|       }
+     87|       const { value, done } = await reader.read()
+     88|       if (done) throw new Error('the stream ended')
+       |                       ^
+     89|       pending += value
+     90|     }
+ ❯ mcp/http.test.ts:219:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+SdkError: Connection closed
+ ❯ Client._onclose node_modules/.pnpm/@modelcontextprotocol+client@2.4.0/node_modules/@modelcontextprotocol/client/dist/src-CeKsbNLO.mjs:5881:17
+ ❯ Client._onclose node_modules/.pnpm/@modelcontextprotocol+client@2.4.0/node_modules/@modelcontextprotocol/client/dist/public-CvV4ZHkX.mjs:3823:9
+ ❯ _transport.onclose node_modules/.pnpm/@modelcontextprotocol+client@2.4.0/node_modules/@modelcontextprotocol/client/dist/src-CeKsbNLO.mjs:5848:10
+ ❯ StreamableHTTPClientTransport.close node_modules/.pnpm/@modelcontextprotocol+client@2.4.0/node_modules/@modelcontextprotocol/client/dist/index.mjs:1683:18
+ ❯ Client.close node_modules/.pnpm/@modelcontextprotocol+client@2.4.0/node_modules/@modelcontextprotocol/client/dist/src-CeKsbNLO.mjs:6077:26
+ ❯ Client.close node_modules/.pnpm/@modelcontextprotocol+client@2.4.0/node_modules/@modelcontextprotocol/client/dist/public-CvV4ZHkX.mjs:2759:16
+ ❯ mcp/http.test.ts:29:59
+     27|
+     28| afterEach(async () => {
+     29|   await Promise.all(open.splice(0).map((client) => client.close().catc…
+       |                                                           ^
+     30|   await handler?.close()
+     31|   server?.closeAllConnections()
+ ❯ mcp/http.test.ts:29:36
+ ❯ node_modules/.pnpm/vitest@5.1.0_@opentelemetry+api@1.10.0_@types+node@26.6.6_vite@8.3.7_@types+node@26.6.6_jiti@2.7.0_/node_modules/vitest/dist/chunks/run.CjdgFZiW.js:1632:35
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'CONNECTION_CLOSED', data: undefined }
+This error originated in "mcp/http.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "stops waiting for a page that does not answer, and for one that closes". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+     Errors  1 error
+   Start at  23:33:36
+   Duration  693ms (tests 59%, import 27%, transform 13%, worker 1%)
+
