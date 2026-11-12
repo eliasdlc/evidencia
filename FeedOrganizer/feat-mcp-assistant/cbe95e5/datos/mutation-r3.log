@@ -1,0 +1,36 @@
+# R3 at cbe95e5, with r3.patch applied
+# $ pnpm exec vitest run mcp/stdio.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ mcp/stdio.test.ts (5 tests | 1 failed) 6608ms
+   ❯ the command a client launches (5)
+     × shows the pass to the port it was given and to nothing that port sends it to 909ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/stdio.test.ts > the command a client launches > shows the pass to the port it was given and to nothing that port sends it to
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ mcp/stdio.test.ts:119:65
+    117|       const result = await client.callTool({ name: 'get_feed', argumen…
+    118|       expect([answer.status, result.isError]).toEqual([answer.status, …
+    119|       expect(heard.every((request) => request.path === '/mcp')).toBe(t…
+       |                                                                 ^
+    120|       server!.closeAllConnections()
+    121|       await new Promise((done) => server!.close(done))
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  23:32:51
+   Duration  7.39s (tests 93%, import 6%, transform 1%)
+
