@@ -1,0 +1,28 @@
+MUTATION: accept() no longer clears the marker and the newer-receipt rule is off
+00:00 +0: loading /home/decruce/dev/projects/ConoceRD/app/.claude/worktrees/agent-a8c740a4d5d5b6fa9/test/core/analytics/product_analytics_provider_test.dart
+00:00 +0: a withdrawal the server has not confirmed (CO1-T775) a later explicit accept still works
+00:00 +0 -1: a withdrawal the server has not confirmed (CO1-T775) a later explicit accept still works [E]
+  Expected: ['app_open']
+    Actual: []
+00:00 +0 -1: Some tests failed.
+diff --git i/lib/features/auth/presentation/providers/legal_consent_provider.dart w/lib/features/auth/presentation/providers/legal_consent_provider.dart
+index 79b861a7..9b537078 100644
+--- i/lib/features/auth/presentation/providers/legal_consent_provider.dart
++++ w/lib/features/auth/presentation/providers/legal_consent_provider.dart
+@@ -46,7 +46,7 @@ final legalConsentReceiptProvider = FutureProvider<LegalConsentReceipt?>((
+   final baseline = withdrawal.baseline;
+   if (stored == null ||
+       stored.analyticsChoice == 'revoked' ||
+-      (baseline != null && stored.analyticsUpdatedAt.isAfter(baseline))) {
++      false) {
+     await store.clear(uid);
+     return stored;
+   }
+@@ -120,7 +120,6 @@ class LegalConsentActions {
+       return false;
+     }
+     // A new explicit choice, confirmed by the server, replaces any withdrawal.
+-    await ref.read(legalConsentWithdrawalStoreProvider).clear(uid);
+     if (generation != _choiceGeneration ||
+         ref.read(consentAccountProvider) != uid ||
+         ref.read(approvedLegalPolicyProvider) != policy) {
