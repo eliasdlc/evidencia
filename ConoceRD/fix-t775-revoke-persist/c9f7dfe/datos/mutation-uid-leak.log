@@ -1,0 +1,20 @@
+MUTATION: the marker key no longer carries the uid
+00:00 +0: loading /home/decruce/dev/projects/ConoceRD/app/.claude/worktrees/agent-a8c740a4d5d5b6fa9/test/core/analytics/product_analytics_provider_test.dart
+00:00 +0: a withdrawal the server has not confirmed (CO1-T775) never leaks to another account
+00:00 +0 -1: a withdrawal the server has not confirmed (CO1-T775) never leaks to another account [E]
+  Expected: ['app_open']
+    Actual: []
+00:00 +0 -1: Some tests failed.
+diff --git i/lib/features/auth/data/legal_consent_withdrawal_store.dart w/lib/features/auth/data/legal_consent_withdrawal_store.dart
+index 99cb1dcd..c4fe33af 100644
+--- i/lib/features/auth/data/legal_consent_withdrawal_store.dart
++++ w/lib/features/auth/data/legal_consent_withdrawal_store.dart
+@@ -28,7 +28,7 @@ class LegalConsentWithdrawalStore {
+   /// Deliberately kept across sign out (see `LocalDataPurge`): the withdrawal
+   /// must outlive the session that made it.
+   static const keyPrefix = 'legal_consent_pending_revoke_';
+-  static String _key(String uid) => '$keyPrefix$uid';
++  static String _key(String uid) => keyPrefix;
+ 
+   Future<PendingWithdrawal?> pending(String uid) async {
+     final prefs = await SharedPreferences.getInstance();
