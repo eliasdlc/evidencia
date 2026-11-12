@@ -1,0 +1,83 @@
+# R2 at cbe95e5, with r2.patch applied
+# $ pnpm exec vitest run mcp/guard.test.ts mcp/http.test.ts mcp/vite.test.ts
+
+ RUN  v5.1.0 /home/decruce/.t3/worktrees/feed-organizer/t3-1a8b9673-cc5cb3be5fe6dc42
+
+ ❯ mcp/guard.test.ts (4 tests | 1 failed) 41ms
+   ❯ who the bridge attends (4)
+     × takes for a program what names no other origin 15ms
+ ❯ mcp/vite.test.ts (5 tests | 1 failed) 546ms
+   ❯ the bridge inside the dev server (5)
+     × attends no name that only resolves to this computer, before the server is asked about it 47ms
+ ❯ mcp/http.test.ts (13 tests | 1 failed) 1141ms
+   ❯ the door of the assistants (5)
+     × attends no name that only resolves to this computer, and no other port 102ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/guard.test.ts > who the bridge attends > takes for a program what names no other origin
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ mcp/guard.test.ts:35:63
+     33|     expect(fromAProgram({ ...host, origin: 'http://127.0.0.1:5183' }, …
+     34|     expect(fromAProgram({ ...host, 'sec-fetch-site': 'cross-site' }, 5…
+     35|     expect(fromAProgram({ host: 'evil.example:5183' }, 5183)).toBe(fal…
+       |                                                               ^
+     36|   })
+     37|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  mcp/http.test.ts > the door of the assistants > attends no name that only resolves to this computer, and no other port
+AssertionError: expected [ 'evil.example', 200 ] to deeply equal [ 'evil.example', 403 ]
+
+- Expected
++ Received
+
+  [
+    "evil.example",
+-   403,
++   200,
+  ]
+
+ ❯ mcp/http.test.ts:124:39
+    122|     for (const host of ['evil.example', `evil.example:${port}`, `127.0…
+    123|       const answered = await ask(port, MCP_PATH, { Host: host, Authori…
+    124|       expect([host, answered.status]).toEqual([host, 403])
+       |                                       ^
+    125|     }
+    126|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  mcp/vite.test.ts > the bridge inside the dev server > attends no name that only resolves to this computer, before the server is asked about it
+AssertionError: expected 415 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 415
+
+ ❯ mcp/vite.test.ts:83:29
+     81|   it('attends no name that only resolves to this computer, before the …
+     82|     const answered = await ask('/mcp', 'POST', { Host: `evil.example:$…
+     83|     expect(answered.status).toBe(403)
+       |                             ^
+     84|     expect(answered.body).toContain('The bridge of Feed Organizer')
+     85|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  3 failed | 19 passed (22)
+   Start at  23:32:34
+   Duration  2.17s (tests 55%, import 39%, transform 3%, worker 3%)
+
