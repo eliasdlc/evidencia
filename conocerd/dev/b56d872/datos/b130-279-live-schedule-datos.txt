@@ -1,0 +1,6 @@
+Build 130 (dev b56d8726), phone RFCTA1K8X7A, 13 Nov 2026, #279 R3 and R4.
+Measured with Firestore REST (read only) on conocerd-dev:
+- Collection `routes` (what routesListProvider reads through FirestoreRouteRepository.getAll): 16 documents, 0 with a `schedule` field.
+- A route generated in the app by the seeded traveler (users/{uid}/savedRoutes, "La Gran Escapada") has `schedule`, `departureMinutes`, `paceKey`. That collection is not read by routesListProvider.
+Code (liveSchedulerProvider in live_schedule_provider.dart): the scheduler is built only from `routesListProvider` routes where `schedule != null`, so for every route a traveler can start the scheduler is null, pendingAlerts stays empty, askForLeaveAlertPermission and the leave notice sink are never reached.
+Phone: three trips on the generated route (dwell of stop 1 set to 20 min, simulated GPS, notifications not granted), arrival at the first stop at 2:47 PM (before pm clear), 2:53 PM and 2:56 PM (after pm clear of the review app, so the asked flag was fresh): no reason dialog and no proposal card each time.
