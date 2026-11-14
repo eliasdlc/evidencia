@@ -1,0 +1,22 @@
+# Emulator Pixel7_API35 (API 35). App removed from Recents at 11:18:17 PKT (see removed.txt). Clock zone Asia/Karachi so the stop falls outside the 21:00-07:00 quiet window.
+## AlarmManager and receiver (logcat)
+11-14 11:14:22.129  6697  6697 I LeaveAlerts: scheduled 1: 114489@1794637440000
+11-14 11:18:40.392   531   561 I ActivityManager: Start proc 10898:com.conocerd.app/u0a338 for broadcast {com.conocerd.app/com.pravera.flutter_activity_recognition.service.ActivityRecognitionIntentReceiver}
+11-14 11:26:00.964 10898 10898 I LeaveAlerts: fired 114489: posted=true
+11-14 11:26:00.967 10898 10898 I LeaveAlerts: fired 114489: not posted (foreground=false)
+## device state at the alarm
+  mWakefulness=Awake
+  mState=ACTIVE mLightState=ACTIVE
+## posted notification (dumpsys notification --noredact, id 114489)
+# read at 11:26, before the tap (autoCancel removes it on tap)
+    NotificationRecord(pkg=com.conocerd.app id=114489 importance=4 channel=conocerd_leave_alert flags=AUTO_CANCEL category=reminder)
+            when=1794637560942  (2026-11-14 11:26:00.942 PKT; the alarm moment was 11:24:00.000, window +7m13s)
+                android.title=String (Tu ruta sigue cuando quieras)
+                android.text=String (Casi es la hora que planeaste en Iglesia del Sagrado Corazón de Jesús. Quédate lo que necesites.)
+# process 10898 had been started at 11:18:40 for an activity-recognition broadcast, with no activity: the notice was posted by LeaveAlertReceiver, not by Flutter
+## tap on the notice (events log)
+11-14 11:26:49.578   531   547 I wm_create_activity: [0,114408859,2347,com.conocerd.app/.MainActivity,com.conocerd.app.OPEN_ACTIVE_TRIP,NULL,NULL,872415232]
+11-14 11:26:51.417 10898 10898 I wm_on_create_called: [114408859,com.conocerd.app.MainActivity,performCreate,1578]
+11-14 11:26:51.420 10898 10898 I wm_on_resume_called: [114408859,com.conocerd.app.MainActivity,RESUME_ACTIVITY,2]
+## trip resumed
+11-14 11:26:59.941 10898 10898 I flutter : resumeTrip: sin posición al volver a la espera (TimeoutException after 0:00:04.000000: Future not completed)
