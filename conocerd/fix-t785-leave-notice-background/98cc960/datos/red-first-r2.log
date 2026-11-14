@@ -1,0 +1,31 @@
+# RED: ./gradlew :app:testDebugUnitTest --tests com.conocerd.app.LeaveAlertsTest at 98cc960 with this mutation of LeaveAlerts.kt
+# (foreground check removed, day limit off by one):
+#   diff --git i/android/app/src/main/kotlin/com/conocerd/app/LeaveAlerts.kt w/android/app/src/main/kotlin/com/conocerd/app/LeaveAlerts.kt
+#   index 96f8a5d6..e765dfce 100644
+#   --- i/android/app/src/main/kotlin/com/conocerd/app/LeaveAlerts.kt
+#   +++ w/android/app/src/main/kotlin/com/conocerd/app/LeaveAlerts.kt
+#   @@ -64,7 +64,6 @@ internal object LeaveAlertRules {
+#            val alert = waiting.firstOrNull { it.id == id }
+#                ?: return LeaveAlertFiring(waiting, null, null)
+#            val remaining = waiting.filter { it.id != id }
+#   -        if (appInForeground) return LeaveAlertFiring(remaining, null, null)
+#            val claimed = claim(claims, day, alert.destinationId)
+#                ?: return LeaveAlertFiring(remaining, null, null)
+#            return LeaveAlertFiring(remaining, claimed, alert)
+#   @@ -78,7 +77,7 @@ internal object LeaveAlertRules {
+#            } else {
+#                emptyList()
+#            }
+#   -        if (destinationId in today || today.size >= MAX_PER_DAY) return null
+#   +        if (destinationId in today || today.size > MAX_PER_DAY) return null
+#            return "$day|${(today + destinationId).joinToString(",")}"
+#        }
+#    }
+> Task :app:testDebugUnitTest FAILED
+LeaveAlertsTest > aFifthNoticeInOneDayIsNotPosted FAILED
+    java.lang.AssertionError at LeaveAlertsTest.kt:46
+LeaveAlertsTest > inTheForegroundTheNoticeIsSpentWithoutCountingForTheDay FAILED
+    java.lang.AssertionError at LeaveAlertsTest.kt:21
+7 tests completed, 2 failed
+BUILD FAILED in 32s
+exit 1
