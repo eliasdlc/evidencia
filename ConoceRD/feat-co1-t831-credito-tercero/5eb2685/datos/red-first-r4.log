@@ -1,0 +1,62 @@
+# R4 at 5eb2685, with src/app/destinos/revision/acreditacion.tsx, src/editorial/fotos-modelo.ts, src/editorial/politica-datos.ts back at f808781
+# $ pnpm exec vitest run src/app/destinos/revision/acreditacion.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/projects/ConoceRD/admin/.claude/worktrees/agent-a012b816c0b077bec
+
+(node:1630912) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ src/app/destinos/revision/acreditacion.test.ts (3 tests | 2 failed) 16ms
+     × ofrece la licencia en el selector 12ms
+     × con ella pide la página de origen y no la referencia de licencia 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/destinos/revision/acreditacion.test.ts > AcreditacionFoto con imagen de terceros > ofrece la licencia en el selector
+AssertionError: expected '<details><summary>Acreditar identidad…' to contain '<option value="credito_tercero">Image…'
+
+Expected: "<option value="credito_tercero">Imagen de terceros con crédito</option>"
+Received: "<details><summary>Acreditar identidad, autoría y derechos, foto 1</summary><p>La acreditación se guarda en el borrador. El archivo y su procedencia original se conservan. Requiere volver a confirmar la revisión fotográfica.</p><fieldset><legend>Foto 1</legend><label>Autor<input aria-label="Autor foto 1" maxLength="80" value=""/></label><label>Licencia o permiso<select aria-label="Licencia foto 1"><option value="" selected="">Selecciona un derecho acreditado</option><option value="team">Imagen propia del equipo</option><option value="owner_permission">Permiso escrito del titular</option><option value="cc_by">CC BY</option><option value="cc_by_sa">CC BY-SA</option><option value="cc0">CC0</option><option value="public_domain">Dominio público</option></select></label><label>Fuente pública<input aria-label="Fuente pública foto 1" placeholder="https://…" value=""/></label><label>Referencia de licencia pública<input aria-label="Referencia de licencia foto 1" placeholder="https://…" value=""/></label><label>Evidencia de identidad<textarea aria-label="Evidencia de identidad foto 1" maxLength="2000"></textarea></label><label>Prueba de derechos, privada<textarea aria-label="Prueba de derechos foto 1" maxLength="2000"></textarea></label><label class="ed-confirmacion"><input type="checkbox" aria-label="Identidad comprobada foto 1"/>La imagen corresponde a este destino.</label></fieldset><button disabled="">Registrar acreditación foto 1</button></details>"
+
+ ❯ src/app/destinos/revision/acreditacion.test.ts:13:20
+     11| describe('AcreditacionFoto con imagen de terceros', () => {
+     12|   it('ofrece la licencia en el selector', () => {
+     13|     expect(html()).toContain('<option value="credito_tercero">Imagen d…
+       |                    ^
+     14|   });
+     15|   it('con ella pide la página de origen y no la referencia de licencia…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/app/destinos/revision/acreditacion.test.ts > AcreditacionFoto con imagen de terceros > con ella pide la página de origen y no la referencia de licencia
+AssertionError: expected '<details><summary>Acreditar identidad…' to contain 'Página de origen de la imagen'
+
+- Expected
++ Received
+
+- Página de origen de la imagen
++ <details><summary>Acreditar identidad, autoría y derechos, foto 1</summary><p>La acreditación se guarda en el borrador. El archivo y su procedencia original se conservan. Requiere volver a confirmar la revisión fotográfica.</p><details><summary>Acreditación guardada</summary><pre>{
++   &quot;destinoId&quot;: &quot;fixture-turistico&quot;,
++   &quot;identidad&quot;: &quot;confirmada&quot;,
++   &quot;autor&quot;: &quot;Autor&quot;,
++   &quot;licencia&quot;: &quot;credito_tercero&quot;,
++   &quot;evidenciaIdentidad&quot;: &quot;x&quot;,
++   &quot;evidenciaDerechos&quot;: &quot;y&quot;,
++   &quot;fuente&quot;: &quot;https://example.test/foto&quot;
++ }</pre></details><fieldset><legend>Foto 1</legend><label>Autor<input aria-label="Autor foto 1" maxLength="80" value="Autor"/></label><label>Licencia o permiso<select aria-label="Licencia foto 1"><option value="" selected="">Selecciona un derecho acreditado</option><option value="team">Imagen propia del equipo</option><option value="owner_permission">Permiso escrito del titular</option><option value="cc_by">CC BY</option><option value="cc_by_sa">CC BY-SA</option><option value="cc0">CC0</option><option value="public_domain">Dominio público</option></select></label><label>Fuente pública<input aria-label="Fuente pública foto 1" placeholder="https://…" value="https://example.test/foto"/></label><label>Referencia de licencia pública<input aria-label="Referencia de licencia foto 1" placeholder="https://…" value=""/></label><label>Evidencia de identidad<textarea aria-label="Evidencia de identidad foto 1" maxLength="2000">x</textarea></label><label>Prueba de derechos, privada<textarea aria-label="Prueba de derechos foto 1" maxLength="2000">y</textarea></label><label class="ed-confirmacion"><input type="checkbox" aria-label="Identidad comprobada foto 1" checked=""/>La imagen corresponde a este destino.</label></fieldset><button disabled="">Registrar acreditación foto 1</button></details>
+
+ ❯ src/app/destinos/revision/acreditacion.test.ts:17:15
+     15|   it('con ella pide la página de origen y no la referencia de licencia…
+     16|     const m = html(derechos('credito_tercero'));
+     17|     expect(m).toContain('Página de origen de la imagen');
+       |               ^
+     18|     expect(m).not.toContain('Referencia de licencia');
+     19|     expect(m).toContain('<option value="credito_tercero" selected');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  10:24:01
+   Duration  181ms (transform 41ms, setup 0ms, import 65ms, tests 16ms, environment 0ms)
+
