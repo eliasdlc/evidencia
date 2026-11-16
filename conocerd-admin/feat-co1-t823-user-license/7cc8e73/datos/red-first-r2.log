@@ -1,0 +1,58 @@
+# R2 at 7cc8e73, with src/editorial/fotos-modelo.ts, src/editorial/publicacion-politica.ts back at f808781
+# $ pnpm exec vitest run src/editorial/publicacion-politica.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/projects/ConoceRD/admin/.claude/worktrees/agent-a437ad7e111c6edf6
+
+ ❯ src/editorial/publicacion-politica.test.ts (30 tests | 2 failed) 166ms
+     × una cesión de visitante en la procedencia del archivo no cuenta sin acreditarla en el borrador 12ms
+     × publica una foto de visitante con su crédito y la referencia de la cesión, sin uid 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/publicacion-politica.test.ts > mínimo turístico verificable > una cesión de visitante en la procedencia del archivo no cuenta sin acreditarla en el borrador
+AssertionError: expected [ { campo: 'fotos', …(1) } ] to deep equally contain { campo: 'fotos', …(1) }
+
+- Expected:
+{
+  "campo": "fotos",
+  "motivo": "Cesión de visitante sin acreditar en el borrador",
+}
+
++ Received:
+[
+  {
+    "campo": "fotos",
+    "motivo": "Identidad, autor o derechos sin acreditar",
+  },
+]
+
+ ❯ src/editorial/publicacion-politica.test.ts:88:31
+     86|     const politica = evaluarPolitica(draft, assets);
+     87|     expect(politica.apto).toBe(false);
+     88|     expect(politica.bloqueos).toContainEqual({ campo: 'fotos', motivo:…
+       |                               ^
+     89|   });
+     90|   it('CC exige origen Wikimedia y referencia correspondiente, sin ampl…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/editorial/publicacion-politica.test.ts > mínimo turístico verificable > publica una foto de visitante con su crédito y la referencia de la cesión, sin uid
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/editorial/publicacion-politica.test.ts:116:76
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 28 passed (30)
+   Start at  02:38:00
+   Duration  892ms (transform 399ms, setup 0ms, import 557ms, tests 166ms, environment 0ms)
+
