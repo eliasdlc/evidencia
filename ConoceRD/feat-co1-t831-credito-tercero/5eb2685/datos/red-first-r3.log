@@ -1,0 +1,66 @@
+# R3 at 5eb2685, with src/editorial/fotos-modelo.ts, src/editorial/pasos.ts, src/editorial/politica-datos.ts back at f808781
+# $ pnpm exec vitest run src/editorial/pasos.test.ts src/editorial/publicacion-politica.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/projects/ConoceRD/admin/.claude/worktrees/agent-a012b816c0b077bec
+
+ ❯ src/editorial/pasos.test.ts (5 tests | 1 failed) 8ms
+     × el mínimo de fotos se dice como una y treinta 4ms
+ ❯ src/editorial/publicacion-politica.test.ts (30 tests | 2 failed) 82ms
+     × una sola foto basta y una imagen de terceros publica su crédito y su página sin permissionRef 5ms
+     × sin fotos no se publica 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/pasos.test.ts > pasosDe > el mínimo de fotos se dice como una y treinta
+AssertionError: expected [ Array(1) ] to deeply equal [ 'Hacen falta entre 1 y 30 fotos' ]
+
+- Expected
++ Received
+
+  [
+-   "Hacen falta entre 1 y 30 fotos",
++   "Se requieren entre una y treinta fotos",
+  ]
+
+ ❯ src/editorial/pasos.test.ts:56:60
+     54|   it('el mínimo de fotos se dice como una y treinta', () => {
+     55|     const pasos = pasosDe([{ campo: 'fotos', motivo: 'Se requieren ent…
+     56|     expect(pasos.find((p) => p.clave === 'fotos')!.faltas).toEqual(['H…
+       |                                                            ^
+     57|   });
+     58|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/editorial/publicacion-politica.test.ts > mínimo turístico verificable > una sola foto basta y una imagen de terceros publica su crédito y su página sin permissionRef
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/editorial/publicacion-politica.test.ts:108:178
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/editorial/publicacion-politica.test.ts > mínimo turístico verificable > sin fotos no se publica
+AssertionError: expected [ …(2) ] to include 'Se requieren entre una y treinta fotos'
+ ❯ src/editorial/publicacion-politica.test.ts:114:72
+    112|   it('sin fotos no se publica', () => {
+    113|     const { draft, assets } = fixture(); draft.fotos = [];
+    114|     expect(evaluarPolitica(draft, assets).bloqueos.map(b => b.motivo))…
+       |                                                                        ^
+    115|   });
+    116|   it('baseline ignora reseñas y backend nuevo, pero detecta cambios ed…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 32 passed (35)
+   Start at  10:23:55
+   Duration  440ms (transform 185ms, setup 0ms, import 310ms, tests 89ms, environment 0ms)
+
