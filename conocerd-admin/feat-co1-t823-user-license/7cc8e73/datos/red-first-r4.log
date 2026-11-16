@@ -1,0 +1,106 @@
+# R4 at 7cc8e73, with src/editorial/fotos-modelo.ts, src/editorial/motor.ts, src/editorial/publicacion-politica.ts back at f808781
+# $ pnpm exec vitest run src/editorial/motor.test.ts src/editorial/publicacion-politica.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/projects/ConoceRD/admin/.claude/worktrees/agent-a437ad7e111c6edf6
+
+ ❯ src/editorial/motor.test.ts (12 tests | 1 failed) 76ms
+     × acreditar a mano rechaza una cesión de visitante sin escribir 10ms
+ ❯ src/editorial/publicacion-politica.test.ts (30 tests | 2 failed) 103ms
+     × una cesión de visitante en la procedencia del archivo no cuenta sin acreditarla en el borrador 9ms
+     × publica una foto de visitante con su crédito y la referencia de la cesión, sin uid 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/motor.test.ts > mutaciones de llegadas con revisión e identidad del servidor > acreditar a mano rechaza una cesión de visitante sin escribir
+AssertionError: expected [Function] to throw error including 'bandeja de aportes' but got '[\n  {\n    "code": "invalid_value",\…'
+
+- Expected
++ Received
+
+- bandeja de aportes
++ [
++   {
++     "code": "invalid_value",
++     "values": [
++       "team",
++       "owner_permission",
++       "cc_by",
++       "cc_by_sa",
++       "cc0",
++       "public_domain"
++     ],
++     "path": [
++       "derechos",
++       "licencia"
++     ],
++     "message": "Invalid option: expected one of \"team\"|\"owner_permission\"|\"cc_by\"|\"cc_by_sa\"|\"cc0\"|\"public_domain\""
++   },
++   {
++     "code": "unrecognized_keys",
++     "keys": [
++       "aporte"
++     ],
++     "path": [
++       "derechos"
++     ],
++     "message": "Unrecognized key: \"aporte\""
++   }
++ ]
+
+ ❯ src/editorial/motor.test.ts:140:92
+    138|     const derechos = { destinoId: 'fixture-motor', identidad: 'confirm…
+    139|       aporte: { id: 'aporte-inventado', cesionVersion: 'cesion-foto-20…
+    140|     await expect(motor().acreditarFoto({ ...cambio(), assetId: 'a'.rep…
+       |                                                                                            ^
+    141|     expect(almacen.get(path)).toEqual(antes);
+    142|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/editorial/publicacion-politica.test.ts > mínimo turístico verificable > una cesión de visitante en la procedencia del archivo no cuenta sin acreditarla en el borrador
+AssertionError: expected [ { campo: 'fotos', …(1) } ] to deep equally contain { campo: 'fotos', …(1) }
+
+- Expected:
+{
+  "campo": "fotos",
+  "motivo": "Cesión de visitante sin acreditar en el borrador",
+}
+
++ Received:
+[
+  {
+    "campo": "fotos",
+    "motivo": "Identidad, autor o derechos sin acreditar",
+  },
+]
+
+ ❯ src/editorial/publicacion-politica.test.ts:88:31
+     86|     const politica = evaluarPolitica(draft, assets);
+     87|     expect(politica.apto).toBe(false);
+     88|     expect(politica.bloqueos).toContainEqual({ campo: 'fotos', motivo:…
+       |                               ^
+     89|   });
+     90|   it('CC exige origen Wikimedia y referencia correspondiente, sin ampl…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/editorial/publicacion-politica.test.ts > mínimo turístico verificable > publica una foto de visitante con su crédito y la referencia de la cesión, sin uid
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/editorial/publicacion-politica.test.ts:116:76
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 39 passed (42)
+   Start at  02:38:21
+   Duration  597ms (transform 503ms, setup 0ms, import 746ms, tests 180ms, environment 0ms)
+
