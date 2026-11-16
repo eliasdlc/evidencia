@@ -1,0 +1,96 @@
+# R3 at 7cc8e73, with src/app/destinos/revision/acreditacion.tsx, src/editorial/fotos-modelo.ts, src/editorial/motor.ts back at f808781
+# $ pnpm exec vitest run src/app/destinos/revision/acreditacion.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/projects/ConoceRD/admin/.claude/worktrees/agent-a437ad7e111c6edf6
+
+(node:665404) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ src/app/destinos/revision/acreditacion.test.ts (3 tests | 3 failed) 24ms
+     × muestra la cesión de un visitante en solo lectura 17ms
+     × no ofrece user_license en el selector manual 2ms
+     × no deja registrar de nuevo una acreditación de visitante 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/destinos/revision/acreditacion.test.ts > formulario de acreditación > muestra la cesión de un visitante en solo lectura
+AssertionError: expected '<details><summary>Acreditar identidad…' to contain 'Cesión de un visitante'
+
+- Expected
++ Received
+
+- Cesión de un visitante
++ <details><summary>Acreditar identidad, autoría y derechos, foto 1</summary><p>La acreditación se guarda en el borrador. El archivo y su procedencia original se conservan. Requiere volver a confirmar la revisión fotográfica.</p><details><summary>Acreditación guardada</summary><pre>{
++   &quot;destinoId&quot;: &quot;fixture-turistico&quot;,
++   &quot;identidad&quot;: &quot;confirmada&quot;,
++   &quot;autor&quot;: &quot;Crédito elegido&quot;,
++   &quot;licencia&quot;: &quot;user_license&quot;,
++   &quot;evidenciaIdentidad&quot;: &quot;Se ve el letrero&quot;,
++   &quot;evidenciaDerechos&quot;: &quot;Cesión sintética&quot;,
++   &quot;aporte&quot;: {
++     &quot;id&quot;: &quot;aporte-1&quot;,
++     &quot;cesionVersion&quot;: &quot;cesion-foto-2026-11&quot;,
++     &quot;aceptadaEl&quot;: &quot;2026-11-20T15:00:00.000Z&quot;,
++     &quot;terminosVersion&quot;: null
++   }
++ }</pre></details><fieldset><legend>Foto 1</legend><label>Autor<input aria-label="Autor foto 1" maxLength="80" value="Crédito elegido"/></label><label>Licencia o permiso<select aria-label="Licencia foto 1"><option value="" selected="">Selecciona un derecho acreditado</option><option value="team">Imagen propia del equipo</option><option value="owner_permission">Permiso escrito del titular</option><option value="cc_by">CC BY</option><option value="cc_by_sa">CC BY-SA</option><option value="cc0">CC0</option><option value="public_domain">Dominio público</option></select></label><label>Fuente pública<input aria-label="Fuente pública foto 1" placeholder="https://…" value=""/></label><label>Referencia de licencia pública<input aria-label="Referencia de licencia foto 1" placeholder="https://…" value=""/></label><label>Evidencia de identidad<textarea aria-label="Evidencia de identidad foto 1" maxLength="2000">Se ve el letrero</textarea></label><label>Prueba de derechos, privada<textarea aria-label="Prueba de derechos foto 1" maxLength="2000">Cesión sintética</textarea></label><label class="ed-confirmacion"><input type="checkbox" aria-label="Identidad comprobada foto 1" checked=""/>La imagen corresponde a este destino.</label></fieldset><button disabled="">Registrar acreditación foto 1</button></details>
+
+ ❯ src/app/destinos/revision/acreditacion.test.ts:20:20
+     18|   it('muestra la cesión de un visitante en solo lectura', () => {
+     19|     const salida = html(visitante);
+     20|     expect(salida).toContain('Cesión de un visitante');
+       |                    ^
+     21|     for (const dato of ['Crédito elegido', 'aporte-1', 'cesion-foto-20…
+     22|     const inicio = salida.indexOf('Cesión de un visitante');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/app/destinos/revision/acreditacion.test.ts > formulario de acreditación > no ofrece user_license en el selector manual
+TypeError: Cannot read properties of undefined (reading 'length')
+ ❯ src/app/destinos/revision/acreditacion.test.ts:30:74
+     28|       const selector = salida.slice(salida.indexOf('<select'), salida.…
+     29|       expect(selector).not.toContain('user_license');
+     30|       expect(selector.match(/<option/g)).toHaveLength(LICENCIAS_MANUAL…
+       |                                                                          ^
+     31|     }
+     32|     expect(html()).not.toContain('Cesión de un visitante');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/app/destinos/revision/acreditacion.test.ts > formulario de acreditación > no deja registrar de nuevo una acreditación de visitante
+AssertionError: expected '<details><summary>Acreditar identidad…' to contain '<fieldset disabled="">'
+
+- Expected
++ Received
+
+- <fieldset disabled="">
++ <details><summary>Acreditar identidad, autoría y derechos, foto 1</summary><p>La acreditación se guarda en el borrador. El archivo y su procedencia original se conservan. Requiere volver a confirmar la revisión fotográfica.</p><details><summary>Acreditación guardada</summary><pre>{
++   &quot;destinoId&quot;: &quot;fixture-turistico&quot;,
++   &quot;identidad&quot;: &quot;confirmada&quot;,
++   &quot;autor&quot;: &quot;Crédito elegido&quot;,
++   &quot;licencia&quot;: &quot;user_license&quot;,
++   &quot;evidenciaIdentidad&quot;: &quot;Se ve el letrero&quot;,
++   &quot;evidenciaDerechos&quot;: &quot;Cesión sintética&quot;,
++   &quot;aporte&quot;: {
++     &quot;id&quot;: &quot;aporte-1&quot;,
++     &quot;cesionVersion&quot;: &quot;cesion-foto-2026-11&quot;,
++     &quot;aceptadaEl&quot;: &quot;2026-11-20T15:00:00.000Z&quot;,
++     &quot;terminosVersion&quot;: null
++   }
++ }</pre></details><fieldset><legend>Foto 1</legend><label>Autor<input aria-label="Autor foto 1" maxLength="80" value="Crédito elegido"/></label><label>Licencia o permiso<select aria-label="Licencia foto 1"><option value="" selected="">Selecciona un derecho acreditado</option><option value="team">Imagen propia del equipo</option><option value="owner_permission">Permiso escrito del titular</option><option value="cc_by">CC BY</option><option value="cc_by_sa">CC BY-SA</option><option value="cc0">CC0</option><option value="public_domain">Dominio público</option></select></label><label>Fuente pública<input aria-label="Fuente pública foto 1" placeholder="https://…" value=""/></label><label>Referencia de licencia pública<input aria-label="Referencia de licencia foto 1" placeholder="https://…" value=""/></label><label>Evidencia de identidad<textarea aria-label="Evidencia de identidad foto 1" maxLength="2000">Se ve el letrero</textarea></label><label>Prueba de derechos, privada<textarea aria-label="Prueba de derechos foto 1" maxLength="2000">Cesión sintética</textarea></label><label class="ed-confirmacion"><input type="checkbox" aria-label="Identidad comprobada foto 1" checked=""/>La imagen corresponde a este destino.</label></fieldset><button disabled="">Registrar acreditación foto 1</button></details>
+
+ ❯ src/app/destinos/revision/acreditacion.test.ts:37:29
+     35|     expect(html(visitante)).toMatch(/<button disabled=""[^>]*>Registra…
+     36|     // Bloquea los campos, no solo el botón: elegir otra licencia lo h…
+     37|     expect(html(visitante)).toContain('<fieldset disabled="">');
+       |                             ^
+     38|     expect(html()).not.toContain('<fieldset disabled="">');
+     39|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  02:38:13
+   Duration  267ms (transform 50ms, setup 0ms, import 93ms, tests 24ms, environment 0ms)
+
