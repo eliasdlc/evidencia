@@ -1,0 +1,48 @@
+# R2 at b0ded82, with mutA-submitted.patch applied
+# $ node_modules/.bin/vitest run src/app/destinos/recompensas/acciones.test.ts -t 'aprobar manda approve'
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/cola-recompensas
+
+ ❯ src/app/destinos/recompensas/acciones.test.ts (13 tests | 1 failed | 12 skipped) 8ms
+     × aprobar manda approve a la ruta del negocio y avisa del correo 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/destinos/recompensas/acciones.test.ts > decidir una propuesta > aprobar manda approve a la ruta del negocio y avisa del correo
+AssertionError: expected "vi.fn()" to be called with arguments: [ 'admin-1', …(2) ]
+
+Received:
+
+  1st vi.fn() call:
+
+@@ -2,10 +2,9 @@
+    "admin-1",
+    "/admin/benefit-proposals/d%201/decision",
+    {
+      "body": {
+        "decision": "approve",
+-       "submittedAt": "2026-11-17T10:00:00.000Z",
+      },
+      "method": "POST",
+    },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/app/destinos/recompensas/acciones.test.ts:57:23
+     55|     llamarApi.mockResolvedValue({ proposal: { status: 'approved' }, no…
+     56|     const r = await decidirPropuesta({ destinoId: 'd 1', decision: 'ap…
+     57|     expect(llamarApi).toHaveBeenCalledWith('admin-1', '/admin/benefit-…
+       |                       ^
+     58|       method: 'POST',
+     59|       body: { decision: 'approve', submittedAt: enviadaEl },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 skipped (13)
+   Start at  01:46:41
+   Duration  358ms (transform 51ms, setup 0ms, import 257ms, tests 8ms, environment 0ms)
+
