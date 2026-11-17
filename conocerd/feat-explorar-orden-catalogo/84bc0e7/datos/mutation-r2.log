@@ -1,0 +1,92 @@
+# R2 at 84bc0e7, with mutate-r2.patch applied
+# $ flutter test test/features/destinations/catalog_order_test.dart
+00:00 +0: loading /home/decruce/dev/wt/app/feat-explorar-orden-catalogo/test/features/destinations/catalog_order_test.dart
+00:00 +0: rankDestinations sin búsqueda todo lo que tiene foto va antes que lo que no
+00:00 +0 -1: rankDestinations sin búsqueda todo lo que tiene foto va antes que lo que no [E]
+  Expected: Set:['conFoto', 'conFoto2']
+    Actual: Set:['sinFotoCompleta', 'conFoto']
+     Which: does not contain 'conFoto2'
+  
+  package:matcher                                          expect
+  package:flutter_test/src/widget_tester.dart 473:18       expect
+  test/features/destinations/catalog_order_test.dart 56:7  main.<fn>.<fn>
+  
+00:00 +0 -1: rankDestinations sin búsqueda un patrocinado sin foto no pasa por delante de uno con foto
+00:00 +0 -2: rankDestinations sin búsqueda un patrocinado sin foto no pasa por delante de uno con foto [E]
+  Expected: ['organicoConFoto', 'pagadoSinFoto']
+    Actual: ['pagadoSinFoto', 'organicoConFoto']
+     Which: at location [0] is 'pagadoSinFoto' instead of 'organicoConFoto'
+  
+  package:matcher                                          expect
+  package:flutter_test/src/widget_tester.dart 473:18       expect
+  test/features/destinations/catalog_order_test.dart 65:7  main.<fn>.<fn>
+  
+00:00 +0 -2: rankDestinations sin búsqueda con foto, la ficha más completa gana a la mejor reseña
+00:00 +0 -3: rankDestinations sin búsqueda con foto, la ficha más completa gana a la mejor reseña [E]
+  Expected: ['completa', 'bienValorada']
+    Actual: ['bienValorada', 'completa']
+     Which: at location [0] is 'bienValorada' instead of 'completa'
+  
+  package:matcher                                          expect
+  package:flutter_test/src/widget_tester.dart 473:18       expect
+  test/features/destinations/catalog_order_test.dart 73:7  main.<fn>.<fn>
+  
+00:00 +0 -3: rankDestinations sin búsqueda con la misma ficha, la reseña gana a las interacciones
+00:00 +0 -4: rankDestinations sin búsqueda con la misma ficha, la reseña gana a las interacciones [E]
+  Expected: ['cinco', 'popular']
+    Actual: ['popular', 'cinco']
+     Which: at location [0] is 'popular' instead of 'cinco'
+  
+  package:matcher                                          expect
+  package:flutter_test/src/widget_tester.dart 473:18       expect
+  test/features/destinations/catalog_order_test.dart 81:7  main.<fn>.<fn>
+  
+00:00 +0 -4: rankDestinations sin búsqueda con la misma ficha y reseña, ganan las interacciones
+00:00 +0 -5: rankDestinations sin búsqueda con la misma ficha y reseña, ganan las interacciones [E]
+  Expected: ['mucha', 'poca']
+    Actual: ['poca', 'mucha']
+     Which: at location [0] is 'poca' instead of 'mucha'
+  
+  package:matcher                                          expect
+  package:flutter_test/src/widget_tester.dart 473:18       expect
+  test/features/destinations/catalog_order_test.dart 89:7  main.<fn>.<fn>
+  
+00:00 +0 -5: con búsqueda, el match manda y la foto desempata
+00:00 +0 -6: con búsqueda, el match manda y la foto desempata [E]
+  Expected: 'Samana Bay'
+    Actual: 'Samana'
+     Which: is different. Both strings start the same, but the actual value is missing the following trailing characters:  Bay
+  
+  package:matcher                                           expect
+  package:flutter_test/src/widget_tester.dart 473:18        expect
+  test/features/destinations/catalog_order_test.dart 100:5  main.<fn>
+  
+00:00 +0 -6: las más buscadas no dejan entrar una sin foto si hay diez con foto
+00:00 +1 -6: un interés que coincide no sube por encima de las fotos
+00:00 +1 -7: un interés que coincide no sube por encima de las fotos [E]
+  Expected: ['conFoto', 'playaSinFoto']
+    Actual: ['playaSinFoto', 'conFoto']
+     Which: at location [0] is 'playaSinFoto' instead of 'conFoto'
+  
+  package:matcher                                           expect
+  package:flutter_test/src/widget_tester.dart 473:18        expect
+  test/features/destinations/catalog_order_test.dart 120:5  main.<fn>
+  
+00:00 +1 -7: photosFirst conserva el orden dentro de cada grupo
+00:00 +1 -8: photosFirst conserva el orden dentro de cada grupo [E]
+  Expected: ['b', 'd', 'a', 'c']
+    Actual: ['a', 'b', 'c', 'd']
+     Which: at location [0] is 'a' instead of 'b'
+  
+  package:matcher                                           expect
+  package:flutter_test/src/widget_tester.dart 473:18        expect
+  test/features/destinations/catalog_order_test.dart 130:5  main.<fn>
+  
+00:00 +1 -8: Some tests failed.
+
+Failing tests:
+  /home/decruce/dev/wt/app/feat-explorar-orden-catalogo/test/features/destinations/catalog_order_test.dart: con búsqueda, el match manda y la foto desempata
+  /home/decruce/dev/wt/app/feat-explorar-orden-catalogo/test/features/destinations/catalog_order_test.dart: photosFirst conserva el orden dentro de cada grupo
+  /home/decruce/dev/wt/app/feat-explorar-orden-catalogo/test/features/destinations/catalog_order_test.dart: rankDestinations sin búsqueda con foto, la ficha más completa gana a la mejor reseña
+  /home/decruce/dev/wt/app/feat-explorar-orden-catalogo/test/features/destinations/catalog_order_test.dart: rankDestinations sin búsqueda con la misma ficha y reseña, ganan las interacciones
+  ... and 4 more
