@@ -1,0 +1,106 @@
+# R2 at 90da1e3, with src/lib/destination-visit-stats.ts, src/lib/visit-service.ts back at 07f6635
+# $ firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "node_modules/.bin/vitest run test/visit-stats.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: node_modules/.bin/vitest run test/visit-stats.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-agregados-hora-provincia
+
+ ❯ test/visit-stats.test.ts (16 tests | 2 failed) 9581ms
+   ✓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > cuenta el día en UTC-4, también cuando UTC ya cambió de mes 1ms
+   ✓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > solo escribe contra el emulador o con proyecto y bandera a la vez 1ms
+   ✓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore  743ms
+   ✓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script rechaza un host de emulador remoto aun con las dos banderas y dice cuál es  765ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento  660ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R2: rechazos, duplicados y reintentos no tocan la estadística 241ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R3: visitas validadas simultáneas de usuarios distintos suman exactamente N 105ms
+   × estadística mensual de visitas por destino, contra el emulador > R5: la visita suma a su hora de la semana y a la provincia del perfil, validada contra las 32 85ms
+     → expected { period: '2026-02', …(3) } to match object { visits: 3, …(2) }
+(6 matching properties omitted from actual)
+   × estadística mensual de visitas por destino, contra el emulador > R6: la reconstrucción recompone horas y provincias desde los recibos 115ms
+     → expected [] to deeply equal [ '2026-02' ]
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco muestra la diferencia y no escribe; con --write iguala lo incremental; repetir no cambia nada 200ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > el periodo cuenta: cifras bien con el periodo ausente o ajeno se reparan 83ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco no abre transacciones y avisa del alcance antes de leer por destino 192ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > la CLI sin --write no escribe nada y con --write escribe, y repetir no cambia nada  3931ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > un mes con solo campos de contactos, sin visitas ni periodo, queda intacto con --write  1843ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > --all lee cada recibo una sola vez en seco; con --write los relee dentro de la transacción 297ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino 171ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R5: la visita suma a su hora de la semana y a la provincia del perfil, validada contra las 32
+AssertionError: expected { period: '2026-02', …(3) } to match object { visits: 3, …(2) }
+(6 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "visits": 3,[22m
+[32m-   "visitsByProvince": {[39m
+[32m-     "_sin": 2,[39m
+[32m-     "samana": 1,[39m
+[32m-   },[39m
+[32m-   "visitsByWeekHour": {[39m
+[32m-     "6-22": 3,[39m
+[32m-   },[39m
+[2m  }[22m
+
+ ❯ test/visit-stats.test.ts:132:36
+    130|     expect((await service.recordVisit(user(), input(now), now)).status…
+    131|     // 28 feb 2026, 22:30 en Santo Domingo: sábado.
+    132|     expect(await month('2026-02')).toMatchObject({visits: 3, visitsByW…
+       |                                    ^
+    133|       visitsByProvince: {samana: 1, _sin: 2}});
+    134|     // Nada más fino que la provincia llega al agregado.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/visit-stats.test.ts > estadística mensual de visitas por destino, contra el emulador > R6: la reconstrucción recompone horas y provincias desde los recibos
+AssertionError: expected [] to deeply equal [ '2026-02' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   "2026-02",[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ test/visit-stats.test.ts:146:52
+    144|     await statsDoc('2026-02').set({visitsByWeekHour: {'1-09': 7}, visi…
+    145|     const written = await stats.rebuildVisitStats(db, {destinationId: …
+    146|     expect(written.diffs.map(diff => diff.period)).toEqual(['2026-02']…
+       |                                                    ^
+    147|     const rebuilt = (await month('2026-02'))!;
+    148|     expect(rebuilt.visitsByWeekHour).toEqual(live.visitsByWeekHour);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 14 passed (16)
+   Start at  01:14:59
+   Duration  9.90s (transform 92ms, setup 12ms, collect 162ms, tests 9.58s, environment 0ms, prepare 40ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "node_modules/.bin/vitest run test/visit-stats.test.ts" exited with code 1
