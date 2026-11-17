@@ -1,0 +1,98 @@
+# R3 at 8fe352b, with mutB-door.patch applied
+# $ firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "node_modules/.bin/vitest run test/benefit-proposals.test.ts -t 'ven la propuesta en GET benefit'"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: node_modules/.bin/vitest run test/benefit-proposals.test.ts -t 'ven la propuesta en GET benefit'
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/recompensa-propuesta
+
+stdout | test/benefit-proposals.test.ts > la recompensa propuesta contra el emulador > dueño y encargado ven la propuesta en GET benefit; la puerta no
+[app-check] ausente /business/negocio-4c089ed9/benefit/proposal
+
+stdout | test/benefit-proposals.test.ts > la recompensa propuesta contra el emulador > dueño y encargado ven la propuesta en GET benefit; la puerta no
+[app-check] ausente /business/negocio-4c089ed9/benefit
+
+stdout | test/benefit-proposals.test.ts > la recompensa propuesta contra el emulador > dueño y encargado ven la propuesta en GET benefit; la puerta no
+[app-check] ausente /business/negocio-4c089ed9/benefit
+
+stdout | test/benefit-proposals.test.ts > la recompensa propuesta contra el emulador > dueño y encargado ven la propuesta en GET benefit; la puerta no
+[app-check] ausente /business/negocio-4c089ed9/benefit
+
+ ❯ test/benefit-proposals.test.ts (11 tests | 1 failed | 10 skipped) 837ms
+   ↓ el cuerpo de la decisión > aprobar sin motivo; rechazar exige un motivo de 1 a 300
+   ↓ el correo de la decisión > aprobada: dice que ya rige y enlaza la recompensa
+   ↓ el correo de la decisión > rechazada: lleva el motivo sin doble punto y dice que la de antes sigue
+   ↓ la recompensa propuesta contra el emulador > solo el dueño propone; encargado, puerta y extraños no; nada cambia la recompensa vigente
+   ↓ la recompensa propuesta contra el emulador > un plan sin QR no propone
+   × la recompensa propuesta contra el emulador > dueño y encargado ven la propuesta en GET benefit; la puerta no 728ms
+     → expected { Object (eligible, benefit, ...) } to not have property "proposal"
+   ↓ la recompensa propuesta contra el emulador > la cola del admin: solo el equipo, solo pendientes, la más vieja primero, con la vigente
+   ↓ la recompensa propuesta contra el emulador > aprobar escribe la recompensa y las dos líneas de bitácora; decidir otra vez es 409
+   ↓ la recompensa propuesta contra el emulador > si el dueño reemplaza la propuesta después de que el equipo la abrió, decidir es 409 y nada rige
+   ↓ la recompensa propuesta contra el emulador > rechazar guarda el motivo, no toca la vigente y avisa al dueño por correo
+   ↓ la recompensa propuesta contra el emulador > un dueño que dejó de serlo no recibe el correo; la decisión queda igual
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/benefit-proposals.test.ts > la recompensa propuesta contra el emulador > dueño y encargado ven la propuesta en GET benefit; la puerta no
+AssertionError: expected { Object (eligible, benefit, ...) } to not have property "proposal"
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+{
+  "benefit": {
+    "active": true,
+    "dailyMax": 30,
+    "kind": "drink",
+    "maxPerCode": 4,
+    "offline": "wait",
+    "perCode": "per_person",
+    "title": {
+      "en": "Passion fruit juice",
+      "es": "Jugo de chinola",
+    },
+  },
+  "decidedAt": null,
+  "reason": null,
+  "status": "pending",
+  "submittedAt": "2026-11-17T05:48:35.166Z",
+}
+
+ ❯ test/benefit-proposals.test.ts:178:26
+    176|     }
+    177|     const doorBody = (await (await benefit.GET(request(`/business/${id…
+    178|     expect(doorBody).not.toHaveProperty('proposal');
+       |                          ^
+    179|   });
+    180| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 skipped (11)
+   Start at  01:48:34
+   Duration  1.40s (transform 228ms, setup 10ms, collect 410ms, tests 837ms, environment 0ms, prepare 38ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "node_modules/.bin/vitest run test/benefit-proposals.test.ts -t 'ven la propuesta en GET benefit'" exited with code 1
