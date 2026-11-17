@@ -1,0 +1,36 @@
+# R1 at f93be51, with mutR-gate.patch applied
+# $ node_modules/.bin/vitest run src/layout/nav.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat/panel-recompensa
+
+ ❯ src/layout/nav.test.ts (6 tests | 1 failed) 10ms
+   ❯ Recompensa in the navigation (6)
+     × opens with the capabilities GET /business/me really sends (conocerd-api src/lib/members.ts) 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/layout/nav.test.ts > Recompensa in the navigation > opens with the capabilities GET /business/me really sends (conocerd-api src/lib/members.ts)
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/layout/nav.test.ts:56:54
+     54|     } as const;
+     55|     const withApi = (role: keyof typeof fromApi) => ({ ...business(rol…
+     56|     expect(canOpen(withApi('owner'), '/recompensa')).toBe(true);
+       |                                                      ^
+     57|     expect(canOpen(withApi('manager'), '/recompensa')).toBe(true);
+     58|     expect(canOpen(withApi('door'), '/recompensa')).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  01:45:12
+   Duration  152ms (import 49%, transform 32%, tests 15%, worker 4%)
+
