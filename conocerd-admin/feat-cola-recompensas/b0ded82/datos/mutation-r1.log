@@ -1,0 +1,42 @@
+# R1 at b0ded82, with mutA-route.patch applied
+# $ node_modules/.bin/vitest run src/app/destinos/recompensas/acciones.test.ts -t 'la cola de recompensas'
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/cola-recompensas
+
+ ❯ src/app/destinos/recompensas/acciones.test.ts (13 tests | 1 failed | 11 skipped) 9ms
+     × lee la forma del contrato 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/destinos/recompensas/acciones.test.ts > la cola de recompensas > lee la forma del contrato
+AssertionError: expected "vi.fn()" to be called with arguments: [ 'admin-1', …(1) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+    "admin-1",
+-   "/admin/benefit-proposals",
++   "/admin/benefits",
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/app/destinos/recompensas/acciones.test.ts:45:23
+     43|     const cola = await colaDeRecompensas('admin-1');
+     44|     expect(cola.items[0]?.benefit.title.es).toBe('Postre de la casa');
+     45|     expect(llamarApi).toHaveBeenCalledWith('admin-1', '/admin/benefit-…
+       |                       ^
+     46|   });
+     47|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed | 11 skipped (13)
+   Start at  01:46:36
+   Duration  381ms (transform 80ms, setup 0ms, import 278ms, tests 9ms, environment 0ms)
+
