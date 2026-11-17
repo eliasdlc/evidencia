@@ -1,0 +1,86 @@
+# R2 at b456aa5, with r2-combined.patch applied
+# $ firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "node_modules/.bin/vitest run test/arrivals.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: node_modules/.bin/vitest run test/arrivals.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/en-camino-escritor
+
+ ❯ test/arrivals.test.ts (11 tests | 2 failed) 1363ms
+   ✓ texto y validación de "en camino" > la línea en español, hora de Santo Domingo en 24 h y singular para 1 209ms
+   ✓ texto y validación de "en camino" > el primer nombre es la primera palabra, con tope de 40 y sin nombre es null 0ms
+   ✓ texto y validación de "en camino" > el cuerpo acepta partySize 1 a 20 enteros y un ISO, y rechaza el resto 2ms
+   ✓ en camino Auth/Firestore emulator > sin viajero con sesión no escribe nada  530ms
+   ✓ en camino Auth/Firestore emulator > rechaza grupo y hora fuera de rango, destino inexistente y cuenta sin nombre 79ms
+   ✓ en camino Auth/Firestore emulator > escribe el aviso sin uid, el dueño aparte, y devuelve la línea exacta 91ms
+   × en camino Auth/Firestore emulator > un segundo aviso cancela el primero y solo queda uno en camino 54ms
+     → expected 'coming' to be 'cancelled' // Object.is equality
+   × en camino Auth/Firestore emulator > DELETE: un ajeno recibe 404 y no cambia nada; el dueño cancela 56ms
+     → expected 200 to be 404 // Object.is equality
+   ✓ en camino Auth/Firestore emulator > una visita validada marca el aviso como arrived y sale de la lista 97ms
+   ✓ en camino Auth/Firestore emulator > una visita de otro viajero no toca el aviso 67ms
+   ✓ en camino Auth/Firestore emulator > un aviso vencido no aparece en activeArrivals 30ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > un segundo aviso cancela el primero y solo queda uno en camino
+AssertionError: expected 'coming' to be 'cancelled' // Object.is equality
+
+Expected: [32m"c[7mancelled[27m"[39m
+Received: [31m"c[7moming[27m"[39m
+
+ ❯ test/arrivals.test.ts:129:56
+    127|     const second = await created(await api.POST(post(body({ partySize:…
+    128|     expect(second.id).not.toBe(first.id);
+    129|     expect((await arrivalDoc(first.id)).get('status')).toBe('cancelled…
+       |                                                        ^
+    130|     expect((await arrivalDoc(second.id)).get('status')).toBe('coming');
+    131|     expect((await arrivals.activeArrivals(db, place)).map((a) => a.id)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > DELETE: un ajeno recibe 404 y no cambia nada; el dueño cancela
+AssertionError: expected 200 to be 404 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 404[39m
+[31m+ 200[39m
+
+ ❯ test/arrivals.test.ts:136:52
+    134|     const { id } = await created(await api.POST(post(body())));
+    135|     const other = await newTraveler('Luis');
+    136|     expect((await remove(id, other.token)).status).toBe(404);
+       |                                                    ^
+    137|     expect((await remove('no-existe', other.token)).status).toBe(404);
+    138|     expect((await arrivalDoc(id)).get('status')).toBe('coming');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  02:16:24
+   Duration  1.59s (transform 162ms, setup 10ms, collect 84ms, tests 1.36s, environment 0ms, prepare 38ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "node_modules/.bin/vitest run test/arrivals.test.ts" exited with code 1
