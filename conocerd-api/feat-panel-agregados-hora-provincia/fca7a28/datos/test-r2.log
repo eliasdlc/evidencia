@@ -1,0 +1,39 @@
+# R2 at fca7a28
+# $ firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "node_modules/.bin/vitest run test/visit-stats.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: node_modules/.bin/vitest run test/visit-stats.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/panel-agregados-hora-provincia
+
+ ✓ test/visit-stats.test.ts (16 tests) 11877ms
+   ✓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore  786ms
+   ✓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script rechaza un host de emulador remoto aun con las dos banderas y dice cuál es  813ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R1: una visita validada suma al mes y al día de Santo Domingo y conserva el resto del documento  768ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > la CLI sin --write no escribe nada y con --write escribe, y repetir no cambia nada  4777ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > un mes con solo campos de contactos, sin visitas ni periodo, queda intacto con --write  2567ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > --all lee cada recibo una sola vez en seco; con --write los relee dentro de la transacción  379ms
+
+ Test Files  1 passed (1)
+      Tests  16 passed (16)
+   Start at  00:34:11
+   Duration  12.26s (transform 101ms, setup 10ms, collect 190ms, tests 11.88s, environment 0ms, prepare 52ms)
+
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
