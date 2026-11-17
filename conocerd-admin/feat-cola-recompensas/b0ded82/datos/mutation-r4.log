@@ -1,0 +1,32 @@
+# R4 at b0ded82, with mutA-changed.patch applied
+# $ node_modules/.bin/vitest run src/app/destinos/recompensas/acciones.test.ts -t 'proposal_changed'
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/cola-recompensas
+
+ ❯ src/app/destinos/recompensas/acciones.test.ts (13 tests | 1 failed | 12 skipped) 8ms
+     × 409 proposal_changed pide revisar la nueva y refresca 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/destinos/recompensas/acciones.test.ts > decidir una propuesta > 409 proposal_changed pide revisar la nueva y refresca
+AssertionError: expected 'No se pudo hablar con la API de Conoc…' to contain 'El dueño cambió la propuesta'
+
+Expected: "El dueño cambió la propuesta"
+Received: "No se pudo hablar con la API de ConoceRD. Vuelve a intentarlo en un momento."
+
+ ❯ src/app/destinos/recompensas/acciones.test.ts:93:44
+     91|     llamarApi.mockRejectedValue(new ErrorDeApi(409, 'proposal_changed'…
+     92|     const r = await decidirPropuesta({ destinoId: 'd1', decision: 'app…
+     93|     expect(r.ok === false && r.errores[0]).toContain('El dueño cambió …
+       |                                            ^
+     94|     expect(revalidatePath).toHaveBeenCalledWith('/destinos/recompensas…
+     95|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 skipped (13)
+   Start at  01:46:50
+   Duration  349ms (transform 54ms, setup 0ms, import 251ms, tests 8ms, environment 0ms)
+
