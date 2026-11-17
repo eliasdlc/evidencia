@@ -1,0 +1,39 @@
+# R1 at 63f30a7, with mutD-other.patch applied
+# $ node_modules/.bin/vitest run src/features/negocio/hoy/insights.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/feat/panel-graficas-en-camino
+
+ ❯ src/features/negocio/hoy/insights.test.ts (15 tests | 1 failed) 10ms
+   ❯ provinces (5)
+     × counts provinces past the ranking as other, so the figures add up 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/hoy/insights.test.ts > provinces > counts provinces past the ranking as other, so the figures add up
+AssertionError: expected [ 'Otras provincias: 17', …(1) ] to deeply equal [ 'Otras provincias: 39', …(1) ]
+
+- Expected
++ Received
+
+  [
+-   "Otras provincias: 39",
++   "Otras provincias: 17",
+    "De fuera o sin provincia: 15",
+  ]
+
+ ❯ src/features/negocio/hoy/insights.test.ts:91:62
+     89|   it('counts provinces past the ranking as other, so the figures add u…
+     90|     const items = [44, 33, 16, 15, 9, 8, 8, 6].map((count, i) => ({ ke…
+     91|     expect(provinceNotes({ items, other: 17, unknown: 15 })).toEqual([
+       |                                                              ^
+     92|       'Otras provincias: 39',
+     93|       'De fuera o sin provincia: 15',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 passed (15)
+   Start at  01:44:23
+   Duration  143ms (transform 67%, tests 16%, import 13%, worker 4%)
+
