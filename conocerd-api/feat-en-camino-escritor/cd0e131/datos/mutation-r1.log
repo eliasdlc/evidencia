@@ -1,0 +1,89 @@
+# R1 at cd0e131, with v2-r1-uid-in-arrival.patch applied
+# $ firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "node_modules/.bin/vitest run test/arrivals.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: node_modules/.bin/vitest run test/arrivals.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/en-camino-escritor
+
+ ❯ test/arrivals.test.ts (25 tests | 1 failed) 7154ms
+   ✓ texto y validación de "en camino" > la línea en español, hora de Santo Domingo en 24 h y singular para 1 241ms
+   ✓ texto y validación de "en camino" > el primer nombre es la primera palabra, con tope de 40 y sin nombre es null 1ms
+   ✓ texto y validación de "en camino" > el nombre se limpia antes de partir: sin control ni formato, 40 puntos de código, vacío es null 1ms
+   ✓ texto y validación de "en camino" > el cuerpo acepta partySize 1 a 20 enteros y un ISO, y rechaza el resto 3ms
+   ✓ en camino Auth/Firestore emulator > sin viajero con sesión no escribe nada  639ms
+   ✓ en camino Auth/Firestore emulator > rechaza grupo y hora fuera de rango, destino inexistente y cuenta sin nombre 85ms
+   × en camino Auth/Firestore emulator > escribe el aviso sin uid, el dueño aparte, y devuelve la línea exacta 62ms
+     → expected [ 'createdAt', 'etaAt', …(5) ] to deeply equal [ 'createdAt', 'etaAt', …(4) ]
+   ✓ en camino Auth/Firestore emulator > un segundo aviso cancela el primero y solo queda uno en camino 100ms
+   ✓ en camino Auth/Firestore emulator > DELETE: un ajeno recibe 404 y no cambia nada; el dueño cancela 98ms
+   ✓ en camino Auth/Firestore emulator > una visita validada marca el aviso como arrived y sale de la lista 81ms
+   ✓ en camino Auth/Firestore emulator > una visita de otro viajero no toca el aviso 69ms
+   ✓ en camino Auth/Firestore emulator > un aviso vencido no aparece en activeArrivals 40ms
+   ✓ en camino Auth/Firestore emulator > el puntero guarda el aviso en curso y 5 POST a la vez dejan uno solo en camino  3513ms
+   ✓ en camino Auth/Firestore emulator > DELETE y la llegada borran el puntero 48ms
+   ✓ en camino Auth/Firestore emulator > más de 10 avisos en una hora son 429 too_many_arrivals, solo para ese viajero 256ms
+   ✓ en camino Auth/Firestore emulator > arrivalOwners lleva expiresAt, igual que el aviso 25ms
+   ✓ en camino Auth/Firestore emulator > markArrived solo cierra avisos que todavía no vencieron 63ms
+   ✓ en camino Auth/Firestore emulator > reenviar la misma visita no vuelve a cerrar un aviso nuevo 76ms
+   ✓ en camino Auth/Firestore emulator > una visita duplicate_24h también cierra el aviso: la geocerca ya probó que está allí 101ms
+   ✓ en camino Auth/Firestore emulator > un id imposible en DELETE es 404 y nunca 500; en POST es 422 16ms
+   ✓ en camino Auth/Firestore emulator > la hora de hace 1 minuto se lleva a ahora y la de hace 3 minutos es 422 27ms
+   ✓ en camino Auth/Firestore emulator > un nombre solo de caracteres invisibles es 422 display_name_required 11ms
+   ✓ en camino Auth/Firestore emulator > borrado de cuenta > borra todas las filas de arrivalOwners y los avisos a los que apuntan, sea cual sea su estado  566ms
+   ✓ en camino Auth/Firestore emulator > borrado de cuenta > un POST que entra durante el borrado lo recoge la segunda pasada 239ms
+   ✓ en camino Auth/Firestore emulator > borrado de cuenta > pagina: más filas que un lote salen todas, cada aviso con su fila  644ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > escribe el aviso sin uid, el dueño aparte, y devuelve la línea exacta
+AssertionError: expected [ 'createdAt', 'etaAt', …(5) ] to deeply equal [ 'createdAt', 'etaAt', …(4) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -3,6 +3,7 @@[39m
+[2m    "etaAt",[22m
+[2m    "expiresAt",[22m
+[2m    "firstName",[22m
+[2m    "partySize",[22m
+[2m    "status",[22m
+[31m+   "uid",[39m
+[2m  ][22m
+
+ ❯ test/arrivals.test.ts:131:38
+    129|     expect(preview).toMatch(/^Carmen, 4 personas, llega \d{2}:\d{2}$/);
+    130|     const data = (await arrivalDoc(id)).data()!;
+    131|     expect(Object.keys(data).sort()).toEqual(['createdAt', 'etaAt', 'e…
+       |                                      ^
+    132|     expect(data).toMatchObject({ firstName: 'Carmen', partySize: 4, st…
+    133|     expect(data.expiresAt.toMillis() - data.etaAt.toMillis()).toBe(3 *…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 24 passed (25)
+   Start at  02:39:00
+   Duration  7.38s (transform 337ms, setup 11ms, collect 69ms, tests 7.15s, environment 0ms, prepare 38ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "node_modules/.bin/vitest run test/arrivals.test.ts" exited with code 1
