@@ -1,0 +1,68 @@
+# R3 at b0ded82, with mutA-motivo.patch applied
+# $ node_modules/.bin/vitest run src/app/destinos/recompensas/acciones.test.ts -t 'rechazar'
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat/cola-recompensas
+
+ ❯ src/app/destinos/recompensas/acciones.test.ts (13 tests | 3 failed | 8 skipped) 11ms
+     × rechazar con motivo "" no llega a la API 4ms
+     × rechazar con motivo "   " no llega a la API 1ms
+     × rechazar sin campo de motivo tampoco llega a la API 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/destinos/recompensas/acciones.test.ts > decidir una propuesta > rechazar con motivo "" no llega a la API
+ FAIL  src/app/destinos/recompensas/acciones.test.ts > decidir una propuesta > rechazar con motivo "   " no llega a la API
+AssertionError: expected 'No se pudo hablar con la API de Conoc…' to contain 'motivo'
+
+Expected: "motivo"
+Received: "No se pudo hablar con la API de ConoceRD. Vuelve a intentarlo en un momento."
+
+ ❯ src/app/destinos/recompensas/acciones.test.ts:74:44
+     72|     const r = await decidirPropuesta({ destinoId: 'd1', decision: 'rej…
+     73|     expect(r.ok).toBe(false);
+     74|     expect(r.ok === false && r.errores[0]).toContain('motivo');
+       |                                            ^
+     75|     expect(llamarApi).not.toHaveBeenCalled();
+     76|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/app/destinos/recompensas/acciones.test.ts > decidir una propuesta > rechazar sin campo de motivo tampoco llega a la API
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      "admin-1",
+      "/admin/benefit-proposals/d1/decision",
+      Object {
+        "body": Object {
+          "decision": "reject",
+          "reason": "-",
+          "submittedAt": "2026-11-17T10:00:00.000Z",
+        },
+        "method": "POST",
+      },
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/app/destinos/recompensas/acciones.test.ts:81:27
+     79|     const r = await decidirPropuesta({ destinoId: 'd1', decision: 'rej…
+     80|     expect(r.ok).toBe(false);
+     81|     expect(llamarApi).not.toHaveBeenCalled();
+       |                           ^
+     82|   });
+     83|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 2 passed | 8 skipped (13)
+   Start at  01:46:45
+   Duration  342ms (transform 50ms, setup 0ms, import 241ms, tests 11ms, environment 0ms)
+
