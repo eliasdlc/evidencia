@@ -1,0 +1,66 @@
+# R4 at b456aa5, with r4-plural.patch applied
+# $ firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "node_modules/.bin/vitest run test/arrivals.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: node_modules/.bin/vitest run test/arrivals.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/feat/en-camino-escritor
+
+ ❯ test/arrivals.test.ts (11 tests | 1 failed) 1347ms
+   × texto y validación de "en camino" > la línea en español, hora de Santo Domingo en 24 h y singular para 1 213ms
+     → expected 'Luis, 1 personas, llega 10:20' to be 'Luis, 1 persona, llega 10:20' // Object.is equality
+   ✓ texto y validación de "en camino" > el primer nombre es la primera palabra, con tope de 40 y sin nombre es null 0ms
+   ✓ texto y validación de "en camino" > el cuerpo acepta partySize 1 a 20 enteros y un ISO, y rechaza el resto 2ms
+   ✓ en camino Auth/Firestore emulator > sin viajero con sesión no escribe nada  499ms
+   ✓ en camino Auth/Firestore emulator > rechaza grupo y hora fuera de rango, destino inexistente y cuenta sin nombre 93ms
+   ✓ en camino Auth/Firestore emulator > escribe el aviso sin uid, el dueño aparte, y devuelve la línea exacta 84ms
+   ✓ en camino Auth/Firestore emulator > un segundo aviso cancela el primero y solo queda uno en camino 84ms
+   ✓ en camino Auth/Firestore emulator > DELETE: un ajeno recibe 404 y no cambia nada; el dueño cancela 85ms
+   ✓ en camino Auth/Firestore emulator > una visita validada marca el aviso como arrived y sale de la lista 80ms
+   ✓ en camino Auth/Firestore emulator > una visita de otro viajero no toca el aviso 62ms
+   ✓ en camino Auth/Firestore emulator > un aviso vencido no aparece en activeArrivals 29ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/arrivals.test.ts > texto y validación de "en camino" > la línea en español, hora de Santo Domingo en 24 h y singular para 1
+AssertionError: expected 'Luis, 1 personas, llega 10:20' to be 'Luis, 1 persona, llega 10:20' // Object.is equality
+
+Expected: [32m"Luis, 1 persona, llega 10:20"[39m
+Received: [31m"Luis, 1 persona[7ms[27m, llega 10:20"[39m
+
+ ❯ test/arrivals.test.ts:17:41
+     15|     const eta = Date.UTC(2026, 10, 17, 14, 20);
+     16|     expect(previewLine('Carmen', 4, eta)).toBe('Carmen, 4 personas, ll…
+     17|     expect(previewLine('Luis', 1, eta)).toBe('Luis, 1 persona, llega 1…
+       |                                         ^
+     18|     // Pasada la medianoche local no sale "24:05".
+     19|     expect(previewLine('Ana', 2, Date.UTC(2026, 10, 18, 4, 5))).toBe('…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  02:17:05
+   Duration  1.55s (transform 109ms, setup 8ms, collect 57ms, tests 1.35s, environment 0ms, prepare 39ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "node_modules/.bin/vitest run test/arrivals.test.ts" exited with code 1
