@@ -1,0 +1,218 @@
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+ ✓ test/business-data-route.test.ts (147 tests) 13435ms
+   ✓ datos del panel de negocios contra el emulador > GET /business/{id}/overview > el dueño de A nunca ve nada de B, ni sus cifras ni sus ids  1592ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un token revocado recibe 401 en los cuatro verbos y no escribe  2283ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > un id con caracteres reservados nunca da 500 ni cruza a otro negocio  388ms
+   ✓ datos del panel de negocios contra el emulador > casos de la primera revisión > tres PATCH en paralelo con el mismo If-Match: uno gana, los otros 409 y la bitácora cuenta una línea  3602ms
+ ✓ test/monthly-report-run.test.ts (62 tests) 27345ms
+   ✓ envío del resumen mensual contra el emulador > una vez y con la baja (M1, M3) > M-1 E-1: dos corridas el día 1 en vivo: cada par una vez, con su clave, su baja real y el pie; la segunda no llama  511ms
+   ✓ envío del resumen mensual contra el emulador > una vez y con la baja (M1, M3) > M-1: los envíos van al menos a 600 ms uno de otro  354ms
+   ✓ envío del resumen mensual contra el emulador > modo prueba (M6) > M-2: en prueba solo el buzón de prueba, [PRUEBA] y la muestra; después en vivo cada par una vez con token real  439ms
+   ✓ envío del resumen mensual contra el emulador > modo prueba (M6) > B: en prueba un 422 o un 409 de clave deja las filas no terminales, sin intentos, y en vivo salen  410ms
+   ✓ envío del resumen mensual contra el emulador > quién lo recibe (M2) > M2: el otro dueño apaga el resumen o pierde la propiedad mientras sale el primero: no se reclama  302ms
+   ✓ envío del resumen mensual contra el emulador > la tabla de resultados > M-4: un 500 no para la corrida; fallida con intentos 1, 2 y 3 dentro de las 23 h y después nunca más  364ms
+   ✓ envío del resumen mensual contra el emulador > tope del día (M4) > M-9: 120 pares: 90 el día 1 con 30 diferidos, 30 el día 2  5312ms
+   ✓ envío del resumen mensual contra el emulador > tope del día (M4) > M-8: dos corridas a la vez sobre 120 pares: cada par una vez y como mucho 90 llamadas en el día UTC  10585ms
+ ✓ test/review-notices.test.ts (46 tests) 14129ms
+   ✓ aviso de reseña nueva contra el emulador > la fila en la misma transacción (N2, N5) > N-1: crear en un negocio registrado con dueños: 201 con el cuerpo de siempre, la fila pending en la misma transacción y un correo por dueño  549ms
+   ✓ aviso de reseña nueva contra el emulador > el envío (N1, N3, N4) > N-6: after() y el barrido a la vez: una sola reclamación gana, un correo por dueño  3424ms
+   ✓ aviso de reseña nueva contra el emulador > el reloj, los reintentos y los topes del barrido (ronda 1: C1, C2, C3, C5) > C5: un barrido reclama 50 filas como mucho; la 51 queda para el siguiente  829ms
+   ✓ aviso de reseña nueva contra el emulador > el reloj, los reintentos y los topes del barrido (ronda 1: C1, C2, C3, C5) > C5: un barrido mira 500 filas abiertas; la 501 vence en el siguiente  3672ms
+ ✓ test/business-photos-review.test.ts (33 tests) 10920ms
+   ✓ fotos del dueño: revisión del equipo, contra los emuladores > I7 e I9: un lote es un solo hecho (A9, A12, A17) > A12: dos admins aprueban la misma foto a la vez: un 200, un 409, la URL una vez y con el token de la copia  7032ms
+   ✓ fotos del dueño: revisión del equipo, contra los emuladores > I8: nada se escribe después del correo (A19) > A19 (throw): 200, sent false, y el estado al enviar es el de después y el de 300 ms más tarde  394ms
+   ✓ fotos del dueño: revisión del equipo, contra los emuladores > I8: nada se escribe después del correo (A19) > A19 (not_sent): 200, sent false, y el estado al enviar es el de después y el de 300 ms más tarde  389ms
+   ✓ fotos del dueño: revisión del equipo, contra los emuladores > I8: nada se escribe después del correo (A19) > A19 (provider_5xx): 200, sent false, y el estado al enviar es el de después y el de 300 ms más tarde  387ms
+   ✓ fotos del dueño: revisión del equipo, contra los emuladores > I8: nada se escribe después del correo (A19) > A19 (test_mode): 200, sent false, y el estado al enviar es el de después y el de 300 ms más tarde  396ms
+ ✓ test/business-photos-intake.test.ts (35 tests) 13579ms
+   ✓ fotos del dueño: entrada, lista y retiro, contra los emuladores > I4: el tope y la cola (S13 a S15, S20) > S15: dos envíos aparcados tras leer con 11 contadas: uno 201, otro 409, y la cola queda en 12  3171ms
+   ✓ fotos del dueño: entrada, lista y retiro, contra los emuladores > I4: el tope y la cola (S13 a S15, S20) > S20: 24 envíos en la ventana; el 25.º es 429 y la ventana siguiente vuelve a dejar  1160ms
+   ✓ fotos del dueño: entrada, lista y retiro, contra los emuladores > I14 e I5: quitar una foto (X1 a X7) > X7: quitar y aprobar a la vez, en los dos órdenes: nunca queda en la app la URL de una foto quitada  5864ms
+ ✓ test/account-delete-owner.test.ts (24 tests) 14971ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K1 K2 K3 K5 K6 K7 K10: la dueña se borra, la ficha, las respuestas y las fotos publicadas se quedan; sus pedidos, permisos y datos se van  870ms
+   ✓ borrado de una cuenta de negocio contra el emulador > M-17: el borrado quita las filas del resumen mensual de la cuenta y deja las de los demás  618ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K8 K9: en cuanto termina el paso 2 los enlaces y las sesiones de antes ya no sirven, con Auth todavía vivo  1772ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K11: si queda una foto de un pedido, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina  573ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > un fallo de Auth dentro de revokeOwnership  716ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el retiro de un pedido falla  665ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > el borrado de ficheros falla  626ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > falla justo después de los datos de negocio (paso 5)  633ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > recursiveDelete falla  663ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > deleteUser falla  729ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > quitar los permisos propios falla  627ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K12: cortar en un paso y reintentar > olvidar las fotos de dueño falla en el bucket  636ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K13: con un borrado en curso, otro responde 409 sin escribir; un candado de hace 121 s se toma  692ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K14: una propiedad concedida a mitad del borrado se revoca en la segunda pasada  559ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K15: si la verificación encuentra una concesión dos veces, 500 deletion_incomplete y Auth se queda  635ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K19: si la constancia no se puede escribir después de borrar Auth, la respuesta sigue siendo el informe  477ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K21: con una sesión de hace 11 minutos la ruta responde 401 reauth_required y no toma el candado  390ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K22: el orden: enlaces y sesiones antes de los ficheros, ficheros vacíos antes de limpiar sus documentos, Auth y la constancia al final  419ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K4: los permisos propios y el pendiente dirigido a su correo quedan quitados sin correo; el enlace viejo ya no abre nada  536ms
+   ✓ borrado de una cuenta de negocio contra el emulador > K14: un permiso dado a la persona a mitad del borrado se quita en la segunda pasada  568ms
+   ✓ borrado de una cuenta de negocio contra el emulador > I9: si queda una foto bajo ownerPhotos/{uid}/, 500 storage_incomplete con la cuenta viva; con el bucket arreglado, termina  554ms
+ ✓ test/monthly-report.test.ts (94 tests) 660ms
+ ✓ test/owner-service.test.ts (34 tests) 2754ms
+   ✓ owner-service contra el emulador > C2: la reconciliación termina una revocación a medias en vez de pedir volver a conceder  1205ms
+ ✓ test/profile-kinds-route.test.ts (74 tests) 4022ms
+ ✓ test/owner-requests-intake.test.ts (34 tests) 16012ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C4 a C10 (I3): rutas ajenas, objetos que faltan, que no son JPEG o pesan 10 MB son 422 evidence_invalid  358ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C12 (I1): dos pedidos de la misma cuenta al mismo negocio a la vez: uno entra  3413ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C16 (I2): con 2 abiertos, dos pedidos a la vez a negocios distintos: uno entra  3180ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > POST /business/requests > C26 (I8): pase lo que pase con el correo, el estado al enviar es el de después  1017ms
+   ✓ pedidos de dueño: entrada, contra los emuladores > DELETE /business/requests/{id} > W6: retirar y decidir a la vez: gana uno, el otro no escribe  6400ms
+ ✓ src/lib/email/templates.test.ts (345 tests) 2812ms
+   ✓ la base de los enlaces: lo que la regla acepta, el correo lo puede mandar (N1, N2) > propiedad: todo lo que el validador acepta, new URL lo lee igual y la invitación sale con esa base  2748ms
+ ✓ test/owner-requests-decision.test.ts (25 tests) 11648ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A4, A5 (I5): dos decisiones a la vez: gana una, la otra no escribe ni manda  6045ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A11 (I6): dos aprobaciones del mismo negocio a la vez, sin resolución: la segunda ve al primer dueño  3461ms
+   ✓ pedidos de dueño: decisión, contra los emuladores > aprobar > A20 (I8): con el correo caído o sin enviar, 200 notified false y el estado al enviar es el final  690ms
+ ✓ test/business-photos-sweep.test.ts (20 tests) 1913ms
+   ✓ reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor accepted  383ms
+   ✓ reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected  372ms
+   ✓ reenvío de un lote de fotos revisadas, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws  367ms
+ ✓ test/activation-route.test.ts (44 tests) 7872ms
+   ✓ activación contra el emulador > dos clics a la vez sacan un solo código  3068ms
+   ✓ activación contra el emulador > T4: con dos reenvíos a la vez, soltando primero la respuesta del segundo, todo enlace entregado abre y el primero que se usa gasta la invitación  3008ms
+ ✓ test/members-route.test.ts (13 tests) 1304ms
+   ✓ personas del negocio, del lado del dueño, contra el emulador > I1: encargado, reseñas, puerta, dueño de otro negocio y extraño no dan, listan, cambian, reenvían ni quitan (filas 1 a 3)  323ms
+ ✓ test/password-link-route.test.ts (42 tests) 5353ms
+   ✓ enlace de contraseña contra el emulador > canjearlo revoca las sesiones abiertas: un token de antes queda revocado  1125ms
+   ✓ enlace de contraseña contra el emulador > P1: cinco canjes a la vez del mismo token: uno gana y solo su contraseña entra  3505ms
+ ✓ test/reviews-route.test.ts (37 tests) 10182ms
+   ✓ reseñas contra el emulador > borrar resta una sola reseña y preserva XP, incluso con replay concurrente  2923ms
+   ✓ reseñas contra el emulador > dos personas suman a los mismos contadores sin pisarse  2786ms
+   ✓ reseñas contra el emulador > respuesta con traducción (alsoTranslate) > Y-7: si Firestore repite la transacción, el proveedor se llama una sola vez y el resultado es el de Y-1  2205ms
+ ✓ test/profile-maps-route.test.ts (42 tests) 2403ms
+ ✓ test/owner-report-route.test.ts (27 tests) 3641ms
+   ✓ POST /business/{id}/reviews/{authorId}/report contra el emulador > R-14: dos reportes iguales a la vez dan un 201 y un 200, un documento y un correo  2659ms
+ ✓ test/translation-route.test.ts (38 tests) 9393ms
+   ✓ traducción de reseñas contra el emulador > POST /business/{id}/reviews/{authorId}/translation > T-10: 20 pedidos simultáneos de 30 caracteres con tope 300 dan 10 traducidos y 10 agotados  7656ms
+ ✓ test/reply-translation-route.test.ts (29 tests) 1300ms
+ ✓ test/qr-redeem.test.ts (13 tests) 7341ms
+   ✓ la puerta contra el emulador > I12: un payload que el servidor no firmó no vale: un carácter de la firma, el id de otro código o un vencimiento cambiado (filas 43 y 44)  479ms
+   ✓ la puerta contra el emulador > I13: el código de un negocio en otro es invalid, nunca already_redeemed, y el suyo sigue issued (fila 45)  392ms
+   ✓ la puerta contra el emulador > I16: el tope del día no se pasa, exhausted no gasta el código y al día siguiente vale (filas 49 y 50)  611ms
+   ✓ la puerta contra el emulador > 1.9: 21 intentos en un minuto: el 21.º es 429 (fila 58)  539ms
+   ✓ la puerta contra el emulador > I21: un canje no lleva al viajero, y los totales por persona y del mes suman los canjes (fila 59)  3559ms
+ ✓ test/business-me-route.test.ts (26 tests) 1950ms
+   ✓ panel de negocios contra el emulador > GET /business/me > un token revocado responde 401 aunque no haya caducado  1107ms
+ ✓ test/membership-grant-route.test.ts (35 tests) 1059ms
+ ✓ test/contact-signals.test.ts (33 tests) 6658ms
+   ✓ señales de contacto contra el emulador > R5: los cinco canales cuentan y el reparto por excursión suma el total de cada canal  353ms
+   ✓ señales de contacto contra el emulador > R4: N cuentas distintas a la vez suman exactamente N, y una cuenta repetida a la vez suma 1  3384ms
+   ✓ señales de contacto contra el emulador > R7: 60 aperturas de ficha no gastan el presupuesto de los toques, y cada uno tiene su tope  431ms
+   ✓ señales de contacto contra el emulador > R7: los toques tienen su propio tope por día y el día siguiente empieza de cero  401ms
+   ✓ señales de contacto contra el emulador > R7: 62 ids inventados por una cuenta dan exactamente 1 toque en general y ningún cubo nuevo  356ms
+   ✓ señales de contacto contra el emulador > R9: el día de Santo Domingo sale de receivedAt > R9: tras reintentos de la transacción el día sigue siendo el de receivedAt, no el del reloj  1113ms
+ ✓ test/activation-renew-route.test.ts (22 tests) 1525ms
+ ✓ src/lib/visits.test.ts (78 tests) 17ms
+ ✓ test/arrivals.test.ts (25 tests) 4915ms
+   ✓ en camino Auth/Firestore emulator > el puntero guarda el aviso en curso y 5 POST a la vez dejan uno solo en camino  3150ms
+ ✓ test/unsubscribe-route.test.ts (26 tests) 549ms
+ ✓ src/lib/business-photos.test.ts (24 tests) 11ms
+ ✓ test/monthly-report-preview.test.ts (16 tests) 610ms
+ ✓ test/benefit-route.test.ts (8 tests) 731ms
+ ✓ test/visit-stats.test.ts (16 tests) 11906ms
+   ✓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script imprime el proyecto y se niega sin tocar Firestore  1107ms
+   ✓ estadística de visitas: reloj de Santo Domingo y proyecto de destino > el script rechaza un host de emulador remoto aun con las dos banderas y dice cuál es  707ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > en seco no abre transacciones y avisa del alcance antes de leer por destino  734ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > la CLI sin --write no escribe nada y con --write escribe, y repetir no cambia nada  3480ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > un mes con solo campos de contactos, sin visitas ni periodo, queda intacto con --write  1765ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > --all lee cada recibo una sola vez en seco; con --write los relee dentro de la transacción  2674ms
+   ✓ estadística mensual de visitas por destino, contra el emulador > R4: reconstrucción desde visits > respeta el rango de periodos y el alcance global encuentra el destino  689ms
+ ✓ test/account-deletion-preview.test.ts (8 tests) 2842ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > V5 K17 I14: el borrado hace lo que la vista previa dijo, y manda un correo, a la dueña, que nombra sus negocios y a nadie más  310ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el envío lanza  583ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > el proveedor responde 5xx  573ms
+   ✓ vista previa del borrado y correo de confirmación contra el emulador > K16: el correo no decide nada y nada se escribe después de él > modo de prueba  555ms
+ ✓ test/owner-requests-notify.test.ts (9 tests) 1478ms
+   ✓ pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor accepted  368ms
+   ✓ pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor rejected  352ms
+   ✓ pedidos de dueño: reenvío del correo de la decisión, contra los emuladores > I8: el estado al llamar al correo es el de después de responder y 300 ms más tarde > reenvío con el proveedor throws  361ms
+ ✓ src/lib/owner-requests.test.ts (33 tests) 16ms
+ ✓ test/member-accept.test.ts (10 tests) 691ms
+ ✓ test/owner-requests-sweep.test.ts (9 tests) 460ms
+ ✓ test/benefit-proposals.test.ts (11 tests) 569ms
+ ✓ test/owner-requests-admin.test.ts (9 tests) 613ms
+ ✓ src/lib/email/render.test.ts (39 tests) 12ms
+ ✓ test/business-roles.test.ts (13 tests) 762ms
+ ✓ test/admin-owners-route.test.ts (14 tests) 1974ms
+   ✓ rutas de dueños contra el emulador > revocar revoca los refresh tokens: el token que el dueño tenía recibe 401  1157ms
+ ✓ src/lib/email/unsubscribe.test.ts (39 tests) 16ms
+ ✓ test/stats-authority.test.ts (13 tests | 2 skipped) 13059ms
+   ✓ typed stats authority against Auth and Firestore > review source commits 40 XP plus first stamp once even with concurrent retries  3459ms
+   ✓ typed stats authority against Auth and Firestore > diary source unions known destination with zero base XP and idempotent receipt  3496ms
+   ✓ typed stats authority against Auth and Firestore > trip derives known catalog axes, fixed XP and receipt idempotence  5473ms
+ ✓ test/visits-route.test.ts (17 tests | 2 skipped) 10978ms
+   ✓ visitas verificadas Auth/Firestore emulator > reintentos simultáneos del mismo evento cuentan una vez  3502ms
+   ✓ visitas verificadas Auth/Firestore emulator > llegada no default de catálogo valida y reintentos concurrentes conservan un único recibo  3346ms
+   ✓ visitas verificadas Auth/Firestore emulator > dos eventos simultáneos del mismo lugar producen un validado y un rechazo  3491ms
+ ✓ test/moderation-route.test.ts (16 tests) 1139ms
+ ✓ test/qr-issue.test.ts (9 tests) 3664ms
+   ✓ emisión del código QR contra el emulador > I18: un código vivo por viajero y negocio, también con dos pedidos a la vez; después de un canje, nada más ese día (filas 39 y 40)  2965ms
+ ✓ src/lib/email/resend.test.ts (21 tests) 14ms
+ ✓ src/lib/owner-request-decisions.test.ts (19 tests) 11ms
+ ✓ src/lib/profile-tours.test.ts (27 tests) 14ms
+ ✓ src/lib/cors.test.ts (69 tests) 11ms
+ ✓ src/lib/profile-maps.test.ts (35 tests) 15ms
+ ✓ test/published-routes-route.test.ts (13 tests) 498ms
+ ✓ src/lib/members.test.ts (14 tests) 6ms
+ ✓ test/invitation-email.test.ts (14 tests) 675ms
+ ✓ test/cors-proxy.test.ts (14 tests) 15ms
+ ✓ src/lib/translation/provider.test.ts (15 tests) 30ms
+ ✓ src/lib/email/templates/review-notice.test.ts (13 tests) 7ms
+ ✓ test/users-route.test.ts (13 tests) 624ms
+ ✓ test/http-errors.test.ts (28 tests) 21ms
+ ✓ test/account-delete-route.test.ts (7 tests) 2423ms
+   ✓ borrado de cuenta contra el emulador > la reseña sobrevive sin autor y el rating del lugar no se mueve  312ms
+   ✓ borrado de cuenta contra el emulador > una sesión vieja no puede borrar la cuenta sin volver a identificarse  1133ms
+ ✓ src/lib/tester-feedback.test.ts (18 tests) 20ms
+ ✓ src/lib/translation/quota.test.ts (14 tests) 3710ms
+   ✓ reserveTranslation contra el emulador > T1: reservas simultáneas de cuentas distintas nunca pasan del tope  3442ms
+ ✓ test/claims-route.test.ts (13 tests) 1494ms
+   ✓ rutas de claims contra el emulador > revocar invalida el token que la cuenta ya tenía en la mano  1116ms
+ ✓ src/lib/membership-grants.test.ts (21 tests) 7ms
+ ✓ test/geocoding.test.ts (12 tests) 13ms
+ ✓ test/counter-reconciliation.test.ts (7 tests) 2261ms
+   ✓ reconciliación de contadores contra el emulador > con el flag lo deja cuadrado  1525ms
+ ✓ src/lib/mapbox-proxy.test.ts (10 tests) 19ms
+ ✓ test/geocoding-contract.test.ts (10 tests) 21ms
+ ✓ test/qr-concurrency.test.ts (2 tests) 4049ms
+   ✓ canjes a la vez contra el emulador > I14: dos toques distintos sobre el mismo código a la vez dan un valid y un already_redeemed (fila 46)  3638ms
+ ✓ src/lib/review-photos.test.ts (11 tests) 5ms
+ ✓ src/lib/email/templates/account-deleted.test.ts (4 tests) 6ms
+ ✓ src/lib/reviews.test.ts (19 tests) 6ms
+ ✓ test/budget-review-notice.test.ts (1 test) 309ms
+ ✓ src/lib/qr.test.ts (7 tests) 18ms
+ ✓ src/lib/email/templates/photo-reviewed.test.ts (5 tests) 3ms
+ ✓ src/lib/stats-policy.test.ts (55 tests) 7ms
+ ✓ src/lib/claims.test.ts (17 tests) 5ms
+ ✓ src/lib/translation/service.test.ts (7 tests) 4ms
+ ✓ src/lib/jpeg-inspect.test.ts (6 tests) 3ms
+ ✓ src/lib/problem-reports.test.ts (11 tests) 7ms
+ ✓ src/lib/email/oob.test.ts (4 tests) 5ms
+ ✓ src/lib/mapbox-handler.test.ts (6 tests) 15ms
+ ✓ test/geocoding-route.test.ts (4 tests) 583ms
+   ✓ geocodificación protegida contra los emuladores > limita cada cuenta a 30 consultas por minuto mediante transacciones  303ms
+ ✓ src/lib/cron-auth.test.ts (4 tests) 7ms
+ ✓ src/lib/email/preferences.test.ts (3 tests) 4ms
+ ✓ src/lib/published-routes.test.ts (6 tests) 5ms
+ ✓ test/ill-formed-text.test.ts (18 tests) 32ms
+ ✓ test/tester-feedback-ill-formed.test.ts (4 tests) 305ms
+ ✓ src/lib/evidence-store.test.ts (2 tests) 168ms
+ ✓ src/lib/account-deletion.test.ts (4 tests) 3ms
+ ✓ test/panel-aggregates.test.ts (4 tests) 3ms
+ ✓ test/ill-formed-text-route.test.ts (2 tests) 268ms
+ ✓ src/lib/storage-url.test.ts (6 tests) 2ms
+ ✓ src/lib/search-keys.test.ts (36 tests) 6ms
+ ✓ src/lib/owner-account-deletion.test.ts (3 tests) 3ms
+ ✓ test/email-env.test.ts (2 tests) 2ms
+ ✓ test/firebase-admin-emulator-host.test.ts (2 tests) 152ms
+ ✓ src/lib/mapbox-quota.emulator.test.ts (1 test) 3521ms
+   ✓ Mapbox durable quota against demo emulator > allows only two of five simultaneous requests when user count is28  3520ms
+ ✓ src/lib/country-fields.test.ts (2 tests) 4ms
+ ✓ src/lib/auth.test.ts (3 tests) 2ms
+ ✓ src/lib/panel-origin.test.ts (1 test) 1ms
+ ✓ src/lib/app-check.test.ts (2 tests) 2ms
+ Test Files  104 passed | 1 skipped (105)
+      Tests  2483 passed | 5 skipped (2488)
