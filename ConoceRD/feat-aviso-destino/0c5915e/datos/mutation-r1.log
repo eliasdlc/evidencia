@@ -1,0 +1,93 @@
+# R1 at 0c5915e, with R1.patch applied
+# $ pnpm exec vitest run src/catalogo/aviso.test.ts
+
+ RUN  v4.1.10 /home/decruce/.cache/aviso-admin/repo
+
+ ❯ src/catalogo/aviso.test.ts (25 tests | 4 failed) 15ms
+     × es el final del día elegido en hora dominicana, no el de UTC 3ms
+     × un día elegido pasa a su final dominicano al validar 2ms
+     × un día suelto en un import vale igual que en el formulario 0ms
+     × el formulario muestra el día guardado, o lo que se tecleó antes de un error 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/catalogo/aviso.test.ts > el día en que vence > es el final del día elegido en hora dominicana, no el de UTC
+AssertionError: expected '2026-12-01T00:00:00.000Z' to be '2026-12-01T04:00:00.000Z' // Object.is equality
+
+Expected: "2026-12-01T04:00:00.000Z"
+Received: "2026-12-01T00:00:00.000Z"
+
+ ❯ src/catalogo/aviso.test.ts:76:52
+     74|     // 1 dic 2026 a las 00:00 en UTC-4 es el 1 dic a las 04:00 UTC; el…
+     75|     // ve todo el 30 nov y se va a la medianoche dominicana.
+     76|     expect(finDelDia('2026-11-30')?.toISOString()).toBe('2026-12-01T04…
+       |                                                    ^
+     77|     expect(finDelDia('2026-12-31')?.toISOString()).toBe('2027-01-01T04…
+     78|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/catalogo/aviso.test.ts > los campos del formulario > un día elegido pasa a su final dominicano al validar
+AssertionError: expected { text: 'Cerrado', …(2) } to deeply equal { text: 'Cerrado', …(2) }
+
+- Expected
++ Received
+
+  {
+    "text": "Cerrado",
+    "textEn": "Closed",
+-   "until": 2026-12-01T04:00:00.000Z,
++   "until": 2026-12-01T00:00:00.000Z,
+  }
+
+ ❯ src/catalogo/aviso.test.ts:101:71
+     99|     const campos = avisoDeCampos({ text: 'Cerrado', textEn: 'Closed', …
+    100|     expect(campos).toEqual({ text: 'Cerrado', textEn: 'Closed', until:…
+    101|     expect(destinoEditable.parse({ ...base, notice: campos }).notice).…
+       |                                                                       ^
+    102|       text: 'Cerrado',
+    103|       textEn: 'Closed',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/catalogo/aviso.test.ts > los campos del formulario > un día suelto en un import vale igual que en el formulario
+AssertionError: expected 2026-12-01T00:00:00.000Z to deeply equal 2026-12-01T04:00:00.000Z
+
+- Expected
++ Received
+
+- 2026-12-01T04:00:00.000Z
++ 2026-12-01T00:00:00.000Z
+
+ ❯ src/catalogo/aviso.test.ts:109:82
+    107|
+    108|   it('un día suelto en un import vale igual que en el formulario', () …
+    109|     expect(avisoDeDestino.parse({ text: 'Cerrado', until: '2026-11-30'…
+       |                                                                                  ^
+    110|       new Date('2026-12-01T04:00:00.000Z'),
+    111|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/catalogo/aviso.test.ts > los campos del formulario > el formulario muestra el día guardado, o lo que se tecleó antes de un error
+AssertionError: expected '2026-12-01' to be '2026-11-30' // Object.is equality
+
+Expected: "2026-11-30"
+Received: "2026-12-01"
+
+ ❯ src/catalogo/aviso.test.ts:127:71
+    125|
+    126|   it('el formulario muestra el día guardado, o lo que se tecleó antes …
+    127|     expect(diaParaElFormulario(new Date('2026-12-01T04:00:00.000Z'))).…
+       |                                                                       ^
+    128|     expect(diaParaElFormulario('2026-02-31')).toBe('2026-02-31');
+    129|     expect(diaParaElFormulario(undefined)).toBeUndefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 21 passed (25)
+   Start at  00:40:11
+   Duration  322ms (transform 58ms, setup 0ms, import 215ms, tests 15ms, environment 0ms)
+
