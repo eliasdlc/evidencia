@@ -1,0 +1,102 @@
+$ node --test scripts/huecos_comida.test.js   # at 0193243b with h1.patch (threshold ignored)
+diff --git i/scripts/huecos_comida.js w/scripts/huecos_comida.js
+index b8a1818d..0ddc1bb7 100644
+--- i/scripts/huecos_comida.js
++++ w/scripts/huecos_comida.js
+@@ -67,7 +67,7 @@ function mealGaps(destinations, { maxMinutes = DEFAULT_MINUTES } = {}) {
+       const minutes = driveMinutes(stop, f);
+       if (!nearest || minutes < nearest.minutes) nearest = { id: f.id, name: nameOf(f), minutes };
+     }
+-    if (nearest && nearest.minutes <= maxMinutes) continue;
++    if (nearest) continue;
+     gaps.push({
+       id: stop.id,
+       name: nameOf(stop),
+✔ R1 the drive estimate is the app leg model, with its 5 minute floor (0.552824ms)
+✔ R1 a stop with a sit-down place within 15 minutes is not a gap (0.551817ms)
+✖ R1 a stop whose only food is in the city is a gap, with the nearest named (0.652999ms)
+✖ R1 food, lodging and services are never listed as stops, and no food at all is reported (0.4016ms)
+✖ R1 the threshold is configurable and gaps group by province, most first (4.001401ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 2
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 46.71275
+
+✖ failing tests:
+
+test at scripts/huecos_comida.test.js:26:1
+✖ R1 a stop whose only food is in the city is a gap, with the nearest named (0.652999ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (/home/decruce/dev/wt/conocerd-app/chore/catalogo-sin-comida/scripts/huecos_comida.test.js:28:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/huecos_comida.test.js:35:1
+✖ R1 food, lodging and services are never listed as stops, and no food at all is reported (0.4016ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   'playa'
+  - ]
+  
+      at TestContext.<anonymous> (/home/decruce/dev/wt/conocerd-app/chore/catalogo-sin-comida/scripts/huecos_comida.test.js:37:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ 'playa' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/huecos_comida.test.js:42:1
+✖ R1 the threshold is configurable and gaps group by province, most first (4.001401ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   'Pedernales',
+  -   'Santiago'
+  - ]
+  
+      at TestContext.<anonymous> (/home/decruce/dev/wt/conocerd-app/chore/catalogo-sin-comida/scripts/huecos_comida.test.js:45:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ 'Pedernales', 'Santiago' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+exit=1
