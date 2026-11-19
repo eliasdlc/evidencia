@@ -1,0 +1,33 @@
+diff --git i/lib/features/navigation/presentation/widgets/nav_guidance_pill.dart w/lib/features/navigation/presentation/widgets/nav_guidance_pill.dart
+index 773ec0fe..3afd8776 100644
+--- i/lib/features/navigation/presentation/widgets/nav_guidance_pill.dart
++++ w/lib/features/navigation/presentation/widgets/nav_guidance_pill.dart
+@@ -76,13 +76,7 @@ class _NavGuidancePillState extends State<NavGuidancePill> {
+         // acostado cuelga de la columna izquierda y con el ancho de la
+         // pantalla envolvía en dos renglones. Los 30 son el relleno de 14 y
+         // el borde de 1 a cada lado.
+-        textMaxWidth: warning
+-            ? MediaQuery.sizeOf(context).width - 72
+-            : (constraints.hasBoundedWidth
+-                      ? constraints.maxWidth
+-                      : MediaQuery.sizeOf(context).width) -
+-                  2 * NavGuidancePill.streetSideMargin -
+-                  30,
++        textMaxWidth: MediaQuery.sizeOf(context).width - (warning ? 72 : 76),
+       ),
+     );
+   }
+@@ -168,11 +162,8 @@ class _NavGuidancePillState extends State<NavGuidancePill> {
+                                 // hacia el mapa y empujaba el logo de Mapbox.
+                                 // La vía se reconoce por su principio. Un aviso
+                                 // sí envuelve: es una frase que hay que leer.
+-                                maxLines: warning ? 3 : 1,
+-                                overflow: warning
+-                                    ? TextOverflow.clip
+-                                    : TextOverflow.ellipsis,
+-                                softWrap: warning,
++                                maxLines: warning ? 3 : 2,
++                                softWrap: true,
+                                 textAlign: TextAlign.center,
+                                 style: AppTextStyles.label(
+                                   size: warning ? 17 : 14,
