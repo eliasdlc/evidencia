@@ -1,0 +1,84 @@
+# R4 at a8dd8df, with r4-no-cancel.patch applied
+# $ flutter test --no-pub test/features/arrivals/en_camino_test.dart
+00:00 +0: loading /home/decruce/dev/projects/ConoceRD/app/.claude/worktrees/agent-aba42a3c3ac383e8d/test/features/arrivals/en_camino_test.dart
+00:00 +0: R2: el ajuste de Perfil es de la cuenta y viene apagado sin haberlo aceptado, la cuenta no tiene el ajuste
+00:00 +1: R2: el ajuste de Perfil es de la cuenta y viene apagado aceptarlo lo guarda para esa cuenta y no para otra
+00:00 +2: R2: el ajuste de Perfil es de la cuenta y viene apagado cambiar de cuenta no hereda el ajuste y volver lo recupera
+00:00 +3: R2: el ajuste de Perfil es de la cuenta y viene apagado sin sesión no hay ajuste
+00:00 +4: R1: con el ajuste apagado no sale nada empezar un tramo hacia un negocio no manda nada
+00:00 +5: R1: con el ajuste apagado no sale nada la cuenta B no avisa con el sí de la cuenta A
+00:00 +6: R3: con el ajuste encendido sale una vez por tramo manda destinationId, partySize del viaje y etaAt de la ruta
+00:00 +7: R3: con el ajuste encendido sale una vez por tramo cada fix del GPS sobre el mismo tramo no repite el aviso
+00:00 +8: R3: con el ajuste encendido sale una vez por tramo el tramo siguiente manda su propio aviso
+00:00 +9: R3: con el ajuste encendido sale una vez por tramo un viaje directo avisa con un grupo de 1
+00:00 +10: R3: con el ajuste encendido sale una vez por tramo el grupo no pasa del tope del servidor
+00:00 +11: R3: con el ajuste encendido sale una vez por tramo una parada de dirección o de pin no avisa a nadie
+00:00 +12: R3: con el ajuste encendido sale una vez por tramo un viaje con GPS simulado no avisa a un negocio de verdad
+00:00 +13: R3: con el ajuste encendido sale una vez por tramo sin hora de llegada de la ruta no se inventa una
+[38;5;208m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[0m
+[38;5;208m│ #0   EnCaminoCoordinator._send (package:conocerd/features/arrivals/presentation/en_camino_coordinator.dart:184:14)[0m
+[38;5;208m│ #1   <asynchronous suspension>[0m
+[38;5;208m├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄[0m
+[38;5;208m│ ⚠️ En camino: sin ruta para la hora de llegada, no se avisa[0m
+[38;5;208m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[0m
+00:00 +14: R3: con el ajuste encendido sale una vez por tramo encender el ajuste con el viaje en marcha avisa del tramo
+00:00 +15: R3: un fallo no estorba a la navegación un error del servidor se traga y no se reintenta con cada fix
+[38;5;208m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[0m
+[38;5;208m│ #0   EnCaminoCoordinator._send.<anonymous closure> (package:conocerd/features/arrivals/presentation/en_camino_coordinator.dart:201:16)[0m
+[38;5;208m│ #1   Left.match (package:fpdart/src/either.dart:620:72)[0m
+[38;5;208m├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄[0m
+[38;5;208m│ ⚠️ En camino: no se pudo avisar (email_not_verified)[0m
+[38;5;208m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[0m
+00:00 +16: R4: se retira cuando el viaje deja de ir hacia allá saltar la parada cancela el aviso y avisa del tramo siguiente
+00:00 +16 -1: R4: se retira cuando el viaje deja de ir hacia allá saltar la parada cancela el aviso y avisa del tramo siguiente [E]
+  Expected: an object with length of <1>
+    Actual: WhereIterable<Request>:[]
+     Which: has length of <0>
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/features/arrivals/en_camino_test.dart 234:9    main.<fn>.<fn>
+  
+00:00 +16 -1: R4: se retira cuando el viaje deja de ir hacia allá saltar la última parada cancela el aviso
+00:00 +16 -2: R4: se retira cuando el viaje deja de ir hacia allá saltar la última parada cancela el aviso [E]
+  Bad state: No element
+  dart:core                                          Iterable.single
+  test/features/arrivals/en_camino_test.dart 251:30  main.<fn>.<fn>
+  
+00:00 +16 -2: R4: se retira cuando el viaje deja de ir hacia allá terminar el viaje cancela el aviso
+00:00 +16 -3: R4: se retira cuando el viaje deja de ir hacia allá terminar el viaje cancela el aviso [E]
+  Bad state: No element
+  dart:core                                          Iterable.single
+  test/features/arrivals/en_camino_test.dart 257:30  main.<fn>.<fn>
+  
+00:00 +16 -3: R4: se retira cuando el viaje deja de ir hacia allá pausar el viaje cancela el aviso y reanudarlo vuelve a avisar
+00:00 +16 -4: R4: se retira cuando el viaje deja de ir hacia allá pausar el viaje cancela el aviso y reanudarlo vuelve a avisar [E]
+  Expected: an object with length of <1>
+    Actual: WhereIterable<Request>:[]
+     Which: has length of <0>
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/features/arrivals/en_camino_test.dart 265:9    main.<fn>.<fn>
+  
+00:00 +16 -4: R4: se retira cuando el viaje deja de ir hacia allá apagar el ajuste a mitad del tramo cancela el aviso
+00:00 +16 -5: R4: se retira cuando el viaje deja de ir hacia allá apagar el ajuste a mitad del tramo cancela el aviso [E]
+  Bad state: No element
+  dart:core                                          Iterable.single
+  test/features/arrivals/en_camino_test.dart 274:30  main.<fn>.<fn>
+  
+00:00 +16 -5: R4: se retira cuando el viaje deja de ir hacia allá llegar y completar la parada no lo cancela: lo retira el servidor
+00:00 +17 -5: R4: se retira cuando el viaje deja de ir hacia allá pausar con el envío en vuelo lo cancela cuando el servidor contesta
+00:00 +17 -6: R4: se retira cuando el viaje deja de ir hacia allá pausar con el envío en vuelo lo cancela cuando el servidor contesta [E]
+  Bad state: No element
+  dart:core                                          Iterable.single
+  test/features/arrivals/en_camino_test.dart 305:32  main.<fn>.<fn>
+  
+00:00 +17 -6: Some tests failed.
+
+Failing tests:
+  /home/decruce/dev/projects/ConoceRD/app/.claude/worktrees/agent-aba42a3c3ac383e8d/test/features/arrivals/en_camino_test.dart: R4: se retira cuando el viaje deja de ir hacia allá apagar el ajuste a mitad del tramo cancela el aviso
+  /home/decruce/dev/projects/ConoceRD/app/.claude/worktrees/agent-aba42a3c3ac383e8d/test/features/arrivals/en_camino_test.dart: R4: se retira cuando el viaje deja de ir hacia allá pausar con el envío en vuelo lo cancela cuando el servidor contesta
+  /home/decruce/dev/projects/ConoceRD/app/.claude/worktrees/agent-aba42a3c3ac383e8d/test/features/arrivals/en_camino_test.dart: R4: se retira cuando el viaje deja de ir hacia allá pausar el viaje cancela el aviso y reanudarlo vuelve a avisar
+  /home/decruce/dev/projects/ConoceRD/app/.claude/worktrees/agent-aba42a3c3ac383e8d/test/features/arrivals/en_camino_test.dart: R4: se retira cuando el viaje deja de ir hacia allá saltar la parada cancela el aviso y avisa del tramo siguiente
+  ... and 2 more
