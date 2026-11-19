@@ -1,0 +1,39 @@
+diff --git i/lib/features/navigation/presentation/widgets/nav_bottom_card.dart w/lib/features/navigation/presentation/widgets/nav_bottom_card.dart
+index 9c3b9e10..f1f418ef 100644
+--- i/lib/features/navigation/presentation/widgets/nav_bottom_card.dart
++++ w/lib/features/navigation/presentation/widgets/nav_bottom_card.dart
+@@ -476,7 +476,7 @@ class _NavBottomCardState extends ConsumerState<NavBottomCard> {
+ 
+     return TripSheet(
+       state: sheetState,
+-      header: driving ? _withDrivingSides(header, walking: walking) : header,
++      header: header,
+       style: TripSheetStyle.nav(palette, night: night),
+       essential: essential,
+       body: body,
+@@ -484,13 +484,21 @@ class _NavBottomCardState extends ConsumerState<NavBottomCard> {
+       badgeKey: _badgeKey,
+       onExtentChanged: widget.onExtentChanged,
+       onMove: _onMove,
+-      // Del canto solo cuelga el aviso o la píldora de la calle: el
+-      // velocímetro y el control de cámara viven en la cabecera (CO1-T875).
+-      edge: edge == null
++      edge: !driving
+           ? null
+           : SizeReporter(
+               onSize: (h) => _reportEdgeHeight(h > 0.5 ? h : 0),
+-              child: edge,
++              child: Column(
++                mainAxisSize: MainAxisSize.min,
++                children: [
++                  ?edge,
++                  if (edge != null) const SizedBox(height: 4),
++                  const Row(
++                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
++                    children: [_SpeedChip(), NavCameraButton()],
++                  ),
++                ],
++              ),
+             ),
+     );
+   }
