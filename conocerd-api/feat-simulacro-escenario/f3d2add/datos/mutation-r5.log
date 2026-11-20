@@ -1,0 +1,161 @@
+# R5 at f3d2add, with mut-r5.patch applied
+# $ pnpm exec vitest run src/lib/email/outbox.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/feat-simulacro-escenario
+
+stderr | src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > escribe el HTML y el JSON y nunca llama a fetch
+[conocerd-api] no se pudo llegar a Resend
+
+stderr | src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > gana aunque haya una clave de Resend y el modo sea en vivo
+[conocerd-api] no se pudo llegar a Resend
+
+stderr | src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > un correo sin HTML se guarda como texto dentro de un documento HTML
+[conocerd-api] Resend rechazó un correo: 401
+
+stderr | src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > dos correos iguales en el mismo instante no se pisan
+[conocerd-api] Resend rechazó un correo: 401
+
+stderr | src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > dos correos iguales en el mismo instante no se pisan
+[conocerd-api] Resend rechazó un correo: 401
+
+stderr | src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > una carpeta imposible de escribir no lanza: devuelve provider_error
+[conocerd-api] Resend rechazó un correo: 401
+
+stderr | src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > una invitación de dueño deja HTML y JSON con el enlace de activación
+[conocerd-api] no se pudo llegar a Resend
+
+ ❯ src/lib/email/outbox.test.ts (9 tests | 6 failed) 591ms
+   × buzón de salida (EMAIL_OUTBOX_DIR) > escribe el HTML y el JSON y nunca llama a fetch 11ms
+     → expected { sent: false, …(1) } to match object { sent: true, …(2) }
+(1 matching property omitted from actual)
+   × buzón de salida (EMAIL_OUTBOX_DIR) > gana aunque haya una clave de Resend y el modo sea en vivo 1ms
+     → expected 1 to be +0 // Object.is equality
+   × buzón de salida (EMAIL_OUTBOX_DIR) > un correo sin HTML se guarda como texto dentro de un documento HTML 350ms
+     → The "path" argument must be of type string. Received undefined
+   × buzón de salida (EMAIL_OUTBOX_DIR) > dos correos iguales en el mismo instante no se pisan 144ms
+     → expected [] to have a length of 4 but got +0
+   × buzón de salida (EMAIL_OUTBOX_DIR) > una carpeta imposible de escribir no lanza: devuelve provider_error 81ms
+     → expected { sent: false, …(3) } to deeply equal { sent: false, …(1) }
+   × buzón de salida (EMAIL_OUTBOX_DIR) > una invitación de dueño deja HTML y JSON con el enlace de activación 1ms
+     → The "path" argument must be of type string. Received undefined
+   ✓ sin EMAIL_OUTBOX_DIR el envío no cambia > la configuración no trae buzón y llama a Resend 1ms
+   ✓ sin EMAIL_OUTBOX_DIR el envío no cambia > fuera de los emuladores demo la variable se ignora: producción no se queda sin correo 0ms
+   ✓ sin EMAIL_OUTBOX_DIR el envío no cambia > sin clave ni buzón sigue sin salir 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > escribe el HTML y el JSON y nunca llama a fetch
+AssertionError: expected { sent: false, …(1) } to match object { sent: true, …(2) }
+(1 matching property omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "sent": true,[39m
+[32m-   "test": false,[39m
+[32m-   "to": "Dueno@Simulacro.test",[39m
+[31m+   "sent": false,[39m
+[2m  }[22m
+
+ ❯ src/lib/email/outbox.test.ts:47:20
+     45|     const result = await sendEmail(message, { config, fetch });
+     46| 
+     47|     expect(result).toMatchObject({ sent: true, to: message.to, test: f…
+       |                    ^
+     48|     expect(fetch.mock.calls.length).toBe(0);
+     49|     const files = (await readdir(dir)).sort();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > gana aunque haya una clave de Resend y el modo sea en vivo
+AssertionError: expected 1 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 1[39m
+
+ ❯ src/lib/email/outbox.test.ts:73:37
+     71|     await sendEmail(message, { config, fetch });
+     72| 
+     73|     expect(fetch.mock.calls.length).toBe(0);
+       |                                     ^
+     74|     expect(await readdir(dir)).toHaveLength(2);
+     75|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > un correo sin HTML se guarda como texto dentro de un documento HTML
+TypeError: The "path" argument must be of type string. Received undefined
+ ❯ src/lib/email/outbox.test.ts:82:27
+     80| 
+     81|     const html = (await readdir(dir)).find((name) => name.endsWith('.h…
+     82|     expect(await readFile(join(dir, html), 'utf8')).toContain('a &lt; …
+       |                           ^
+     83|   });
+     84| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > dos correos iguales en el mismo instante no se pisan
+AssertionError: expected [] to have a length of 4 but got +0
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 4[39m
+[31m+ 0[39m
+
+ ❯ src/lib/email/outbox.test.ts:94:32
+     92|       vi.useRealTimers();
+     93|     }
+     94|     expect(await readdir(dir)).toHaveLength(4);
+       |                                ^
+     95|   });
+     96| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > una carpeta imposible de escribir no lanza: devuelve provider_error
+AssertionError: expected { sent: false, …(3) } to deeply equal { sent: false, …(1) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[31m+   "providerCode": "validation_error",[39m
+[2m    "reason": "provider_error",[22m
+[2m    "sent": false,[22m
+[31m+   "status": 401,[39m
+[2m  }[22m
+
+ ❯ src/lib/email/outbox.test.ts:99:20
+     97|   it('una carpeta imposible de escribir no lanza: devuelve provider_er…
+     98|     const result = await sendEmail(message, { config: emailConfigFromE…
+     99|     expect(result).toEqual({ sent: false, reason: 'provider_error' });
+       |                    ^
+    100|   });
+    101| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/lib/email/outbox.test.ts > buzón de salida (EMAIL_OUTBOX_DIR) > una invitación de dueño deja HTML y JSON con el enlace de activación
+TypeError: The "path" argument must be of type string. Received undefined
+ ❯ src/lib/email/outbox.test.ts:120:33
+    118| 
+    119|     const names = await readdir(dir);
+    120|     const html = await readFile(join(dir, names.find((n) => n.endsWith…
+       |                                 ^
+    121|     const meta = JSON.parse(await readFile(join(dir, names.find((n) =>…
+    122|     expect(html).toContain(activationUrl);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 3 passed (9)
+   Start at  16:56:01
+   Duration  819ms (transform 59ms, setup 12ms, collect 72ms, tests 591ms, environment 0ms, prepare 46ms)
+
