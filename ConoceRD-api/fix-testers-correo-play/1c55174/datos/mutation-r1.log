@@ -1,0 +1,54 @@
+# R1 at 1c55174, with api-r1.patch applied
+# $ pnpm exec vitest run src/lib/tester-applications.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/projects/ConoceRD/api/.wt-api-play
+
+ ❯ src/lib/tester-applications.test.ts (12 tests | 1 failed) 15ms
+   ✓ lo que acepta el formulario > normaliza el correo y deja fuera los opcionales vacíos 2ms
+   ✓ lo que acepta el formulario > el idioma por defecto es español 0ms
+   ✓ lo que acepta el formulario > rechaza un correo que no se entiende y un nombre vacío 1ms
+   ✓ lo que acepta el formulario > el id es la huella del correo, sin mayúsculas ni espacios 0ms
+   ✓ guardar > una solicitud nueva queda pendiente con un envío 1ms
+   ✓ guardar > un correo repetido no vuelve a pendiente a quien ya se decidió 1ms
+   × aprobar y rechazar > aprobar marca el documento y devuelve a quién escribirle, nada más 7ms
+     → expected [ 'actualizadoEn', 'correo', …(6) ] to deeply equal [ 'actualizadoEn', 'correo', …(5) ]
+   ✓ aprobar y rechazar > rechazar marca el documento 0ms
+   ✓ aprobar y rechazar > la decisión se lee y se escribe dentro de una sola transacción 0ms
+   ✓ aprobar y rechazar > aprobar a una aprobada la deja aprobada: es Reenviar correo 1ms
+   ✓ aprobar y rechazar > una solicitud que no existe es 404 y no escribe nada 1ms
+   ✓ aprobar y rechazar > un id que no es una huella es 404 sin abrir transacción 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/tester-applications.test.ts > aprobar y rechazar > aprobar marca el documento y devuelve a quién escribirle, nada más
+AssertionError: expected [ 'actualizadoEn', 'correo', …(6) ] to deeply equal [ 'actualizadoEn', 'correo', …(5) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -3,7 +3,8 @@[39m
+[2m    "correo",[22m
+[2m    "decididoEn",[22m
+[2m    "decididoPor",[22m
+[2m    "estado",[22m
+[2m    "idioma",[22m
+[31m+   "invitacionFirebase",[39m
+[2m    "nombre",[22m
+[2m  ][22m
+
+ ❯ src/lib/tester-applications.test.ts:102:52
+    100|     const decision = await aprobarSolicitud(id, 'admin-1');
+    101|     expect(decision).toEqual({ id, estado: 'aprobado', correo: 'ana@ex…
+    102|     expect(Object.keys(docs.get(id) ?? {}).sort()).toEqual(
+       |                                                    ^
+    103|       [...Object.keys(pendiente), 'actualizadoEn', 'decididoEn', 'deci…
+    104|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  12:46:37
+   Duration  402ms (transform 55ms, setup 9ms, collect 212ms, tests 15ms, environment 0ms, prepare 53ms)
+
