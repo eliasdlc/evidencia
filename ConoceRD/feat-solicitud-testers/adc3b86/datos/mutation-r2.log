@@ -1,0 +1,32 @@
+# R2 at adc3b86, with r2-correo.patch applied
+# $ pnpm exec vitest run src/solicitudes-testers/correo.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/projects/ConoceRD/.wt-admin-testers
+
+ ❯ src/solicitudes-testers/correo.test.ts (7 tests | 1 failed) 26ms
+     × manda a la persona, con respuesta a contacto y una clave por minuto 21ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/solicitudes-testers/correo.test.ts > el envío > manda a la persona, con respuesta a contacto y una clave por minuto
+AssertionError: expected 'tester-bienvenida/ana@example.com/202…' to be 'tester-bienvenida/ana@example.com/202…' // Object.is equality
+
+Expected: "tester-bienvenida/ana@example.com/2026-11-19T20:30"
+Received: "tester-bienvenida/ana@example.com/2026-11-19T20:30:45"
+
+ ❯ src/solicitudes-testers/correo.test.ts:61:73
+     59|     const cuerpo = JSON.parse(String(init.body));
+     60|     expect(cuerpo).toMatchObject({ from: REMITENTE_POR_DEFECTO, to: ['…
+     61|     expect((init.headers as Record<string, string>)['idempotency-key']…
+       |                                                                         ^
+     62|       'tester-bienvenida/ana@example.com/2026-11-19T20:30',
+     63|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  20:58:45
+   Duration  149ms (transform 19ms, setup 0ms, import 28ms, tests 26ms, environment 0ms)
+
