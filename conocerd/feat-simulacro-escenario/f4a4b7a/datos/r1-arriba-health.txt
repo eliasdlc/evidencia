@@ -1,0 +1,21 @@
+$ git rev-parse --short HEAD
+5ed7b41
+$ ss -ltn | grep -E ':(9299|8280|9250|9289|4500|4600|3100)\b' (before)
+(none listening)
+$ pnpm simulacro:arriba   (E2E_AUTH_PORT=9299 E2E_FIRESTORE_PORT=8280 E2E_FIRESTORE_WS_PORT=9250 E2E_STORAGE_PORT=9289 E2E_HUB_PORT=4500 SIMULACRO_API_PORT=3100)
+$ tsx scripts/simulacro/arriba.ts
+Simulacro arriba. API http://127.0.0.1:3100, estado en /home/decruce/dev/wt/api/feat-simulacro-escenario/simulacro/estado.json
+$ curl -s -w ' HTTP %{http_code}' http://127.0.0.1:3100/health
+{"ok":true,"projectId":"demo-conocerd"} HTTP 200
+$ estado.json (passwords omitted)
+listo = True | proyecto = demo-conocerd | puertos = {'auth': 9299, 'firestore': 8280, 'firestoreWs': 9250, 'storage': 9289, 'hub': 4500, 'logging': 4600, 'api': 3100}
+cuentas = {'admin': 'admin@simulacro.test', 'dueno': 'dueno@simulacro.test', 'viajero': 'viajero@simulacro.test'}
+negocio = {'id': 'simulacro-cafeteria-el-ensayo', 'nombre': 'Cafetería El Ensayo'}
+$ ss -ltn | grep -E ':(9299|8280|9250|9289|4500|4600|3100)\b' (while up)
+127.0.0.1:3100
+127.0.0.1:9289
+127.0.0.1:9299
+127.0.0.1:4500
+127.0.0.1:4600
+[::ffff:127.0.0.1]:8280
+[::ffff:127.0.0.1]:9250
