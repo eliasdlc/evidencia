@@ -1,0 +1,61 @@
+# R1 at b73477f, with r1-guardar.patch applied
+# $ pnpm exec vitest run src/lib/tester-applications.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/projects/ConoceRD/.wt-api-testers
+
+ ❯ src/lib/tester-applications.test.ts (20 tests | 1 failed) 24ms
+   ✓ lo que acepta el formulario > normaliza el correo y deja fuera los opcionales vacíos 4ms
+   ✓ lo que acepta el formulario > el idioma por defecto es español 0ms
+   ✓ lo que acepta el formulario > rechaza un correo que no se entiende y un nombre vacío 1ms
+   ✓ lo que acepta el formulario > el id es la huella del correo, sin mayúsculas ni espacios 0ms
+   ✓ guardar > una solicitud nueva queda pendiente con un envío 1ms
+   × guardar > un correo repetido no vuelve a pendiente a quien ya se decidió 6ms
+     → expected { nombre: 'Otra', …(6) } to match object { estado: 'aprobado', nombre: 'Ana' }
+(5 matching properties omitted from actual)
+   ✓ aprobar y rechazar > aprobar une al grupo, invita al último build y marca el documento 1ms
+   ✓ aprobar y rechazar > si Firebase falla no se escribe la decisión, solo se suelta el candado 1ms
+   ✓ aprobar y rechazar > sin build que repartir queda aprobado, sin invitación de Firebase 0ms
+   ✓ aprobar y rechazar > rechazar saca del grupo y marca el documento 0ms
+   ✓ aprobar y rechazar > una aprobación que falla después de entrar al grupo deja la pendiente, y rechazarla la saca 0ms
+   ✓ aprobar y rechazar > con otra decisión en curso responde 409 sin llamar a Google 0ms
+   ✓ aprobar y rechazar > un candado vencido no bloquea, y el candado se suelta al terminar, también si falla 1ms
+   ✓ aprobar y rechazar > mientras decide, el candado está puesto por un minuto 0ms
+   ✓ aprobar y rechazar > un id que no es una huella es 404 sin leer Firestore 0ms
+   ✓ cliente de App Distribution > une al grupo testers creando al tester si no existe 2ms
+   ✓ cliente de App Distribution > reparte el último build del tren de release 1ms
+   ✓ cliente de App Distribution > sin builds no reparte nada 0ms
+   ✓ cliente de App Distribution > un error de Google es distribution_failed sin el cuerpo 1ms
+   ✓ cliente de App Distribution > contra el emulador, sin credencial, falla antes de llamar 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/tester-applications.test.ts > guardar > un correo repetido no vuelve a pendiente a quien ya se decidió
+AssertionError: expected { nombre: 'Otra', …(6) } to match object { estado: 'aprobado', nombre: 'Ana' }
+(5 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "estado": "aprobado",[39m
+[32m-   "nombre": "Ana",[39m
+[31m+   "estado": "pendiente",[39m
+[31m+   "nombre": "Otra",[39m
+[2m  }[22m
+
+ ❯ src/lib/tester-applications.test.ts:107:17
+    105|     await guardarSolicitud(solicitudDeTester.parse({ ...ana, nombre: '…
+    106|     const doc = docs.get(id);
+    107|     expect(doc).toMatchObject({ estado: 'aprobado', nombre: 'Ana' });
+       |                 ^
+    108|     expect(FieldValue.increment(1).isEqual(doc?.envios as never)).toBe…
+    109|     expect(Object.keys(doc ?? {}).sort()).toEqual(['actualizadoEn', 'c…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  20:45:10
+   Duration  419ms (transform 57ms, setup 12ms, collect 215ms, tests 24ms, environment 0ms, prepare 52ms)
+
