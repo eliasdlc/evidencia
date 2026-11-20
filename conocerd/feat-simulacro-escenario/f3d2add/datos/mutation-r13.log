@@ -1,0 +1,44 @@
+# R13 at f3d2add, with mut-r13.patch applied
+# $ pnpm exec vitest run src/lib/email/outbox.test.ts -t "fuera de los emuladores demo"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/feat-simulacro-escenario
+
+ ❯ src/lib/email/outbox.test.ts (9 tests | 1 failed | 8 skipped) 5ms
+   ↓ buzón de salida (EMAIL_OUTBOX_DIR) > escribe el HTML y el JSON y nunca llama a fetch
+   ↓ buzón de salida (EMAIL_OUTBOX_DIR) > gana aunque haya una clave de Resend y el modo sea en vivo
+   ↓ buzón de salida (EMAIL_OUTBOX_DIR) > un correo sin HTML se guarda como texto dentro de un documento HTML
+   ↓ buzón de salida (EMAIL_OUTBOX_DIR) > dos correos iguales en el mismo instante no se pisan
+   ↓ buzón de salida (EMAIL_OUTBOX_DIR) > una carpeta imposible de escribir no lanza: devuelve provider_error
+   ↓ buzón de salida (EMAIL_OUTBOX_DIR) > una invitación de dueño deja HTML y JSON con el enlace de activación
+   ↓ sin EMAIL_OUTBOX_DIR el envío no cambia > la configuración no trae buzón y llama a Resend
+   × sin EMAIL_OUTBOX_DIR el envío no cambia > fuera de los emuladores demo la variable se ignora: producción no se queda sin correo 5ms
+     → expected '/tmp/buzon-8Um4Re' to be undefined
+   ↓ sin EMAIL_OUTBOX_DIR el envío no cambia > sin clave ni buzón sigue sin salir
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/outbox.test.ts > sin EMAIL_OUTBOX_DIR el envío no cambia > fuera de los emuladores demo la variable se ignora: producción no se queda sin correo
+AssertionError: expected '/tmp/buzon-8Um4Re' to be undefined
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+"/tmp/buzon-8Um4Re"
+
+ ❯ src/lib/email/outbox.test.ts:156:32
+    154|     for (const source of sources) {
+    155|       const config = emailConfigFromEnv(source);
+    156|       expect(config.outboxDir).toBeUndefined();
+       |                                ^
+    157|       expect(config.apiKey).toBe(source.RESEND_API_KEY ?? null);
+    158|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 skipped (9)
+   Start at  16:59:28
+   Duration  206ms (transform 48ms, setup 9ms, collect 60ms, tests 5ms, environment 0ms, prepare 38ms)
+
