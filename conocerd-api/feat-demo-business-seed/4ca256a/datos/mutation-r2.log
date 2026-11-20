@@ -1,0 +1,54 @@
+# R2 at 4ca256a, with R2.patch applied
+# $ pnpm exec vitest run test/demo-business.test.ts -t "cada escritura es de la demo"
+
+ RUN  v3.2.7 /home/decruce/dev/projects/ConoceRD/api/.claude/worktrees/agent-a2249f28f13bfda9e
+
+ ❯ test/demo-business.test.ts (19 tests | 1 failed | 18 skipped) 26ms
+   ↓ el plan de la demo > cubre de mayo hasta hoy: seis meses cerrados y el mes en curso
+   ↓ el plan de la demo > las visitas del mes son la suma de cada desglose
+   ↓ el plan de la demo > los toques cuadran entre el total, `general` y los días, también leídos como los lee el panel
+   ↓ el plan de la demo > nada cae en el futuro, salvo las horas de llegada y los vencimientos
+   ↓ el plan de la demo > los guardados al cierre crecen mes a mes, no pasan de los de hoy y el mes en curso aún no tiene
+   ↓ el plan de la demo > la calificación del destino es la de sus reseñas, de 40 a 80 y sin textos repetidos
+   ↓ el plan de la demo > los canjes cuadran con los contadores del día y del mes, sin pasar el tope ni las visitas del día
+   ↓ el plan de la demo > la recompensa y la propuesta son las que el panel acepta, sin nada pendiente en la cola del equipo
+   ↓ el plan de la demo > crece con la temporada y los fines de semana se llenan
+   ↓ el plan de la demo > el destino no lleva los campos por los que el app lo encontraría, y dice que es demo
+   ↓ el plan de la demo > es el mismo plan con el mismo `now`, y un día después los meses cerrados no cambian
+   × el plan de la demo > cada escritura es de la demo, y una ruta ajena no lo es 25ms
+     → expected true to be false // Object.is equality
+   ↓ el plan de la demo > el archivo de la contraseña queda con permisos 600 y se vuelve a leer igual
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > el dueño entra al panel de la demo
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > el resumen de cada mes es el del plan, con comparación, guardados y calificación
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > las reseñas salen todas, de página en página y la más nueva primero
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > en camino, canjes de hoy, recompensa, ficha, fotos y equipo responden con lo sembrado
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > volver a sembrar no duplica nada y no toca lo que no es de la demo
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > se niega a tomar una cuenta del equipo o un destino real con el id de la demo
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/demo-business.test.ts > el plan de la demo > cada escritura es de la demo, y una ruta ajena no lo es
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ test/demo-business.test.ts:227:60
+    225|   it('cada escritura es de la demo, y una ruta ajena no lo es', () => {
+    226|     for (const write of planWrites(plan)) expect(isDemoScoped(write.pa…
+    227|     expect(isDemoScoped('destinations/oleaga', {}, OWNER)).toBe(false);
+       |                                                            ^
+    228|     expect(isDemoScoped('destinations/oleaga/stats/2026-11', {}, OWNER…
+    229|     expect(isDemoScoped('users/uid-real', { savedDestinationIds: [DEMO…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 skipped (19)
+   Start at  16:52:22
+   Duration  737ms (transform 196ms, setup 9ms, collect 534ms, tests 26ms, environment 0ms, prepare 51ms)
+
