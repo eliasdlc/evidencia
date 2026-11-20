@@ -1,0 +1,35 @@
+# R1 at 2ef931f, with r1-proxy.patch applied
+# $ pnpm exec vitest run src/lib/probar/proxy.test.ts
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/dev/projects/ConoceRD/.wt-web-testers
+
+ ❯ src/lib/probar/proxy.test.ts (7 tests | 1 failed) 89ms
+     × reenvía el JSON al API con el origen de quien escribe 80ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/probar/proxy.test.ts > forwardSolicitud > reenvía el JSON al API con el origen de quien escribe
+AssertionError: expected 'https://api.test/tester-feedback' to be 'https://api.test/tester-applications' // Object.is equality
+
+Expected: "https://api.test/tester-applications"
+Received: "https://api.test/tester-feedback"
+
+ ❯ src/lib/probar/proxy.test.ts:16:25
+     14|     expect(await respuesta.json()).toEqual({ ok: true });
+     15|     const [url, init] = fetchSolicitud.mock.calls[0]!;
+     16|     expect(String(url)).toBe("https://api.test/tester-applications");
+       |                         ^
+     17|     expect(init?.method).toBe("POST");
+     18|     expect(JSON.parse(String(init?.body))).toEqual(cuerpo);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  20:30:16
+   Duration  213ms (transform 16ms, setup 0ms, import 24ms, tests 89ms, environment 0ms)
+
