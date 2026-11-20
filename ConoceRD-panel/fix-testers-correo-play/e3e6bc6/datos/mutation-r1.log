@@ -1,0 +1,45 @@
+# R1 at e3e6bc6, with admin-r1.patch applied
+# $ pnpm exec vitest run src/app/testers/solicitudes/acciones.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/projects/ConoceRD/admin/.wt-admin-play
+
+ ❯ src/app/testers/solicitudes/acciones.test.ts (6 tests | 1 failed) 14ms
+     × la api aprueba, después sale el correo de la beta a esa persona y queda constancia 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/testers/solicitudes/acciones.test.ts > aprobar a quien pidió probar > la api aprueba, después sale el correo de la beta a esa persona y queda constancia
+AssertionError: expected "vi.fn()" to be called once with arguments: [ 'ana@example.com' ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+    "ana@example.com",
++   {
++     "asunto": "Tu invitación de Firebase",
++     "html": "x",
++     "texto": "x",
++   },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/app/testers/solicitudes/acciones.test.ts:55:30
+     53|     expect(llamarApi).toHaveBeenCalledWith('admin-1', `/admin/tester-a…
+     54|     expect(llamarApi.mock.invocationCallOrder[0]).toBeLessThan(enviarB…
+     55|     expect(enviarBienvenida).toHaveBeenCalledExactlyOnceWith('ana@exam…
+       |                              ^
+     56|     expect(repo.marcarCorreo).toHaveBeenCalledWith(ID, true);
+     57|     expect(r).toMatchObject({ ok: true, aviso: { tono: 'bien' } });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  12:45:27
+   Duration  379ms (transform 66ms, setup 0ms, import 264ms, tests 14ms, environment 0ms)
+
