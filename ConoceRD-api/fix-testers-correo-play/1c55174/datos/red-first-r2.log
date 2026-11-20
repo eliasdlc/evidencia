@@ -1,0 +1,69 @@
+# R2 at 1c55174, with src/app/admin/tester-applications/[id]/approve/route.ts, src/app/admin/tester-applications/[id]/reject/route.ts, src/lib/firebase-admin.ts, src/lib/tester-applications.ts back at 40d2baa
+# $ PATH=/home/decruce/.local/share/mise/installs/node/26.8.1/bin:$PATH firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm exec vitest run test/tester-applications-route.test.ts"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/tester-applications-route.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/projects/ConoceRD/api/.wt-api-play
+
+stdout | test/tester-applications-route.test.ts > rutas de solicitudes de testers contra el emulador > aprobar y rechazar sin token son 401, y con una cuenta sin admin 403
+[app-check] ausente /admin/tester-applications/6936c5358973e6b306bbdeabe9979d9fdab465e545c870d6c724db3096043dd2/x
+
+stdout | test/tester-applications-route.test.ts > rutas de solicitudes de testers contra el emulador > aprobar y rechazar sin token son 401, y con una cuenta sin admin 403
+[app-check] ausente /admin/tester-applications/6936c5358973e6b306bbdeabe9979d9fdab465e545c870d6c724db3096043dd2/x
+
+stdout | test/tester-applications-route.test.ts > rutas de solicitudes de testers contra el emulador > con admin, aprobar y rechazar solo cambian el estado, sin llamar a Google
+[app-check] ausente /admin/tester-applications/fb8c36f89ca7f29b65a1c7f868c4567a47f2d30a9d09169cba9b5629777f1a43/x
+
+stdout | test/tester-applications-route.test.ts > rutas de solicitudes de testers contra el emulador > con admin, un id que no es una huella es 404
+[app-check] ausente /admin/tester-applications/no-es-una-huella/x
+
+ ❯ test/tester-applications-route.test.ts (5 tests | 1 failed) 1718ms
+   ✓ rutas de solicitudes de testers contra el emulador > el formulario público guarda una pendiente y responde igual al repetir  1147ms
+   ✓ rutas de solicitudes de testers contra el emulador > un correo que no se entiende es 422 y no escribe nada 1ms
+   ✓ rutas de solicitudes de testers contra el emulador > aprobar y rechazar sin token son 401, y con una cuenta sin admin 403 63ms
+   × rutas de solicitudes de testers contra el emulador > con admin, aprobar y rechazar solo cambian el estado, sin llamar a Google 73ms
+     → expected 502 to be 200 // Object.is equality
+   ✓ rutas de solicitudes de testers contra el emulador > con admin, un id que no es una huella es 404 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/tester-applications-route.test.ts > rutas de solicitudes de testers contra el emulador > con admin, aprobar y rechazar solo cambian el estado, sin llamar a Google
+AssertionError: expected 502 to be 200 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 502[39m
+
+ ❯ test/tester-applications-route.test.ts:91:29
+     89| 
+     90|     const aprobada = await decidir(approve, id, admin.token);
+     91|     expect(aprobada.status).toBe(200);
+       |                             ^
+     92|     expect(await aprobada.json()).toEqual({
+     93|       application: { id, estado: 'aprobado', correo, nombre: 'Ana', id…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  12:46:58
+   Duration  1.97s (transform 111ms, setup 8ms, collect 84ms, tests 1.72s, environment 0ms, prepare 42ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/tester-applications-route.test.ts" exited with code 1
