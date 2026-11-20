@@ -1,0 +1,63 @@
+# R3 at b73477f, with r3-candado.patch applied
+# $ pnpm exec vitest run src/lib/tester-applications.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/projects/ConoceRD/.wt-api-testers
+
+ ❯ src/lib/tester-applications.test.ts (20 tests | 1 failed) 24ms
+   ✓ lo que acepta el formulario > normaliza el correo y deja fuera los opcionales vacíos 3ms
+   ✓ lo que acepta el formulario > el idioma por defecto es español 0ms
+   ✓ lo que acepta el formulario > rechaza un correo que no se entiende y un nombre vacío 2ms
+   ✓ lo que acepta el formulario > el id es la huella del correo, sin mayúsculas ni espacios 0ms
+   ✓ guardar > una solicitud nueva queda pendiente con un envío 1ms
+   ✓ guardar > un correo repetido no vuelve a pendiente a quien ya se decidió 0ms
+   ✓ aprobar y rechazar > aprobar une al grupo, invita al último build y marca el documento 1ms
+   ✓ aprobar y rechazar > si Firebase falla no se escribe la decisión, solo se suelta el candado 1ms
+   ✓ aprobar y rechazar > sin build que repartir queda aprobado, sin invitación de Firebase 0ms
+   ✓ aprobar y rechazar > rechazar saca del grupo y marca el documento 0ms
+   ✓ aprobar y rechazar > una aprobación que falla después de entrar al grupo deja la pendiente, y rechazarla la saca 0ms
+   × aprobar y rechazar > con otra decisión en curso responde 409 sin llamar a Google 7ms
+     → promise resolved "{ …(6) }" instead of rejecting
+   ✓ aprobar y rechazar > un candado vencido no bloquea, y el candado se suelta al terminar, también si falla 1ms
+   ✓ aprobar y rechazar > mientras decide, el candado está puesto por un minuto 0ms
+   ✓ aprobar y rechazar > un id que no es una huella es 404 sin leer Firestore 0ms
+   ✓ cliente de App Distribution > une al grupo testers creando al tester si no existe 2ms
+   ✓ cliente de App Distribution > reparte el último build del tren de release 1ms
+   ✓ cliente de App Distribution > sin builds no reparte nada 0ms
+   ✓ cliente de App Distribution > un error de Google es distribution_failed sin el cuerpo 1ms
+   ✓ cliente de App Distribution > contra el emulador, sin credencial, falla antes de llamar 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/tester-applications.test.ts > aprobar y rechazar > con otra decisión en curso responde 409 sin llamar a Google
+AssertionError: promise resolved "{ …(6) }" instead of rejecting
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Error {[39m
+[32m-   "message": "rejected promise",[39m
+[31m+ {[39m
+[31m+   "correo": "ana@example.com",[39m
+[31m+   "estado": "rechazado",[39m
+[31m+   "id": "8e43ca37701228e74983efdbd0cff5c16b3b1e5d4e29a7c05626d4d25a018e11",[39m
+[31m+   "idioma": "en",[39m
+[31m+   "invitacionFirebase": false,[39m
+[31m+   "nombre": "Ana",[39m
+[2m  }[22m
+
+ ❯ src/lib/tester-applications.test.ts:166:53
+    164|     docs.set(id, { ...docs.get(id), ocupadoHasta: Timestamp.fromMillis…
+    165|     const d = distribucionFalsa();
+    166|     await expect(rechazarSolicitud(id, 'admin-1', d)).rejects.toMatchO…
+       |                                                     ^
+    167|     await expect(aprobarSolicitud(id, 'admin-1', d)).rejects.toMatchOb…
+    168|     expect(d.sacarDelGrupo).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  20:45:22
+   Duration  376ms (transform 58ms, setup 10ms, collect 198ms, tests 24ms, environment 0ms, prepare 43ms)
+
