@@ -1,0 +1,54 @@
+# R1 at 4ca256a, with R1.patch applied
+# $ pnpm exec vitest run test/demo-business.test.ts -t "el destino no lleva los campos"
+
+ RUN  v3.2.7 /home/decruce/dev/projects/ConoceRD/api/.claude/worktrees/agent-a2249f28f13bfda9e
+
+ ❯ test/demo-business.test.ts (19 tests | 1 failed | 18 skipped) 7ms
+   ↓ el plan de la demo > cubre de mayo hasta hoy: seis meses cerrados y el mes en curso
+   ↓ el plan de la demo > las visitas del mes son la suma de cada desglose
+   ↓ el plan de la demo > los toques cuadran entre el total, `general` y los días, también leídos como los lee el panel
+   ↓ el plan de la demo > nada cae en el futuro, salvo las horas de llegada y los vencimientos
+   ↓ el plan de la demo > los guardados al cierre crecen mes a mes, no pasan de los de hoy y el mes en curso aún no tiene
+   ↓ el plan de la demo > la calificación del destino es la de sus reseñas, de 40 a 80 y sin textos repetidos
+   ↓ el plan de la demo > los canjes cuadran con los contadores del día y del mes, sin pasar el tope ni las visitas del día
+   ↓ el plan de la demo > la recompensa y la propuesta son las que el panel acepta, sin nada pendiente en la cola del equipo
+   ↓ el plan de la demo > crece con la temporada y los fines de semana se llenan
+   × el plan de la demo > el destino no lleva los campos por los que el app lo encontraría, y dice que es demo 6ms
+     → tierLevel: expected { name: { …(2) }, …(27) } to not have property "tierLevel"
+   ↓ el plan de la demo > es el mismo plan con el mismo `now`, y un día después los meses cerrados no cambian
+   ↓ el plan de la demo > cada escritura es de la demo, y una ruta ajena no lo es
+   ↓ el plan de la demo > el archivo de la contraseña queda con permisos 600 y se vuelve a leer igual
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > el dueño entra al panel de la demo
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > el resumen de cada mes es el del plan, con comparación, guardados y calificación
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > las reseñas salen todas, de página en página y la más nueva primero
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > en camino, canjes de hoy, recompensa, ficha, fotos y equipo responden con lo sembrado
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > volver a sembrar no duplica nada y no toca lo que no es de la demo
+   ↓ la demo sembrada en el emulador, vista por las rutas del panel > se niega a tomar una cuenta del equipo o un destino real con el id de la demo
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/demo-business.test.ts > el plan de la demo > el destino no lleva los campos por los que el app lo encontraría, y dice que es demo
+AssertionError: tierLevel: expected { name: { …(2) }, …(27) } to not have property "tierLevel"
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+1
+
+ ❯ test/demo-business.test.ts:208:43
+    206|   it('el destino no lleva los campos por los que el app lo encontraría…
+    207|     for (const field of ['popularity', 'tierLevel', 'geohash', 'search…
+    208|       expect(plan.destination, field).not.toHaveProperty(field);
+       |                                           ^
+    209|     }
+    210|     expect(plan.destination.demo).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 skipped (19)
+   Start at  16:52:14
+   Duration  633ms (transform 172ms, setup 9ms, collect 466ms, tests 7ms, environment 0ms, prepare 45ms)
+
