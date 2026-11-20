@@ -1,0 +1,244 @@
+# R1 at 05e205c, with src/app/testers/solicitudes/acciones.ts, src/solicitudes-testers/correo-beta-en.ts, src/solicitudes-testers/correo.ts back at dc3aa74
+# $ pnpm exec vitest run src/app/testers/solicitudes/acciones.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/projects/ConoceRD/admin/.wt-admin-en
+
+ ❯ src/app/testers/solicitudes/acciones.test.ts (7 tests | 2 failed) 14ms
+     × la api aprueba, después sale el correo de la beta a esa persona y queda constancia 4ms
+     × quien pidió en español recibe la beta en español 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/testers/solicitudes/acciones.test.ts > aprobar a quien pidió probar > la api aprueba, después sale el correo de la beta a esa persona y queda constancia
+Error: [vitest] No "BIENVENIDA_EN" export is defined on the "@/solicitudes-testers/correo" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("@/solicitudes-testers/correo"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ src/app/testers/solicitudes/acciones.test.ts:56:81
+     54|     expect(llamarApi).toHaveBeenCalledWith('admin-1', `/admin/tester-a…
+     55|     expect(llamarApi.mock.invocationCallOrder[0]).toBeLessThan(enviarB…
+     56|     expect(enviarBienvenida).toHaveBeenCalledExactlyOnceWith('ana@exam…
+       |                                                                                 ^
+     57|     expect(repo.marcarCorreo).toHaveBeenCalledWith(ID, true);
+     58|     expect(r).toMatchObject({ ok: true, aviso: { tono: 'bien' } });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/app/testers/solicitudes/acciones.test.ts > aprobar a quien pidió probar > quien pidió en español recibe la beta en español
+AssertionError: expected "vi.fn()" to be called once with arguments: [ 'ana@example.com', { …(3) } ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+    "ana@example.com",
+-   {
+-     "asunto": "Ya puedes probar ConoceRD: así funciona la beta",
+-     "html": "<!DOCTYPE html>
+- <html lang=\"es\">
+- <head>
+- <meta charset=\"utf-8\">
+- <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+- <meta name=\"color-scheme\" content=\"light\">
+- <meta name=\"supported-color-schemes\" content=\"light\">
+- <title>Ya puedes probar ConoceRD</title>
+- <style>
+-   @media (max-width: 620px) {
+-     .wrap { width: 100% !important; }
+-     .pad { padding-left: 22px !important; padding-right: 22px !important; }
+-     .h1 { font-size: 28px !important; line-height: 34px !important; }
+-     .btn a { display: block !important; }
+-   }
+- </style>
+- </head>
+- <body style=\"margin:0; padding:0; background:#fdf8f0;\">
+- <div style=\"display:none; max-height:0; overflow:hidden; mso-hide:all;\">Dos enlaces y cuatro pasos: únete a la prueba, descarga la app y cuéntanos lo que encuentres.</div>
+- <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background:#fdf8f0;\">
+- <tr><td align=\"center\" style=\"padding:32px 12px;\">
+-
+- <table role=\"presentation\" class=\"wrap\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:600px; max-width:600px; background:#ffffff; border-radius:20px; overflow:hidden; font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#0f1a2e;\">
+-
+-   <!-- Encabezado -->
+-   <tr><td class=\"pad\" style=\"background:#0f1a2e; padding:32px 40px 36px 40px;\">
+-     <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>
+-       <td style=\"vertical-align:middle;\"><img src=\"https://www.conocerd.app/apple-icon.png\" width=\"44\" height=\"44\" alt=\"\" style=\"display:block; border-radius:11px;\"></td>
+-       <td style=\"vertical-align:middle; padding-left:12px; font-size:20px; font-weight:800; color:#ffffff; letter-spacing:-0.2px;\">ConoceRD</td>
+-       <td style=\"vertical-align:middle; padding-left:12px;\"><span style=\"display:inline-block; background:#ff8d16; color:#0f1a2e; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 10px; border-radius:999px;\">BETA</span></td>
+-     </tr></table>
+-     <h1 class=\"h1\" style=\"margin:28px 0 0 0; font-size:32px; line-height:38px; font-weight:800; color:#ffffff; letter-spacing:-0.5px;\">Gracias por probar ConoceRD antes que nadie</h1>
+-     <p style=\"margin:14px 0 0 0; font-size:16px; line-height:24px; color:#c9d2e0;\">Eres parte del grupo que va a usar la app antes de que salga al público. Lo que nos cuentes decide qué arreglamos primero.</p>
+-   </td></tr>
+-
+-   <!-- Resumen -->
+-   <tr><td class=\"pad\" style=\"padding:32px 40px 8px 40px;\">
+-     <p style=\"margin:0; font-size:16px; line-height:25px; color:#33405a;\">Todo el proceso son cuatro pasos y toma unos cinco minutos. Hazlo desde tu teléfono Android, con la <strong style=\"color:#0f1a2e;\">misma cuenta de Google</strong> (Gmail) que nos diste.</p>
+-   </td></tr>
+-
+-   <!-- Paso 1 -->
+-   <tr><td class=\"pad\" style=\"padding:24px 40px 0 40px;\">
+-     <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>
+-       <td width=\"44\" style=\"vertical-align:top;\"><div style=\"width:32px; height:32px; line-height:32px; text-align:center; border-radius:999px; background:#e0552f; color:#ffffff; font-weight:800; font-size:15px;\">1</div></td>
+-       <td style=\"vertical-align:top;\">
+-         <p style=\"margin:4px 0 0 0; font-size:18px; line-height:24px; font-weight:800;\">Únete a la prueba</p>
+-         <p style=\"margin:6px 0 0 0; font-size:15px; line-height:23px; color:#33405a;\">Abre este enlace y toca el botón para <strong style=\"color:#0f1a2e;\">convertirte en verificador</strong> (si lo ves en inglés dice \"Become a tester\"). Sin este paso Google Play no te deja descargar la app.</p>
+-         <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"btn\" style=\"margin-top:16px;\"><tr><td style=\"background:#e0552f; border-radius:999px;\">
+-           <a href=\"https://play.google.com/apps/testing/com.conocerd.app\" style=\"display:inline-block; padding:14px 26px; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:999px;\">Unirme a la prueba</a>
+-         </td></tr></table>
+-       </td>
+-     </tr></table>
+-   </td></tr>
+-
+-   <!-- Paso 2 -->
+-   <tr><td class=\"pad\" style=\"padding:28px 40px 0 40px;\">
+-     <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>
+-       <td width=\"44\" style=\"vertical-align:top;\"><div style=\"width:32px; height:32px; line-height:32px; text-align:center; border-radius:999px; background:#e0552f; color:#ffffff; font-weight:800; font-size:15px;\">2</div></td>
+-       <td style=\"vertical-align:top;\">
+-         <p style=\"margin:4px 0 0 0; font-size:18px; line-height:24px; font-weight:800;\">Descarga la app de Google Play</p>
+-         <p style=\"margin:6px 0 0 0; font-size:15px; line-height:23px; color:#33405a;\">Ya dentro de la prueba, instálala como cualquier otra app. Si te dice que no está disponible, espera unos minutos: a Google a veces le toma un rato activar tu acceso.</p>
+-         <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"btn\" style=\"margin-top:16px;\"><tr><td style=\"background:#0f1a2e; border-radius:999px;\">
+-           <a href=\"https://play.google.com/store/apps/details?id=com.conocerd.app\" style=\"display:inline-block; padding:14px 26px; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:999px;\">Abrir en Google Play</a>
+-         </td></tr></table>
+-       </td>
+-     </tr></table>
+-   </td></tr>
+-
+-   <!-- Paso 3 -->
+-   <tr><td class=\"pad\" style=\"padding:28px 40px 0 40px;\">
+-     <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>
+-       <td width=\"44\" style=\"vertical-align:top;\"><div style=\"width:32px; height:32px; line-height:32px; text-align:center; border-radius:999px; background:#e0552f; color:#ffffff; font-weight:800; font-size:15px;\">3</div></td>
+-       <td style=\"vertical-align:top;\">
+-         <p style=\"margin:4px 0 0 0; font-size:18px; line-height:24px; font-weight:800;\">Úsala como la usarías de verdad</p>
+-         <p style=\"margin:6px 0 12px 0; font-size:15px; line-height:23px; color:#33405a;\">Esta versión puede fallar y cambia seguido. Esto es lo que más nos sirve que pruebes:</p>
+-         <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background:#fdf8f0; border-radius:14px;\">
+-           <tr><td style=\"padding:14px 18px; border-bottom:1px solid #f0e6d6;\">
+-             <p style=\"margin:0; font-size:15px; font-weight:700;\">Crea una ruta y ajústala a tu día</p>
+-             <p style=\"margin:2px 0 0 0; font-size:14px; line-height:20px; color:#5b6680;\">Mueve paradas, cambia la hora de salida.</p>
+-           </td></tr>
+-           <tr><td style=\"padding:14px 18px; border-bottom:1px solid #f0e6d6;\">
+-             <p style=\"margin:0; font-size:15px; font-weight:700;\">Haz un viaje con el GPS</p>
+-             <p style=\"margin:2px 0 0 0; font-size:14px; line-height:20px; color:#5b6680;\">Llega a un lugar y quédate el rato que quieras.</p>
+-           </td></tr>
+-           <tr><td style=\"padding:14px 18px;\">
+-             <p style=\"margin:0; font-size:15px; font-weight:700;\">Guarda un recuerdo en tu diario</p>
+-             <p style=\"margin:2px 0 0 0; font-size:14px; line-height:20px; color:#5b6680;\">Una foto y una línea bastan.</p>
+-           </td></tr>
+-         </table>
+-       </td>
+-     </tr></table>
+-   </td></tr>
+-
+-   <!-- Paso 4 -->
+-   <tr><td class=\"pad\" style=\"padding:28px 40px 0 40px;\">
+-     <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>
+-       <td width=\"44\" style=\"vertical-align:top;\"><div style=\"width:32px; height:32px; line-height:32px; text-align:center; border-radius:999px; background:#e0552f; color:#ffffff; font-weight:800; font-size:15px;\">4</div></td>
+-       <td style=\"vertical-align:top;\">
+-         <p style=\"margin:4px 0 0 0; font-size:18px; line-height:24px; font-weight:800;\">Cuéntanos lo que encuentres</p>
+-         <p style=\"margin:6px 0 0 0; font-size:15px; line-height:23px; color:#33405a;\">Un error, una idea, algo que no se entiende o algo que te gustó. Todo va por esta página, y llega directo a quien construye la app.</p>
+-         <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"btn\" style=\"margin-top:16px;\"><tr><td style=\"background:#e0552f; border-radius:999px;\">
+-           <a href=\"https://www.conocerd.app/testers\" style=\"display:inline-block; padding:14px 26px; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:999px;\">Dejar mi opinión</a>
+-         </td></tr></table>
+-         <p style=\"margin:10px 0 0 0; font-size:13px; line-height:19px; color:#5b6680;\">Guárdala: es <a href=\"https://www.conocerd.app/testers\" style=\"color:#c2410c; font-weight:700; text-decoration:none;\">conocerd.app/testers</a></p>
+-       </td>
+-     </tr></table>
+-   </td></tr>
+-
+-   <!-- Cómo reportar -->
+-   <tr><td class=\"pad\" style=\"padding:32px 40px 0 40px;\">
+-     <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background:#e9faf7; border-radius:16px; border:1px solid #bfeee7;\">
+-       <tr><td style=\"padding:22px 24px;\">
+-         <p style=\"margin:0 0 12px 0; font-size:17px; font-weight:800;\">Cómo hacer un reporte que sí sirva</p>
+-         <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
+-           <tr><td width=\"22\" style=\"vertical-align:top; color:#0f8f7f; font-weight:800; font-size:15px; line-height:23px;\">&#8226;</td>
+-               <td style=\"font-size:15px; line-height:23px; color:#33405a; padding-bottom:10px;\"><strong style=\"color:#0f1a2e;\">Tómale captura de pantalla al problema.</strong> Una captura vale más que un párrafo. En casi todos los Android: botón de encendido y bajar volumen al mismo tiempo. Luego la subes en la página.</td></tr>
+-           <tr><td width=\"22\" style=\"vertical-align:top; color:#0f8f7f; font-weight:800; font-size:15px; line-height:23px;\">&#8226;</td>
+-               <td style=\"font-size:15px; line-height:23px; color:#33405a; padding-bottom:10px;\"><strong style=\"color:#0f1a2e;\">Una cosa por envío.</strong> Si encontraste tres, manda tres: cada una se sigue por separado.</td></tr>
+-           <tr><td width=\"22\" style=\"vertical-align:top; color:#0f8f7f; font-weight:800; font-size:15px; line-height:23px;\">&#8226;</td>
+-               <td style=\"font-size:15px; line-height:23px; color:#33405a; padding-bottom:10px;\"><strong style=\"color:#0f1a2e;\">Di qué estabas haciendo.</strong> Por ejemplo: \"Toqué Iniciar viaje en la ruta de Samaná y la app se cerró\".</td></tr>
+-           <tr><td width=\"22\" style=\"vertical-align:top; color:#0f8f7f; font-weight:800; font-size:15px; line-height:23px;\">&#8226;</td>
+-               <td style=\"font-size:15px; line-height:23px; color:#33405a;\"><strong style=\"color:#0f1a2e;\">Si salió un mensaje de error, cópialo tal cual,</strong> aunque no se entienda. Y deja tu correo si quieres que te avisemos cuando lo arreglemos.</td></tr>
+-         </table>
+-       </td></tr>
+-     </table>
+-   </td></tr>
+-
+-   <!-- Importante -->
+-   <tr><td class=\"pad\" style=\"padding:20px 40px 0 40px;\">
+-     <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background:#fff3e6; border-radius:16px; border:1px solid #ffd4a6;\">
+-       <tr><td style=\"padding:20px 24px;\">
+-         <p style=\"margin:0; font-size:17px; font-weight:800;\">Una cosa importante</p>
+-         <p style=\"margin:8px 0 0 0; font-size:15px; line-height:23px; color:#33405a;\">Deja la app instalada <strong style=\"color:#0f1a2e;\">por lo menos 14 días</strong>, aunque no la uses todos los días. Google nos pide ese tiempo de prueba para poder publicarla. Si la desinstalas o sales de la prueba, deja de contar.</p>
+-       </td></tr>
+-     </table>
+-   </td></tr>
+-
+-   <!-- Si algo no funciona -->
+-   <tr><td class=\"pad\" style=\"padding:28px 40px 0 40px;\">
+-     <p style=\"margin:0 0 8px 0; font-size:17px; font-weight:800;\">Si algo no te funciona</p>
+-     <p style=\"margin:0 0 10px 0; font-size:15px; line-height:23px; color:#33405a;\"><strong style=\"color:#0f1a2e;\">Google Play dice que la app no está disponible.</strong> Revisa que Play Store está abierto con el Gmail que nos diste (tu foto, arriba a la derecha). Si tienes varias cuentas, cámbiate a esa y vuelve a abrir el enlace del paso 1.</p>
+-     <p style=\"margin:0 0 10px 0; font-size:15px; line-height:23px; color:#33405a;\"><strong style=\"color:#0f1a2e;\">Tengo iPhone.</strong> Por ahora la prueba es solo en Android. La versión de iPhone viene después y te avisamos.</p>
+-     <p style=\"margin:0; font-size:15px; line-height:23px; color:#33405a;\"><strong style=\"color:#0f1a2e;\">Me llegan actualizaciones seguidas.</strong> Es normal: cada una trae arreglos de lo que ustedes reportan. Mantén la app actualizada.</p>
+-   </td></tr>
+-
+-   <!-- Cierre -->
+-   <tr><td class=\"pad\" style=\"padding:32px 40px 36px 40px;\">
+-     <p style=\"margin:0; font-size:15px; line-height:23px; color:#33405a;\">Gracias de verdad por el tiempo. Cada reporte nos acerca a una app que sirva para descubrir lo nuestro.</p>
+-     <p style=\"margin:18px 0 0 0; font-size:15px; line-height:22px; color:#0f1a2e;\"><strong>Elias</strong><br><span style=\"color:#5b6680;\">Equipo ConoceRD</span></p>
+-   </td></tr>
+-
+-   <tr><td style=\"background:#0f1a2e; padding:18px 40px; text-align:center;\">
+-     <p style=\"margin:0; font-size:12px; line-height:18px; color:#9aa6bb;\">Recibes este correo porque te apuntaste para probar ConoceRD.<br><a href=\"https://www.conocerd.app\" style=\"color:#ffffff; text-decoration:none; font-weight:700;\">conocerd.app</a></p>
+-   </td></tr>
+-
+- </table>
+- </td></tr>
+- </table>
+- </body>
+- </html>
+- ",
+-     "texto": "Gracias por probar ConoceRD antes que nadie
+-
+- Todo el proceso son cuatro pasos. Hazlo desde tu teléfono Android, con la misma cuenta de Google (Gmail) que nos diste.
+-
+- 1. Únete a la prueba: https://play.google.com/apps/testing/com.conocerd.app
+-    Toca el botón para convertirte en verificador (\"Become a tester\" en inglés).
+- 2. Descarga la app: https://play.google.com/store/apps/details?id=com.conocerd.app
+- 3. Úsala de verdad: crea una ruta, haz un viaje con el GPS, guarda un recuerdo en tu diario.
+- 4. Cuéntanos lo que encuentres: https://www.conocerd.app/testers
+-
+- Cómo reportar: toma captura de pantalla del problema (encendido y bajar volumen a la vez), una cosa por envío, di qué estabas haciendo y copia el mensaje de error tal cual.
+-
+- Importante: deja la app instalada por lo menos 14 días. Google nos pide ese tiempo para poder publicarla.
+-
+- Gracias,
+- Elias, Equipo ConoceRD
+- ",
+-   },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/app/testers/solicitudes/acciones.test.ts:64:30
+     62|     llamarApi.mockResolvedValue({ application: { ...aprobada.applicati…
+     63|     await aprobar(ID);
+     64|     expect(enviarBienvenida).toHaveBeenCalledExactlyOnceWith('ana@exam…
+       |                              ^
+     65|   });
+     66|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 5 passed (7)
+   Start at  13:18:32
+   Duration  431ms (transform 74ms, setup 0ms, import 293ms, tests 14ms, environment 0ms)
+
