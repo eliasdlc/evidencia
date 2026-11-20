@@ -1,0 +1,363 @@
+# R6 at f4a4b7a, with mut-r6.patch applied
+# $ pnpm exec vitest run src/lib/email/resend.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/feat-simulacro-escenario
+
+stderr | src/lib/email/resend.test.ts > sendEmail > en vivo manda a Resend con la clave, el remitente, texto plano e Idempotency-Key
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+stderr | src/lib/email/resend.test.ts > sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+stderr | src/lib/email/resend.test.ts > sendEmail > en vivo, la respuesta de un correo con replyTo propio va a esa dirección y no al buzón global
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+stderr | src/lib/email/resend.test.ts > sendEmail > en modo prueba, el replyTo propio no se usa: solo se dice a quién iría la respuesta
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+stderr | src/lib/email/resend.test.ts > sendEmail > en modo prueba sin buzón de prueba no llama a nadie
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+stderr | src/lib/email/resend.test.ts > sendEmail > sin clave no llama a nadie
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+stderr | src/lib/email/resend.test.ts > sendEmail > H-4: con html y replyTo propio, Resend recibe los dos, y el replyTo del mensaje gana al del entorno
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+stderr | src/lib/email/resend.test.ts > sendEmail > el asunto sale en una sola línea aunque la plantilla traiga CR o LF, en vivo y en prueba
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+stderr | src/lib/email/resend.test.ts > sendEmail > sin html no manda la clave html
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+stderr | src/lib/email/resend.test.ts > sendEmail > H-5: en modo prueba el HTML abre su cuerpo con el mismo aviso que el texto, escapado, y sale al buzón de prueba
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+stderr | src/lib/email/resend.test.ts > sendEmail > H-5: el aviso de prueba del HTML también dice a quién iría la respuesta
+[conocerd-api] no se pudo escribir el correo en el buzón de salida
+
+ ❯ src/lib/email/resend.test.ts (21 tests | 16 failed) 21ms
+   ✓ configuración del correo > sin EMAIL_MODE es modo prueba, y el remitente es siempre el de negocios 1ms
+   × sendEmail > en vivo manda a Resend con la clave, el remitente, texto plano e Idempotency-Key 7ms
+     → expected { sent: false, …(1) } to deeply equal { sent: true, id: 'email_123', …(2) }
+   × sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave 2ms
+     → expected { sent: false, …(1) } to match object { sent: true, …(2) }
+(1 matching property omitted from actual)
+   × sendEmail > en vivo, la respuesta de un correo con replyTo propio va a esa dirección y no al buzón global 1ms
+     → undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   × sendEmail > en modo prueba, el replyTo propio no se usa: solo se dice a quién iría la respuesta 0ms
+     → undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   × sendEmail > en modo prueba sin buzón de prueba no llama a nadie 1ms
+     → expected { sent: false, …(1) } to deeply equal { sent: false, …(1) }
+   × sendEmail > sin clave no llama a nadie 1ms
+     → expected { sent: false, …(1) } to deeply equal { sent: false, reason: 'no_api_key' }
+   × sendEmail > H-4: con html y replyTo propio, Resend recibe los dos, y el replyTo del mensaje gana al del entorno 0ms
+     → undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   × sendEmail > el asunto sale en una sola línea aunque la plantilla traiga CR o LF, en vivo y en prueba 0ms
+     → undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   × sendEmail > sin html no manda la clave html 0ms
+     → undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   × sendEmail > H-5: en modo prueba el HTML abre su cuerpo con el mismo aviso que el texto, escapado, y sale al buzón de prueba 0ms
+     → undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   × sendEmail > H-5: el aviso de prueba del HTML también dice a quién iría la respuesta 0ms
+     → undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   × sendEmail > H-6: un 429 de cuota diaria trae el nombre de Resend como providerCode, y el log solo el código HTTP 1ms
+     → expected { sent: false, …(1) } to deeply equal { sent: false, …(3) }
+   × sendEmail > un nombre de error que no es un código (texto libre, otro tipo) no se copia al resultado 1ms
+     → expected { sent: false, …(1) } to deeply equal { sent: false, …(2) }
+   × sendEmail > H-1: las dos cabeceras de baja llegan a Resend tal cual, en vivo y en prueba 0ms
+     → undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   × sendEmail > sin cabeceras, el cuerpo no lleva la clave headers 0ms
+     → undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   ✓ sendEmail > H-2: cualquier otra cabecera lanza antes de llamar a Resend 1ms
+   ✓ sendEmail > H-3: un valor con CR o LF lanza antes de llamar a Resend, aun sin clave 1ms
+   × sendEmail > un rechazo de Resend es sent: false con el código, sin lanzar 1ms
+     → expected { sent: false, …(1) } to deeply equal { sent: false, …(2) }
+   ✓ sendEmail con la red caída > es sent: false sin lanzar y sin poner el error en el log 0ms
+   ✓ idempotencyKey > es estable por hecho, distinta entre hechos y corta aunque las partes no lo sean 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > en vivo manda a Resend con la clave, el remitente, texto plano e Idempotency-Key
+AssertionError: expected { sent: false, …(1) } to deeply equal { sent: true, id: 'email_123', …(2) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "id": "email_123",[39m
+[32m-   "sent": true,[39m
+[32m-   "test": false,[39m
+[32m-   "to": "dueno@example.com",[39m
+[31m+   "reason": "provider_error",[39m
+[31m+   "sent": false,[39m
+[2m  }[22m
+
+ ❯ src/lib/email/resend.test.ts:58:20
+     56|     const result = await sendEmail(message, { config: live, fetch });
+     57| 
+     58|     expect(result).toEqual({ sent: true, id: 'email_123', to: 'dueno@e…
+       |                    ^
+     59|     const { url, headers, body } = sentRequest(fetch);
+     60|     expect(url).toBe(RESEND_ENDPOINT);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > en modo prueba solo escribe al buzón de prueba, marca el asunto y separa la clave
+AssertionError: expected { sent: false, …(1) } to match object { sent: true, …(2) }
+(1 matching property omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "sent": true,[39m
+[32m-   "test": true,[39m
+[32m-   "to": "elias@example.com",[39m
+[31m+   "sent": false,[39m
+[2m  }[22m
+
+ ❯ src/lib/email/resend.test.ts:82:20
+     80|     });
+     81| 
+     82|     expect(result).toMatchObject({ sent: true, to: 'elias@example.com'…
+       |                    ^
+     83|     const { headers, body } = sentRequest(fetch);
+     84|     expect(body.to).toEqual(['elias@example.com']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > en vivo, la respuesta de un correo con replyTo propio va a esa dirección y no al buzón global
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ sentRequest src/lib/email/resend.test.ts:35:23
+     33| 
+     34| const sentRequest = (fetch: ReturnType<typeof fakeFetch>) => {
+     35|   const [url, init] = fetch.mock.calls[0] as [string, RequestInit];
+       |                       ^
+     36|   return { url, headers: init.headers as Record<string, string>, body:…
+     37| };
+ ❯ src/lib/email/resend.test.ts:94:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > en modo prueba, el replyTo propio no se usa: solo se dice a quién iría la respuesta
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ sentRequest src/lib/email/resend.test.ts:35:23
+     33| 
+     34| const sentRequest = (fetch: ReturnType<typeof fakeFetch>) => {
+     35|   const [url, init] = fetch.mock.calls[0] as [string, RequestInit];
+       |                       ^
+     36|   return { url, headers: init.headers as Record<string, string>, body:…
+     37| };
+ ❯ src/lib/email/resend.test.ts:103:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > en modo prueba sin buzón de prueba no llama a nadie
+AssertionError: expected { sent: false, …(1) } to deeply equal { sent: false, …(1) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "reason": "no_test_recipient",[39m
+[31m+   "reason": "provider_error",[39m
+[2m    "sent": false,[22m
+[2m  }[22m
+
+ ❯ src/lib/email/resend.test.ts:114:5
+    112|   it('en modo prueba sin buzón de prueba no llama a nadie', async () =…
+    113|     const fetch = fakeFetch();
+    114|     await expect(sendEmail(message, { config: { ...live, mode: 'test' …
+       |     ^
+    115|       sent: false,
+    116|       reason: 'no_test_recipient',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > sin clave no llama a nadie
+AssertionError: expected { sent: false, …(1) } to deeply equal { sent: false, reason: 'no_api_key' }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "reason": "no_api_key",[39m
+[31m+   "reason": "provider_error",[39m
+[2m    "sent": false,[22m
+[2m  }[22m
+
+ ❯ src/lib/email/resend.test.ts:123:5
+    121|   it('sin clave no llama a nadie', async () => {
+    122|     const fetch = fakeFetch();
+    123|     await expect(sendEmail(message, { config: { ...live, apiKey: null …
+       |     ^
+    124|       sent: false,
+    125|       reason: 'no_api_key',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > H-4: con html y replyTo propio, Resend recibe los dos, y el replyTo del mensaje gana al del entorno
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ sentRequest src/lib/email/resend.test.ts:35:23
+     33| 
+     34| const sentRequest = (fetch: ReturnType<typeof fakeFetch>) => {
+     35|   const [url, init] = fetch.mock.calls[0] as [string, RequestInit];
+       |                       ^
+     36|   return { url, headers: init.headers as Record<string, string>, body:…
+     37| };
+ ❯ src/lib/email/resend.test.ts:133:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > el asunto sale en una sola línea aunque la plantilla traiga CR o LF, en vivo y en prueba
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ sentRequest src/lib/email/resend.test.ts:35:23
+     33| 
+     34| const sentRequest = (fetch: ReturnType<typeof fakeFetch>) => {
+     35|   const [url, init] = fetch.mock.calls[0] as [string, RequestInit];
+       |                       ^
+     36|   return { url, headers: init.headers as Record<string, string>, body:…
+     37| };
+ ❯ src/lib/email/resend.test.ts:142:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > sin html no manda la clave html
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ sentRequest src/lib/email/resend.test.ts:35:23
+     33| 
+     34| const sentRequest = (fetch: ReturnType<typeof fakeFetch>) => {
+     35|   const [url, init] = fetch.mock.calls[0] as [string, RequestInit];
+       |                       ^
+     36|   return { url, headers: init.headers as Record<string, string>, body:…
+     37| };
+ ❯ src/lib/email/resend.test.ts:154:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > H-5: en modo prueba el HTML abre su cuerpo con el mismo aviso que el texto, escapado, y sale al buzón de prueba
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ sentRequest src/lib/email/resend.test.ts:35:23
+     33| 
+     34| const sentRequest = (fetch: ReturnType<typeof fakeFetch>) => {
+     35|   const [url, init] = fetch.mock.calls[0] as [string, RequestInit];
+       |                       ^
+     36|   return { url, headers: init.headers as Record<string, string>, body:…
+     37| };
+ ❯ src/lib/email/resend.test.ts:167:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > H-5: el aviso de prueba del HTML también dice a quién iría la respuesta
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ sentRequest src/lib/email/resend.test.ts:35:23
+     33| 
+     34| const sentRequest = (fetch: ReturnType<typeof fakeFetch>) => {
+     35|   const [url, init] = fetch.mock.calls[0] as [string, RequestInit];
+       |                       ^
+     36|   return { url, headers: init.headers as Record<string, string>, body:…
+     37| };
+ ❯ src/lib/email/resend.test.ts:180:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > H-6: un 429 de cuota diaria trae el nombre de Resend como providerCode, y el log solo el código HTTP
+AssertionError: expected { sent: false, …(1) } to deeply equal { sent: false, …(3) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "providerCode": "daily_quota_exceeded",[39m
+[2m    "reason": "provider_error",[22m
+[2m    "sent": false,[22m
+[32m-   "status": 429,[39m
+[2m  }[22m
+
+ ❯ src/lib/email/resend.test.ts:188:5
+    186|     const errors = vi.spyOn(console, 'error').mockImplementation(() =>…
+    187|     const fetch = fakeFetch(429, { name: 'daily_quota_exceeded', messa…
+    188|     await expect(sendEmail(message, { config: live, fetch })).resolves…
+       |     ^
+    189|       sent: false,
+    190|       reason: 'provider_error',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > un nombre de error que no es un código (texto libre, otro tipo) no se copia al resultado
+AssertionError: expected { sent: false, …(1) } to deeply equal { sent: false, …(2) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "reason": "provider_error",[22m
+[2m    "sent": false,[22m
+[32m-   "status": 409,[39m
+[2m  }[22m
+
+ ❯ src/lib/email/resend.test.ts:205:22
+    203|       const fetch = fakeFetch(409, { name });
+    204|       const result = await sendEmail(message, { config: live, fetch });
+    205|       expect(result).toEqual({ sent: false, reason: 'provider_error', …
+       |                      ^
+    206|     }
+    207|     const notJson = vi.fn(async () => new Response('<html>502</html>',…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > H-1: las dos cabeceras de baja llegan a Resend tal cual, en vivo y en prueba
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ sentRequest src/lib/email/resend.test.ts:35:23
+     33| 
+     34| const sentRequest = (fetch: ReturnType<typeof fakeFetch>) => {
+     35|   const [url, init] = fetch.mock.calls[0] as [string, RequestInit];
+       |                       ^
+     36|   return { url, headers: init.headers as Record<string, string>, body:…
+     37| };
+ ❯ src/lib/email/resend.test.ts:222:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > sin cabeceras, el cuerpo no lleva la clave headers
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ sentRequest src/lib/email/resend.test.ts:35:23
+     33| 
+     34| const sentRequest = (fetch: ReturnType<typeof fakeFetch>) => {
+     35|   const [url, init] = fetch.mock.calls[0] as [string, RequestInit];
+       |                       ^
+     36|   return { url, headers: init.headers as Record<string, string>, body:…
+     37| };
+ ❯ src/lib/email/resend.test.ts:238:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/16]⎯
+
+ FAIL  src/lib/email/resend.test.ts > sendEmail > un rechazo de Resend es sent: false con el código, sin lanzar
+AssertionError: expected { sent: false, …(1) } to deeply equal { sent: false, …(2) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "reason": "provider_error",[22m
+[2m    "sent": false,[22m
+[32m-   "status": 422,[39m
+[2m  }[22m
+
+ ❯ src/lib/email/resend.test.ts:268:5
+    266|     vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    267|     const fetch = fakeFetch(422, { message: 'invalid to' });
+    268|     await expect(sendEmail(message, { config: live, fetch })).resolves…
+       |     ^
+    269|       sent: false,
+    270|       reason: 'provider_error',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/16]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  16 failed | 5 passed (21)
+   Start at  16:25:22
+   Duration  239ms (transform 57ms, setup 10ms, collect 71ms, tests 21ms, environment 0ms, prepare 38ms)
+
