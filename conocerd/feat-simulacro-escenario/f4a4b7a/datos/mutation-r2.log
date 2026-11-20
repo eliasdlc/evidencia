@@ -1,0 +1,81 @@
+# R2 at f4a4b7a, with mut-r2.patch applied
+# $ firebase emulators:exec --config /home/decruce/.cache/conocerd/feat-simulacro-escenario/firebase.test.json --only auth,firestore,storage --project demo-conocerd "pnpm exec vitest run test/simulacro-escenario.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9250.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/simulacro-escenario.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/feat-simulacro-escenario
+
+ ❯ test/simulacro-escenario.test.ts (11 tests | 2 failed) 904ms
+   ✓ el simulacro solo apunta a los emuladores del proyecto demo > el proyecto es demo-conocerd y ninguna constante nombra conocerd-dev 1ms
+   ✓ el simulacro solo apunta a los emuladores del proyecto demo > las tres cuentas son de @simulacro.test 0ms
+   ✓ el simulacro solo apunta a los emuladores del proyecto demo > la siembra se niega con conocerd-dev o sin emuladores 1ms
+   ✓ puertos del simulacro > por defecto son los estándar 1ms
+   ✓ puertos del simulacro > cada uno se cambia por su variable 0ms
+   ✓ puertos del simulacro > un valor que no es un puerto falla con el nombre de la variable 0ms
+   ✓ el escenario sembrado (emuladores) > el destino existe, en la Zona Colonial, con fotos y en nivel registrado 104ms
+   ✓ el escenario sembrado (emuladores) > las tres cuentas existen con lo que su escena necesita 43ms
+   ✓ el escenario sembrado (emuladores) > el viajero tiene la parada del negocio en una ruta suya 8ms
+   × el escenario sembrado (emuladores) > dos corridas seguidas dejan el mismo escenario, sin duplicados 33ms
+     → The user with the provided uid already exists.
+   × el escenario sembrado (emuladores) > sembrar de nuevo borra lo que el flujo escribió alrededor del negocio 7ms
+     → The user with the provided uid already exists.
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/simulacro-escenario.test.ts > el escenario sembrado (emuladores) > dos corridas seguidas dejan el mismo escenario, sin duplicados
+Error: The user with the provided uid already exists.
+ ❯ FirebaseAuthError.fromServerError node_modules/.pnpm/firebase-admin@13.10.0/node_modules/firebase-admin/lib/utils/error.js:148:16
+ ❯ node_modules/.pnpm/firebase-admin@13.10.0/node_modules/firebase-admin/lib/auth/auth-api-request.js:1629:49
+ ❯ sembrarEscenario scripts/simulacro/escenario.ts:145:3
+    143|   exigirProyectoDemo(process.env);
+    144|   const admin = CUENTAS.admin;
+    145|   await auth.createUser({
+       |   ^
+    146|     uid: admin.uid,
+    147|     email: admin.email,
+ ❯ test/simulacro-escenario.test.ts:127:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/simulacro-escenario.test.ts > el escenario sembrado (emuladores) > sembrar de nuevo borra lo que el flujo escribió alrededor del negocio
+Error: The user with the provided uid already exists.
+ ❯ FirebaseAuthError.fromServerError node_modules/.pnpm/firebase-admin@13.10.0/node_modules/firebase-admin/lib/utils/error.js:148:16
+ ❯ node_modules/.pnpm/firebase-admin@13.10.0/node_modules/firebase-admin/lib/auth/auth-api-request.js:1629:49
+ ❯ sembrarEscenario scripts/simulacro/escenario.ts:145:3
+    143|   exigirProyectoDemo(process.env);
+    144|   const admin = CUENTAS.admin;
+    145|   await auth.createUser({
+       |   ^
+    146|     uid: admin.uid,
+    147|     email: admin.email,
+ ❯ test/simulacro-escenario.test.ts:141:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  16:25:01
+   Duration  1.31s (transform 97ms, setup 12ms, collect 224ms, tests 904ms, environment 0ms, prepare 58ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/simulacro-escenario.test.ts" exited with code 1
