@@ -1,0 +1,40 @@
+# R2 at 2ef931f, with r2-modelo.patch applied
+# $ pnpm exec vitest run src/lib/probar/modelo.test.ts
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/dev/projects/ConoceRD/.wt-web-testers
+
+ ❯ src/lib/probar/modelo.test.ts (7 tests | 1 failed) 10ms
+     × pide nombre y correo 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/probar/modelo.test.ts > faltantes > pide nombre y correo
+AssertionError: expected [ 'correo' ] to deeply equal [ 'nombre', 'correo' ]
+
+- Expected
++ Received
+
+  [
+-   "nombre",
+    "correo",
+  ]
+
+ ❯ src/lib/probar/modelo.test.ts:9:40
+      7| describe("faltantes", () => {
+      8|   it("pide nombre y correo", () => {
+      9|     expect(faltantes(SOLICITUD_VACIA)).toEqual(["nombre", "correo"]);
+       |                                        ^
+     10|     expect(faltantes(buena)).toEqual([]);
+     11|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  20:30:22
+   Duration  128ms (transform 22ms, setup 0ms, import 30ms, tests 10ms, environment 0ms)
+
