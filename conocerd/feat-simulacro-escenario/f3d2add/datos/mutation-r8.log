@@ -1,0 +1,72 @@
+# R8 at f3d2add, with mut-r8-r10.patch applied
+# $ pnpm exec vitest run test/app-check-demo.test.ts -t "ocho combinaciones"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/feat-simulacro-escenario
+
+ ❯ test/app-check-demo.test.ts (17 tests | 2 failed | 6 skipped) 8ms
+   ✓ appCheckOmitidoPorEmulador: las ocho combinaciones > demo=true emuladores=true noProduccion=true 1ms
+   × appCheckOmitidoPorEmulador: las ocho combinaciones > demo=true emuladores=true noProduccion=false 5ms
+     → expected true to be false // Object.is equality
+   ✓ appCheckOmitidoPorEmulador: las ocho combinaciones > demo=true emuladores=false noProduccion=true 0ms
+   ✓ appCheckOmitidoPorEmulador: las ocho combinaciones > demo=true emuladores=false noProduccion=false 0ms
+   ✓ appCheckOmitidoPorEmulador: las ocho combinaciones > demo=false emuladores=true noProduccion=true 0ms
+   ✓ appCheckOmitidoPorEmulador: las ocho combinaciones > demo=false emuladores=true noProduccion=false 0ms
+   ✓ appCheckOmitidoPorEmulador: las ocho combinaciones > demo=false emuladores=false noProduccion=true 0ms
+   ✓ appCheckOmitidoPorEmulador: las ocho combinaciones > demo=false emuladores=false noProduccion=false 0ms
+   ✓ appCheckOmitidoPorEmulador: las ocho combinaciones > con un solo emulador definido no omite, y una variable vacía cuenta como ausente 0ms
+   × appCheckOmitidoPorEmulador: las ocho combinaciones > un NODE_ENV ausente o escrito distinto cuenta como producción 1ms
+     → expected true to be false // Object.is equality
+   ✓ appCheckOmitidoPorEmulador: las ocho combinaciones > no hay ninguna variable que lo active por sí sola 0ms
+   ↓ attest: lo que ve la API > con las tres condiciones da por atestiguada la llamada sin token
+   ↓ attest: lo que ve la API > el aviso de que se omite sale una sola vez
+   ↓ attest: lo que ve la API > con producción, aunque el proyecto sea demo y haya emuladores, la llamada sin token sigue ausente
+   ↓ /visits con el viajero sembrado (emuladores) > con conocerd-dev y emuladores definidos, la llamada sin token sigue rechazada
+   ↓ /visits con el viajero sembrado (emuladores) > con NODE_ENV=production no se omite nunca
+   ↓ /visits con el viajero sembrado (emuladores) > con las tres condiciones, /visits acepta la llamada sin token
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/app-check-demo.test.ts > appCheckOmitidoPorEmulador: las ocho combinaciones > demo=true emuladores=true noProduccion=false
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ test/app-check-demo.test.ts:27:48
+     25|       NODE_ENV: sinProduccion ? 'development' : 'production',
+     26|     };
+     27|     expect(appCheckOmitidoPorEmulador(source)).toBe(demo && emuladores…
+       |                                                ^
+     28|   });
+     29| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/app-check-demo.test.ts > appCheckOmitidoPorEmulador: las ocho combinaciones > un NODE_ENV ausente o escrito distinto cuenta como producción
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ test/app-check-demo.test.ts:45:46
+     43|       FIRESTORE_EMULATOR_HOST: '127.0.0.1:8080',
+     44|     };
+     45|     expect(appCheckOmitidoPorEmulador(base)).toBe(false);
+       |                                              ^
+     46|     expect(appCheckOmitidoPorEmulador({ ...base, NODE_ENV: '' })).toBe…
+     47|     expect(appCheckOmitidoPorEmulador({ ...base, NODE_ENV: 'Production…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed | 6 skipped (17)
+   Start at  16:58:14
+   Duration  384ms (transform 54ms, setup 8ms, collect 217ms, tests 8ms, environment 0ms, prepare 45ms)
+
