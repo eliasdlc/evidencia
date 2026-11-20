@@ -1,0 +1,73 @@
+# R2 at b73477f, with r2-rechazar.patch applied
+# $ pnpm exec vitest run src/lib/tester-applications.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/projects/ConoceRD/.wt-api-testers
+
+ ❯ src/lib/tester-applications.test.ts (20 tests | 2 failed) 22ms
+   ✓ lo que acepta el formulario > normaliza el correo y deja fuera los opcionales vacíos 2ms
+   ✓ lo que acepta el formulario > el idioma por defecto es español 0ms
+   ✓ lo que acepta el formulario > rechaza un correo que no se entiende y un nombre vacío 1ms
+   ✓ lo que acepta el formulario > el id es la huella del correo, sin mayúsculas ni espacios 0ms
+   ✓ guardar > una solicitud nueva queda pendiente con un envío 1ms
+   ✓ guardar > un correo repetido no vuelve a pendiente a quien ya se decidió 1ms
+   ✓ aprobar y rechazar > aprobar une al grupo, invita al último build y marca el documento 1ms
+   ✓ aprobar y rechazar > si Firebase falla no se escribe la decisión, solo se suelta el candado 1ms
+   ✓ aprobar y rechazar > sin build que repartir queda aprobado, sin invitación de Firebase 0ms
+   × aprobar y rechazar > rechazar saca del grupo y marca el documento 5ms
+     → expected "spy" to be called with arguments: [ 'ana@example.com' ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × aprobar y rechazar > una aprobación que falla después de entrar al grupo deja la pendiente, y rechazarla la saca 1ms
+     → expected "spy" to be called with arguments: [ 'ana@example.com' ][90m
+
+Number of calls: [1m0[22m
+[39m
+   ✓ aprobar y rechazar > con otra decisión en curso responde 409 sin llamar a Google 1ms
+   ✓ aprobar y rechazar > un candado vencido no bloquea, y el candado se suelta al terminar, también si falla 1ms
+   ✓ aprobar y rechazar > mientras decide, el candado está puesto por un minuto 0ms
+   ✓ aprobar y rechazar > un id que no es una huella es 404 sin leer Firestore 0ms
+   ✓ cliente de App Distribution > une al grupo testers creando al tester si no existe 2ms
+   ✓ cliente de App Distribution > reparte el último build del tren de release 1ms
+   ✓ cliente de App Distribution > sin builds no reparte nada 0ms
+   ✓ cliente de App Distribution > un error de Google es distribution_failed sin el cuerpo 1ms
+   ✓ cliente de App Distribution > contra el emulador, sin credencial, falla antes de llamar 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/tester-applications.test.ts > aprobar y rechazar > rechazar saca del grupo y marca el documento
+AssertionError: expected "spy" to be called with arguments: [ 'ana@example.com' ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/lib/tester-applications.test.ts:147:29
+    145|     const d = distribucionFalsa();
+    146|     await rechazarSolicitud(id, 'admin-1', d);
+    147|     expect(d.sacarDelGrupo).toHaveBeenCalledWith('ana@example.com');
+       |                             ^
+    148|     expect(docs.get(id)).toMatchObject({ estado: 'rechazado', decidido…
+    149|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/tester-applications.test.ts > aprobar y rechazar > una aprobación que falla después de entrar al grupo deja la pendiente, y rechazarla la saca
+AssertionError: expected "spy" to be called with arguments: [ 'ana@example.com' ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/lib/tester-applications.test.ts:159:29
+    157| 
+    158|     await rechazarSolicitud(id, 'admin-1', d);
+    159|     expect(d.sacarDelGrupo).toHaveBeenCalledWith('ana@example.com');
+       |                             ^
+    160|     expect(docs.get(id)?.estado).toBe('rechazado');
+    161|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 18 passed (20)
+   Start at  20:45:16
+   Duration  389ms (transform 50ms, setup 7ms, collect 201ms, tests 22ms, environment 0ms, prepare 48ms)
+
