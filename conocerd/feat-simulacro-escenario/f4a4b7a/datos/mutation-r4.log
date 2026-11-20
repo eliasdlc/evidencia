@@ -1,0 +1,63 @@
+# R4 at f4a4b7a, with mut-r4.patch applied
+# $ pnpm exec vitest run test/simulacro-escenario.test.ts -t "solo apunta"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/feat-simulacro-escenario
+
+ ❯ test/simulacro-escenario.test.ts (11 tests | 2 failed | 8 skipped) 9ms
+   × el simulacro solo apunta a los emuladores del proyecto demo > el proyecto es demo-conocerd y ninguna constante nombra conocerd-dev 6ms
+     → expected 'conocerd-dev' to be 'demo-conocerd' // Object.is equality
+   ✓ el simulacro solo apunta a los emuladores del proyecto demo > las tres cuentas son de @simulacro.test 0ms
+   × el simulacro solo apunta a los emuladores del proyecto demo > la siembra se niega con conocerd-dev o sin emuladores 2ms
+     → expected [Function] to throw an error
+   ↓ puertos del simulacro > por defecto son los estándar
+   ↓ puertos del simulacro > cada uno se cambia por su variable
+   ↓ puertos del simulacro > un valor que no es un puerto falla con el nombre de la variable
+   ↓ el escenario sembrado (emuladores) > el destino existe, en la Zona Colonial, con fotos y en nivel registrado
+   ↓ el escenario sembrado (emuladores) > las tres cuentas existen con lo que su escena necesita
+   ↓ el escenario sembrado (emuladores) > el viajero tiene la parada del negocio en una ruta suya
+   ↓ el escenario sembrado (emuladores) > dos corridas seguidas dejan el mismo escenario, sin duplicados
+   ↓ el escenario sembrado (emuladores) > sembrar de nuevo borra lo que el flujo escribió alrededor del negocio
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/simulacro-escenario.test.ts > el simulacro solo apunta a los emuladores del proyecto demo > el proyecto es demo-conocerd y ninguna constante nombra conocerd-dev
+AssertionError: expected 'conocerd-dev' to be 'demo-conocerd' // Object.is equality
+
+Expected: [32m"[7mdemo-[27mconocerd"[39m
+Received: [31m"conocerd[7m-dev[27m"[39m
+
+ ❯ test/simulacro-escenario.test.ts:10:22
+      8| describe('el simulacro solo apunta a los emuladores del proyecto demo'…
+      9|   it('el proyecto es demo-conocerd y ninguna constante nombra conocerd…
+     10|     expect(PROYECTO).toBe('demo-conocerd');
+       |                      ^
+     11|     const todo = JSON.stringify({ PROYECTO, BUCKET, ESCENARIO, CUENTAS…
+     12|     expect(todo).not.toContain('conocerd-dev');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/simulacro-escenario.test.ts > el simulacro solo apunta a los emuladores del proyecto demo > la siembra se niega con conocerd-dev o sin emuladores
+AssertionError: expected [Function] to throw an error
+
+[32m- Expected:[39m 
+null
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/simulacro-escenario.test.ts:23:94
+     21|   it('la siembra se niega con conocerd-dev o sin emuladores', () => {
+     22|     const emuladores = { FIREBASE_AUTH_EMULATOR_HOST: '127.0.0.1:9099'…
+     23|     expect(() => exigirProyectoDemo({ FIREBASE_PROJECT_ID: 'conocerd-d…
+       |                                                                                              ^
+     24|     expect(() => exigirProyectoDemo({ ...emuladores })).toThrow(/solo …
+     25|     expect(() => exigirProyectoDemo({ FIREBASE_PROJECT_ID: 'demo-conoc…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed | 8 skipped (11)
+   Start at  16:25:11
+   Duration  328ms (transform 56ms, setup 10ms, collect 171ms, tests 9ms, environment 0ms, prepare 46ms)
+
