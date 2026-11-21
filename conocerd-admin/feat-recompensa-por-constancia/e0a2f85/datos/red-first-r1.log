@@ -1,0 +1,88 @@
+# R1 at e0a2f85, with src/recompensas/modelo.ts back at 27e4e5f
+# $ pnpm exec vitest run src/recompensas/modelo.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/admin/feat-recompensa-por-constancia
+
+ ❯ src/recompensas/modelo.test.ts (4 tests | 4 failed) 62ms
+     × lee 3 cuando el campo falta 38ms
+     × lee el número cuando viene 3ms
+     × rechaza lo que sale de 2 a 10 7ms
+     × muestra la visita de la propuesta 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/recompensas/modelo.test.ts > visitsRequired > lee 3 cuando el campo falta
+AssertionError: expected undefined to be 3 // Object.is equality
+
+- Expected:
+3
+
++ Received:
+undefined
+
+ ❯ src/recompensas/modelo.test.ts:17:56
+     15| describe('visitsRequired', () => {
+     16|   it('lee 3 cuando el campo falta', () => {
+     17|     expect(beneficioSchema.parse(base).visitsRequired).toBe(3);
+       |                                                        ^
+     18|   });
+     19|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/recompensas/modelo.test.ts > visitsRequired > lee el número cuando viene
+AssertionError: expected undefined to be 7 // Object.is equality
+
+- Expected:
+7
+
++ Received:
+undefined
+
+ ❯ src/recompensas/modelo.test.ts:21:82
+     19|
+     20|   it('lee el número cuando viene', () => {
+     21|     expect(beneficioSchema.parse({ ...base, visitsRequired: 7 }).visit…
+       |                                                                                  ^
+     22|   });
+     23|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/recompensas/modelo.test.ts > visitsRequired > rechaza lo que sale de 2 a 10
+AssertionError: expected [Function] to throw an error
+ ❯ src/recompensas/modelo.test.ts:25:73
+     23|
+     24|   it('rechaza lo que sale de 2 a 10', () => {
+     25|     expect(() => beneficioSchema.parse({ ...base, visitsRequired: 1 })…
+       |                                                                         ^
+     26|     expect(() => beneficioSchema.parse({ ...base, visitsRequired: 11 }…
+     27|     expect(() => beneficioSchema.parse({ ...base, visitsRequired: 2.5 …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/recompensas/modelo.test.ts > la fila "Se gana en" > muestra la visita de la propuesta
+AssertionError: expected undefined to be '5.ª visita' // Object.is equality
+
+- Expected:
+"5.ª visita"
+
++ Received:
+undefined
+
+ ❯ src/recompensas/modelo.test.ts:34:80
+     32|   it('muestra la visita de la propuesta', () => {
+     33|     const fila = FILAS.find((f) => f.nombre === 'Se gana en');
+     34|     expect(fila?.valor(beneficioSchema.parse({ ...base, visitsRequired…
+       |                                                                                ^
+     35|     expect(fila?.valor(beneficioSchema.parse(base))).toBe('3.ª visita'…
+     36|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  16:15:40
+   Duration  2.48s (transform 352ms, setup 0ms, import 992ms, tests 62ms, environment 2ms)
+
