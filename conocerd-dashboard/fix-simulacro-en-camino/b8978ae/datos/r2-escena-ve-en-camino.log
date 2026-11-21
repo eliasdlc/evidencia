@@ -1,0 +1,65 @@
+Owner scene ve-en-camino inside full simulacro runs. 00:58 = dashboard 9249e09 (party fix only); 01:05 = dashboard b8978ae (this PR's head).
+
+===== run 2026-11-21-0058 =====
+$ node e2e/simulacro/correr.mjs --sin-preparacion --solo-escritorio --escena ve-en-camino
+
+Running 7 tests using 1 worker
+
+  -  1 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:190:3 › el dueño de Cafetería El Ensayo @escritorio › activa
+  -  2 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:216:3 › el dueño de Cafetería El Ensayo @escritorio › propone-recompensa
+  ✘  3 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:247:3 › el dueño de Cafetería El Ensayo @escritorio › ve-en-camino (1.5m)
+  -  4 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:265:3 › el dueño de Cafetería El Ensayo @escritorio › canjea
+  -  5 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:293:3 › el dueño de Cafetería El Ensayo @escritorio › responde-resena
+  -  6 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:312:3 › el dueño de Cafetería El Ensayo @escritorio › ve-resultado
+  -  7 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:326:3 › el dueño de Cafetería El Ensayo @escritorio › recibos del emulador
+
+
+  1) [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:247:3 › el dueño de Cafetería El Ensayo @escritorio › ve-en-camino 
+
+    Error: Escena "ve-en-camino": expect(locator).toBeVisible() failed
+
+    Locator: locator('#en-camino').locator('xpath=ancestor::*[self::div or self::section][1]').getByText(/Valeria viene (solo|con \d+ personas), llega a las/)
+    Expected: visible
+    Timeout: 90000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('#en-camino').locator('xpath=ancestor::*[self::div or self::section][1]').getByText(/Valeria viene (solo|con \d+ personas), llega a las/) with timeout 90000ms
+      - waiting for locator('#en-camino').locator('xpath=ancestor::*[self::div or self::section][1]').getByText(/Valeria viene (solo|con \d+ personas), llega a las/)
+
+
+      111 |     // What the owner would have seen, kept beside the videos for whoever reads the failure.
+      112 |     await pagina.screenshot({ path: join(CARPETA, `fallo-${nombre}.png`) }).catch(() => undefined);
+    > 113 |     throw new Error(`Escena "${nombre}": ${error instanceof Error ? error.message : String(error)}`);
+          |           ^
+      114 |   }
+      115 |   anotar(estado, { superficie: 'negocio', escena: nombre, fase: 'fin', ...extra });
+      116 | }
+        at escena (~/dev/wt/dashboard/feat-simulacro-negocio/e2e/simulacro/recorrido.spec.ts:113:11)
+        at ~/dev/wt/dashboard/feat-simulacro-negocio/e2e/simulacro/recorrido.spec.ts:251:5
+
+    Error Context: node_modules/.cache/playwright-simulacro/recorrido-el-dueño-de-Cafe-3fc8a-ayo-escritorio-ve-en-camino-simulacro-escritorio/error-context.md
+
+    Error Context: node_modules/.cache/playwright-simulacro/recorrido-el-dueño-de-Cafe-3fc8a-ayo-escritorio-ve-en-camino-simulacro-escritorio/error-context.md
+
+  1 failed
+    [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:247:3 › el dueño de Cafetería El Ensayo @escritorio › ve-en-camino 
+  2 skipped
+  4 did not run
+[ELIFECYCLE] Command failed with exit code 1.
+
+===== run 2026-11-21-0105 =====
+$ node e2e/simulacro/correr.mjs --sin-preparacion --solo-escritorio --escena ve-en-camino
+
+Running 7 tests using 1 worker
+
+  -  1 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:191:3 › el dueño de Cafetería El Ensayo @escritorio › activa
+  -  2 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:217:3 › el dueño de Cafetería El Ensayo @escritorio › propone-recompensa
+  ✓  3 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:248:3 › el dueño de Cafetería El Ensayo @escritorio › ve-en-camino (4.5s)
+  -  4 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:265:3 › el dueño de Cafetería El Ensayo @escritorio › canjea
+  -  5 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:293:3 › el dueño de Cafetería El Ensayo @escritorio › responde-resena
+  -  6 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:312:3 › el dueño de Cafetería El Ensayo @escritorio › ve-resultado
+  -  7 [simulacro-escritorio] › e2e/simulacro/recorrido.spec.ts:326:3 › el dueño de Cafetería El Ensayo @escritorio › recibos del emulador
+
+  6 skipped
+  1 passed (10.4s)
