@@ -1,0 +1,42 @@
+# R1 at dc1cef6, with r1-olvida-la-decision.patch applied
+# $ pnpm exec vitest run src/app/destinos/recompensas/detalle.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/admin/fix-recompensa-aprobada
+
+ ❯ src/app/destinos/recompensas/detalle.test.ts (6 tests | 1 failed) 9ms
+     × confirma la decisión de quien decidió aunque la cola releída ya no traiga la propuesta 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/destinos/recompensas/detalle.test.ts > lo que muestra el detalle de una propuesta > confirma la decisión de quien decidió aunque la cola releída ya no traiga la propuesta
+AssertionError: expected { tipo: 'ya-no-pendiente' } to deeply equal { tipo: 'decidida', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "resultado": {
+-     "aviso": "Le avisamos por correo al dueño.",
+-     "mensaje": "Recompensa aprobada.",
+-     "ok": true,
+-   },
+-   "tipo": "decidida",
++   "tipo": "ya-no-pendiente",
+  }
+
+ ❯ src/app/destinos/recompensas/detalle.test.ts:22:85
+     20|   it('confirma la decisión de quien decidió aunque la cola releída ya …
+     21|     // El refresco tras aprobar llega en la misma respuesta: la propue…
+     22|     expect(vistaDelDetalle({ propuesta: null, hayCola: true, decidida:…
+       |                                                                                     ^
+     23|   });
+     24|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  01:34:06
+   Duration  166ms (transform 30ms, setup 0ms, import 40ms, tests 9ms, environment 0ms)
+
