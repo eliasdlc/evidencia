@@ -1,0 +1,56 @@
+# R1 at b8978ae, with r1-solo-a-las.patch applied
+# $ pnpm exec vitest run src/lib/simulacro-textos.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/feat-simulacro-negocio
+
+ ❯ src/lib/simulacro-textos.test.ts (3 tests | 2 failed) 6ms
+   ❯ the line the ve-en-camino scene waits for (3)
+     × matches the panel at 1 a. m., where it writes "a la" 4ms
+     × matches any party size the app sends 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/simulacro-textos.test.ts > the line the ve-en-camino scene waits for > matches the panel at 1 a. m., where it writes "a la"
+AssertionError: expected 'Valeria viene solo, llega a la 1:22 a…' to match /Valeria viene (solo|con \d+ personas)…/
+
+- Expected:
+/Valeria viene (solo|con \d+ personas), llega a las/
+
++ Received:
+"Valeria viene solo, llega a la 1:22 a. m."
+
+ ❯ src/lib/simulacro-textos.test.ts:13:19
+     11|     const linea = llegada(1, '2026-11-21T05:22:00Z');
+     12|     expect(linea).toBe('Valeria viene solo, llega a la 1:22 a. m.');
+     13|     expect(linea).toMatch(LLEGADA_DE_VALERIA);
+       |                   ^
+     14|   });
+     15|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/simulacro-textos.test.ts > the line the ve-en-camino scene waits for > matches any party size the app sends
+AssertionError: expected 'Valeria viene con 4 personas, llega a…' to match /Valeria viene (solo|con \d+ personas)…/
+
+- Expected:
+/Valeria viene (solo|con \d+ personas), llega a las/
+
++ Received:
+"Valeria viene con 4 personas, llega a la 1:10 a. m."
+
+ ❯ src/lib/simulacro-textos.test.ts:23:48
+     21|   it('matches any party size the app sends', () => {
+     22|     expect(llegada(2, '2026-11-21T19:40:00Z')).toMatch(LLEGADA_DE_VALE…
+     23|     expect(llegada(4, '2026-11-21T05:10:00Z')).toMatch(LLEGADA_DE_VALE…
+       |                                                ^
+     24|   });
+     25| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  01:36:30
+   Duration  116ms (transform 48%, import 28%, tests 16%, worker 8%)
+
