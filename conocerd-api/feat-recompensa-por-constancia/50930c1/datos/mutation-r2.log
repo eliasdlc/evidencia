@@ -1,0 +1,134 @@
+# R2 at 50930c1, with r2-progress.patch applied
+# $ firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "pnpm exec vitest run test/qr-progress.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/qr-progress.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/feat-recompensa-por-constancia
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > progress: lleva 2 de 3, con la recompensa y el umbral, y no escribe nada
+App Check omitido: emuladores demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > progress: lleva 2 de 3, con la recompensa y el umbral, y no escribe nada
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > progress: sin cuenta de visitas es 0; un beneficio sin visitsRequired pide 3
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > earned: con las visitas del umbral, y las de más no se acumulan
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > earned: con las visitas del umbral, y las de más no se acumulan
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > progress: después de un canje la cuenta parte del baseline, no del total
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > redeemed_today: manda sobre earned cuando ya se canjeó en el día de Santo Domingo
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > 404 not_eligible: sin beneficio, apagado o con un plan sin QR; 404 not_found si el negocio no existe
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > 404 not_eligible: sin beneficio, apagado o con un plan sin QR; 404 not_found si el negocio no existe
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > 404 not_eligible: sin beneficio, apagado o con un plan sin QR; 404 not_found si el negocio no existe
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > 404 not_eligible: sin beneficio, apagado o con un plan sin QR; 404 not_found si el negocio no existe
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > 403 own_business: dueño por token y miembro activo
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > 401 sin sesión; 422 sin destinationId
+[app-check] valido /qr/progress emuladores-demo
+
+stdout | test/qr-progress.test.ts > el progreso hacia el código contra el emulador > 401 sin sesión; 422 sin destinationId
+[app-check] valido /qr/progress emuladores-demo
+
+ ❯ test/qr-progress.test.ts (8 tests | 2 failed) 2023ms
+   ✓ el progreso hacia el código contra el emulador > progress: lleva 2 de 3, con la recompensa y el umbral, y no escribe nada  778ms
+   ✓ el progreso hacia el código contra el emulador > progress: sin cuenta de visitas es 0; un beneficio sin visitsRequired pide 3 87ms
+   ✓ el progreso hacia el código contra el emulador > earned: con las visitas del umbral, y las de más no se acumulan 124ms
+   ✓ el progreso hacia el código contra el emulador > progress: después de un canje la cuenta parte del baseline, no del total 64ms
+   × el progreso hacia el código contra el emulador > redeemed_today: manda sobre earned cuando ya se canjeó en el día de Santo Domingo 74ms
+     → expected { state: 'earned', visits: 3, …(2) } to match object { state: 'redeemed_today', …(2) }
+(6 matching properties omitted from actual)
+   ✓ el progreso hacia el código contra el emulador > 404 not_eligible: sin beneficio, apagado o con un plan sin QR; 404 not_found si el negocio no existe 126ms
+   × el progreso hacia el código contra el emulador > 403 own_business: dueño por token y miembro activo 76ms
+     → expected 200 to be 403 // Object.is equality
+   ✓ el progreso hacia el código contra el emulador > 401 sin sesión; 422 sin destinationId 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/qr-progress.test.ts > el progreso hacia el código contra el emulador > redeemed_today: manda sobre earned cuando ya se canjeó en el día de Santo Domingo
+AssertionError: expected { state: 'earned', visits: 3, …(2) } to match object { state: 'redeemed_today', …(2) }
+(6 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "required": 3,[22m
+[32m-   "state": "redeemed_today",[39m
+[31m+   "state": "earned",[39m
+[2m    "visits": 3,[22m
+[2m  }[22m
+
+ ❯ test/qr-progress.test.ts:147:35
+    145|     const response = await get(traveler.token, id);
+    146|     expect(response.status).toBe(200);
+    147|     expect(await response.json()).toMatchObject({ state: 'redeemed_tod…
+       |                                   ^
+    148|     expect(await written(id, traveler.uid)).toBe(before);
+    149|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/qr-progress.test.ts > el progreso hacia el código contra el emulador > 403 own_business: dueño por token y miembro activo
+AssertionError: expected 200 to be 403 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 403[39m
+[31m+ 200[39m
+
+ ❯ test/qr-progress.test.ts:178:31
+    176|     for (const who of [owner, member]) {
+    177|       const response = await get(who.token, id);
+    178|       expect(response.status).toBe(403);
+       |                               ^
+    179|       expect(await response.json()).toMatchObject({ error: 'own_busine…
+    180|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed (8)
+   Start at  16:59:31
+   Duration  2.28s (transform 306ms, setup 14ms, collect 55ms, tests 2.02s, environment 0ms, prepare 52ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/qr-progress.test.ts" exited with code 1
