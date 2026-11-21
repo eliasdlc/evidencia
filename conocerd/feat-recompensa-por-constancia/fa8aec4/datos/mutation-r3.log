@@ -1,0 +1,54 @@
+# R3 at fa8aec4, with r3-recent-visit.patch applied
+# $ python3 -m unittest scripts.tests.test_preparar_negocio -v
+test_seeds_the_prior_visits_after_the_cleanup_and_not_before (scripts.tests.test_preparar_negocio.MainTest.test_seeds_the_prior_visits_after_the_cleanup_and_not_before) ... ok
+test_the_guards_still_refuse_other_projects_and_hosts (scripts.tests.test_preparar_negocio.MainTest.test_the_guards_still_refuse_other_projects_and_hosts) ... ok
+test_the_standalone_benefit_asks_for_three_visits (scripts.tests.test_preparar_negocio.MainTest.test_the_standalone_benefit_asks_for_three_visits) ... ok
+test_without_the_cleanup_flag_it_seeds_no_visits (scripts.tests.test_preparar_negocio.MainTest.test_without_the_cleanup_flag_it_seeds_no_visits) ... ok
+test_pair_document_counts_two_visits_under_the_sha256_of_the_place (scripts.tests.test_preparar_negocio.SembrarVisitasPreviasTest.test_pair_document_counts_two_visits_under_the_sha256_of_the_place) ... FAIL
+test_receipt_has_the_shape_record_visit_writes (scripts.tests.test_preparar_negocio.SembrarVisitasPreviasTest.test_receipt_has_the_shape_record_visit_writes) ... ok
+test_receipts_are_more_than_24_hours_before_a_live_visit (scripts.tests.test_preparar_negocio.SembrarVisitasPreviasTest.test_receipts_are_more_than_24_hours_before_a_live_visit) ... FAIL
+test_summary_matches_the_receipts (scripts.tests.test_preparar_negocio.SembrarVisitasPreviasTest.test_summary_matches_the_receipts) ... ok
+test_two_validated_receipts_72_and_48_hours_old (scripts.tests.test_preparar_negocio.SembrarVisitasPreviasTest.test_two_validated_receipts_72_and_48_hours_old) ... FAIL
+
+======================================================================
+FAIL: test_pair_document_counts_two_visits_under_the_sha256_of_the_place (scripts.tests.test_preparar_negocio.SembrarVisitasPreviasTest.test_pair_document_counts_two_visits_under_the_sha256_of_the_place)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/app/feat-recompensa-por-constancia/scripts/tests/test_preparar_negocio.py", line 96, in test_pair_document_counts_two_visits_under_the_sha256_of_the_place
+    self.assertEqual(int(emu.campo(par, 'lastValidatedAt')), ms(48))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1795230000000 != 1795100400000
+
+======================================================================
+FAIL: test_receipts_are_more_than_24_hours_before_a_live_visit (scripts.tests.test_preparar_negocio.SembrarVisitasPreviasTest.test_receipts_are_more_than_24_hours_before_a_live_visit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/app/feat-recompensa-por-constancia/scripts/tests/test_preparar_negocio.py", line 87, in test_receipts_are_more_than_24_hours_before_a_live_visit
+    self.assertGreater(AHORA.timestamp() * 1000 - ultima, 24 * 60 * 60_000)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 43200000.0 not greater than 86400000
+
+======================================================================
+FAIL: test_two_validated_receipts_72_and_48_hours_old (scripts.tests.test_preparar_negocio.SembrarVisitasPreviasTest.test_two_validated_receipts_72_and_48_hours_old)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/dev/wt/app/feat-recompensa-por-constancia/scripts/tests/test_preparar_negocio.py", line 67, in test_two_validated_receipts_72_and_48_hours_old
+    self.assertEqual(horas, [ms(72), ms(48)])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [1795014000000, 1795230000000] != [1795014000000, 1795100400000]
+
+First differing element 1:
+1795230000000
+1795100400000
+
+- [1795014000000, 1795230000000]
+?                     ^^
+
++ [1795014000000, 1795100400000]
+?                     ^  +
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.008s
+
+FAILED (failures=3)
