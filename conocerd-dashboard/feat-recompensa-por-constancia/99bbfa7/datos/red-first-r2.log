@@ -1,0 +1,46 @@
+# R2 at 99bbfa7, with src/features/negocio/recompensa/Panels.tsx, src/features/negocio/recompensa/ProposalForm.tsx, src/features/negocio/recompensa/model.ts, src/features/puerta/answers.ts, src/features/puerta/api.ts back at 6f9df18
+# $ pnpm exec vitest run src/features/negocio/recompensa/RecompensaPage.test.tsx
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/feat-recompensa-por-constancia
+
+ ❯ src/features/negocio/recompensa/RecompensaPage.test.tsx (16 tests | 3 failed) 4866ms
+   ❯ what is in force and the month (4)
+     × says the benefit in plain Spanish 1417ms
+     × says there is none, and that a paused one is paused 1057ms
+   ❯ the form (6)
+     × sends the schema body, then reads the benefit again 152ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/recompensa/RecompensaPage.test.tsx > what is in force and the month > says the benefit in plain Spanish
+ FAIL  src/features/negocio/recompensa/RecompensaPage.test.tsx > what is in force and the month > says there is none, and that a paused one is paused
+Error: the lazy route is still loading
+ ❯ src/features/negocio/recompensa/RecompensaPage.test.tsx:83:42
+     81|   const router = createMemoryRouter(negocioRoutes, { initialEntries: […
+     82|   await vi.waitFor(() => {
+     83|     if (!router.state.initialized) throw new Error('the lazy route is …
+       |                                          ^
+     84|   });
+     85|   await act(async () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/features/negocio/recompensa/RecompensaPage.test.tsx > the form > sends the schema body, then reads the benefit again
+Error: no field Se gana en la visita
+ ❯ type src/features/negocio/recompensa/RecompensaPage.test.tsx:105:21
+    103|   const field = [...(host?.querySelectorAll('label') ?? [])].find((el)…
+    104|   const input = field?.htmlFor ? (host?.querySelector(`#${CSS.escape(f…
+    105|   if (!input) throw new Error(`no field ${label}`);
+       |                     ^
+    106|   await act(async () => {
+    107|     const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.pr…
+ ❯ src/features/negocio/recompensa/RecompensaPage.test.tsx:245:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 13 passed (16)
+   Start at  16:17:58
+   Duration  15.77s (environment 52%, tests 33%, import 9%, transform 5%, worker 1%)
+
