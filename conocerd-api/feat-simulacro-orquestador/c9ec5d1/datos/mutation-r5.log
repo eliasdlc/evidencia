@@ -1,0 +1,40 @@
+# R5 at c9ec5d1, with r5-canje-sin-alterar.patch applied
+# $ pnpm exec vitest run test/simulacro-guion.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/feat-simulacro-orquestador
+
+ ❯ test/simulacro-guion.test.ts (12 tests | 1 failed) 10ms
+   ✓ los repos del simulacro > los busca junto a api/, como en el workspace 2ms
+   ✓ los repos del simulacro > una variable cambia dónde está uno 0ms
+   ✓ los repos del simulacro > falla al inicio nombrando cada repo que falta y la variable que lo cambia 1ms
+   ✓ los repos del simulacro > un package.json sin el script no cuenta como el repo 0ms
+   ✓ la carpeta de la corrida > lleva la fecha y la hora local 0ms
+   ✓ la escena que falló > del viajero: la primera de las ocho que no llegó 0ms
+   ✓ la escena que falló > del negocio: la que nombra su salida 0ms
+   ✓ la escena que falló > del negocio, sin nombre en la salida: la que empezó y no terminó 0ms
+   ✓ la escena que falló > del negocio, sin línea: la primera pedida 0ms
+   ✓ el código que ve la puerta > toma el CRD1 de la lectura del QR y deja lo demás 0ms
+   × el código que ve la puerta > el canje inválido tiene la forma de un código pero otra firma 4ms
+     → expected 'CRD1.aaaaaaaaaaaaaaaaaaaa.ZZZZZZZZZZZ…' not to be 'CRD1.aaaaaaaaaaaaaaaaaaaa.ZZZZZZZZZZZ…' // Object.is equality
+   ✓ el carril de puertos > no usa los puertos de Firebase por defecto y cada uno se cambia con su variable 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/simulacro-guion.test.ts > el código que ve la puerta > el canje inválido tiene la forma de un código pero otra firma
+AssertionError: expected 'CRD1.aaaaaaaaaaaaaaaaaaaa.ZZZZZZZZZZZ…' not to be 'CRD1.aaaaaaaaaaaaaaaaaaaa.ZZZZZZZZZZZ…' // Object.is equality
+ ❯ test/simulacro-guion.test.ts:98:22
+     96|     const roto = codigoAlterado(CODIGO);
+     97|     expect(roto).toMatch(PAYLOAD_PATTERN);
+     98|     expect(roto).not.toBe(CODIGO);
+       |                      ^
+     99|     expect(roto.slice(0, -1)).toBe(CODIGO.slice(0, -1));
+    100|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  02:15:12
+   Duration  392ms (transform 74ms, setup 11ms, collect 199ms, tests 10ms, environment 0ms, prepare 55ms)
+
