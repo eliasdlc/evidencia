@@ -1,0 +1,102 @@
+# R5 at 50930c1, with r5-door.patch applied
+# $ firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "pnpm exec vitest run test/qr-redeem.test.ts -t 'la puerta vuelve a pedir la constancia'"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/qr-redeem.test.ts -t 'la puerta vuelve a pedir la constancia'
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/feat-recompensa-por-constancia
+
+ ❯ test/qr-redeem.test.ts (15 tests | 1 failed | 14 skipped) 2699ms
+   ↓ la puerta contra el emulador > CO1-T916: canjear guarda visitsAtRedeem; al día siguiente la cuenta empieza en 0 y la próxima se gana con 3 visitas más
+   × la puerta contra el emulador > CO1-T916: la puerta vuelve a pedir la constancia: un código firmado no vale si el viajero no llega hoy al número del negocio 1662ms
+     → expected { …(2) } to deeply equal { Object (checked, redeemed) }
+   ↓ la puerta contra el emulador > I12: un payload que el servidor no firmó no vale: un carácter de la firma, el id de otro código o un vencimiento cambiado (filas 43 y 44)
+   ↓ la puerta contra el emulador > I13: el código de un negocio en otro es invalid, nunca already_redeemed, y el suyo sigue issued (fila 45)
+   ↓ la puerta contra el emulador > I15: el mismo toque dos veces es el mismo canje con replayed; el requestId de otra persona es already_redeemed (filas 47 y 48)
+   ↓ la puerta contra el emulador > I16: el tope del día no se pasa, exhausted no gasta el código y al día siguiente vale (filas 49 y 50)
+   ↓ la puerta contra el emulador > 1.9: con uno por código, quantity 2 es 422 invalid_quantity sin escribir; 0 y 7 también (fila 51)
+   ↓ la puerta contra el emulador > I17: el reloj del servidor decide el vencimiento; los cuerpos no aceptan horas del cliente (fila 52)
+   ↓ la puerta contra el emulador > I19: quien da no da su propio código (fila 53)
+   ↓ la puerta contra el emulador > I4 y G10: reseñas es role_forbidden, un extraño not_owner, un negocio sin panel dashboard_not_included (fila 54)
+   ↓ la puerta contra el emulador > I11: si el plan baja o el beneficio se apaga después de emitir, es not_eligible y nada se escribe (fila 55)
+   ↓ la puerta contra el emulador > 1.9: el código tecleado admite espacios, guiones, minúsculas y O por 0; un carácter distinto no (fila 57)
+   ↓ la puerta contra el emulador > 1.9: 21 intentos en un minuto: el 21.º es 429 (fila 58)
+   ↓ la puerta contra el emulador > I21: un canje no lleva al viajero, y los totales por persona y del mes suman los canjes (fila 59)
+   ↓ la puerta contra el emulador > D10: "Los que diste hoy" son solo los de quien llama, con el título { es, en? } (fila 60, G11)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/qr-redeem.test.ts > la puerta contra el emulador > CO1-T916: la puerta vuelve a pedir la constancia: un código firmado no vale si el viajero no llega hoy al número del negocio
+AssertionError: expected { …(2) } to deeply equal { Object (checked, redeemed) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "checked": {[22m
+[32m-     "result": "invalid",[39m
+[31m+     "benefit": {[39m
+[31m+       "title": {[39m
+[31m+         "en": "Free dessert",[39m
+[31m+         "es": "Postre de cortesía",[39m
+[31m+       },[39m
+[31m+     },[39m
+[31m+     "codeTail": "35SR",[39m
+[31m+     "maxQuantity": 1,[39m
+[31m+     "result": "valid",[39m
+[2m    },[22m
+[2m    "redeemed": {[22m
+[32m-     "result": "invalid",[39m
+[31m+     "benefit": {[39m
+[31m+       "title": {[39m
+[31m+         "en": "Free dessert",[39m
+[31m+         "es": "Postre de cortesía",[39m
+[31m+       },[39m
+[31m+     },[39m
+[31m+     "codeTail": "35SR",[39m
+[31m+     "maxQuantity": 1,[39m
+[31m+     "redemption": {[39m
+[31m+       "at": "2026-11-21T20:41:18.158Z",[39m
+[31m+       "id": "iWwEu4ckCOnH94ihR4Yp",[39m
+[31m+       "quantity": 1,[39m
+[31m+     },[39m
+[31m+     "result": "valid",[39m
+[2m    },[22m
+[2m  }[22m
+
+ ❯ test/qr-redeem.test.ts:265:19
+    263|     await pair(early).set({ visitCount: 2 }, { merge: true });
+    264|     const first = await door(doorman, id, earlyCode.payload, { tokenId…
+    265|     expect(first).toEqual({ checked: { result: 'invalid' }, redeemed: …
+       |                   ^
+    266|     expect(await tokenStatus(earlyCode.tokenId)).toBe('issued');
+    267|     expect((await db.collection('qrHolders').doc(`${id}__${early.uid}`…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 skipped (15)
+   Start at  16:41:15
+   Duration  3.07s (transform 517ms, setup 20ms, collect 99ms, tests 2.70s, environment 0ms, prepare 74ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/qr-redeem.test.ts -t 'la puerta vuelve a pedir la constancia'" exited with code 1
