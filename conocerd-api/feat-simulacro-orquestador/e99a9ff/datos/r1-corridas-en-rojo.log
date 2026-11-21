@@ -1,0 +1,48 @@
+pnpm simulacro, 20 nov 2026: ninguna corrida limpia todavía. Cada corrida en rojo nombra su superficie y escena.
+
+== 2026-11-20-2146 verde=False falla api/arriba
+$ tsx scripts/simulacro/arriba.ts
+Simulacro: No encuentro el comando `firebase` en el PATH.
+[ELIFECYCLE] Command failed with exit code 1.
+escenas terminadas: 
+
+== 2026-11-20-2147 verde=False falla viajero/avd
+El AVD Pixel7_API35 se cerró: INFO         | emulatorSetupEnvironment: Environment scene is not required
+INFO         | Loading snapshot 'default_boot'...
+INFO         | Successfully loaded snapshot 'default_boot' using 7581 ms
+/buildbot/src/googleplex-android/emu-36-6-release/hardware/google/gfxstream/host/gl/glestranslator/gles_v2/gles_v30_imp.cpp:glGetSynciv:579 error 0x501
+escenas terminadas: admin/invita, admin/asigna-nivel
+
+== 2026-11-20-2150 verde=False falla admin/aprueba-recompensa
+$ tsx scripts/simulacro/recorrido.ts --escena aprueba-recompensa --sin-propuesta-de-prueba
+[simulacro:admin] arrancando el admin en http://127.0.0.1:3201
+[simulacro:admin] escena aprueba-recompensa
+[simulacro:admin] FALLA: locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+  - waiting for getByRole('status').filter({ hasText: 'Recompensa aprobada' }) to be visible
+[ELIFECYCLE] Command failed with exit code 1.
+escenas terminadas: admin/invita, admin/asigna-nivel, negocio/activa, negocio/propone-recompensa, admin/aprueba-recompensa
+
+== 2026-11-20-2153 verde=False falla viajero/elige
+FALLA: flutter drive salió con 1
+FALLA: la prueba no aprobó
+FALLA: la puerta no canjeó el código (salió con 143)
+FALLA: qr-emitido.txt vacío o ausente
+FALLA: línea de tiempo ['descubre'], se esperaba ['descubre', 'elige', 'en-camino', 'llega', 'muestra-qr', 'espera-canje', 'resena', 'se-va']
+escenas terminadas: admin/invita, admin/asigna-nivel, negocio/activa, negocio/propone-recompensa, admin/aprueba-recompensa, viajero/descubre
+
+== 2026-11-20-2153, lo que la prueba de la app no encontró (escenario/viajero/resultado.json):
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+No llegué a Found 0 widgets with text "Postre de cortesía": [].
+En pantalla: Cafetería El Ensayo | Gastronomía en Distrito
+Nacional | Carta | Cocina | Café de especialidad, Repostería |
+Precio | RD$ 250 a 650 por persona | Un detalle por visitar con
+ConoceRD | Un café de cortesía con tu primera compra | Uno por
+código. | Ver mi código | Café de especialidad y repostería
+casera en una casa colonial de la calle Las Damas. Un negocio
+inventado para ensayar el recorrido completo de ConoceRD. | Antes
+de ir | Horario | Lun a Dom 07:00-20:00 | Contacto | Llamar |
+Sugerir una corrección | Reseñas | Aquí van las primeras reseñas
+de este lugar | Escribe la primera | Empezar viaje | A 1.5 km en
+línea recta | Ruta | SIMULACRO
