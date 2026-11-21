@@ -1,0 +1,48 @@
+# R6 at c9ec5d1, with r6-cajas-viejas.patch applied
+# $ pnpm exec vitest run test/simulacro-montar.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/feat-simulacro-orquestador
+
+ ❯ test/simulacro-montar.test.ts (13 tests | 1 failed) 2883ms
+   ✓ la línea de tiempo > lee cada línea y salta las que no son JSON 3ms
+   ✓ la línea de tiempo > da a cada escena del viajero su tramo: espera-canje empieza en su línea y termina con el canje del panel 1ms
+   ✓ la línea de tiempo > empareja inicio y fin del admin y del negocio 0ms
+   ✓ el plan del montaje > sigue el orden del guion y corta el tiempo muerto entre escenas 1ms
+   ✓ el plan del montaje > acelera x8 la caminata y la permanencia, con el rótulo del tiempo real 1ms
+   ✓ el plan del montaje > dura lo que suman sus tramos, con los rápidos divididos entre ocho 0ms
+   ✓ el plan del montaje > muestra el correo desde que llega al buzón, como tarjeta de 8 s 0ms
+   ✓ el plan del montaje > nombra cada escena con un rótulo en español 0ms
+   ✓ el plan del montaje > dice el tiempo real de una espera en palabras 0ms
+   ✓ la hora de pared de cada grabación > ubica los tramos del viajero: el primero por su video_ms, los demás por cuándo se bajaron 0ms
+   ✓ la hora de pared de cada grabación > nunca pone un tramo antes de que termine el anterior 0ms
+   ✓ la hora de pared de cada grabación > un video del navegador empezó su duración antes de guardarse 0ms
+   × el montaje con videos de prueba de 2 s > compone 1920x1080 con el viajero y el panel cambiando en el mismo segundo 2875ms
+     → expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/simulacro-montar.test.ts > el montaje con videos de prueba de 2 s > compone 1920x1080 con el viajero y el panel cambiando en el mismo segundo
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/simulacro-montar.test.ts:253:60
+    251|     expect(esRojo(pixel(resultado.archivo, 0.6, ...derecha))).toBe(tru…
+    252|     // Cada grabación llena su caja hasta el borde: el teléfono 19.5:9…
+    253|     expect(esRojo(pixel(resultado.archivo, 0.6, 46, 580))).toBe(true);
+       |                                                            ^
+    254|     expect(esRojo(pixel(resultado.archivo, 0.6, 468, 580))).toBe(true);
+    255|     expect(esRojo(pixel(resultado.archivo, 0.6, 1240, 116))).toBe(true…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  02:15:22
+   Duration  3.16s (transform 60ms, setup 13ms, collect 90ms, tests 2.88s, environment 0ms, prepare 58ms)
+
