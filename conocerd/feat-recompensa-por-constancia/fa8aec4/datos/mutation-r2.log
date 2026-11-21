@@ -1,0 +1,52 @@
+# R2 at fa8aec4, with r2-visits-pending-unmapped.patch applied
+# $ flutter test test/features/destinations/benefit_code_test.dart
+00:00 +0: loading /home/decruce/dev/wt/app/feat-recompensa-por-constancia/test/features/destinations/benefit_code_test.dart
+00:00 +0: BenefitOffer un beneficio activo se lee con su título y su regla
+00:00 +1: BenefitOffer visitsRequired: sin el campo vale 3; de 2 a 10 se respeta; fuera, 3
+00:00 +2: BenefitOffer apagado, sin título o con una regla desconocida no existe
+00:00 +3: BenefitOffer por persona sin un máximo de 1 a 6 no existe; uno por código siempre da 1
+00:00 +4: BenefitProgress lee los tres estados con sus visitas
+00:00 +5: BenefitProgress una respuesta fuera del contrato no es un progreso
+00:00 +6: BenefitCode lee un código con la forma del contrato
+00:00 +7: BenefitCode un payload o un código corto fuera del contrato no sirve
+00:00 +8: BenefitCode vale hasta su vencimiento y ni un instante después
+00:00 +9: BenefitCode ida y vuelta por JSON
+00:00 +10: BenefitCodeService pide el código con el id del negocio y lo devuelve
+00:00 +11: BenefitCodeService sin señal enseña el código guardado mientras no haya vencido
+00:00 +12: BenefitCodeService sin señal y vencido pide señal
+00:00 +13: BenefitCodeService sin señal y sin copia pide señal
+00:00 +14: BenefitCodeService la copia es de la cuenta y del negocio: otra cuenta u otro negocio no la ven
+00:00 +15: BenefitCodeService 403 not_eligible es notEligible
+00:00 +16: BenefitCodeService 404 not_found es notEligible
+00:00 +17: BenefitCodeService 403 own_business es ownBusiness
+00:00 +18: BenefitCodeService 409 already_redeemed_today es alreadyRedeemedToday
+00:00 +19: BenefitCodeService 409 visits_pending es visitsPending
+00:00 +19 -1: BenefitCodeService 409 visits_pending es visitsPending [E]
+  Expected: BenefitCodeProblem:<BenefitCodeProblem.visitsPending>
+    Actual: BenefitCodeProblem:<BenefitCodeProblem.notEligible>
+  
+  package:matcher                                          expect
+  package:flutter_test/src/widget_tester.dart 473:18       expect
+  test/features/destinations/benefit_code_test.dart 318:9  main.<fn>.<fn>
+  
+00:00 +19 -1: BenefitCodeService 503 not_configured es unavailable
+00:00 +20 -1: BenefitCodeService 501 not_implemented es unavailable
+00:00 +21 -1: BenefitCodeService 401 unauthenticated es signedOut
+00:00 +22 -1: BenefitCodeService 401 unauthorized es signedOut
+00:00 +23 -1: BenefitCodeService si el servidor niega el beneficio, la copia guardada se borra
+00:00 +24 -1: BenefitCodeService un fallo del servidor no borra la copia: sigue valiendo sin señal
+00:00 +25 -1: BenefitCodeService progressFor GET /qr/progress con el id, y devuelve las visitas
+00:00 +26 -1: BenefitCodeService progressFor no escribe nada en el teléfono
+00:00 +27 -1: BenefitCodeService progressFor 404 not_eligible es notEligible
+00:00 +28 -1: BenefitCodeService progressFor 403 own_business es ownBusiness
+00:00 +29 -1: BenefitCodeService progressFor 401 unauthenticated es signedOut
+00:00 +30 -1: BenefitCodeService progressFor 503 not_configured es unavailable
+00:00 +31 -1: BenefitCodeService progressFor sin señal es offline
+00:00 +32 -1: BenefitCodeService progressFor sin sesión no sale ninguna petición
+00:00 +33 -1: BenefitCodeService progressFor una respuesta rara es "no disponible"
+00:00 +34 -1: BenefitCodeService sin sesión no sale ninguna petición
+00:00 +35 -1: BenefitCodeService una respuesta sin código válido es "no disponible"
+00:00 +36 -1: Some tests failed.
+
+Failing tests:
+  /home/decruce/dev/wt/app/feat-recompensa-por-constancia/test/features/destinations/benefit_code_test.dart: BenefitCodeService 409 visits_pending es visitsPending
