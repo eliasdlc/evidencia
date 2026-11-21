@@ -1,0 +1,183 @@
+# R1 at 99bbfa7, with src/features/negocio/recompensa/model.ts, src/features/puerta/answers.ts, src/features/puerta/api.ts back at 6f9df18
+# $ pnpm exec vitest run src/features/negocio/recompensa/model.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/feat-recompensa-por-constancia
+
+ ❯ src/features/negocio/recompensa/model.test.ts (21 tests | 8 failed) 93ms
+   ❯ visitsRequired (5)
+     × starts the draft at 3 20ms
+     × accepts 2 to 10 and rejects the rest 3ms
+     × is sent as a number and read back into the draft 3ms
+     × reads a benefit without the field as 3 5ms
+     × writes the summary line 2ms
+   ❯ toInput (4)
+     × builds only the schema keys, trimmed, with maxPerCode 1 for "one" and no English when blank 9ms
+     × carries English, per person, and the daily limit 5ms
+     × round-trips through draftFrom 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/recompensa/model.test.ts > visitsRequired > starts the draft at 3
+AssertionError: expected undefined to be '3' // Object.is equality
+
+- Expected:
+"3"
+
++ Received:
+undefined
+
+ ❯ src/features/negocio/recompensa/model.test.ts:40:40
+     38| describe('visitsRequired', () => {
+     39|   it('starts the draft at 3', () => {
+     40|     expect(EMPTY_DRAFT.visitsRequired).toBe('3');
+       |                                        ^
+     41|     expect(draftFrom(null).visitsRequired).toBe('3');
+     42|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/features/negocio/recompensa/model.test.ts > visitsRequired > accepts 2 to 10 and rejects the rest
+AssertionError: expected undefined to be 'Pon un número del 2 al 10.' // Object.is equality
+
+- Expected:
+"Pon un número del 2 al 10."
+
++ Received:
+undefined
+
+ ❯ src/features/negocio/recompensa/model.test.ts:46:132
+     44|   it('accepts 2 to 10 and rejects the rest', () => {
+     45|     for (const good of ['2', '3', '10', ' 5 ']) expect(validateDraft(d…
+     46|     for (const bad of ['1', '11', '0', '', '2.5', '-3', 'x']) expect(v…
+       |                                                                                                                                    ^
+     47|   });
+     48|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/features/negocio/recompensa/model.test.ts > visitsRequired > is sent as a number and read back into the draft
+AssertionError: expected undefined to be 7 // Object.is equality
+
+- Expected:
+7
+
++ Received:
+undefined
+
+ ❯ src/features/negocio/recompensa/model.test.ts:50:71
+     48|
+     49|   it('is sent as a number and read back into the draft', () => {
+     50|     expect(toInput(draft({ visitsRequired: ' 7 ' }))?.visitsRequired).…
+       |                                                                       ^
+     51|     const input = toInput(draft({ visitsRequired: '4' }));
+     52|     expect(draftFrom(input).visitsRequired).toBe('4');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/features/negocio/recompensa/model.test.ts > visitsRequired > reads a benefit without the field as 3
+AssertionError: expected undefined to be 3 // Object.is equality
+
+- Expected:
+3
+
++ Received:
+undefined
+
+ ❯ src/features/negocio/recompensa/model.test.ts:58:43
+     56|     const benefit = { active: true, kind: 'drink', title: { es: 'Jugo'…
+     57|     const view = readBenefitView({ eligible: true, benefit, proposal: …
+     58|     expect(view?.benefit?.visitsRequired).toBe(3);
+       |                                           ^
+     59|     expect(view?.proposal?.benefit.visitsRequired).toBe(3);
+     60|     expect(readBenefitView({ eligible: true, benefit: { ...benefit, vi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/features/negocio/recompensa/model.test.ts > visitsRequired > writes the summary line
+TypeError: visitsLine is not a function
+ ❯ src/features/negocio/recompensa/model.test.ts:64:12
+     62|
+     63|   it('writes the summary line', () => {
+     64|     expect(visitsLine({ visitsRequired: 3 })).toBe('Se gana en la 3.ª …
+       |            ^
+     65|     expect(visitsLine({ visitsRequired: 10 })).toBe('Se gana en la 10.…
+     66|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/features/negocio/recompensa/model.test.ts > toInput > builds only the schema keys, trimmed, with maxPerCode 1 for "one" and no English when blank
+AssertionError: expected { active: true, kind: 'dessert', …(5) } to deeply equal { active: true, kind: 'dessert', …(6) }
+
+- Expected
++ Received
+
+@@ -6,7 +6,6 @@
+    "offline": "wait",
+    "perCode": "one",
+    "title": {
+      "es": "Flan",
+    },
+-   "visitsRequired": 3,
+  }
+
+ ❯ src/features/negocio/recompensa/model.test.ts:71:70
+     69| describe('toInput', () => {
+     70|   it('builds only the schema keys, trimmed, with maxPerCode 1 for "one…
+     71|     expect(toInput(draft({ titleEs: '  Flan  ', maxPerCode: '4' }))).t…
+       |                                                                      ^
+     72|       active: true,
+     73|       kind: 'dessert',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/features/negocio/recompensa/model.test.ts > toInput > carries English, per person, and the daily limit
+AssertionError: expected { active: false, kind: 'drink', …(5) } to deeply equal { active: false, kind: 'drink', …(6) }
+
+- Expected
++ Received
+
+@@ -7,7 +7,6 @@
+    "perCode": "per_person",
+    "title": {
+      "en": "Flan",
+      "es": "Postre de la casa",
+    },
+-   "visitsRequired": 3,
+  }
+
+ ❯ src/features/negocio/recompensa/model.test.ts:84:151
+     82|
+     83|   it('carries English, per person, and the daily limit', () => {
+     84|     expect(toInput(draft({ titleEn: ' Flan ', perCode: 'per_person', m…
+       |                                                                                                                                                       ^
+     85|       active: false,
+     86|       kind: 'drink',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  src/features/negocio/recompensa/model.test.ts > toInput > round-trips through draftFrom
+AssertionError: expected { active: false, kind: 'other', …(5) } to deeply equal { active: false, kind: 'other', …(6) }
+
+- Expected
++ Received
+
+@@ -7,7 +7,6 @@
+    "perCode": "per_person",
+    "title": {
+      "en": "Coffee",
+      "es": "Café",
+    },
+-   "visitsRequired": 8,
+  }
+
+ ❯ src/features/negocio/recompensa/model.test.ts:102:39
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 13 passed (21)
+   Start at  16:17:31
+   Duration  2.76s (transform 83%, import 8%, tests 7%, worker 2%)
+
