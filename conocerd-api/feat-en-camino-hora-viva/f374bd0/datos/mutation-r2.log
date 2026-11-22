@@ -1,0 +1,92 @@
+# R2 at f374bd0, with R2.patch applied
+# $ mise exec node@26.8.1 -- firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "pnpm exec vitest run test/arrivals.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/arrivals.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/en-camino-hora-viva
+
+ ❯ test/arrivals.test.ts (34 tests | 1 failed) 8861ms
+   ✓ texto y validación de "en camino" > la línea en español, hora de Santo Domingo en 24 h y singular para 1 194ms
+   ✓ texto y validación de "en camino" > el primer nombre es la primera palabra, con tope de 40 y sin nombre es null 1ms
+   ✓ texto y validación de "en camino" > el nombre se limpia antes de partir: sin control ni formato, 40 puntos de código, vacío es null 1ms
+   ✓ texto y validación de "en camino" > el cuerpo del PATCH acepta solo etaAt ISO con desfase 2ms
+   ✓ texto y validación de "en camino" > el cuerpo acepta partySize 1 a 20 enteros y un ISO, y rechaza el resto 2ms
+   ✓ en camino Auth/Firestore emulator > sin viajero con sesión no escribe nada  844ms
+   ✓ en camino Auth/Firestore emulator > rechaza grupo y hora fuera de rango, destino inexistente y cuenta sin nombre 121ms
+   ✓ en camino Auth/Firestore emulator > escribe el aviso sin uid, el dueño aparte, y devuelve la línea exacta 110ms
+   ✓ en camino Auth/Firestore emulator > un segundo aviso cancela el primero y solo queda uno en camino 106ms
+   ✓ en camino Auth/Firestore emulator > DELETE: un ajeno recibe 404 y no cambia nada; el dueño cancela 128ms
+   ✓ en camino Auth/Firestore emulator > una visita validada marca el aviso como arrived y sale de la lista 122ms
+   ✓ en camino Auth/Firestore emulator > un aviso que llegó sale de la lista a los 15 minutos de arrivedAt 95ms
+   ✓ en camino Auth/Firestore emulator > el orden: primero los que vienen por hora, luego los que llegaron, el más reciente primero 40ms
+   ✓ en camino Auth/Firestore emulator > la lista del panel lleva createdAt y arrivedAt y nunca un uid 127ms
+   ✓ en camino Auth/Firestore emulator > PATCH: el dueño cambia la hora y mueve expiresAt en el aviso, el dueño y el puntero 102ms
+   × en camino Auth/Firestore emulator > PATCH: un ajeno, un id que no existe o imposible reciben 404 y nada cambia; sin sesión es 401 67ms
+     → expected 200 to be 404 // Object.is equality
+   ✓ en camino Auth/Firestore emulator > PATCH: un aviso que llegó o canceló es 409 y no cambia 152ms
+   ✓ en camino Auth/Firestore emulator > PATCH: la misma regla de hora que al crear y cuerpo estricto 64ms
+   ✓ en camino Auth/Firestore emulator > PATCH: más de 60 cambios en una hora son 429, solo para ese viajero, y no gastan los avisos  1053ms
+   ✓ en camino Auth/Firestore emulator > una visita de otro viajero no toca el aviso 62ms
+   ✓ en camino Auth/Firestore emulator > un aviso vencido no aparece en activeArrivals 34ms
+   ✓ en camino Auth/Firestore emulator > el puntero guarda el aviso en curso y 5 POST a la vez dejan uno solo en camino  3566ms
+   ✓ en camino Auth/Firestore emulator > DELETE y la llegada borran el puntero 36ms
+   ✓ en camino Auth/Firestore emulator > más de 10 avisos en una hora son 429 too_many_arrivals, solo para ese viajero 268ms
+   ✓ en camino Auth/Firestore emulator > arrivalOwners lleva expiresAt, igual que el aviso 23ms
+   ✓ en camino Auth/Firestore emulator > markArrived solo cierra avisos que todavía no vencieron 51ms
+   ✓ en camino Auth/Firestore emulator > reenviar la misma visita no vuelve a cerrar un aviso nuevo 109ms
+   ✓ en camino Auth/Firestore emulator > una visita duplicate_24h también cierra el aviso: la geocerca ya probó que está allí 107ms
+   ✓ en camino Auth/Firestore emulator > un id imposible en DELETE es 404 y nunca 500; en POST es 422 15ms
+   ✓ en camino Auth/Firestore emulator > la hora de hace 1 minuto se lleva a ahora y la de hace 3 minutos es 422 23ms
+   ✓ en camino Auth/Firestore emulator > un nombre solo de caracteres invisibles es 422 display_name_required 9ms
+   ✓ en camino Auth/Firestore emulator > borrado de cuenta > borra todas las filas de arrivalOwners y los avisos a los que apuntan, sea cual sea su estado  686ms
+   ✓ en camino Auth/Firestore emulator > borrado de cuenta > un POST que entra durante el borrado lo recoge la segunda pasada 217ms
+   ✓ en camino Auth/Firestore emulator > borrado de cuenta > pagina: más filas que un lote salen todas, cada aviso con su fila 210ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > PATCH: un ajeno, un id que no existe o imposible reciben 404 y nada cambia; sin sesión es 401
+AssertionError: expected 200 to be 404 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 404[39m
+[31m+ 200[39m
+
+ ❯ test/arrivals.test.ts:250:69
+    248|     const before = (await arrivalDoc(id)).get('etaAt').toMillis();
+    249|     const other = await newTraveler('Luis');
+    250|     expect((await patch(id, { etaAt: eta() }, other.token)).status).to…
+       |                                                                     ^
+    251|     expect((await patch('no-existe', { etaAt: eta() })).status).toBe(4…
+    252|     expect((await patch('..', { etaAt: eta() })).status).toBe(404);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 33 passed (34)
+   Start at  00:59:28
+   Duration  9.32s (transform 448ms, setup 13ms, collect 236ms, tests 8.86s, environment 0ms, prepare 69ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/arrivals.test.ts" exited with code 1
