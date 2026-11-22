@@ -1,0 +1,70 @@
+# R3 at 0d62bb4, with R1.patch applied
+# $ pnpm exec vitest run src/features/negocio/hoy/derive.test.ts src/features/negocio/format.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/hoy-kpis
+
+ ❯ src/features/negocio/format.test.ts (16 tests | 1 failed) 11ms
+   ❯ deltaOf and monthShort (3)
+     × has no delta without a month before, or when both months are empty 5ms
+ ❯ src/features/negocio/hoy/derive.test.ts (29 tests | 1 failed) 21ms
+   ❯ kpisOf: the tiles at the top of Hoy (9)
+     × has no delta when there is no month before: the first month shows the figure alone 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/format.test.ts > deltaOf and monthShort > has no delta without a month before, or when both months are empty
+AssertionError: expected { dir: 'up', amount: 5, text: '+5' } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "amount": 5,
+  "dir": "up",
+  "text": "+5",
+}
+
+ ❯ src/features/negocio/format.test.ts:118:34
+    116|
+    117|   it('has no delta without a month before, or when both months are emp…
+    118|     expect(deltaOf(5, 0, false)).toBeNull();
+       |                                  ^
+    119|     expect(deltaOf(0, 0, true)).toBeNull();
+    120|     expect(deltaOf(0, 3, true)?.dir).toBe('down');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/hoy/derive.test.ts > kpisOf: the tiles at the top of Hoy > has no delta when there is no month before: the first month shows the figure alone
+AssertionError: expected { key: 'visits', …(5) } to match object { value: '1', delta: null }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "delta": null,
++   "delta": {
++     "amount": 1,
++     "dir": "up",
++     "text": "+1",
++   },
+    "value": "1",
+  }
+
+ ❯ src/features/negocio/hoy/derive.test.ts:178:26
+    176|   it('has no delta when there is no month before: the first month show…
+    177|     const tiles = byKey(little(PERIOD));
+    178|     expect(tiles.visits).toMatchObject({ value: '1', delta: null });
+       |                          ^
+    179|     expect(tiles.contacts).toMatchObject({ value: '1', delta: null });
+    180|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 43 passed (45)
+   Start at  01:15:27
+   Duration  142ms (tests 41%, import 26%, transform 24%, worker 9%)
+
