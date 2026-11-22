@@ -1,0 +1,149 @@
+# R2 at d846c93, with src/layout/useLabelsFit.ts back at ef7904b
+# $ pnpm exec vitest run src/layout/useLabelsFit.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/escanear-orbe
+
+ ❯ src/layout/useLabelsFit.test.ts (8 tests | 7 failed) 12ms
+   ❯ fitBar, four tabs and the scan orb: the open tab is always stretched (8)
+     × on a 412 px phone the circles grow toward the top size, roomy 5ms
+     × on a 390 px phone the widest name fits at the roomy spacing, never under 48 1ms
+     × on a 360 px phone the spacing tightens at 48 so "Tu negocio" still shows whole 3ms
+     × on a 320 px phone the open name still shows: Hoy whole, a longer one clipped 1ms
+     × without the orb, four tabs stay roomy on the narrowest phone 0ms
+     × is exact at the roomy edge: the bar, its tabs, the gaps, the orb and the stretch fill the row 0ms
+     × is exact at the tight edge: what is left after the circles, the orb and the gaps is the name's room 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar, four tabs and the scan orb: the open tab is always stretched > on a 412 px phone the circles grow toward the top size, roomy
+AssertionError: expected undefined to be 'roomy' // Object.is equality
+
+- Expected:
+"roomy"
+
++ Received:
+undefined
+
+ ❯ src/layout/useLabelsFit.test.ts:14:22
+     12|   it('on a 412 px phone the circles grow toward the top size, roomy', …
+     13|     const fit = fitBar(FOUR, 4, room(412), true);
+     14|     expect(fit.name).toBe('roomy');
+       |                      ^
+     15|     expect(fit.size).toBeGreaterThan(TAB_MIN);
+     16|     expect(fit.size).toBeLessThanOrEqual(TAB_MAX);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar, four tabs and the scan orb: the open tab is always stretched > on a 390 px phone the widest name fits at the roomy spacing, never under 48
+AssertionError: expected undefined to be 'roomy' // Object.is equality
+
+- Expected:
+"roomy"
+
++ Received:
+undefined
+
+ ❯ src/layout/useLabelsFit.test.ts:22:22
+     20|   it('on a 390 px phone the widest name fits at the roomy spacing, nev…
+     21|     const fit = fitBar(FOUR, 4, room(390), true);
+     22|     expect(fit.name).toBe('roomy');
+       |                      ^
+     23|     expect(fit.size).toBeGreaterThanOrEqual(TAB_MIN);
+     24|     expect(fit.labelRoom).toBeGreaterThanOrEqual(WIDEST);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar, four tabs and the scan orb: the open tab is always stretched > on a 360 px phone the spacing tightens at 48 so "Tu negocio" still shows whole
+AssertionError: expected { mode: 'current', size: 54 } to match object { name: 'tight', size: 48 }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "name": "tight",
+-   "size": 48,
++   "size": 54,
+  }
+
+ ❯ src/layout/useLabelsFit.test.ts:29:17
+     27|   it('on a 360 px phone the spacing tightens at 48 so "Tu negocio" sti…
+     28|     const fit = fitBar(FOUR, 4, room(360), true);
+     29|     expect(fit).toMatchObject({ name: 'tight', size: TAB_MIN });
+       |                 ^
+     30|     expect(fit.labelRoom).toBeGreaterThanOrEqual(WIDEST);
+     31|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar, four tabs and the scan orb: the open tab is always stretched > on a 320 px phone the open name still shows: Hoy whole, a longer one clipped
+AssertionError: expected { mode: 'current', size: 48 } to match object { name: 'tight', size: 48 }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "name": "tight",
+    "size": 48,
+  }
+
+ ❯ src/layout/useLabelsFit.test.ts:35:17
+     33|   it('on a 320 px phone the open name still shows: Hoy whole, a longer…
+     34|     const fit = fitBar(FOUR, 4, room(320), true);
+     35|     expect(fit).toMatchObject({ name: 'tight', size: TAB_MIN });
+       |                 ^
+     36|     expect(fit.labelRoom).toBeGreaterThanOrEqual(FOUR[0]!);
+     37|     expect(fit.labelRoom).toBeLessThan(WIDEST);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar, four tabs and the scan orb: the open tab is always stretched > without the orb, four tabs stay roomy on the narrowest phone
+AssertionError: expected undefined to be 'roomy' // Object.is equality
+
+- Expected:
+"roomy"
+
++ Received:
+undefined
+
+ ❯ src/layout/useLabelsFit.test.ts:42:22
+     40|   it('without the orb, four tabs stay roomy on the narrowest phone', (…
+     41|     const fit = fitBar(FOUR, 4, room(320), false);
+     42|     expect(fit.name).toBe('roomy');
+       |                      ^
+     43|     expect(fit.labelRoom).toBeGreaterThanOrEqual(WIDEST);
+     44|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar, four tabs and the scan orb: the open tab is always stretched > is exact at the roomy edge: the bar, its tabs, the gaps, the orb and the stretch fill the row
+TypeError: Cannot read properties of undefined (reading 'gap')
+ ❯ src/layout/useLabelsFit.test.ts:55:41
+     53|   it('is exact at the roomy edge: the bar, its tabs, the gaps, the orb…
+     54|     const size = 50;
+     55|     const needed = 4 * size + 3 * ROOMY.gap + BAR_CHROME + (size + BAR…
+       |                                         ^
+     56|     expect(fitBar(FOUR, 4, needed, true)).toMatchObject({ name: 'roomy…
+     57|     expect(fitBar(FOUR, 4, needed - 1, true).size).toBeLessThan(size);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar, four tabs and the scan orb: the open tab is always stretched > is exact at the tight edge: what is left after the circles, the orb and the gaps is the name's room
+TypeError: Cannot read properties of undefined (reading 'gap')
+ ❯ src/layout/useLabelsFit.test.ts:61:42
+     59|
+     60|   it('is exact at the tight edge: what is left after the circles, the …
+     61|     const used = 4 * TAB_MIN + 3 * TIGHT.gap + BAR_CHROME + (TAB_MIN +…
+       |                                          ^
+     62|     expect(fitBar(FOUR, 4, used + 40, true)).toMatchObject({ name: 'ti…
+     63|     expect(fitBar(FOUR, 4, used - 5, true).labelRoom).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 1 passed (8)
+   Start at  10:17:14
+   Duration  131ms (tests 33%, transform 31%, import 29%, worker 7%)
+
