@@ -1,0 +1,59 @@
+# R3 at 60a9a70, with r3.patch applied
+# $ pnpm vitest run mcp/herramientas.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/mcp-editorial
+
+ ❯ mcp/herramientas.test.ts (14 tests | 2 failed) 43ms
+     × rechaza un campo tocado sin su fuente, aunque otro sí la tenga 7ms
+     × ninguna herramienta de escritura llama a los métodos que escriben, y todas dicen lo que harían 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/herramientas.test.ts > actualizar_campos > rechaza un campo tocado sin su fuente, aunque otro sí la tenga
+AssertionError: expected { ok: false, …(1) } to deeply equal { ok: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "error": StringContaining "Falta la fuente de: openingHours",
++   "error": "Cannot read properties of undefined (reading 'ok')",
+    "ok": false,
+  }
+
+ ❯ mcp/herramientas.test.ts:79:15
+     77|     const { herramienta, motor } = crear({ real: true });
+     78|     const r = await herramienta('actualizar_campos').ejecutar({ id: bo…
+     79|     expect(r).toEqual({ ok: false, error: expect.stringContaining('Fal…
+       |               ^
+     80|     expect(motor.guardar).not.toHaveBeenCalled();
+     81|     const sinNinguna = await herramienta('actualizar_campos').ejecutar…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  mcp/herramientas.test.ts > sin --real > ninguna herramienta de escritura llama a los métodos que escriben, y todas dicen lo que harían
+AssertionError: actualizar_campos: expected { ok: false, …(1) } to match object { ok: true, datos: { simulado: true } }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "datos": {
+-     "simulado": true,
+-   },
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ mcp/herramientas.test.ts:118:25
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 12 passed (14)
+   Start at  19:26:32
+   Duration  320ms (transform 122ms, setup 0ms, import 187ms, tests 43ms, environment 0ms)
+
