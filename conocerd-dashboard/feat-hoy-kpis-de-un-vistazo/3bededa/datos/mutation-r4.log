@@ -1,0 +1,64 @@
+# R4 at 3bededa, with R2.patch applied
+# $ pnpm exec vitest run src/features/negocio/hoy/insights.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/hoy-kpis
+
+ ❯ src/features/negocio/hoy/insights.test.ts (21 tests | 2 failed) 21ms
+   ❯ peakHour, hourTotals and stripRange: "Tu hora fuerte" (6)
+     × finds the busiest hour and the weekday that is busiest at that hour 7ms
+     × breaks a tie toward the earlier hour and the earlier day 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/negocio/hoy/insights.test.ts > peakHour, hourTotals and stripRange: "Tu hora fuerte" > finds the busiest hour and the weekday that is busiest at that hour
+AssertionError: expected { hour: +0, day: +0 } to deeply equal { hour: 18, day: 4 }
+
+- Expected
++ Received
+
+  {
+-   "day": 4,
+-   "hour": 18,
++   "day": 0,
++   "hour": 0,
+  }
+
+ ❯ src/features/negocio/hoy/insights.test.ts:160:29
+    158|
+    159|   it('finds the busiest hour and the weekday that is busiest at that h…
+    160|     expect(peakHour(grid!)).toEqual({ hour: 18, day: 4 });
+       |                             ^
+    161|   });
+    162|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/negocio/hoy/insights.test.ts > peakHour, hourTotals and stripRange: "Tu hora fuerte" > breaks a tie toward the earlier hour and the earlier day
+AssertionError: expected { hour: +0, day: +0 } to deeply equal { hour: 9, day: 1 }
+
+- Expected
++ Received
+
+  {
+-   "day": 1,
+-   "hour": 9,
++   "day": 0,
++   "hour": 0,
+  }
+
+ ❯ src/features/negocio/hoy/insights.test.ts:164:70
+    162|
+    163|   it('breaks a tie toward the earlier hour and the earlier day', () =>…
+    164|     expect(peakHour(weekGrid({ '2-09': 3, '6-09': 3, '1-15': 3 })!)).t…
+       |                                                                      ^
+    165|   });
+    166|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 19 passed (21)
+   Start at  00:49:59
+   Duration  237ms (transform 65%, tests 20%, import 11%, worker 3%)
+
