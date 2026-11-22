@@ -1,0 +1,82 @@
+# R3 at 06a3d00, with r3.patch applied
+# $ pnpm vitest run mcp/herramientas.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/mcp-editorial
+
+ ❯ mcp/herramientas.test.ts (24 tests | 3 failed) 103ms
+     × rechaza un campo tocado sin su fuente, aunque otro sí la tenga 11ms
+     × no acepta la fuente de otro idioma ni la del campo padre para el idioma que se toca 6ms
+     × ninguna herramienta de escritura llama a los métodos que escriben, y todas dicen lo que harían 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/herramientas.test.ts > actualizar_campos > rechaza un campo tocado sin su fuente, aunque otro sí la tenga
+AssertionError: expected { ok: false, …(1) } to deeply equal { ok: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "error": StringContaining "Falta la fuente de: openingHours",
++   "error": "Cannot read properties of undefined (reading 'ok')",
+    "ok": false,
+  }
+
+ ❯ mcp/herramientas.test.ts:98:15
+     96|     const { herramienta, motor } = crear({ real: true });
+     97|     const r = await herramienta('actualizar_campos').ejecutar({ id: bo…
+     98|     expect(r).toEqual({ ok: false, error: expect.stringContaining('Fal…
+       |               ^
+     99|     expect(motor.guardar).not.toHaveBeenCalled();
+    100|     const sinNinguna = await herramienta('actualizar_campos').ejecutar…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  mcp/herramientas.test.ts > actualizar_campos > no acepta la fuente de otro idioma ni la del campo padre para el idioma que se toca
+AssertionError: name.en: expected { ok: false, …(1) } to deeply equal { ok: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "error": StringContaining "Falta la fuente de: name.es",
++   "error": "Cannot read properties of undefined (reading 'ok')",
+    "ok": false,
+  }
+
+ ❯ mcp/herramientas.test.ts:121:24
+    119|     for (const campo of ['name.en', 'name']) {
+    120|       const r = await herramienta('actualizar_campos').ejecutar({ id: …
+    121|       expect(r, campo).toEqual({ ok: false, error: expect.stringContai…
+       |                        ^
+    122|     }
+    123|     expect(motor.guardar).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  mcp/herramientas.test.ts > sin --real > ninguna herramienta de escritura llama a los métodos que escriben, y todas dicen lo que harían
+AssertionError: actualizar_campos: expected { ok: false, …(1) } to match object { ok: true, datos: { simulado: true } }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "datos": {
+-     "simulado": true,
+-   },
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ mcp/herramientas.test.ts:252:25
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 21 passed (24)
+   Start at  19:38:50
+   Duration  559ms (transform 200ms, setup 0ms, import 336ms, tests 103ms, environment 0ms)
+
