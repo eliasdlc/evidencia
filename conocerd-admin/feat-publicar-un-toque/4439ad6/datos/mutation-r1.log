@@ -1,0 +1,38 @@
+# R1 at 4439ad6, with mutar-reuso.patch applied
+# $ pnpm exec vitest run src/app/destinos/revision/publicar.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat-publicar-un-toque
+
+ ❯ src/app/destinos/revision/publicar.test.ts (9 tests | 1 failed) 15ms
+     × tras perder la respuesta de aprobar, el segundo toque reusa la aprobación y no aprueba otra vez 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/destinos/revision/publicar.test.ts > publicar en un toque > tras perder la respuesta de aprobar, el segundo toque reusa la aprobación y no aprueba otra vez
+AssertionError: expected [ 'aprobar', 'aprobar', 'publicar' ] to deeply equal [ 'aprobar', 'publicar' ]
+
+- Expected
++ Received
+
+  [
+    "aprobar",
++   "aprobar",
+    "publicar",
+  ]
+
+ ❯ src/app/destinos/revision/publicar.test.ts:63:38
+     61|     const clave = m.valor!;
+     62|     expect((await publicarEnUnToque(3, t, m, nueva)).estado).toBe('pub…
+     63|     expect(posts.map(p => p.accion)).toEqual(['aprobar', 'publicar']);
+       |                                      ^
+     64|     expect(posts[1]!.operacion).toBe(clave);
+     65|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  11:07:31
+   Duration  228ms (transform 69ms, setup 0ms, import 80ms, tests 15ms, environment 0ms)
+
