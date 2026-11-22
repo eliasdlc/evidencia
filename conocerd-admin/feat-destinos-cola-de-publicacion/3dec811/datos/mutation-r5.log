@@ -1,0 +1,58 @@
+# R5 at 3dec811, with mutation-r5.patch applied
+# $ pnpm exec vitest run src/editorial/vista-app.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat-destinos-cola
+
+ ❯ src/editorial/vista-app.test.ts (3 tests | 2 failed) 10ms
+     × dice cada valor de lista con la palabra de la app 5ms
+     × arma el subtítulo y dice qué opcional falta 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/vista-app.test.ts > la ficha como la enseña la app > dice cada valor de lista con la palabra de la app
+AssertionError: expected 'banos' to be 'Baños' // Object.is equality
+
+Expected: "Baños"
+Received: "banos"
+
+ ❯ src/editorial/vista-app.test.ts:7:51
+      5| describe('la ficha como la enseña la app', () => {
+      6|   it('dice cada valor de lista con la palabra de la app', () => {
+      7|     expect(etiquetaDeOpcion('services', 'banos')).toBe('Baños');
+       |                                                   ^
+      8|     expect(etiquetaDeOpcion('warnings', 'fourwd_access')).toBe('Acceso…
+      9|     expect(etiquetaDeOpcion('placeType', 'area_descanso')).toBe('Área …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/editorial/vista-app.test.ts > la ficha como la enseña la app > arma el subtítulo y dice qué opcional falta
+AssertionError: expected [ { etiqueta: 'Aviso', …(2) } ] to deeply equal [ { etiqueta: 'Aviso', …(2) } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "etiqueta": "Aviso",
+      "ruta": "warnings",
+-     "texto": "Lleva agua",
++     "texto": "bring_water",
+    },
+  ]
+
+ ❯ src/editorial/vista-app.test.ts:24:25
+     22|     const f = fichaApp({ 'name.es': 'Charco Azul', categories: 'natura…
+     23|     expect(f.subtitulo).toBe('Naturaleza en Barahona');
+     24|     expect(f.antesDeIr).toEqual([{ etiqueta: 'Aviso', texto: 'Lleva ag…
+       |                         ^
+     25|     expect(f.ofrece).toEqual(['Parqueo']);
+     26|     expect(f.vacios.map((v) => v.etiqueta)).toEqual(['Horario', 'Entra…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  17:18:05
+   Duration  175ms (transform 39ms, setup 0ms, import 74ms, tests 10ms, environment 0ms)
+
