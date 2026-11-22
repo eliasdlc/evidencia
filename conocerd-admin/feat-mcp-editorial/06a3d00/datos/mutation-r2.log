@@ -1,0 +1,66 @@
+# R2 at 06a3d00, with r2.patch applied
+# $ pnpm vitest run mcp/herramientas.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/mcp-editorial
+
+ ❯ mcp/herramientas.test.ts (24 tests | 3 failed) 102ms
+     × son exactamente diez y ninguna publica, borra ni oculta 10ms
+     × ninguna herramienta de escritura llama a los métodos que escriben, y todas dicen lo que harían 7ms
+     × fijar_portada deja una sola portada y quitar_foto saca la foto por el motor 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/herramientas.test.ts > lista de herramientas > son exactamente diez y ninguna publica, borra ni oculta
+AssertionError: expected [ 'actualizar_campos', …(9) ] to deeply equal [ 'actualizar_campos', …(9) ]
+
+- Expected
++ Received
+
+@@ -3,10 +3,10 @@
+    "agregar_foto",
+    "buscar_duplicado",
+    "cola",
+    "crear_borrador",
+    "equilibrio",
+-   "fijar_portada",
+    "leer_ficha",
++   "publicar",
+    "quitar_foto",
+    "registrar_fuentes",
+  ]
+
+ ❯ mcp/herramientas.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  mcp/herramientas.test.ts > sin --real > ninguna herramienta de escritura llama a los métodos que escriben, y todas dicen lo que harían
+TypeError: Cannot read properties of undefined (reading 'ejecutar')
+ ❯ mcp/herramientas.test.ts:251:42
+    249|     ] as const;
+    250|     for (const [nombre, entrada] of llamadas) {
+    251|       const r = await herramienta(nombre).ejecutar(entrada);
+       |                                          ^
+    252|       expect(r, nombre).toMatchObject({ ok: true, datos: { simulado: t…
+    253|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  mcp/herramientas.test.ts > fotos con --real > fijar_portada deja una sola portada y quitar_foto saca la foto por el motor
+TypeError: Cannot read properties of undefined (reading 'ejecutar')
+ ❯ mcp/herramientas.test.ts:266:39
+    264|     const { herramienta, motor } = crear({ real: true }, conDos);
+    265|     motor.asociarFotos.mockResolvedValue({ ok: true, revision: 4 });
+    266|     await herramienta('fijar_portada').ejecutar({ id: borradorBase.id,…
+       |                                       ^
+    267|     expect(motor.asociarFotos.mock.calls[0]![0].fotos).toEqual([{ asse…
+    268|     await herramienta('quitar_foto').ejecutar({ id: borradorBase.id, a…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 21 passed (24)
+   Start at  19:38:43
+   Duration  494ms (transform 175ms, setup 0ms, import 279ms, tests 102ms, environment 0ms)
+
