@@ -1,0 +1,35 @@
+# R1 at a8b264a, with r1-duplicado.patch applied
+# $ pnpm exec vitest run src/editorial/lote-diario.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat-lote-diario
+
+ ❯ src/editorial/lote-diario.test.ts (14 tests | 1 failed) 12ms
+     × el mismo nombre a un kilómetro sigue siendo duplicado (un pin impreciso) 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/lote-diario.test.ts > buscarDuplicado > el mismo nombre a un kilómetro sigue siendo duplicado (un pin impreciso)
+AssertionError: expected undefined to be 'stg-pollos-victorina' // Object.is equality
+
+- Expected:
+"stg-pollos-victorina"
+
++ Received:
+undefined
+
+ ❯ src/editorial/lote-diario.test.ts:55:29
+     53|   it('el mismo nombre a un kilómetro sigue siendo duplicado (un pin im…
+     54|     const r = buscarDuplicado(nuevo('nuevo-2', 'Pollos Victorina', 19.…
+     55|     expect(r?.existente.id).toBe('stg-pollos-victorina');
+       |                             ^
+     56|     expect(r?.motivo).toMatch(/^Mismo nombre a \d+ m/);
+     57|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  03:30:20
+   Duration  218ms (transform 75ms, setup 0ms, import 129ms, tests 12ms, environment 0ms)
+
