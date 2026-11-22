@@ -1,13 +1,36 @@
-# R1 at 0167604, with mutation-a1.patch applied
-# $ pnpm exec vitest run src/editorial/publicacion-politica.test.ts
+# R1 at 0167604, with mutation-r1.patch applied
+# $ pnpm exec vitest run src/editorial/publicacion-politica.test.ts src/editorial/pasos.test.ts
 
  RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat-fuentes-avisos
 
- ❯ src/editorial/publicacion-politica.test.ts (31 tests | 2 failed) 106ms
+ ❯ src/editorial/pasos.test.ts (8 tests | 1 failed) 9ms
+     × la fuente de un punto de llegada va a Ubicación, que sí frena, y no a Fuentes 5ms
+ ❯ src/editorial/publicacion-politica.test.ts (31 tests | 2 failed) 104ms
      × sin fuente del pin ni acceso comprobado se publica, y eso queda como aviso 6ms
      × fuentes sin confirmar o contradichas no frenan: se dicen como aviso 2ms
 
-⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/pasos.test.ts > pasosDe > la fuente de un punto de llegada va a Ubicación, que sí frena, y no a Fuentes
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "Falta fuente de nombre, tipo, ubicación y modos de esta llegada",
++ ]
+
+ ❯ src/editorial/pasos.test.ts:81:25
+     79|     const pasos = pasosDe([{ campo: 'arrivalPoints.parqueo', motivo: '…
+     80|     const por = Object.fromEntries(pasos.map((p) => [p.clave, p.faltas…
+     81|     expect(por.fuentes).toEqual([]);
+       |                         ^
+     82|     expect(por.ubicacion).toEqual(['Falta fuente de nombre, tipo, ubic…
+     83|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
 
  FAIL  src/editorial/publicacion-politica.test.ts > mínimo turístico verificable > sin fuente del pin ni acceso comprobado se publica, y eso queda como aviso
 AssertionError: expected false to be true // Object.is equality
@@ -21,7 +44,7 @@ AssertionError: expected false to be true // Object.is equality
  ❯ src/editorial/publicacion-politica.test.ts:62:49
 
 
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
 
  FAIL  src/editorial/publicacion-politica.test.ts > mínimo turístico verificable > fuentes sin confirmar o contradichas no frenan: se dicen como aviso
 AssertionError: expected false to be true // Object.is equality
@@ -40,11 +63,11 @@ AssertionError: expected false to be true // Object.is equality
      69|     expect(politica.bloqueos.filter(b => b.campo === 'fuentes' || b.ca…
      70|     expect(avisosDeVerificacion(draft)).toEqual(expect.arrayContaining…
 
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
 
 
- Test Files  1 failed (1)
-      Tests  2 failed | 29 passed (31)
-   Start at  18:14:03
-   Duration  779ms (transform 418ms, setup 0ms, import 517ms, tests 106ms, environment 0ms)
+ Test Files  2 failed (2)
+      Tests  3 failed | 36 passed (39)
+   Start at  18:14:44
+   Duration  546ms (transform 302ms, setup 0ms, import 432ms, tests 112ms, environment 0ms)
 
