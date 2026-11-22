@@ -1,0 +1,75 @@
+# R5 at ba27aef, with e2e/fixtures/layout.ts, src/App.tsx, src/components/Charts.tsx, src/components/Shell.tsx, src/components/ui/Screen.tsx, src/features/cuenta/CuentaPage.tsx, src/features/negocio/hoy/Detail.tsx, src/features/negocio/hoy/HoyPage.tsx, src/features/negocio/hoy/Insights.tsx, src/features/negocio/recompensa/RecompensaPage.tsx, src/features/negocio/testing.ts, src/layout/PanelLayout.tsx, src/layout/PhoneBar.tsx, src/layout/useLabelsFit.ts, src/pages/Hoy.tsx, src/pages/Progreso.tsx, src/pages/Resenas.tsx back at 169b3a4
+# $ pnpm exec vitest run src/layout/grids.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/fix-dock-desborde
+
+ ❯ src/layout/grids.test.ts (3 tests | 2 failed) 12ms
+   ❯ grid tracks shrink to the screen (3)
+     × every grid on a phone names its columns, so its single track is minmax(0, 1fr) 7ms
+     × no custom template uses a bare fr track, which never shrinks under its content 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/layout/grids.test.ts > grid tracks shrink to the screen > every grid on a phone names its columns, so its single track is minmax(0, 1fr)
+AssertionError: add grid-cols-1 next to `grid`: expected [ …(13) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "components/Shell.tsx: ml-auto grid",
++   "features/cuenta/CuentaPage.tsx: grid gap-3 sm:grid-cols-2",
++   "features/negocio/hoy/Detail.tsx: grid gap-3 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-6",
++   "features/negocio/hoy/HoyPage.tsx: grid gap-3 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-6",
++   "features/negocio/hoy/HoyPage.tsx: grid gap-3 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-start lg:gap-6",
++   "features/negocio/hoy/HoyPage.tsx: grid gap-3 lg:grid-cols-2 lg:items-start lg:gap-6",
++   "features/negocio/recompensa/RecompensaPage.tsx: grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-6",
++   "pages/Hoy.tsx: grid gap-3 lg:grid-cols-2 lg:items-start lg:gap-5",
++   "pages/Hoy.tsx: grid gap-3 lg:gap-5",
++   "pages/Hoy.tsx: grid gap-3 lg:gap-5",
++   "pages/Progreso.tsx: grid max-w-[880px] gap-3 lg:grid-cols-2 lg:items-start lg:gap-5",
++   "pages/Progreso.tsx: grid gap-3 lg:gap-5",
++   "pages/Resenas.tsx: grid gap-3 lg:grid-cols-[320px_1fr] lg:items-start lg:gap-5",
++ ]
+
+ ❯ src/layout/grids.test.ts:46:57
+     44|         .map((tokens) => `${path}: ${tokens.join(' ')}`),
+     45|     );
+     46|     expect(offenders, 'add grid-cols-1 next to `grid`').toEqual([]);
+       |                                                         ^
+     47|   });
+     48|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/layout/grids.test.ts > grid tracks shrink to the screen > no custom template uses a bare fr track, which never shrinks under its content
+AssertionError: write minmax(0,1fr) instead of 1fr: expected [ …(4) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "App.tsx: grid-cols-[256px_1fr]",
++   "components/ui/Screen.tsx: grid-cols-[minmax(380px,36%)_1fr]",
++   "layout/PanelLayout.tsx: grid-cols-[240px_1fr]",
++   "pages/Resenas.tsx: grid-cols-[320px_1fr]",
++ ]
+
+ ❯ src/layout/grids.test.ts:58:61
+     56|       ),
+     57|     );
+     58|     expect(offenders, 'write minmax(0,1fr) instead of 1fr').toEqual([]…
+       |                                                             ^
+     59|   });
+     60| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  22:54:48
+   Duration  139ms (import 37%, tests 34%, transform 18%, worker 10%)
+
