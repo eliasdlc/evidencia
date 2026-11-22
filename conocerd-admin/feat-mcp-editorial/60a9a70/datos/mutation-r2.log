@@ -1,0 +1,70 @@
+# R2 at 60a9a70, with r2.patch applied
+# $ pnpm vitest run mcp/herramientas.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/mcp-editorial
+
+ ❯ mcp/herramientas.test.ts (14 tests | 3 failed) 43ms
+     × son exactamente nueve y ninguna publica, borra ni oculta 7ms
+     × ninguna herramienta de escritura llama a los métodos que escriben, y todas dicen lo que harían 4ms
+     × fijar_portada deja una sola portada y quitar_foto saca la foto por el motor 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/herramientas.test.ts > lista de herramientas > son exactamente nueve y ninguna publica, borra ni oculta
+AssertionError: expected [ 'actualizar_campos', …(8) ] to deeply equal [ 'actualizar_campos', …(8) ]
+
+- Expected
++ Received
+
+@@ -3,9 +3,9 @@
+    "agregar_foto",
+    "buscar_duplicado",
+    "cola",
+    "crear_borrador",
+    "equilibrio",
+-   "fijar_portada",
+    "leer_ficha",
++   "publicar",
+    "quitar_foto",
+  ]
+
+ ❯ mcp/herramientas.test.ts:38:45
+     36|   it('son exactamente nueve y ninguna publica, borra ni oculta', () =>…
+     37|     const { herramientas } = crear();
+     38|     expect([...herramientas.keys()].sort()).toEqual(['actualizar_campo…
+       |                                             ^
+     39|     for (const nombre of herramientas.keys()) expect(nombre).not.toMat…
+     40|     expect([...herramientas.values()].filter(h => h.escribe).map(h => …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  mcp/herramientas.test.ts > sin --real > ninguna herramienta de escritura llama a los métodos que escriben, y todas dicen lo que harían
+TypeError: Cannot read properties of undefined (reading 'ejecutar')
+ ❯ mcp/herramientas.test.ts:117:42
+    115|     ] as const;
+    116|     for (const [nombre, entrada] of llamadas) {
+    117|       const r = await herramienta(nombre).ejecutar(entrada);
+       |                                          ^
+    118|       expect(r, nombre).toMatchObject({ ok: true, datos: { simulado: t…
+    119|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  mcp/herramientas.test.ts > fotos con --real > fijar_portada deja una sola portada y quitar_foto saca la foto por el motor
+TypeError: Cannot read properties of undefined (reading 'ejecutar')
+ ❯ mcp/herramientas.test.ts:132:39
+    130|     const { herramienta, motor } = crear({ real: true }, conDos);
+    131|     motor.asociarFotos.mockResolvedValue({ ok: true, revision: 4 });
+    132|     await herramienta('fijar_portada').ejecutar({ id: borradorBase.id,…
+       |                                       ^
+    133|     expect(motor.asociarFotos.mock.calls[0]![0].fotos).toEqual([{ asse…
+    134|     await herramienta('quitar_foto').ejecutar({ id: borradorBase.id, a…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 11 passed (14)
+   Start at  19:26:27
+   Duration  337ms (transform 139ms, setup 0ms, import 204ms, tests 43ms, environment 0ms)
+
