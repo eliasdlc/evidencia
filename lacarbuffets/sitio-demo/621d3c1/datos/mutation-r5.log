@@ -1,0 +1,35 @@
+# R5 at 621d3c1, with r5-plazo.patch applied
+# $ pnpm exec vitest run lib/horario.test.ts
+
+ RUN  v4.1.12 /home/decruce/dev/wt/lacar-buffets/sitio-demo
+
+ ❯ lib/horario.test.ts (16 tests | 1 failed) 14ms
+     × cierra en el minuto de la fecha límite 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  lib/horario.test.ts > plazoHasta > cierra en el minuto de la fecha límite
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ lib/horario.test.ts:79:48
+     77|
+     78|   it("cierra en el minuto de la fecha límite", () => {
+     79|     expect(plazoHasta(cierre, cierre).abierto).toBe(false);
+       |                                                ^
+     80|     expect(plazoHasta(instanteDe("2026-11-25", 0), cierre).abierto).to…
+     81|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 passed (16)
+   Start at  22:31:22
+   Duration  210ms (transform 36ms, setup 0ms, import 59ms, tests 14ms, environment 0ms)
+
