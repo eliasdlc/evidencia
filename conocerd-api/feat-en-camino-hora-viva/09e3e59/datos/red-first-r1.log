@@ -1,0 +1,261 @@
+# R1 at 09e3e59, with src/app/arrivals/[id]/route.ts, src/lib/arrival-service.ts, src/lib/arrivals.ts back at 162635a
+# $ mise exec node@26.8.1 -- firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "pnpm exec vitest run test/arrivals.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/arrivals.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/conocerd-api/en-camino-hora-viva
+
+ ❯ test/arrivals.test.ts (34 tests | 11 failed) 8542ms
+   ✓ texto y validación de "en camino" > la línea en español, hora de Santo Domingo en 24 h y singular para 1 121ms
+   ✓ texto y validación de "en camino" > el primer nombre es la primera palabra, con tope de 40 y sin nombre es null 1ms
+   ✓ texto y validación de "en camino" > el nombre se limpia antes de partir: sin control ni formato, 40 puntos de código, vacío es null 1ms
+   × texto y validación de "en camino" > el cuerpo del PATCH acepta solo etaAt ISO con desfase 3ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   ✓ texto y validación de "en camino" > el cuerpo acepta partySize 1 a 20 enteros y un ISO, y rechaza el resto 3ms
+   ✓ en camino Auth/Firestore emulator > sin viajero con sesión no escribe nada  570ms
+   ✓ en camino Auth/Firestore emulator > rechaza grupo y hora fuera de rango, destino inexistente y cuenta sin nombre 102ms
+   × en camino Auth/Firestore emulator > escribe el aviso sin uid, el dueño aparte, y devuelve la línea exacta 110ms
+     → expected [ Array(1) ] to deeply equal [ Array(1) ]
+   ✓ en camino Auth/Firestore emulator > un segundo aviso cancela el primero y solo queda uno en camino 88ms
+   ✓ en camino Auth/Firestore emulator > DELETE: un ajeno recibe 404 y no cambia nada; el dueño cancela 102ms
+   × en camino Auth/Firestore emulator > una visita validada marca el aviso como arrived y sale de la lista 85ms
+     → expected undefined to be defined
+   × en camino Auth/Firestore emulator > un aviso que llegó sale de la lista a los 15 minutos de arrivedAt 68ms
+     → Cannot read properties of undefined (reading 'toMillis')
+   × en camino Auth/Firestore emulator > el orden: primero los que vienen por hora, luego los que llegaron, el más reciente primero 41ms
+     → expected [ 'c-soon', 'c-late' ] to deeply equal [ Array(4) ]
+   × en camino Auth/Firestore emulator > la lista del panel lleva createdAt y arrivedAt y nunca un uid 90ms
+     → expected [ [ 'H44ugxkwWRFZhP8bXAvg', …(1) ] ] to deeply equal [ …(2) ]
+   × en camino Auth/Firestore emulator > PATCH: el dueño cambia la hora y mueve expiresAt en el aviso, el dueño y el puntero 36ms
+     → item.PATCH is not a function
+   × en camino Auth/Firestore emulator > PATCH: un ajeno, un id que no existe o imposible reciben 404 y nada cambia; sin sesión es 401 36ms
+     → item.PATCH is not a function
+   × en camino Auth/Firestore emulator > PATCH: un aviso que llegó o canceló es 409 y no cambia 39ms
+     → item.PATCH is not a function
+   × en camino Auth/Firestore emulator > PATCH: la misma regla de hora que al crear y cuerpo estricto 28ms
+     → item.PATCH is not a function
+   × en camino Auth/Firestore emulator > PATCH: más de 60 cambios en una hora son 429, solo para ese viajero, y no gastan los avisos 24ms
+     → service.updateArrivalEta is not a function
+   ✓ en camino Auth/Firestore emulator > una visita de otro viajero no toca el aviso 63ms
+   ✓ en camino Auth/Firestore emulator > un aviso vencido no aparece en activeArrivals 35ms
+   ✓ en camino Auth/Firestore emulator > el puntero guarda el aviso en curso y 5 POST a la vez dejan uno solo en camino  3451ms
+   ✓ en camino Auth/Firestore emulator > DELETE y la llegada borran el puntero 114ms
+   ✓ en camino Auth/Firestore emulator > más de 10 avisos en una hora son 429 too_many_arrivals, solo para ese viajero  733ms
+   ✓ en camino Auth/Firestore emulator > arrivalOwners lleva expiresAt, igual que el aviso 86ms
+   ✓ en camino Auth/Firestore emulator > markArrived solo cierra avisos que todavía no vencieron 124ms
+   ✓ en camino Auth/Firestore emulator > reenviar la misma visita no vuelve a cerrar un aviso nuevo  308ms
+   ✓ en camino Auth/Firestore emulator > una visita duplicate_24h también cierra el aviso: la geocerca ya probó que está allí  323ms
+   ✓ en camino Auth/Firestore emulator > un id imposible en DELETE es 404 y nunca 500; en POST es 422 50ms
+   ✓ en camino Auth/Firestore emulator > la hora de hace 1 minuto se lleva a ahora y la de hace 3 minutos es 422 58ms
+   ✓ en camino Auth/Firestore emulator > un nombre solo de caracteres invisibles es 422 display_name_required 31ms
+   ✓ en camino Auth/Firestore emulator > borrado de cuenta > borra todas las filas de arrivalOwners y los avisos a los que apuntan, sea cual sea su estado  1089ms
+   ✓ en camino Auth/Firestore emulator > borrado de cuenta > un POST que entra durante el borrado lo recoge la segunda pasada 230ms
+   ✓ en camino Auth/Firestore emulator > borrado de cuenta > pagina: más filas que un lote salen todas, cada aviso con su fila 204ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/arrivals.test.ts > texto y validación de "en camino" > el cuerpo del PATCH acepta solo etaAt ISO con desfase
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ test/arrivals.test.ts:48:30
+     46|   it('el cuerpo del PATCH acepta solo etaAt ISO con desfase', async ()…
+     47|     const { arrivalPatchInput } = await import('@/lib/arrival-service'…
+     48|     expect(arrivalPatchInput.safeParse({ etaAt: '2026-11-17T14:20:00Z'…
+       |                              ^
+     49|     expect(arrivalPatchInput.safeParse({ etaAt: '2026-11-17T10:20:00-0…
+     50|     for (const bad of [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > escribe el aviso sin uid, el dueño aparte, y devuelve la línea exacta
+AssertionError: expected [ Array(1) ] to deeply equal [ Array(1) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    {[22m
+[32m-     "createdAt": Any<String>,[39m
+[2m      "etaAt": Any<String>,[22m
+[2m      "firstName": "Carmen",[22m
+[2m      "id": "JdPM5FrfzPb3P3wlEnFX",[22m
+[2m      "partySize": 4,[22m
+[32m-     "status": "coming",[39m
+[2m    },[22m
+[2m  ][22m
+
+ ❯ test/arrivals.test.ts:155:54
+    153|     expect(JSON.stringify(data)).not.toContain(uid);
+    154|     expect((await db.doc(`arrivalOwners/${id}`).get()).data()).toMatch…
+    155|     expect(await arrivals.activeArrivals(db, place)).toEqual([
+       |                                                      ^
+    156|       { id, firstName: 'Carmen', partySize: 4, etaAt: expect.any(Strin…
+    157|     ]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > una visita validada marca el aviso como arrived y sale de la lista
+AssertionError: expected undefined to be defined
+ ❯ test/arrivals.test.ts:182:53
+    180|     expect(result.status).toBe('validated');
+    181|     expect((await arrivalDoc(id)).get('status')).toBe('arrived');
+    182|     expect((await arrivalDoc(id)).get('arrivedAt')).toBeDefined();
+       |                                                     ^
+    183|     // Sigue en la lista, ahora como 'arrived' y con su hora de llegad…
+    184|     expect(await arrivals.activeArrivals(db, place)).toEqual([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > un aviso que llegó sale de la lista a los 15 minutos de arrivedAt
+TypeError: Cannot read properties of undefined (reading 'toMillis')
+ ❯ test/arrivals.test.ts:191:61
+    189|     const { id } = await created(await api.POST(post(body())));
+    190|     await visits.recordVisit(uid, visitInput(), now);
+    191|     const arrivedAt = (await arrivalDoc(id)).get('arrivedAt').toMillis…
+       |                                                             ^
+    192|     expect((await arrivals.activeArrivals(db, place, arrivedAt + 14 * …
+    193|     expect(await arrivals.activeArrivals(db, place, arrivedAt + 15 * 6…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > el orden: primero los que vienen por hora, luego los que llegaron, el más reciente primero
+AssertionError: expected [ 'c-soon', 'c-late' ] to deeply equal [ Array(4) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "c-soon",[22m
+[2m    "c-late",[22m
+[32m-   "a-new",[39m
+[32m-   "a-old",[39m
+[2m  ][22m
+
+ ❯ test/arrivals.test.ts:207:77
+    205|     await put('a-gone', { status: 'arrived', etaAt: ts(at - 60 * 60_00…
+    206|     await put('a-bare', { status: 'arrived', etaAt: ts(at - 5 * 60_000…
+    207|     expect((await arrivals.activeArrivals(db, place, at)).map((a) => a…
+       |                                                                             ^
+    208|   });
+    209|   it('la lista del panel lleva createdAt y arrivedAt y nunca un uid', …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > la lista del panel lleva createdAt y arrivedAt y nunca un uid
+AssertionError: expected [ [ 'H44ugxkwWRFZhP8bXAvg', …(1) ] ] to deeply equal [ …(2) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    [[22m
+[2m      "H44ugxkwWRFZhP8bXAvg",[22m
+[32m-     "coming",[39m
+[32m-   ],[39m
+[32m-   [[39m
+[32m-     "bGixTRKFUTMHTunJZPNF",[39m
+[32m-     "arrived",[39m
+[31m+     undefined,[39m
+[2m    ],[22m
+[2m  ][22m
+
+ ❯ test/arrivals.test.ts:216:47
+    214|     await visits.recordVisit(second.uid, visitInput(), now);
+    215|     const list = await arrivals.activeArrivals(db, place);
+    216|     expect(list.map((a) => [a.id, a.status])).toEqual([[id, 'coming'],…
+       |                                               ^
+    217|     expect(list[0]).not.toHaveProperty('arrivedAt');
+    218|     expect(Date.parse(list[0]!.createdAt)).toBeGreaterThan(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > PATCH: el dueño cambia la hora y mueve expiresAt en el aviso, el dueño y el puntero
+TypeError: item.PATCH is not a function
+ ❯ patch test/arrivals.test.ts:88:89
+     86|     { params: Promise.resolve({ id }) },
+     87|   );
+     88|   const patch = (id: string, bodyValue: unknown, bearer: string | null…
+       |                                                                                         ^
+     89|     new NextRequest(`http://localhost/arrivals/${id}`, {
+     90|       method: 'PATCH', body: JSON.stringify(bodyValue),
+ ❯ test/arrivals.test.ts:236:28
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > PATCH: un ajeno, un id que no existe o imposible reciben 404 y nada cambia; sin sesión es 401
+TypeError: item.PATCH is not a function
+ ❯ patch test/arrivals.test.ts:88:89
+     86|     { params: Promise.resolve({ id }) },
+     87|   );
+     88|   const patch = (id: string, bodyValue: unknown, bearer: string | null…
+       |                                                                                         ^
+     89|     new NextRequest(`http://localhost/arrivals/${id}`, {
+     90|       method: 'PATCH', body: JSON.stringify(bodyValue),
+ ❯ test/arrivals.test.ts:250:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > PATCH: un aviso que llegó o canceló es 409 y no cambia
+TypeError: item.PATCH is not a function
+ ❯ patch test/arrivals.test.ts:88:89
+     86|     { params: Promise.resolve({ id }) },
+     87|   );
+     88|   const patch = (id: string, bodyValue: unknown, bearer: string | null…
+       |                                                                                         ^
+     89|     new NextRequest(`http://localhost/arrivals/${id}`, {
+     90|       method: 'PATCH', body: JSON.stringify(bodyValue),
+ ❯ test/arrivals.test.ts:259:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > PATCH: la misma regla de hora que al crear y cuerpo estricto
+TypeError: item.PATCH is not a function
+ ❯ patch test/arrivals.test.ts:88:89
+     86|     { params: Promise.resolve({ id }) },
+     87|   );
+     88|   const patch = (id: string, bodyValue: unknown, bearer: string | null…
+       |                                                                                         ^
+     89|     new NextRequest(`http://localhost/arrivals/${id}`, {
+     90|       method: 'PATCH', body: JSON.stringify(bodyValue),
+ ❯ test/arrivals.test.ts:271:30
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯
+
+ FAIL  test/arrivals.test.ts > en camino Auth/Firestore emulator > PATCH: más de 60 cambios en una hora son 429, solo para ese viajero, y no gastan los avisos
+TypeError: service.updateArrivalEta is not a function
+ ❯ test/arrivals.test.ts:286:51
+    284|     const { id } = await created(await api.POST(post(body())));
+    285|     const service = await import('@/lib/arrival-service');
+    286|     for (let n = 0; n < 60; n += 1) await service.updateArrivalEta(uid…
+       |                                                   ^
+    287|     const response = await patch(id, { etaAt: eta() });
+    288|     expect(response.status).toBe(429);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  11 failed | 23 passed (34)
+   Start at  00:54:18
+   Duration  8.92s (transform 596ms, setup 10ms, collect 214ms, tests 8.54s, environment 0ms, prepare 48ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/arrivals.test.ts" exited with code 1
