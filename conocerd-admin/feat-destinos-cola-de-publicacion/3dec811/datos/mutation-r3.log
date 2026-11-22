@@ -1,0 +1,37 @@
+# R3 at 3dec811, with mutation-r3.patch applied
+# $ pnpm exec vitest run src/destinos/fila.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat-destinos-cola
+
+ ❯ src/destinos/fila.test.ts (9 tests | 1 failed) 14ms
+     × filtra Faltan cosas por el paso pendiente 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/destinos/fila.test.ts > fila de destino > filtra Faltan cosas por el paso pendiente
+AssertionError: expected [ 'buche', 'fortaleza' ] to deeply equal [ 'buche' ]
+
+- Expected
++ Received
+
+  [
+    "buche",
++   "fortaleza",
+  ]
+
+ ❯ src/destinos/fila.test.ts:72:83
+     70|   it('filtra Faltan cosas por el paso pendiente', () => {
+     71|     const filas = [borradorFalta, correccion, yaPublicado, borradorLis…
+     72|     expect(filas.filter((f) => enPestana(f, 'faltan', 'fotos')).map((f…
+       |                                                                                   ^
+     73|     expect(filas.filter((f) => enPestana(f, 'faltan', 'fuentes')).map(…
+     74|     expect(cuentasPorPaso(filas)).toEqual({ fotos: 1, ubicacion: 1, fu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  17:17:55
+   Duration  222ms (transform 105ms, setup 0ms, import 118ms, tests 14ms, environment 0ms)
+
