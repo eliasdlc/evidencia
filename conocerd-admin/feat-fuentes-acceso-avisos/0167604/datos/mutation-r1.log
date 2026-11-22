@@ -1,0 +1,50 @@
+# R1 at 0167604, with mutation-a1.patch applied
+# $ pnpm exec vitest run src/editorial/publicacion-politica.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat-fuentes-avisos
+
+ ❯ src/editorial/publicacion-politica.test.ts (31 tests | 2 failed) 106ms
+     × sin fuente del pin ni acceso comprobado se publica, y eso queda como aviso 6ms
+     × fuentes sin confirmar o contradichas no frenan: se dicen como aviso 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/publicacion-politica.test.ts > mínimo turístico verificable > sin fuente del pin ni acceso comprobado se publica, y eso queda como aviso
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/editorial/publicacion-politica.test.ts:62:49
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/editorial/publicacion-politica.test.ts > mínimo turístico verificable > fuentes sin confirmar o contradichas no frenan: se dicen como aviso
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/editorial/publicacion-politica.test.ts:68:27
+     66|     const { draft, assets } = fixture(); draft.comprobaciones.fuentes!…
+     67|     const politica = evaluarPolitica(draft, assets);
+     68|     expect(politica.apto).toBe(true);
+       |                           ^
+     69|     expect(politica.bloqueos.filter(b => b.campo === 'fuentes' || b.ca…
+     70|     expect(avisosDeVerificacion(draft)).toEqual(expect.arrayContaining…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 29 passed (31)
+   Start at  18:14:03
+   Duration  779ms (transform 418ms, setup 0ms, import 517ms, tests 106ms, environment 0ms)
+
