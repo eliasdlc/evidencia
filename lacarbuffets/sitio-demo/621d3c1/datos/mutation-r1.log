@@ -1,0 +1,75 @@
+# R1 at 621d3c1, with r1-utc.patch applied
+# $ pnpm exec vitest run lib/horario.test.ts
+
+ RUN  v4.1.12 /home/decruce/dev/wt/lacar-buffets/sitio-demo
+
+ ❯ lib/horario.test.ts (16 tests | 3 failed) 11ms
+     × usa el día de Santo Domingo cuando en UTC ya es mañana 6ms
+     × va y vuelve con instanteDe 1ms
+     × lee el parámetro como hora de Santo Domingo 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  lib/horario.test.ts > momentoEn > usa el día de Santo Domingo cuando en UTC ya es mañana
+AssertionError: expected { fecha: '2026-11-22', dia: +0, …(1) } to deeply equal { fecha: '2026-11-21', dia: 6, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "dia": 6,
+-   "fecha": "2026-11-21",
+-   "minutos": 1290,
++   "dia": 0,
++   "fecha": "2026-11-22",
++   "minutos": 90,
+  }
+
+ ❯ lib/horario.test.ts:10:15
+      8|     // Sábado 21 a las 9:30 p.m. en Santo Domingo es domingo 22 a la 1…
+      9|     const m = momentoEn(new Date("2026-11-22T01:30:00Z"));
+     10|     expect(m).toEqual({ fecha: "2026-11-21", dia: 6, minutos: 21 * 60 …
+       |               ^
+     11|   });
+     12|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  lib/horario.test.ts > momentoEn > va y vuelve con instanteDe
+AssertionError: expected '2026-11-24T12:00:00.000Z' to be '2026-11-24T16:00:00.000Z' // Object.is equality
+
+Expected: "2026-11-24T16:00:00.000Z"
+Received: "2026-11-24T12:00:00.000Z"
+
+ ❯ lib/horario.test.ts:14:61
+     12|
+     13|   it("va y vuelve con instanteDe", () => {
+     14|     expect(instanteDe("2026-11-24", 12 * 60).toISOString()).toBe("2026…
+       |                                                             ^
+     15|     expect(momento("2026-11-22", 0)).toEqual({ fecha: "2026-11-22", di…
+     16|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  lib/horario.test.ts > leerAhora > lee el parámetro como hora de Santo Domingo
+AssertionError: expected '2026-11-22T12:30:00.000Z' to be '2026-11-22T16:30:00.000Z' // Object.is equality
+
+Expected: "2026-11-22T16:30:00.000Z"
+Received: "2026-11-22T12:30:00.000Z"
+
+ ❯ lib/horario.test.ts:23:63
+     21|
+     22|   it("lee el parámetro como hora de Santo Domingo", () => {
+     23|     expect(leerAhora("2026-11-22T12:30", real).toISOString()).toBe("20…
+       |                                                               ^
+     24|   });
+     25|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 13 passed (16)
+   Start at  22:29:49
+   Duration  145ms (transform 31ms, setup 0ms, import 43ms, tests 11ms, environment 0ms)
+
