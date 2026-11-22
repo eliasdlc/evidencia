@@ -1,0 +1,86 @@
+# R2 at c2be6bf, with src/layout/useLabelsFit.ts back at ef7904b
+# $ pnpm exec vitest run src/layout/useLabelsFit.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/escanear-orbe
+
+ ❯ src/layout/useLabelsFit.test.ts (7 tests | 3 failed) 9ms
+   ❯ fitBar, four tabs and the scan orb (7)
+     × on a 360 px phone the circles stay at 48: Hoy still shows its name, Tu negocio does not 5ms
+     × on a 320 px phone every tab is a 48 px circle 1ms
+     × is exact at the edge: the bar, its tabs, the gaps, the orb and the stretch fill the row 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar, four tabs and the scan orb > on a 360 px phone the circles stay at 48: Hoy still shows its name, Tu negocio does not
+AssertionError: expected { mode: 'current', size: 54 } to deeply equal { mode: 'current', size: 48 }
+
+- Expected
++ Received
+
+  {
+    "mode": "current",
+-   "size": 48,
++   "size": 54,
+  }
+
+ ❯ src/layout/useLabelsFit.test.ts:27:51
+     25|
+     26|   it('on a 360 px phone the circles stay at 48: Hoy still shows its na…
+     27|     expect(fitBar(FOUR, 4, room(360), true, HOY)).toEqual({ mode: 'cur…
+       |                                                   ^
+     28|     expect(fitBar(FOUR, 4, room(360), true, NEGOCIO)).toEqual({ mode: …
+     29|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar, four tabs and the scan orb > on a 320 px phone every tab is a 48 px circle
+AssertionError: expected { mode: 'current', size: 48 } to deeply equal { mode: 'none', size: 48 }
+
+- Expected
++ Received
+
+  {
+-   "mode": "none",
++   "mode": "current",
+    "size": 48,
+  }
+
+ ❯ src/layout/useLabelsFit.test.ts:32:51
+     30|
+     31|   it('on a 320 px phone every tab is a 48 px circle', () => {
+     32|     expect(fitBar(FOUR, 4, room(320), true, HOY)).toEqual({ mode: 'non…
+       |                                                   ^
+     33|   });
+     34|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar, four tabs and the scan orb > is exact at the edge: the bar, its tabs, the gaps, the orb and the stretch fill the row
+AssertionError: expected { mode: 'none', size: NaN } to deeply equal { mode: 'current', size: 50 }
+
+- Expected
++ Received
+
+  {
+-   "mode": "current",
+-   "size": 50,
++   "mode": "none",
++   "size": NaN,
+  }
+
+ ❯ src/layout/useLabelsFit.test.ts:46:52
+     44|     const size = 50;
+     45|     const needed = 4 * size + 3 * TAB_GAP + BAR_CHROME + (size + BAR_C…
+     46|     expect(fitBar(FOUR, 4, needed, true, NEGOCIO)).toEqual({ mode: 'cu…
+       |                                                    ^
+     47|     expect(fitBar(FOUR, 4, needed - 1, true, NEGOCIO).size).toBeLessTh…
+     48|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 4 passed (7)
+   Start at  10:04:41
+   Duration  162ms (transform 67%, import 19%, tests 11%, worker 3%)
+
