@@ -1,0 +1,263 @@
+# R1 at a1396fe, with src/icons.tsx, src/layout/nav.ts, src/layout/useLabelsFit.ts back at c21a459
+# $ pnpm exec vitest run src/layout/nav.test.ts src/layout/useLabelsFit.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/barra-circulos
+
+ ❯ src/layout/useLabelsFit.test.ts (6 tests | 6 failed) 7ms
+   ❯ fitBar (6)
+     × stretches the current tab on a 412 px phone with all five tabs, circles at 54 4ms
+     × shrinks the circles a little, never under 48, to keep the name on a 390 px phone 0ms
+     × keeps every tab a circle when the widest name does not fit, still at 48 or more 0ms
+     × four tabs have room to stretch on the narrowest phone 0ms
+     × with no stretchable label there is nothing to stretch 0ms
+     × is exact at the edge: the capsule, the tabs, the gaps and the stretch fill the room 0ms
+ ❯ src/layout/nav.test.ts (13 tests | 9 failed) 17ms
+   ❯ the phone bar destinations (5)
+     × are five for an owner or a manager, scan in the middle 8ms
+     × are four without QR in the plan: scan goes, nothing else moves 1ms
+     × are four with no business, like the door 1ms
+     × leave "Solo reseñas" with its reviews and the hub that holds Mi cuenta 1ms
+     × never list Recompensa, Fotos, Personas or Mi cuenta: they are tiles of Tu negocio 2ms
+   ❯ activeTo (4)
+     × names the destination a path belongs to 1ms
+     × gives the screens the hub opens to Tu negocio, even under /ficha 0ms
+     × reads a path the way the router does: any case, a trailing slash 0ms
+     × names nothing for a screen outside the bar 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 15 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/layout/nav.test.ts > the phone bar destinations > are five for an owner or a manager, scan in the middle
+AssertionError: expected [ 'Hoy', 'Reseñas', 'Mi página', …(3) ] to deeply equal [ 'Hoy', 'Reseñas', 'Escanear', …(2) ]
+
+- Expected
++ Received
+
+  [
+    "Hoy",
+    "Reseñas",
+-   "Escanear",
+    "Mi página",
+-   "Tu negocio",
++   "Recompensa",
++   "Puerta",
++   "Mi cuenta",
+  ]
+
+ ❯ src/layout/nav.test.ts:22:38
+     20|   it('are five for an owner or a manager, scan in the middle', () => {
+     21|     for (const role of ['owner', 'manager'] as const) {
+     22|       expect(labels(business(role))).toEqual(['Hoy', 'Reseñas', 'Escan…
+       |                                      ^
+     23|     }
+     24|     expect(navFor(business('owner')).map((item) => item.scan === true)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/15]⎯
+
+ FAIL  src/layout/nav.test.ts > the phone bar destinations > are four without QR in the plan: scan goes, nothing else moves
+AssertionError: expected [ 'Hoy', 'Reseñas', 'Mi página', …(1) ] to deeply equal [ 'Hoy', 'Reseñas', 'Mi página', …(1) ]
+
+- Expected
++ Received
+
+  [
+    "Hoy",
+    "Reseñas",
+    "Mi página",
+-   "Tu negocio",
++   "Mi cuenta",
+  ]
+
+ ❯ src/layout/nav.test.ts:28:46
+     26|
+     27|   it('are four without QR in the plan: scan goes, nothing else moves',…
+     28|     expect(labels(business('owner', false))).toEqual(['Hoy', 'Reseñas'…
+       |                                              ^
+     29|   });
+     30|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/15]⎯
+
+ FAIL  src/layout/nav.test.ts > the phone bar destinations > are four with no business, like the door
+AssertionError: expected [ 'Hoy', 'Reseñas', 'Mi página', …(1) ] to deeply equal [ 'Hoy', 'Reseñas', 'Mi página', …(1) ]
+
+- Expected
++ Received
+
+  [
+    "Hoy",
+    "Reseñas",
+    "Mi página",
+-   "Tu negocio",
++   "Mi cuenta",
+  ]
+
+ ❯ src/layout/nav.test.ts:32:31
+     30|
+     31|   it('are four with no business, like the door', () => {
+     32|     expect(labels(undefined)).toEqual(['Hoy', 'Reseñas', 'Mi página', …
+       |                               ^
+     33|   });
+     34|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/15]⎯
+
+ FAIL  src/layout/nav.test.ts > the phone bar destinations > leave "Solo reseñas" with its reviews and the hub that holds Mi cuenta
+AssertionError: expected [ 'Reseñas', 'Mi cuenta' ] to deeply equal [ 'Reseñas', 'Tu negocio' ]
+
+- Expected
++ Received
+
+  [
+    "Reseñas",
+-   "Tu negocio",
++   "Mi cuenta",
+  ]
+
+ ❯ src/layout/nav.test.ts:36:41
+     34|
+     35|   it('leave "Solo reseñas" with its reviews and the hub that holds Mi …
+     36|     expect(labels(business('reviews'))).toEqual(['Reseñas', 'Tu negoci…
+       |                                         ^
+     37|   });
+     38|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/15]⎯
+
+ FAIL  src/layout/nav.test.ts > the phone bar destinations > never list Recompensa, Fotos, Personas or Mi cuenta: they are tiles of Tu negocio
+AssertionError: expected [ 'Hoy', 'Reseñas', 'Mi página', …(3) ] to not include 'Recompensa'
+ ❯ src/layout/nav.test.ts:41:92
+     39|   it('never list Recompensa, Fotos, Personas or Mi cuenta: they are ti…
+     40|     const all = labels(business('owner'));
+     41|     for (const hidden of ['Recompensa', 'Fotos', 'Personas', 'Mi cuent…
+       |                                                                                            ^
+     42|   });
+     43| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/15]⎯
+
+ FAIL  src/layout/nav.test.ts > activeTo > names the destination a path belongs to
+TypeError: activeTo is not a function
+ ❯ src/layout/nav.test.ts:79:12
+     77|   const items = navFor(business('owner'));
+     78|   it('names the destination a path belongs to', () => {
+     79|     expect(activeTo(items, '/hoy')).toBe('/hoy');
+       |            ^
+     80|     expect(activeTo(items, '/puerta')).toBe('/puerta');
+     81|     expect(activeTo(items, '/ficha')).toBe('/ficha');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/15]⎯
+
+ FAIL  src/layout/nav.test.ts > activeTo > gives the screens the hub opens to Tu negocio, even under /ficha
+TypeError: activeTo is not a function
+ ❯ src/layout/nav.test.ts:87:14
+     85|   it('gives the screens the hub opens to Tu negocio, even under /ficha…
+     86|     for (const path of ['/recompensa', '/cuenta', '/cuenta/personas', …
+     87|       expect(activeTo(items, path), path).toBe('/negocio');
+       |              ^
+     88|     }
+     89|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/15]⎯
+
+ FAIL  src/layout/nav.test.ts > activeTo > reads a path the way the router does: any case, a trailing slash
+TypeError: activeTo is not a function
+ ❯ src/layout/nav.test.ts:92:12
+     90|
+     91|   it('reads a path the way the router does: any case, a trailing slash…
+     92|     expect(activeTo(items, '/Ficha/')).toBe('/ficha');
+       |            ^
+     93|     expect(activeTo(items, '/ficha/Fotos')).toBe('/negocio');
+     94|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/15]⎯
+
+ FAIL  src/layout/nav.test.ts > activeTo > names nothing for a screen outside the bar
+TypeError: activeTo is not a function
+ ❯ src/layout/nav.test.ts:97:12
+     95|
+     96|   it('names nothing for a screen outside the bar', () => {
+     97|     expect(activeTo(items, '/solicitudes')).toBeUndefined();
+       |            ^
+     98|     expect(activeTo(items, '/hoyo')).toBeUndefined();
+     99|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/15]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar > stretches the current tab on a 412 px phone with all five tabs, circles at 54
+TypeError: fitBar is not a function
+ ❯ src/layout/useLabelsFit.test.ts:12:12
+     10| describe('fitBar', () => {
+     11|   it('stretches the current tab on a 412 px phone with all five tabs, …
+     12|     expect(fitBar(FOUR, 5, room(412))).toEqual({ mode: 'current', size…
+       |            ^
+     13|   });
+     14|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/15]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar > shrinks the circles a little, never under 48, to keep the name on a 390 px phone
+TypeError: fitBar is not a function
+ ❯ src/layout/useLabelsFit.test.ts:16:17
+     14|
+     15|   it('shrinks the circles a little, never under 48, to keep the name o…
+     16|     const fit = fitBar(FOUR, 5, room(390));
+       |                 ^
+     17|     expect(fit.mode).toBe('current');
+     18|     expect(fit.size).toBeGreaterThanOrEqual(TAB_MIN);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/15]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar > keeps every tab a circle when the widest name does not fit, still at 48 or more
+TypeError: fitBar is not a function
+ ❯ src/layout/useLabelsFit.test.ts:23:17
+     21|
+     22|   it('keeps every tab a circle when the widest name does not fit, stil…
+     23|     const fit = fitBar(FOUR, 5, room(320));
+       |                 ^
+     24|     expect(fit.mode).toBe('none');
+     25|     expect(fit.size).toBeGreaterThanOrEqual(TAB_MIN);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/15]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar > four tabs have room to stretch on the narrowest phone
+TypeError: fitBar is not a function
+ ❯ src/layout/useLabelsFit.test.ts:30:12
+     28|
+     29|   it('four tabs have room to stretch on the narrowest phone', () => {
+     30|     expect(fitBar(FOUR, 4, room(320)).mode).toBe('current');
+       |            ^
+     31|   });
+     32|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/15]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar > with no stretchable label there is nothing to stretch
+TypeError: fitBar is not a function
+ ❯ src/layout/useLabelsFit.test.ts:34:12
+     32|
+     33|   it('with no stretchable label there is nothing to stretch', () => {
+     34|     expect(fitBar([], 1, room(390))).toEqual({ mode: 'none', size: TAB…
+       |            ^
+     35|   });
+     36|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/15]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > fitBar > is exact at the edge: the capsule, the tabs, the gaps and the stretch fill the room
+TypeError: fitBar is not a function
+ ❯ src/layout/useLabelsFit.test.ts:40:12
+     38|     const size = 50;
+     39|     const needed = 5 * size + 4 * TAB_GAP + BAR_CHROME + 66 + PILL_EXT…
+     40|     expect(fitBar(FOUR, 5, needed).size).toBeGreaterThanOrEqual(size);
+       |            ^
+     41|     expect(fitBar(FOUR, 5, needed).mode).toBe('current');
+     42|     expect(fitBar(FOUR, 5, needed - 1).size).toBeLessThan(size);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/15]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  15 failed | 4 passed (19)
+   Start at  00:50:12
+   Duration  293ms (transform 55%, import 31%, tests 10%, worker 3%)
+
