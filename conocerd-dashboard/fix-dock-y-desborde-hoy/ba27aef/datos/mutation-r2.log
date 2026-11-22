@@ -1,0 +1,63 @@
+# R2 at ba27aef, with r2-labels-always-fit.patch applied
+# $ pnpm exec vitest run src/layout/useLabelsFit.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/conocerd-dashboard/fix-dock-desborde
+
+ ❯ src/layout/useLabelsFit.test.ts (6 tests | 3 failed) 9ms
+   ❯ labelMode (6)
+     × keeps only the current label on a 360 px phone, where the six do not fit 4ms
+     × falls back to icons when not even the widest label fits beside five icons 1ms
+     × counts the gaps between tabs 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > labelMode > keeps only the current label on a 360 px phone, where the six do not fit
+AssertionError: expected 'all' to be 'current' // Object.is equality
+
+Expected: "current"
+Received: "all"
+
+ ❯ src/layout/useLabelsFit.test.ts:22:42
+     20|
+     21|   it('keeps only the current label on a 360 px phone, where the six do…
+     22|     expect(labelMode(SIX, room(360), 0)).toBe('current');
+       |                                          ^
+     23|   });
+     24|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > labelMode > falls back to icons when not even the widest label fits beside five icons
+AssertionError: expected 'all' to be 'none' // Object.is equality
+
+Expected: "none"
+Received: "all"
+
+ ❯ src/layout/useLabelsFit.test.ts:26:42
+     24|
+     25|   it('falls back to icons when not even the widest label fits beside f…
+     26|     expect(labelMode(SIX, room(320), 0)).toBe('none');
+       |                                          ^
+     27|   });
+     28|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/layout/useLabelsFit.test.ts > labelMode > counts the gaps between tabs
+AssertionError: expected 'all' not to be 'all' // Object.is equality
+ ❯ src/layout/useLabelsFit.test.ts:36:42
+     34|     const exact = SIX.reduce((sum, w) => sum + Math.max(TAB_MIN, w + T…
+     35|     expect(labelMode(SIX, exact, 0)).toBe('all');
+     36|     expect(labelMode(SIX, exact, 1)).not.toBe('all');
+       |                                          ^
+     37|   });
+     38| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 3 passed (6)
+   Start at  22:54:36
+   Duration  168ms (transform 61%, import 18%, tests 15%, worker 6%)
+
