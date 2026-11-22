@@ -1,0 +1,78 @@
+# R1 at 0846098, with mutation-r1.patch applied
+# $ pnpm exec vitest run src/destinos/fila.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/feat-destinos-cola
+
+ ❯ src/destinos/fila.test.ts (9 tests | 3 failed) 15ms
+     × cuenta cada pestaña por lo que de verdad le pasa a cada destino 5ms
+     × un borrador cuya revisión ya está en la app no cuenta como listo ni dice que falta publicarlo 1ms
+     × publicar saca la fila de Listos en el mismo toque, sin esperar al servidor 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/destinos/fila.test.ts > fila de destino > cuenta cada pestaña por lo que de verdad le pasa a cada destino
+AssertionError: expected { listos: 3, faltan: 3, …(3) } to deeply equal { Object (todos, faltan, ...) }
+
+- Expected
++ Received
+
+  {
+    "faltan": 3,
+-   "listos": 2,
++   "listos": 3,
+    "ocultos": 1,
+    "publicados": 5,
+    "todos": 8,
+  }
+
+ ❯ src/destinos/fila.test.ts:29:124
+     27| describe('fila de destino', () => {
+     28|   it('cuenta cada pestaña por lo que de verdad le pasa a cada destino'…
+     29|     expect(cuentas([publicado, conHorario, borradorListo, borradorFalt…
+       |                                                                                                                            ^
+     30|       todos: 8,
+     31|       faltan: 3,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/destinos/fila.test.ts > fila de destino > un borrador cuya revisión ya está en la app no cuenta como listo ni dice que falta publicarlo
+AssertionError: expected 'listo' to be 'publicado' // Object.is equality
+
+Expected: "publicado"
+Received: "listo"
+
+ ❯ src/destinos/fila.test.ts:39:35
+     37|
+     38|   it('un borrador cuya revisión ya está en la app no cuenta como listo…
+     39|     expect(estadoDe(yaPublicado)).toBe('publicado');
+       |                                   ^
+     40|     expect(enPestana(yaPublicado, 'listos')).toBe(false);
+     41|     expect(etiquetasDe(yaPublicado).map((e) => e.texto)).toEqual(['Pub…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/destinos/fila.test.ts > fila de destino > publicar saca la fila de Listos en el mismo toque, sin esperar al servidor
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/destinos/fila.test.ts:47:42
+     45|     expect(enPestana(borradorListo, 'listos')).toBe(true);
+     46|     const despues = alPublicar(borradorListo, 4);
+     47|     expect(enPestana(despues, 'listos')).toBe(false);
+       |                                          ^
+     48|     expect(enPestana(despues, 'publicados')).toBe(true);
+     49|     expect(etiquetasDe(despues).map((e) => e.texto)).toEqual(['Publica…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 6 passed (9)
+   Start at  17:59:41
+   Duration  160ms (transform 43ms, setup 0ms, import 55ms, tests 15ms, environment 0ms)
+
