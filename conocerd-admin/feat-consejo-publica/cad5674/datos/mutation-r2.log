@@ -1,0 +1,35 @@
+# R2 at cad5674, with c-r2.patch applied
+# $ pnpm vitest run src/editorial/consejo.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/consejo-publica
+
+ ❯ src/editorial/consejo.test.ts (7 tests | 1 failed) 18ms
+     × un juez en contra, un 3, dos jueces o un juez repetido dejan en revisión con el motivo 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/consejo.test.ts > decidirConsejo > un juez en contra, un 3, dos jueces o un juez repetido dejan en revisión con el motivo
+AssertionError: un 3: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/editorial/consejo.test.ts:24:34
+     22|     for (const [nombre, lista, motivo] of casos) {
+     23|       const d = decidirConsejo(lista);
+     24|       expect(d.publicar, nombre).toBe(false);
+       |                                  ^
+     25|       expect(d.publicar === false && d.motivos.join('. '), nombre).toM…
+     26|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  20:26:43
+   Duration  522ms (transform 272ms, setup 0ms, import 364ms, tests 18ms, environment 0ms)
+
