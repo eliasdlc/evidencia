@@ -1,0 +1,43 @@
+# R5 at 902ef87, with r5.patch applied
+# $ python3 -m unittest discover -s scripts/tests -p test_maps.py -v
+test_el_detalle_completa_el_resumen_sin_borrar_lo_de_la_busqueda (test_maps.LectorDeMaps.test_el_detalle_completa_el_resumen_sin_borrar_lo_de_la_busqueda) ... ok
+test_la_fecha_sale_del_instante_aunque_el_texto_diga_semanas_atras (test_maps.LectorDeMaps.test_la_fecha_sale_del_instante_aunque_el_texto_diga_semanas_atras) ... FAIL
+test_la_respuesta_del_dueno_va_aparte_y_cuenta_como_actividad (test_maps.LectorDeMaps.test_la_respuesta_del_dueno_va_aparte_y_cuenta_como_actividad) ... FAIL
+test_sin_resenas_no_inventa_fechas (test_maps.LectorDeMaps.test_sin_resenas_no_inventa_fechas) ... ok
+
+======================================================================
+FAIL: test_la_fecha_sale_del_instante_aunque_el_texto_diga_semanas_atras (test_maps.LectorDeMaps.test_la_fecha_sale_del_instante_aunque_el_texto_diga_semanas_atras)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/admin/fix-lote-corregir-y-rej-42859ed6cd7a4488/scripts/tests/test_maps.py", line 60, in test_la_fecha_sale_del_instante_aunque_el_texto_diga_semanas_atras
+    self.assertEqual([x['fecha'] for x in r['resenas_a_la_vista']], ['2026-05-02', '2026-11-14', '2026-08-20'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [None, None, None] != ['2026-05-02', '2026-11-14', '2026-08-20']
+
+First differing element 0:
+None
+'2026-05-02'
+
+- [None, None, None]
++ ['2026-05-02', '2026-11-14', '2026-08-20']
+
+======================================================================
+FAIL: test_la_respuesta_del_dueno_va_aparte_y_cuenta_como_actividad (test_maps.LectorDeMaps.test_la_respuesta_del_dueno_va_aparte_y_cuenta_como_actividad)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/admin/fix-lote-corregir-y-rej-42859ed6cd7a4488/scripts/tests/test_maps.py", line 74, in test_la_respuesta_del_dueno_va_aparte_y_cuenta_como_actividad
+    self.assertEqual((r['resena_mas_reciente'], r['actividad_mas_reciente']), ('2026-07-01', '2026-11-20'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (None, '2026-11-20') != ('2026-07-01', '2026-11-20')
+
+First differing element 0:
+None
+'2026-07-01'
+
+- (None, '2026-11-20')
++ ('2026-07-01', '2026-11-20')
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.003s
+
+FAILED (failures=2)
