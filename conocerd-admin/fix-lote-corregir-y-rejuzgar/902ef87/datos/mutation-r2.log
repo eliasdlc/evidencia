@@ -1,0 +1,28 @@
+# R2 at 902ef87, with r2.patch applied
+# $ pnpm vitest run mcp/herramientas.test.ts
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/admin/fix-lote-corregir-y-rej-42859ed6cd7a4488
+
+ ❯ mcp/herramientas.test.ts (61 tests | 1 failed) 394ms
+     × leer_ficha para un juez sale sin el veredicto anterior ni la cuenta de consejos; para el corrector, con los dos 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/herramientas.test.ts > dejar_en_revision y leer_ficha (R2) > leer_ficha para un juez sale sin el veredicto anterior ni la cuenta de consejos; para el corrector, con los dos
+AssertionError: expected [ 'id', 'tipo', 'revision', …(12) ] to not include 'consejo'
+ ❯ mcp/herramientas.test.ts:513:60
+    511|     expect(corrector).toMatchObject({ ok: true, datos: { consejo: { re…
+    512|     const paraJuez = await herramienta('leer_ficha').ejecutar({ id: li…
+    513|     expect(paraJuez.ok && Object.keys(paraJuez.datos)).not.toContain('…
+       |                                                            ^
+    514|     expect(paraJuez.ok && Object.keys(paraJuez.datos)).not.toContain('…
+    515|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 60 passed (61)
+   Start at  10:19:21
+   Duration  860ms (transform 202ms, setup 0ms, import 359ms, tests 394ms, environment 0ms)
+
