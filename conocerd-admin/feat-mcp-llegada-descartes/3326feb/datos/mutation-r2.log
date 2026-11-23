@@ -1,0 +1,72 @@
+# R2 at 3326feb, with d-r2.patch applied
+# $ pnpm vitest run mcp/herramientas.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/mcp-llegada-descartes
+
+ ❯ mcp/herramientas.test.ts (52 tests | 2 failed) 327ms
+     × descartar_candidato anota el motivo sin tocar borradores ni catálogo, y buscar_duplicado lo devuelve después 13ms
+     × un descarte por falta de evidencia se puede investigar otra vez a los 90 días; un cierre no 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/herramientas.test.ts > descartes (R2) > descartar_candidato anota el motivo sin tocar borradores ni catálogo, y buscar_duplicado lo devuelve después
+AssertionError: expected { ok: true, …(1) } to match object { ok: true, datos: { …(3) } }
+
+- Expected
++ Received
+
+  {
+    "datos": {
+-     "descartado": {
+-       "clase": "cerrado",
+-       "reintentable": false,
+-     },
+      "duplicado": false,
+-     "nota": StringContaining "toma otro candidato",
+    },
+    "ok": true,
+  }
+
+ ❯ mcp/herramientas.test.ts:694:15
+    692|     for (const escritura of [c.motor.guardar, c.motor.revisar, c.motor…
+    693|     const b = await c.herramienta('buscar_duplicado').ejecutar({ nombr…
+    694|     expect(b).toMatchObject({ ok: true, datos: { duplicado: false, des…
+       |               ^
+    695|   });
+    696|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  mcp/herramientas.test.ts > descartes (R2) > un descarte por falta de evidencia se puede investigar otra vez a los 90 días; un cierre no
+AssertionError: expected { ok: true, …(1) } to match object { ok: true, datos: { …(1) } }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "datos": {
+-     "descartado": {
+-       "reintentable": true,
+-     },
++     "duplicado": false,
+    },
+    "ok": true,
+  }
+
+ ❯ mcp/herramientas.test.ts:700:91
+    698|     const viejo = (clase: 'sin_evidencia' | 'cerrado'): Descarte => ({…
+    699|     const c = crear({ descartes: { listar: async () => [viejo('sin_evi…
+    700|     expect(await c.herramienta('buscar_duplicado').ejecutar({ nombre: …
+       |                                                                                           ^
+    701|     const d = crear({ descartes: { listar: async () => [viejo('cerrado…
+    702|     expect(await d.herramienta('buscar_duplicado').ejecutar({ nombre: …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 50 passed (52)
+   Start at  22:20:55
+   Duration  1.05s (transform 410ms, setup 0ms, import 574ms, tests 327ms, environment 0ms)
+
