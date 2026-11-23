@@ -1,0 +1,63 @@
+# R4 at 902ef87, with r4.patch applied
+# $ pnpm vitest run src/editorial/avisos-fuentes.test.ts mcp/herramientas.test.ts
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/admin/fix-lote-corregir-y-rej-42859ed6cd7a4488
+
+ ❯ src/editorial/avisos-fuentes.test.ts (4 tests | 1 failed) 12ms
+     × avisa de un dato concreto sin fuente, como services, y no del que sí la tiene 9ms
+ ❯ mcp/herramientas.test.ts (61 tests | 1 failed) 390ms
+     × leer_ficha devuelve los avisos que el corrector cierra antes del consejo, con su arreglo 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/herramientas.test.ts > el texto que lee el visitante > leer_ficha devuelve los avisos que el corrector cierra antes del consejo, con su arreglo
+AssertionError: expected [ 'description.es', 'name.es', …(1) ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
++ [
+    "description.es",
+-   "services",
++   "name.es",
+    "name.en",
+  ]
+
+ ❯ mcp/herramientas.test.ts:774:20
+    772|     const r = await c.herramienta('leer_ficha').ejecutar({ id: tibio.i…
+    773|     const campos = r.ok ? (r.datos.avisos as Array<{ campo: string }>)…
+    774|     expect(campos).toEqual(expect.arrayContaining(['description.es', '…
+       |                    ^
+    775|   });
+    776| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/editorial/avisos-fuentes.test.ts > lo que las fuentes de una ficha no sostienen > avisa de un dato concreto sin fuente, como services, y no del que sí la tiene
+AssertionError: expected [] to deeply equal [ 'services' ]
+
+- Expected
++ Received
+
+- [
+-   "services",
+- ]
++ []
+
+ ❯ src/editorial/avisos-fuentes.test.ts:12:33
+     10|     const r = avisosDeFuentes({ name: nombre, services: ['parqueo', 'w…
+     11|       [nombreCompleto, { campo: 'openingHours', fuente: web, nota: 'Ho…
+     12|     expect(r.map(a => a.campo)).toEqual(['services']);
+       |                                 ^
+     13|     expect(r[0]!.aviso).toContain('registrar_fuentes');
+     14|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 63 passed (65)
+   Start at  10:19:35
+   Duration  810ms (transform 217ms, setup 0ms, import 378ms, tests 402ms, environment 0ms)
+
