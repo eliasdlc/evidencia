@@ -1,0 +1,54 @@
+# R1 at 38bd472, with d-r1.patch applied
+# $ pnpm vitest run mcp/herramientas.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/mcp-llegada-descartes
+
+ ❯ mcp/herramientas.test.ts (56 tests | 2 failed) 331ms
+     × crear_borrador la comprueba sola y devuelve el resultado: el borrador no queda con la ruta pendiente 8ms
+     × sin token no rompe crear_borrador: lo dice en la respuesta 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/herramientas.test.ts > la ruta en carro (R1) > crear_borrador la comprueba sola y devuelve el resultado: el borrador no queda con la ruta pendiente
+AssertionError: expected "vi.fn()" to be called with arguments: [ Array(2) ]
+
+Number of calls: 0
+
+ ❯ mcp/herramientas.test.ts:624:36
+    622|     motor.comprobarLlegada.mockResolvedValue(rutaDe('llega', 12, 3));
+    623|     const r = await herramienta('crear_borrador').ejecutar(lugar);
+    624|     expect(motor.comprobarLlegada).toHaveBeenCalledWith(expect.objectC…
+       |                                    ^
+    625|     expect(r.ok && r.datos.llegada).toEqual({ resultado: 'llega', dist…
+    626|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  mcp/herramientas.test.ts > la ruta en carro (R1) > sin token no rompe crear_borrador: lo dice en la respuesta
+AssertionError: expected { resultado: 'sin_comprobar', …(1) } to deeply equal { resultado: 'sin_comprobar', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "detalle": StringContaining "MAPBOX_DIRECTIONS_TOKEN",
++   "detalle": "mutado",
+    "resultado": "sin_comprobar",
+  }
+
+ ❯ mcp/herramientas.test.ts:635:37
+    633|     motor.leer.mockResolvedValue({ ...conPin, id: lugar.id, revision: …
+    634|     const r = await herramienta('crear_borrador').ejecutar(lugar);
+    635|     expect(r.ok && r.datos.llegada).toEqual({ resultado: 'sin_comproba…
+       |                                     ^
+    636|     expect(motor.comprobarLlegada).not.toHaveBeenCalled();
+    637|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 54 passed (56)
+   Start at  22:33:14
+   Duration  931ms (transform 328ms, setup 0ms, import 468ms, tests 331ms, environment 0ms)
+
