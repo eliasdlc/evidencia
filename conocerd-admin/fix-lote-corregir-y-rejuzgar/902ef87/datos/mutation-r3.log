@@ -1,0 +1,133 @@
+# R3 at 902ef87, with r3.patch applied
+# $ pnpm vitest run src/editorial/texto-visitante.test.ts
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/admin/fix-lote-corregir-y-rej-42859ed6cd7a4488
+
+ ❯ src/editorial/texto-visitante.test.ts (12 tests | 6 failed) 12ms
+     × no manda a otra app de mapas ni cita a Google: la ficha ya tiene el pin 6ms
+     × no cuenta la cocina de la ficha: coordenadas, fuentes y lo que falta confirmar 1ms
+     × atribuir el dato a reseñas, guías o visitantes 0ms
+     × el horario escrito en la descripción o en la mejor época 0ms
+     × un aviso de la lista escrito como frase 0ms
+     × servicios sueltos, precio, clima, fechas que envejecen, folleto y plataformas 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/texto-visitante.test.ts > el texto que lee el visitante > no manda a otra app de mapas ni cita a Google: la ficha ya tiene el pin
+AssertionError: expected [] to deeply equal [ 'howToGetThere.es', …(1) ]
+
+- Expected
++ Received
+
+- [
+-   "howToGetThere.es",
+-   "howToGetThere.en",
+- ]
++ []
+
+ ❯ src/editorial/texto-visitante.test.ts:11:33
+      9|   it('no manda a otra app de mapas ni cita a Google: la ficha ya tiene…
+     10|     const r = frasesAjenas({ howToGetThere: { es: 'Carretera Ocoa a Co…
+     11|     expect(r.map(f => f.campo)).toEqual(['howToGetThere.es', 'howToGet…
+       |                                 ^
+     12|     expect(r[0]!.arreglo).toContain('ConoceRD lleva hasta el lugar');
+     13|     expect(frena('Al mediodía se llena: Google lo marca con esperas de…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/editorial/texto-visitante.test.ts > el texto que lee el visitante > no cuenta la cocina de la ficha: coordenadas, fuentes y lo que falta confirmar
+AssertionError: La coordenada identifica el parque y no un acceso confirmado.: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/editorial/texto-visitante.test.ts:18:46
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/editorial/texto-visitante.test.ts > lo que el consejo rechazó y el servidor ya frena > atribuir el dato a reseñas, guías o visitantes
+AssertionError: Los huéspedes cuentan que las casitas tienen agua caliente.: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/editorial/texto-visitante.test.ts:51:30
+     49|       'Las fotos de sus clientes lo cuentan mejor que nadie.',
+     50|       'Los visitantes reconocen que el agua es fría.',
+     51|     ]) expect(frena(es), es).toHaveLength(1);
+       |                              ^
+     52|     expect(frasesAjenas({ description: { en: 'Reviewers say the coffee…
+     53|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/editorial/texto-visitante.test.ts > lo que el consejo rechazó y el servidor ya frena > el horario escrito en la descripción o en la mejor época
+AssertionError: Pasa temprano, que abre a las 9 de la mañana, y el lunes está cerrado.: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/editorial/texto-visitante.test.ts:64:30
+     62|       'Cierra los domingos y a las siete.',
+     63|       'Solo abren de jueves a domingo.',
+     64|     ]) expect(frena(es), es).toHaveLength(1);
+       |                              ^
+     65|     expect(frena('El jardín abre de 8 a. m. a 6 p. m.', 'bestTimeToVis…
+     66|     expect(frasesAjenas({ description: { en: 'It opens at 9 a.m. and c…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/editorial/texto-visitante.test.ts > lo que el consejo rechazó y el servidor ya frena > un aviso de la lista escrito como frase
+AssertionError: Lleva calzado que se pueda mojar, agua y traje de baño.: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/editorial/texto-visitante.test.ts:77:30
+     75|       'Hace falta un vehículo con tracción para el último tramo.',
+     76|       'Arriba no hay señal de celular.',
+     77|     ]) expect(frena(es), es).toHaveLength(1);
+       |                              ^
+     78|   });
+     79|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/editorial/texto-visitante.test.ts > lo que el servidor avisa y el corrector arregla antes del consejo > servicios sueltos, precio, clima, fechas que envejecen, folleto y plataformas
+AssertionError: Hay donde estacionar frente al mirador.: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/editorial/texto-visitante.test.ts:99:21
+     97|     for (const [es, de] of casos) {
+     98|       const r = avisa(es);
+     99|       expect(r, es).toHaveLength(1);
+       |                     ^
+    100|       expect(frena(es), `${es} no frena`).toEqual([]);
+    101|       expect(r[0]!.arreglo, es).toContain(de);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 6 passed (12)
+   Start at  10:19:28
+   Duration  219ms (transform 48ms, setup 0ms, import 99ms, tests 12ms, environment 0ms)
+
