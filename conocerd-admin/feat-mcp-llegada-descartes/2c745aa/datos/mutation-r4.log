@@ -1,0 +1,96 @@
+# R4 at 2c745aa, with d-r4.patch applied
+# $ pnpm vitest run mcp/herramientas.test.ts src/editorial/texto-visitante.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/mcp-llegada-descartes
+
+ ❯ src/editorial/texto-visitante.test.ts (3 tests | 2 failed) 10ms
+     × no manda a otra app de mapas ni cita a Google: la ficha ya tiene el pin 7ms
+     × no cuenta la cocina de la ficha: coordenadas, fuentes y lo que falta confirmar 2ms
+ ❯ mcp/herramientas.test.ts (58 tests | 2 failed) 306ms
+     × crear_borrador y actualizar_campos rechazan un texto que manda a otra app de mapas, y dicen cómo se arregla 9ms
+     × un consejo no publica una ficha que ya lo trae, y leer_ficha se lo enseña al juez 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/herramientas.test.ts > el texto que lee el visitante > crear_borrador y actualizar_campos rechazan un texto que manda a otra app de mapas, y dicen cómo se arregla
+AssertionError: expected { ok: false, …(1) } to deeply equal { ok: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "error": StringContaining "ConoceRD lleva hasta el lugar",
++   "error": "Cannot read properties of undefined (reading 'id')",
+    "ok": false,
+  }
+
+ ❯ mcp/herramientas.test.ts:718:18
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  mcp/herramientas.test.ts > el texto que lee el visitante > un consejo no publica una ficha que ya lo trae, y leer_ficha se lo enseña al juez
+AssertionError: expected [] to deeply equal [ ObjectContaining{…} ]
+
+- Expected
++ Received
+
+- [
+-   ObjectContaining {
+-     "campo": "howToGetThere.es",
+-   },
+- ]
++ []
+
+ ❯ mcp/herramientas.test.ts:729:48
+    727|     const c = consejoListo({}, conFrase);
+    728|     const leida = await c.herramienta('leer_ficha').ejecutar({ id: lis…
+    729|     expect(leida.ok && leida.datos.textoAjeno).toEqual([expect.objectC…
+       |                                                ^
+    730|     const r = await c.herramienta('publicar_por_consejo').ejecutar(ped…
+    731|     expect(r).toEqual({ ok: false, error: expect.stringContaining('no …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/editorial/texto-visitante.test.ts > el texto que lee el visitante > no manda a otra app de mapas ni cita a Google: la ficha ya tiene el pin
+AssertionError: expected [] to deeply equal [ 'howToGetThere.es', …(1) ]
+
+- Expected
++ Received
+
+- [
+-   "howToGetThere.es",
+-   "howToGetThere.en",
+- ]
++ []
+
+ ❯ src/editorial/texto-visitante.test.ts:7:33
+      5|   it('no manda a otra app de mapas ni cita a Google: la ficha ya tiene…
+      6|     const r = frasesAjenas({ howToGetThere: { es: 'Carretera Ocoa a Co…
+      7|     expect(r.map(f => f.campo)).toEqual(['howToGetThere.es', 'howToGet…
+       |                                 ^
+      8|     expect(r[0]!.arreglo).toContain('ConoceRD lleva hasta el lugar');
+      9|     expect(frasesAjenas({ description: { es: 'Al mediodía se llena: Go…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/editorial/texto-visitante.test.ts > el texto que lee el visitante > no cuenta la cocina de la ficha: coordenadas, fuentes y lo que falta confirmar
+AssertionError: La coordenada identifica el parque y no un acceso confirmado.: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/editorial/texto-visitante.test.ts:14:59
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 57 passed (61)
+   Start at  23:16:04
+   Duration  885ms (transform 427ms, setup 0ms, import 580ms, tests 316ms, environment 0ms)
+
