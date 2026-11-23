@@ -1,0 +1,46 @@
+# R4 at c3c5d10, with c-r4.patch applied
+# $ pnpm vitest run src/editorial/publicacion-modelo.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/conocerd-admin/consejo-publica
+
+ ❯ src/editorial/publicacion-modelo.test.ts (5 tests | 1 failed) 12ms
+     × la de un consejo dice que fue por consejo y con cuántos jueces 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/publicacion-modelo.test.ts > auditoría de la publicación > la de un consejo dice que fue por consejo y con cuántos jueces
+AssertionError: expected { accion: 'publicar', …(7) } to match object { accion: 'publicar', …(3) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -3,11 +3,6 @@
+    "aprobacion": {
+      "consejo": {
+        "jueces": 3,
+      },
+    },
+-   "consejo": {
+-     "jueces": 3,
+-     "registro": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+-   },
+-   "origen": "consejo",
+  }
+
+ ❯ src/editorial/publicacion-modelo.test.ts:24:23
+     22|   it('la de un consejo dice que fue por consejo y con cuántos jueces',…
+     23|     const auditoria = auditoriaPublicar(entrada({ ...aprobacion, conse…
+     24|     expect(auditoria).toMatchObject({ accion: 'publicar', origen: 'con…
+       |                       ^
+     25|   });
+     26|   it('la del panel queda como antes, sin origen ni consejo', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  20:34:54
+   Duration  224ms (transform 65ms, setup 0ms, import 121ms, tests 12ms, environment 0ms)
+
