@@ -1,0 +1,60 @@
+# R1 at d498265, with mcp/herramientas.ts back at f733bf7
+# $ pnpm vitest run mcp/herramientas.test.ts -t quitar
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/admin/t3-38d80ebf-11a98119473549d6
+
+ ❯ mcp/herramientas.test.ts (63 tests | 2 failed | 59 skipped) 27ms
+     × con quitar borra un campo opcional y su fuente, sin pedir fuente nueva 11ms
+     × con quitar no deja borrar lo que la ficha necesita, ni cambiar y quitar el mismo campo 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  mcp/herramientas.test.ts > actualizar_campos > con quitar borra un campo opcional y su fuente, sin pedir fuente nueva
+AssertionError: expected false to deeply equal [ 'openingHours' ]
+
+- Expected:
+[
+  "openingHours",
+]
+
++ Received:
+false
+
+ ❯ mcp/herramientas.test.ts:158:44
+    156|     motor.revisar.mockResolvedValue({ ok: true, revision: 5 });
+    157|     const r = await herramienta('actualizar_campos').ejecutar({ id: bo…
+    158|     expect(r.ok && r.datos.camposQuitados).toEqual(['openingHours']);
+       |                                            ^
+    159|     expect(motor.guardar).toHaveBeenCalledWith(expect.objectContaining…
+    160|     expect(JSON.parse(motor.revisar.mock.calls[0]![0].comprobaciones.f…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  mcp/herramientas.test.ts > actualizar_campos > con quitar no deja borrar lo que la ficha necesita, ni cambiar y quitar el mismo campo
+AssertionError: expected { ok: false, …(1) } to deeply equal { ok: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "error": StringContaining "no se cambia y se quita a la vez: costLevel",
++   "error": "Unrecognized key: \"quitar\"",
+    "ok": false,
+  }
+
+ ❯ mcp/herramientas.test.ts:167:19
+    165|     expect((await herramienta('actualizar_campos').ejecutar({ id: borr…
+    166|     const ambos = await herramienta('actualizar_campos').ejecutar({ id…
+    167|     expect(ambos).toEqual({ ok: false, error: expect.stringContaining(…
+       |                   ^
+    168|     expect(await herramienta('actualizar_campos').ejecutar({ id: borra…
+    169|     expect(motor.guardar).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed | 59 skipped (63)
+   Start at  22:21:34
+   Duration  453ms (transform 204ms, setup 0ms, import 336ms, tests 27ms, environment 0ms)
+
