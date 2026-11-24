@@ -1,0 +1,61 @@
+# R2 at e74adba, with r2-no-road-food.patch applied
+# $ flutter test --no-pub test/features/routes/domain/corridor_stops_long_route_test.dart
+00:00 +0: loading /home/decruce/.t3/worktrees/app/t3-be29a82a-bf0e710779a16bd6/test/features/routes/domain/corridor_stops_long_route_test.dart
+00:00 +0: Santiago to Santo Domingo a morning trip stops at Turey on the way
+00:00 +0 -1: Santiago to Santo Domingo a morning trip stops at Turey on the way [E]
+  Expected: contains 'sc-turey'
+    Actual: ['lv-la-carretera-restaurant', 'dn-restaurante-colonial']
+     Which: does not contain 'sc-turey'
+  
+  package:matcher                                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18                     expect
+  test/features/routes/domain/corridor_stops_long_route_test.dart 251:7  main.<fn>.<fn>
+  
+00:00 +0 -1: Santiago to Santo Domingo a trip that drives through the lunch hours eats at a place of the road, not in a zone without a place
+00:00 +1 -1: Santiago to Puerto Plata a morning trip stops at the roadside stand on the way
+00:00 +1 -2: Santiago to Puerto Plata a morning trip stops at the roadside stand on the way [E]
+  Expected: 'st-puesto-pedro-garcia'
+    Actual: 'pp-museo-del-ambar'
+     Which: is different.
+            Expected: st-puesto- ...
+              Actual: pp-museo-d ...
+                      ^
+             Differ at offset 0
+  
+  package:matcher                                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18                     expect
+  test/features/routes/domain/corridor_stops_long_route_test.dart 289:7  main.<fn>.<fn>
+  
+00:00 +1 -2: Santiago to Puerto Plata with no place on the road the drive has no break: none is made up
+00:00 +2 -2: where the stops fall the break is in the middle part of the drive, not next to the origin or the arrival
+00:00 +3 -2: where the stops fall a lunch on the road with no table in reach is at a roadside place, whatever its name
+00:00 +3 -3: where the stops fall a lunch on the road with no table in reach is at a roadside place, whatever its name [E]
+  Expected: contains <null>
+    Actual: Set:['lv-la-carretera-restaurant', 'sc-turey']
+     Which: does not contain <null>
+  zone: La Vega
+  
+  package:matcher                                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18                     expect
+  test/features/routes/domain/corridor_stops_long_route_test.dart 347:7  main.<fn>.<fn>
+  
+00:00 +3 -3: what makes a place a stop of the road a roadside stand, a bakery and a roadside stop with a dining room are; a roadside stop without one is not
+00:00 +3 -4: what makes a place a stop of the road a roadside stand, a bakery and a roadside stop with a dining room are; a roadside stop without one is not [E]
+  Expected: true
+    Actual: <false>
+  
+  package:matcher                                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18                     expect
+  test/features/routes/domain/corridor_stops_long_route_test.dart 358:7  main.<fn>.<fn>
+  
+00:00 +3 -4: the provinces of the road Santiago to Santo Domingo crosses La Vega, Monsenor Nouel and San Cristobal, and not the east or the south
+00:00 +4 -4: the provinces of the road a trip inside the province of the origin and a trip around the country cross nothing more
+00:00 +5 -4: the pool asks the provinces of the road for their food only, one query each
+00:00 +6 -4: the pool with no road to cross it is the pool of the scope
+00:00 +7 -4: Some tests failed.
+
+Failing tests:
+  /home/decruce/.t3/worktrees/app/t3-be29a82a-bf0e710779a16bd6/test/features/routes/domain/corridor_stops_long_route_test.dart: Santiago to Puerto Plata a morning trip stops at the roadside stand on the way
+  /home/decruce/.t3/worktrees/app/t3-be29a82a-bf0e710779a16bd6/test/features/routes/domain/corridor_stops_long_route_test.dart: Santiago to Santo Domingo a morning trip stops at Turey on the way
+  /home/decruce/.t3/worktrees/app/t3-be29a82a-bf0e710779a16bd6/test/features/routes/domain/corridor_stops_long_route_test.dart: what makes a place a stop of the road a roadside stand, a bakery and a roadside stop with a dining room are; a roadside stop without one is not
+  /home/decruce/.t3/worktrees/app/t3-be29a82a-bf0e710779a16bd6/test/features/routes/domain/corridor_stops_long_route_test.dart: where the stops fall a lunch on the road with no table in reach is at a roadside place, whatever its name
