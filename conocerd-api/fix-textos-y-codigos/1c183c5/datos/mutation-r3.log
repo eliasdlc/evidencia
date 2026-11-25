@@ -1,0 +1,58 @@
+# R3 at 1c183c5, with m3.patch applied
+# $ pnpm exec vitest run src/lib/tester-feedback.test.ts -t "códigos antiguos"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/fix-textos-y-codigos
+
+ ❯ src/lib/tester-feedback.test.ts (23 tests | 1 failed | 22 skipped) 10ms
+   ↓ lo que se acepta > un error con todo lo que un error pide
+   ↓ lo que se acepta > los cuatro tipos
+   ↓ lo que se acepta > una idea no guarda lo que solo pregunta un error
+   ↓ lo que se acepta > un correo vacío cuenta como no dado
+   ↓ lo que se acepta > pero no un correo que no se entiende, ni una zona fuera de la lista
+   ↓ lo que se acepta > ni una calificación fuera de una a cinco
+   ↓ los adjuntos > reconoce JPEG, PNG y WebP por sus bytes
+   ↓ los adjuntos > rechaza un fichero que dice ser imagen y no lo es
+   ↓ los adjuntos > acepta hasta 6 y rechaza una más
+   ↓ los adjuntos > rechaza un cuerpo por encima del límite antes de leerlo
+   ↓ los adjuntos > rechaza un cuerpo que no es multipart
+   ↓ el código de referencia > no lleva vocales ni 0, 1, O, I, L, en diez mil códigos
+   ↓ el código de referencia > se normaliza igual con o sin prefijo, separador y caja
+   ↓ el código de referencia > una T que abre el código no se confunde con el prefijo
+   ↓ el código de referencia > rechaza lo que no es un código
+   × el código de referencia > los códigos antiguos T-XXXXXX siguen siendo válidos y se derivan del id 8ms
+     → expected false to be true // Object.is equality
+   ↓ la cuota > deja pasar ciento veinte en la misma hora y frena el siguiente
+   ↓ la cuota > y se olvida al pasar la hora
+   ↓ lo que se guarda > sube las imágenes bajo el id y guarda el documento como nuevo
+   ↓ lo que se guarda > si la primera subida falla, limpia el prefijo igual
+   ↓ lo que se guarda > si el documento falla, borra lo que ya subió
+   ↓ la URL de una captura > es la de Firebase Storage con su token
+   ↓ la URL de una captura > y la del emulador cuando se corre contra él
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/tester-feedback.test.ts > el código de referencia > los códigos antiguos T-XXXXXX siguen siendo válidos y se derivan del id
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ src/lib/tester-feedback.test.ts:172:44
+    170|   it('los códigos antiguos T-XXXXXX siguen siendo válidos y se derivan…
+    171|     expect(referenciaDe('abc123xyz')).toBe('T-ABC123');
+    172|     expect(esReferenciaValida('T-ABC123')).toBe(true);
+       |                                            ^
+    173|     expect(esReferenciaValida('abc 123')).toBe(true);
+    174|     expect(normalizarReferencia('T-ABC123')).toBe('ABC123');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 22 skipped (23)
+   Start at  23:48:14
+   Duration  542ms (transform 92ms, setup 13ms, collect 304ms, tests 10ms, environment 0ms, prepare 69ms)
+
