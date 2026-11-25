@@ -1,0 +1,72 @@
+# R1 at 925f7ce, with r1.patch applied
+# $ flutter test --no-pub test/features/navigation/visit_pending_test.dart
+00:00 +0: loading /home/decruce/dev/wt/app/p16-gps-simulado/test/features/navigation/visit_pending_test.dart
+00:00 +0: every sample carries its accuracy and the system mock flag
+00:00 +0 -1: every sample carries its accuracy and the system mock flag [E]
+  Expected: {
+              'latitude': 18.47,
+              'longitude': -69.88,
+              'timestamp': 1000,
+              'speed': 0.0,
+              'accuracy': 12.5,
+              'isMocked': true
+            }
+    Actual: {
+              'latitude': 18.47,
+              'longitude': -69.88,
+              'timestamp': 1000,
+              'speed': 0.0,
+              'accuracy': 12.5
+            }
+     Which: has different length and is missing map key 'isMocked'
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/navigation/visit_pending_test.dart 55:5  main.<fn>
+  
+00:00 +0 -1: a mocked arrival is sent flagged, its pending answer leaves the outbox and the place keeps an open pending visit instead of a verified one
+00:00 +0 -2: a mocked arrival is sent flagged, its pending answer leaves the outbox and the place keeps an open pending visit instead of a verified one [E]
+  Expected: <true>
+    Actual: <null>
+  
+  package:matcher                                        expect
+  package:flutter_test/src/widget_tester.dart 473:18     expect
+  test/features/navigation/visit_pending_test.dart 81:7  main.<fn>
+  
+00:00 +0 -2: a validated arrival opens no pending visit
+00:00 +1 -2: a pending_limit rejection leaves the outbox and opens nothing
+00:00 +2 -2: the place screen asks the server about its pending visit no matching scan yet keeps the line
+00:00 +2 -3: the place screen asks the server about its pending visit no matching scan yet keeps the line [E]
+  Expected: not null
+    Actual: <null>
+  
+  package:matcher                                         expect
+  package:flutter_test/src/widget_tester.dart 473:18      expect
+  test/features/navigation/visit_pending_test.dart 180:7  main.<fn>.<fn>
+  
+00:00 +2 -3: the place screen asks the server about its pending visit validated after a scan removes the line
+00:00 +3 -3: the place screen asks the server about its pending visit rejected after a scan removes the line
+00:00 +4 -3: the place screen asks the server about its pending visit expired after a scan removes the line
+00:00 +5 -3: the place screen asks the server about its pending visit scan_already_counted drops the line without a message or XP
+00:00 +5 -4: the place screen asks the server about its pending visit scan_already_counted drops the line without a message or XP [E]
+  Expected: '/visits/confirm'
+    Actual: '/visits/pending'
+     Which: is different.
+            Expected: /visits/confirm
+              Actual: /visits/pending
+                              ^
+             Differ at offset 8
+  
+  package:matcher                                         expect
+  package:flutter_test/src/widget_tester.dart 473:18      expect
+  test/features/navigation/visit_pending_test.dart 211:9  main.<fn>.<fn>
+  
+00:00 +5 -4: the place screen asks the server about its pending visit an unknown pending visit (404) removes the line
+00:00 +6 -4: the place screen asks the server about its pending visit after a reinstall the server list is the source
+00:00 +7 -4: Some tests failed.
+
+Failing tests:
+  /home/decruce/dev/wt/app/p16-gps-simulado/test/features/navigation/visit_pending_test.dart: a mocked arrival is sent flagged, its pending answer leaves the outbox and the place keeps an open pending visit instead of a verified one
+  /home/decruce/dev/wt/app/p16-gps-simulado/test/features/navigation/visit_pending_test.dart: every sample carries its accuracy and the system mock flag
+  /home/decruce/dev/wt/app/p16-gps-simulado/test/features/navigation/visit_pending_test.dart: the place screen asks the server about its pending visit no matching scan yet keeps the line
+  /home/decruce/dev/wt/app/p16-gps-simulado/test/features/navigation/visit_pending_test.dart: the place screen asks the server about its pending visit scan_already_counted drops the line without a message or XP
