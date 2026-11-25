@@ -1,0 +1,29 @@
+# R8 at 7748500, with r8.patch applied
+# $ pnpm exec vitest run src/features/punto/offline.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/p17-qr-rotativo
+
+ ❯ src/features/punto/offline.test.ts (2 tests | 1 failed) 8ms
+   ❯ R8: the point refreshes when signal returns and every 10 min while online (2)
+     × refreshes on online and on each 10 min tick with signal, never on a tick without it 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/punto/offline.test.ts > R8: the point refreshes when signal returns and every 10 min while online > refreshes on online and on each 10 min tick with signal, never on a tick without it
+AssertionError: expected "vi.fn()" to be called 1 times, but got 2 times
+ ❯ src/features/punto/offline.test.ts:22:21
+     20|     online = false;
+     21|     vi.advanceTimersByTime(REFRESH_EVERY_MS);
+     22|     expect(refresh).toHaveBeenCalledTimes(1);
+       |                     ^
+     23|
+     24|     online = true;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  12:53:47
+   Duration  210ms (worker 38%, import 25%, tests 23%, transform 14%)
+
