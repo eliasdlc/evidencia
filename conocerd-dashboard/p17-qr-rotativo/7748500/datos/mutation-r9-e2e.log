@@ -1,0 +1,37 @@
+# mutation: keepPageOffline never registers public/sw.js (src/features/punto/offline.ts), the state before this change
+i  emulators: Starting emulators: auth
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  Running script: pnpm exec playwright test e2e/punto.spec.ts -g R9 --project production-phone
+
+Running 1 test using 1 worker
+
+  ✘  1 [production-phone] › e2e/punto.spec.ts:219:1 › R9: after provisioning, a reload with no signal loads the page from the worker and the QR keeps changing @production (1.5m)
+FAIL [production-phone] e2e/punto.spec.ts > R9: after provisioning, a reload with no signal loads the page from the worker and the QR keeps changing (timedOut)
+
+
+  1) [production-phone] › e2e/punto.spec.ts:219:1 › R9: after provisioning, a reload with no signal loads the page from the worker and the QR keeps changing @production 
+
+    Test timeout of 90000ms exceeded.
+
+    Error: page.waitForFunction: Test timeout of 90000ms exceeded.
+
+      234 |
+      235 |   // The worker controls the page and keeps the shell plus every built file the page loaded, and nothing else.
+    > 236 |   await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
+          |              ^
+      237 |   const kept = () =>
+      238 |     page.evaluate(async () => {
+      239 |       const loaded = performance
+        at /home/decruce/dev/wt/dashboard/p17-qr-rotativo/e2e/punto.spec.ts:236:14
+
+    Error Context: node_modules/.cache/playwright/punto-R9-after-provisionin-a31c9-r-and-the-QR-keeps-changing-production-phone/error-context.md
+
+  1 failed
+    [production-phone] › e2e/punto.spec.ts:219:1 › R9: after provisioning, a reload with no signal loads the page from the worker and the QR keeps changing @production 
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec playwright test e2e/punto.spec.ts -g R9 --project production-phone" exited with code 1
