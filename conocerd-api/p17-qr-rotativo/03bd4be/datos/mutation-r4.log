@@ -1,0 +1,80 @@
+# R4 at 03bd4be, with r4.patch applied
+# $ pnpm exec vitest run src/lib/venue-points.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p17-qr-rotativo
+
+ ❯ src/lib/venue-points.test.ts (14 tests | 3 failed) 15ms
+   ✓ el código del punto > coincide con los vectores del contrato 2ms
+   ✓ el código del punto > deriva el secreto del punto de QR_SECRET, el id y la versión 0ms
+   ✓ el código del punto > solo lee la forma exacta 1ms
+   ✓ el paso del código > acepta el paso actual y el anterior, como margen de reloj 1ms
+   ✓ el paso del código > rechaza una captura o foto cuyo paso ya venció 0ms
+   × el paso del código > rechaza un paso del futuro 6ms
+     → expected 'accepted' to be 'future_step' // Object.is equality
+   ✓ la firma del punto > rechaza el código de un punto enviado como otro 0ms
+   ✓ la firma del punto > rechaza un carácter cambiado, otra versión del secreto, un punto revocado o desconocido 0ms
+   ✓ el escaneo guardado sin señal > se acepta 2 h después y se rechaza a las 2 h 1 min 0ms
+   × el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora 1ms
+     → expected 'accepted' to be 'future_step' // Object.is equality
+   × el escaneo guardado sin señal > una hora del escaneo en el futuro se rechaza 1ms
+     → expected 'accepted' to be 'future_claim' // Object.is equality
+   ✓ la cadena de GPS > pide al menos 2 muestras distintas dentro del radio cerca de la hora del escaneo 0ms
+   ✓ la cadena de GPS > usa el radio de las visitas: 150 m sin tipo, 500 m en una playa 0ms
+   ✓ la cadena de GPS > rechaza una muestra simulada o posterior a la llegada 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/venue-points.test.ts > el paso del código > rechaza un paso del futuro
+AssertionError: expected 'accepted' to be 'future_step' // Object.is equality
+
+Expected: [32m"[7mfuture_s[27mte[7mp[27m"[39m
+Received: [31m"[7maccep[27mte[7md[27m"[39m
+
+ ❯ src/lib/venue-points.test.ts:99:43
+     97| 
+     98|   it('rechaza un paso del futuro', () => {
+     99|     expect(judge(codeAt(T + STEP_MS), T)).toBe('future_step');
+       |                                           ^
+    100|   });
+    101| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/lib/venue-points.test.ts > el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora
+AssertionError: expected 'accepted' to be 'future_step' // Object.is equality
+
+Expected: [32m"[7mfuture_s[27mte[7mp[27m"[39m
+Received: [31m"[7maccep[27mte[7md[27m"[39m
+
+ ❯ src/lib/venue-points.test.ts:129:98
+    127|   it('una hora inventada no hace valer un código de otra hora', () => {
+    128|     const code = codeAt(T);
+    129|     expect(judge(code, T + HOUR, { scannedAt: T - 5 * MINUTE, samples:…
+       |                                                                                                  ^
+    130|     expect(judge(code, T + HOUR, { scannedAt: T + 10 * MINUTE, samples…
+    131|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/lib/venue-points.test.ts > el escaneo guardado sin señal > una hora del escaneo en el futuro se rechaza
+AssertionError: expected 'accepted' to be 'future_claim' // Object.is equality
+
+Expected: [32m"future_claim"[39m
+Received: [31m"accepted"[39m
+
+ ❯ src/lib/venue-points.test.ts:134:88
+    132| 
+    133|   it('una hora del escaneo en el futuro se rechaza', () => {
+    134|     expect(judge(codeAt(T + MINUTE), T, { scannedAt: T + MINUTE, sampl…
+       |                                                                                        ^
+    135|   });
+    136| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 11 passed (14)
+   Start at  23:22:41
+   Duration  302ms (transform 53ms, setup 10ms, collect 87ms, tests 15ms, environment 0ms, prepare 59ms)
+
