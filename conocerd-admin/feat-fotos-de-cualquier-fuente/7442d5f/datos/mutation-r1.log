@@ -1,0 +1,90 @@
+# R1 at 7442d5f, with R1.patch applied
+# $ pnpm exec vitest run src/editorial/fotos-modelo.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/admin/feat-fotos-de-cualquier-fuente
+
+ ❯ src/editorial/fotos-modelo.test.ts (6 tests | 4 failed) 17ms
+     × acepta una foto sin autor, sin fuente y sin evidencia 11ms
+     × acepta una foto de un enlace de Instagram, sin autor ni evidencia 1ms
+     × no rechaza ningún host por su nombre 1ms
+     × la licencia es información: ninguna exige fuente, referencia ni evidencia 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/fotos-modelo.test.ts > derechosFoto: fotos de cualquier fuente > acepta una foto sin autor, sin fuente y sin evidencia
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/editorial/fotos-modelo.test.ts:9:52
+      7| describe('derechosFoto: fotos de cualquier fuente', () => {
+      8|   it('acepta una foto sin autor, sin fuente y sin evidencia', () => {
+      9|     expect(derechosFoto.safeParse(minimo).success).toBe(true);
+       |                                                    ^
+     10|   });
+     11|   it('acepta una foto de un enlace de Instagram, sin autor ni evidenci…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/editorial/fotos-modelo.test.ts > derechosFoto: fotos de cualquier fuente > acepta una foto de un enlace de Instagram, sin autor ni evidencia
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/editorial/fotos-modelo.test.ts:12:103
+     10|   });
+     11|   it('acepta una foto de un enlace de Instagram, sin autor ni evidenci…
+     12|     expect(derechosFoto.safeParse({ ...minimo, fuente: 'https://www.in…
+       |                                                                                                       ^
+     13|   });
+     14|   it('no rechaza ningún host por su nombre', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/editorial/fotos-modelo.test.ts > derechosFoto: fotos de cualquier fuente > no rechaza ningún host por su nombre
+AssertionError: https://www.instagram.com/ana/: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/editorial/fotos-modelo.test.ts:17:96
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/editorial/fotos-modelo.test.ts > derechosFoto: fotos de cualquier fuente > la licencia es información: ninguna exige fuente, referencia ni evidencia
+AssertionError: team: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/editorial/fotos-modelo.test.ts:22:81
+     20|   it('la licencia es información: ninguna exige fuente, referencia ni …
+     21|     for (const licencia of ['team', 'owner_permission', 'cc_by', 'cc_b…
+     22|       expect(derechosFoto.safeParse({ ...minimo, licencia }).success, …
+       |                                                                                 ^
+     23|     }
+     24|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 2 passed (6)
+   Start at  23:02:25
+   Duration  507ms (transform 25ms, setup 0ms, import 77ms, tests 17ms, environment 1ms)
+
