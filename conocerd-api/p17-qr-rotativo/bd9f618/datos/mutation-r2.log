@@ -1,0 +1,170 @@
+# R2 at bd9f618, with r2.patch applied
+# $ flock /tmp/claude-1000/conocerd-emulators.lock mise x node@26.8.1 -- firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm exec vitest run test/venue-points.test.ts"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/venue-points.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p17-qr-rotativo
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > una foto del QR no sirve cuando su paso vence, ni a otra cuenta desde otro sitio
+[point-scan] stale_step fXBf1dhs2ydAB9F4hu79
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > una foto del QR no sirve cuando su paso vence, ni a otra cuenta desde otro sitio
+[point-scan] outside_radius fXBf1dhs2ydAB9F4hu79
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > sin señal: se acepta hasta 24 h del paso firmado, después vence, y el reenvío devuelve lo mismo aun pasadas las 24 h
+[point-scan] expired zPVUzCh5NgXqnAuec0qv
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > rotar invalida los códigos viejos; revocar los apaga; reactivar rota otra vez
+[point-scan] bad_mac QhRKHdCl1ffPlKA3au79
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > rotar invalida los códigos viejos; revocar los apaga; reactivar rota otra vez
+[point-scan] revoked QhRKHdCl1ffPlKA3au79
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > rotar invalida los códigos viejos; revocar los apaga; reactivar rota otra vez
+[point-scan] bad_mac QhRKHdCl1ffPlKA3au79
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > quitar un operador rota el secreto que se llevó; añadir uno no
+[point-scan] bad_mac 0CWpuqw84j1itoCvt3E5
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > la ruta del escaneo exige App Check y correo verificado
+[point-scan] expired tNSlt9R9reZ0F5I9v4dB
+
+ ❯ test/venue-points.test.ts (12 tests | 4 failed) 7399ms
+   ✓ puntos con QR que rota contra el emulador > solo el equipo crea un punto, y la respuesta no trae el secreto  1413ms
+   ✓ puntos con QR que rota contra el emulador > el secreto solo llega al operador verificado o al equipo, sin caché y con bitácora 294ms
+   × puntos con QR que rota contra el emulador > acepta el escaneo una vez por persona y punto; el segundo dice ya lo hiciste 205ms
+     → expected { result: 'accepted', …(6) } to deeply equal { result: 'already_done', …(6) }
+   ✓ puntos con QR que rota contra el emulador > un escaneo guardado que llega antes de 10 min del paso firmado no es sin señal 116ms
+   × puntos con QR que rota contra el emulador > cada escaneo aceptado o ya hecho deja una línea por scanId; un reintento no deja otra 200ms
+     → expected { result: 'accepted', …(6) } to match object { result: 'already_done' }
+(6 matching properties omitted from actual)
+   × puntos con QR que rota contra el emulador > dos escaneos simultáneos de la misma persona crean un solo registro 2964ms
+     → expected [ 'accepted', 'accepted' ] to deeply equal [ 'accepted', 'already_done' ]
+   ✓ puntos con QR que rota contra el emulador > una foto del QR no sirve cuando su paso vence, ni a otra cuenta desde otro sitio 228ms
+   × puntos con QR que rota contra el emulador > sin señal: se acepta hasta 24 h del paso firmado, después vence, y el reenvío devuelve lo mismo aun pasadas las 24 h 233ms
+     → expected { result: 'accepted', …(6) } to match object { result: 'already_done', …(3) }
+(3 matching properties omitted from actual)
+   ✓ puntos con QR que rota contra el emulador > rotar invalida los códigos viejos; revocar los apaga; reactivar rota otra vez  435ms
+   ✓ puntos con QR que rota contra el emulador > quitar un operador rota el secreto que se llevó; añadir uno no 149ms
+   ✓ puntos con QR que rota contra el emulador > la ruta del escaneo exige App Check y correo verificado 155ms
+   ✓ puntos con QR que rota contra el emulador > el escaneo gasta su token de App Check: la misma petición reenviada se rechaza 119ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/venue-points.test.ts > puntos con QR que rota contra el emulador > acepta el escaneo una vez por persona y punto; el segundo dice ya lo hiciste
+AssertionError: expected { result: 'accepted', …(6) } to deeply equal { result: 'already_done', …(6) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "offline": false,[22m
+[2m    "pointId": "EDM7sjBMqz8VtvNzpVvC",[22m
+[2m    "pointName": "Parque Duarte",[22m
+[2m    "replayed": false,[22m
+[32m-   "result": "already_done",[39m
+[31m+   "result": "accepted",[39m
+[2m    "scannedAt": 1795624500798,[22m
+[2m    "stepAt": 1795624500000,[22m
+[2m  }[22m
+
+ ❯ test/venue-points.test.ts:211:54
+    209|     // El segundo escaneo pasa el juicio: dice ya lo hiciste y describ…
+    210|     const later = now + 5 * MINUTE;
+    211|     expect(await scan(traveler, show(later), later)).toEqual({
+       |                                                      ^
+    212|       result: 'already_done',
+    213|       pointId: id,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/venue-points.test.ts > puntos con QR que rota contra el emulador > cada escaneo aceptado o ya hecho deja una línea por scanId; un reintento no deja otra
+AssertionError: expected { result: 'accepted', …(6) } to match object { result: 'already_done' }
+(6 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "result": "already_done",[39m
+[31m+   "result": "accepted",[39m
+[2m  }[22m
+
+ ❯ test/venue-points.test.ts:263:74
+    261| 
+    262|     const later = now + 5 * MINUTE;
+    263|     expect(await scan(traveler, show(later), later, { scanId: second }…
+       |                                                                          ^
+    264|     const retryAt = later + 5_000;
+    265|     expect(await scan(traveler, show(retryAt), retryAt, { scanId: seco…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/venue-points.test.ts > puntos con QR que rota contra el emulador > dos escaneos simultáneos de la misma persona crean un solo registro
+AssertionError: expected [ 'accepted', 'accepted' ] to deeply equal [ 'accepted', 'already_done' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "accepted",[22m
+[32m-   "already_done",[39m
+[31m+   "accepted",[39m
+[2m  ][22m
+
+ ❯ test/venue-points.test.ts:299:49
+    297|     const now = Date.now();
+    298|     const results = await Promise.all([scan(traveler, show(now), now),…
+    299|     expect(results.map((r) => r.result).sort()).toEqual(['accepted', '…
+       |                                                 ^
+    300|     expect((await scansOf(traveler)).size).toBe(1);
+    301|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/venue-points.test.ts > puntos con QR que rota contra el emulador > sin señal: se acepta hasta 24 h del paso firmado, después vence, y el reenvío devuelve lo mismo aun pasadas las 24 h
+AssertionError: expected { result: 'accepted', …(6) } to match object { result: 'already_done', …(3) }
+(3 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "offline": true,[22m
+[2m    "replayed": false,[22m
+[32m-   "result": "already_done",[39m
+[31m+   "result": "accepted",[39m
+[2m    "scannedAt": 1795519804492,[22m
+[2m  }[22m
+
+ ❯ test/venue-points.test.ts:350:97
+    348|     const secondAt = scannedAt + HOUR;
+    349|     const secondId = crypto.randomUUID();
+    350|     expect(await scan(onTime, show(secondAt), secondAt + 2 * HOUR, que…
+       |                                                                                                 ^
+    351|       result: 'already_done',
+    352|       scannedAt: secondAt,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 8 passed (12)
+   Start at  12:29:57
+   Duration  7.92s (transform 305ms, setup 21ms, collect 211ms, tests 7.40s, environment 0ms, prepare 84ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/venue-points.test.ts" exited with code 1
