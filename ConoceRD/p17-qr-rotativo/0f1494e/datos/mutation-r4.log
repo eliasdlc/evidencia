@@ -1,0 +1,56 @@
+# R4 at 0f1494e, with r4-no-replace.patch applied
+# $ pnpm exec vitest run src/features/punto/provision.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/p17-qr-rotativo
+
+ ❯ src/features/punto/provision.test.ts (10 tests | 2 failed) 68ms
+   ❯ after provisioning the point works without signal (7)
+     × replaces the secret when provisioning reports another secretVersion, so the next code uses the new one 8ms
+     × only refreshes the clock when the version is the same 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/punto/provision.test.ts > after provisioning the point works without signal > replaces the secret when provisioning reports another secretVersion, so the next code uses the new one
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ src/features/punto/provision.test.ts:93:33
+     91|     expect(result.kind).toBe('rotated');
+     92|     const next = await store.load();
+     93|     expect(next?.secretVersion).toBe(2);
+       |                                 ^
+     94|     const newCode = await pointCode(next!.key, POINT_ID, SERVER_TIME);
+     95|     expect(newCode).not.toBe(oldCode);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/punto/provision.test.ts > after provisioning the point works without signal > only refreshes the clock when the version is the same
+AssertionError: expected +0 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 0
+
+ ❯ src/features/punto/provision.test.ts:106:44
+    104|     const result = await refreshStored(same.client, store, stored, () …
+    105|     expect(result.kind).toBe('same');
+    106|     expect((await store.load())?.offsetMs).toBe(1000);
+       |                                            ^
+    107|   });
+    108|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 8 passed (10)
+   Start at  00:15:42
+   Duration  323ms (transform 45%, tests 38%, import 14%, worker 3%)
+
