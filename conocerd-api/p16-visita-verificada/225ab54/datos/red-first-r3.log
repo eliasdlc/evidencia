@@ -1,0 +1,82 @@
+# R3 at 225ab54, with src/lib/destination-visit-stats.ts, src/lib/diary-service.ts, src/lib/env.ts, src/lib/review-service.ts, src/lib/stats-policy.ts, src/lib/trip-completion-service.ts, src/lib/visit-integrity.ts, src/lib/visit-ledger.ts, src/lib/visit-service.ts, src/lib/visits.ts back at 44a03a2
+# $ mise exec node@26.8.1 -- firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "pnpm exec vitest run test/stats-authority.test.ts -t 'R3 '"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/stats-authority.test.ts -t 'R3 '
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p16-visita-verificada
+
+ ❯ test/stats-authority.test.ts (21 tests | 1 failed | 20 skipped) 1059ms
+   ↓ typed stats authority against Auth and Firestore > the shared flag gates accounting without replacing disabled behavior
+   ↓ typed stats authority against Auth and Firestore > server legacy seed preserves history and adds eligible stamps with no bonus
+   ↓ typed stats authority against Auth and Firestore > R11 a review pays 40 XP once per user and place, ever: concurrent, deleted or rewritten
+   ↓ typed stats authority against Auth and Firestore > diary entries never count distinct destinations, even at the Coleccionista threshold
+   ↓ typed stats authority against Auth and Firestore > auto creation preserves an existing edited entry and never adds diary growth
+   ↓ typed stats authority against Auth and Firestore > strict action bodies reject UID, XP and caller category/province fields
+   ↓ typed stats authority against Auth and Firestore > R1 the same stop twice in a trip counts one visit, idempotently
+   ↓ typed stats authority against Auth and Firestore > R5 the trip is built from the ledger and ignores client hours, km and the simulated flag
+   ↓ typed stats authority against Auth and Firestore > R5 while visit signals are off a trip answers 503 and writes no receipt
+   ↓ typed stats authority against Auth and Firestore > a verified visit counts for one trip only
+   ↓ typed stats authority against Auth and Firestore > answers visits_pending while a reached stop has no ledger entry, then counts it
+   ↓ typed stats authority against Auth and Firestore > R12 a place visited every day pays its visits once a month and never a trip on its own
+   ↓ typed stats authority against Auth and Firestore > R12 a saved route the client wrote never earns multi-day credit; a curated route does
+   ↓ typed stats authority against Auth and Firestore > R6 every trip payment writes its own timeline row with its reason, a direct trip included
+   ↓ typed stats authority against Auth and Firestore > R4 Madrugador and Maratonista are granted from ledger hours and distances
+   ↓ typed stats authority against Auth and Firestore > R2 a revisit pays 5 the first time in the month and 0 after, each payment with its reason
+   × typed stats authority against Auth and Firestore > R3 a review without a verified visit publishes and pays 0; with one it pays 40 603ms
+     → expected undefined to deeply equal { xp: +0, reason: 'no_verified_visit' }
+   ↓ typed stats authority against Auth and Firestore > route with no verified visit earns no award, route, Madrugador or event (CO1-T860)
+   ↓ typed stats authority against Auth and Firestore > R12 a route with one paying visit pays nothing; with two it pays 100, completes and writes its row
+   ↓ typed stats authority against Auth and Firestore > real Dart typed producer, HTTP and Firebase survive a lost acknowledgement
+   ↓ typed stats authority against Auth and Firestore > activation rejects arbitrary owner summary/timeline/diary writes and owner flag bypass
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/stats-authority.test.ts > typed stats authority against Auth and Firestore > R3 a review without a verified visit publishes and pays 0; with one it pays 40
+AssertionError: expected undefined to deeply equal { xp: +0, reason: 'no_verified_visit' }
+
+[32m- Expected:[39m 
+{
+  "reason": "no_verified_visit",
+  "xp": 0,
+}
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/stats-authority.test.ts:237:28
+    235|     await db.doc(`users/${uid}/stats/summary`).set({...emptyStats(),re…
+    236|     const unpaid=await reviews.writeReview({uid,displayName:'Fixture',…
+    237|     expect(unpaid.payment).toEqual({xp:0,reason:'no_verified_visit'});
+       |                            ^
+    238|     expect((await db.doc(`reviews/${unpaid.id}`).get()).data()).toMatc…
+    239|     expect(await summary()).toMatchObject({xp:0,reviewsWritten:3});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 skipped (21)
+   Start at  03:26:32
+   Duration  1.29s (transform 201ms, setup 10ms, collect 70ms, tests 1.06s, environment 0ms, prepare 44ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/stats-authority.test.ts -t 'R3 '" exited with code 1
