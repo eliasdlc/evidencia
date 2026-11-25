@@ -1,0 +1,68 @@
+# R3 at a29aac9, with R3.patch applied
+# $ pnpm exec vitest run test/events-active.test.ts -t "un evento sin publicar"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p19-hoy-carnaval
+
+ ❯ test/events-active.test.ts (10 tests | 1 failed | 9 skipped) 125ms
+   ↓ ventana del evento > empieza 7 dias antes del inicio, hora de Santo Domingo
+   ↓ ventana del evento > incluye todo el ultimo dia y se cierra a la medianoche local
+   ↓ ventana del evento > con el evento en curso lo devuelve completo
+   × lo que nunca sale > un evento sin publicar, aunque su ventana contenga ahora 124ms
+     → expected { id: 'borrador', …(9) } to be null
+   ↓ lo que nunca sale > sin eventos devuelve event null con 200
+   ↓ lo que nunca sale > un documento mal formado se ignora y no rompe la lectura
+   ↓ forma de la respuesta > se puede cachear un rato y la lista de puntos puede estar vacia
+   ↓ forma de la respuesta > una ruta que ya no existe sale como null para que la app esconda el boton
+   ↓ forma de la respuesta > una imagen fuera del Storage del proyecto sale como null
+   ↓ forma de la respuesta > con dos ventanas solapadas gana la que empezo antes
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/events-active.test.ts > lo que nunca sale > un evento sin publicar, aunque su ventana contenga ahora
+AssertionError: expected { id: 'borrador', …(9) } to be null
+
+[32m- Expected:[39m 
+null
+
+[31m+ Received:[39m 
+{
+  "description": "Linea uno.
+Linea dos.",
+  "endDate": "2030-03-12",
+  "id": "borrador",
+  "imageUrl": "https://firebasestorage.googleapis.com/v0/b/demo-conocerd.firebasestorage.app/o/evento.jpg?alt=media",
+  "points": [
+    {
+      "lat": 19.2,
+      "lng": -70.5,
+      "name": "Punto A",
+    },
+    {
+      "lat": 19.3,
+      "lng": -70.4,
+      "name": "Punto B",
+    },
+  ],
+  "routeId": "ruta-1",
+  "startDate": "2030-03-10",
+  "title": "Evento de prueba",
+  "updatedAt": "2030-01-01T00:00:00.000Z",
+  "visibleFrom": "2030-03-03",
+}
+
+ ❯ test/events-active.test.ts:105:64
+    103|   it('un evento sin publicar, aunque su ventana contenga ahora', async…
+    104|     events = [{ id: 'borrador', data: { ...base, published: false } }];
+    105|     expect((await ask('2030-03-11T15:00:00.000Z')).body.event).toBeNul…
+       |                                                                ^
+    106|   });
+    107| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 skipped (10)
+   Start at  22:54:28
+   Duration  355ms (transform 86ms, setup 12ms, collect 31ms, tests 125ms, environment 0ms, prepare 56ms)
+
