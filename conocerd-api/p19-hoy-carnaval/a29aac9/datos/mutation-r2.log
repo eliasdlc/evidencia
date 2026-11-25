@@ -1,0 +1,49 @@
+# R2 at a29aac9, with R2.patch applied
+# $ pnpm exec vitest run test/events-active.test.ts -t "sin eventos devuelve event null"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p19-hoy-carnaval
+
+ ❯ test/events-active.test.ts (10 tests | 1 failed | 9 skipped) 109ms
+   ↓ ventana del evento > empieza 7 dias antes del inicio, hora de Santo Domingo
+   ↓ ventana del evento > incluye todo el ultimo dia y se cierra a la medianoche local
+   ↓ ventana del evento > con el evento en curso lo devuelve completo
+   ↓ lo que nunca sale > un evento sin publicar, aunque su ventana contenga ahora
+   × lo que nunca sale > sin eventos devuelve event null con 200 109ms
+     → expected { event: { id: '' } } to deeply equal { event: null }
+   ↓ lo que nunca sale > un documento mal formado se ignora y no rompe la lectura
+   ↓ forma de la respuesta > se puede cachear un rato y la lista de puntos puede estar vacia
+   ↓ forma de la respuesta > una ruta que ya no existe sale como null para que la app esconda el boton
+   ↓ forma de la respuesta > una imagen fuera del Storage del proyecto sale como null
+   ↓ forma de la respuesta > con dos ventanas solapadas gana la que empezo antes
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/events-active.test.ts > lo que nunca sale > sin eventos devuelve event null con 200
+AssertionError: expected { event: { id: '' } } to deeply equal { event: null }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "event": null,[39m
+[31m+   "event": {[39m
+[31m+     "id": "",[39m
+[31m+   },[39m
+[2m  }[22m
+
+ ❯ test/events-active.test.ts:112:18
+    110|     const { response, body } = await ask('2030-03-11T15:00:00.000Z');
+    111|     expect(response.status).toBe(200);
+    112|     expect(body).toEqual({ event: null });
+       |                  ^
+    113|   });
+    114| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 skipped (10)
+   Start at  22:54:23
+   Duration  289ms (transform 72ms, setup 10ms, collect 21ms, tests 109ms, environment 0ms, prepare 51ms)
+
