@@ -1,0 +1,166 @@
+# R7 at 6109423, with src/lib/visits.ts back at 44a03a2
+# $ pnpm exec vitest run src/lib/visits.test.ts -t 'R7 '
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p16-visita-verificada
+
+ ❯ src/lib/visits.test.ts (83 tests | 4 failed | 78 skipped) 10ms
+   ↓ contrato T88 > valida dos muestras dentro del radio separadas por tres minutos
+   ↓ contrato T88 > rechaza cuerpos con XP, uid, radios y destino arbitrario en el payload
+   ↓ contrato T88 > rechaza una tanda a diez minutos, y muestras futuras y desordenadas
+   ↓ contrato T88 > rechaza movimiento a 15km/h y dwell menor de tres minutos
+   ↓ contrato T88 > no ignora un teletransporte fuera del radio entre dos muestras válidas
+   ↓ contrato T88 > rechaza un sitio lejano, ausente o con coordenadas corruptas
+   ↓ contrato T88 > cuenta la visita en la llegada cuando el pin está lejos, como la caseta de un pico
+   ↓ contrato T88 > ignora una llegada corrupta o con las claves cortas
+   ↓ radio de visita por tipo > playa: valida justo dentro de 500 m y rechaza justo fuera
+   ↓ radio de visita por tipo > beach: valida justo dentro de 500 m y rechaza justo fuera
+   ↓ radio de visita por tipo > Playa: valida justo dentro de 500 m y rechaza justo fuera
+   ↓ radio de visita por tipo > parque: valida justo dentro de 1000 m y rechaza justo fuera
+   ↓ radio de visita por tipo > park: valida justo dentro de 1000 m y rechaza justo fuera
+   ↓ radio de visita por tipo > parque_nacional: valida justo dentro de 1000 m y rechaza justo fuera
+   ↓ radio de visita por tipo > museo: valida justo dentro de 150 m y rechaza justo fuera
+   ↓ radio de visita por tipo > lee el tipo de category y de categories, no solo de placeType
+   ↓ radio de visita por tipo > con varios tipos gana el primero en placeType, category, categories
+   ↓ radio de visita por tipo > un tipo con nombre de propiedad de Object no cambia el radio
+   ↓ radio de visita por tipo > el radio ampliado mantiene la regla de velocidad cerca del pin, la permanencia y las muestras
+   ↓ ruta de llegada dentro del radio ampliado > un fix rápido entre el radio base y el del tipo no rechaza la visita que luego se queda
+   ↓ ruta de llegada dentro del radio ampliado > un fix rápido cerca del pin sigue rechazando, de cualquier tipo
+   ↓ ruta de llegada dentro del radio ampliado > un fix rápido cerca de un acceso, lejos del pin, rechaza igual
+   ↓ ruta de llegada dentro del radio ampliado > la permanencia no puede empezar en un fix rápido
+   ↓ ruta de llegada dentro del radio ampliado > un fix rápido en medio de la permanencia la reinicia
+   ↓ ruta de llegada dentro del radio ampliado > fixes rápidos continuos dentro del radio durante tres minutos no suman permanencia
+   ↓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.5 desde catálogo
+   ↓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.51 desde catálogo
+   ↓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.52 desde catálogo
+   ↓ llegadas de catálogo y permanencia por target > autoriza pin o llegada pública 18.53 desde catálogo
+   ↓ llegadas de catálogo y permanencia por target > no requiere snapshot o modo del cliente, y rechaza esos campos
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: no array
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: null
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: more than six
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: duplicate ID
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty ID
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: path ID
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: whitespace ID
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: unknown type
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty name
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: wrong name
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty English
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: unknown locale
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: empty modes
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: duplicate modes
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: unknown mode
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: short coordinate keys
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: NaN
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: Infinity
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: outside RD
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: extra fields
+   ↓ llegadas de catálogo y permanencia por target > no amplía autoridad con lista corrupta: mixed valid and corrupt
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {}
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"defaultArrivalPointId":"missing"}
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"defaultArrivalPointId":"trail"}
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"defaultArrivalPointId":{"id":"north"}}
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"arrivalPoint":{"latitude":18.51,"longitude":-69.9}}
+   ↓ llegadas de catálogo y permanencia por target > default o proyección incoherente no concede llegada: {"arrivalPoint":{"lat":18.5,"lng":-69.9}}
+   ↓ llegadas de catálogo y permanencia por target > default huérfano impide usar la proyección legacy como escape
+   ↓ llegadas de catálogo y permanencia por target > acepta default únicamente peatonal cuando toda la lista es peatonal
+   ↓ llegadas de catálogo y permanencia por target > deduplica coordenadas compartidas sin mezclar permanencia de otros targets
+   ↓ llegadas de catálogo y permanencia por target > dos llegadas distintas no suman tres minutos de permanencia
+   ↓ llegadas de catálogo y permanencia por target > salir de un target rompe su intervalo aunque luego vuelva
+   ↓ llegadas de catálogo y permanencia por target > un intervalo continuo completo en una llegada basta aunque haya muestras exteriores después
+   ↓ llegadas de catálogo y permanencia por target > un destino con varios accesos usa el radio del tipo en cada uno
+   ↓ llegadas de catálogo y permanencia por target > en una playa con accesos, dos accesos distintos no suman permanencia
+   ↓ antigüedad de las muestras (T778) > valida una estancia de 30 minutos con muestras continuas hasta ahora
+   ↓ antigüedad de las muestras (T778) > valida la estancia aunque termine un poco antes de recibirla
+   ↓ antigüedad de las muestras (T778) > sigue rechazando una tanda vieja: la llegada misma tiene diez minutos o más
+   ↓ antigüedad de las muestras (T778) > rechaza una estancia vieja con una sola muestra fresca pegada al final
+   ↓ antigüedad de las muestras (T778) > trata un hueco de exactamente diez minutos como antiguo y uno menor como continuo
+   ↓ antigüedad de las muestras (T778) > no vuelve válida una estancia larga con muestras futuras ni desordenadas
+   ↓ antigüedad de las muestras (T778) > valida con la muestra más reciente a un milisegundo de ser antigua
+   ↓ antigüedad de las muestras (T778) > no deja reclamar una estancia vieja rellenando la cadena cada menos de diez minutos
+   ↓ antigüedad de las muestras (T778) > acepta una cadena de exactamente dos horas y rechaza la que pasa por un milisegundo
+   ↓ antigüedad de las muestras (T778) > un lote desordenado no se lee como antiguo: gana sample_order
+   ↓ antigüedad de las muestras (T778) > en una estancia larga el movimiento rápido y el teletransporte siguen mandando
+   ↓ antigüedad de las muestras (T778) > documenta que velocidad 0 o menos de 15 km/h dentro del radio valida la permanencia
+   × R7 señales del GPS por muestra > R7 una muestra simulada nunca verifica por GPS, aunque el resto sea perfecto 7ms
+     → expected 'validated' to be 'mock_location' // Object.is equality
+   ✓ R7 señales del GPS por muestra > R7 una muestra simulada que la geometría rechaza sigue rechazada, no pendiente 0ms
+   × R7 señales del GPS por muestra > R7 un salto solo pasa si cabe en la precisión de las dos muestras 1ms
+     → expected 'teleport' to be 'validated' // Object.is equality
+   × R7 señales del GPS por muestra > R7 una muestra imprecisa no reinicia la permanencia; una precisa fuera del radio sí 1ms
+     → expected 'insufficient_dwell' to be 'validated' // Object.is equality
+   × R7 señales del GPS por muestra > R7 una visita que solo completan fixes imprecisos queda dudosa, no verificada 0ms
+     → expected 'validated' to be 'low_accuracy' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/visits.test.ts > R7 señales del GPS por muestra > R7 una muestra simulada nunca verifica por GPS, aunque el resto sea perfecto
+AssertionError: expected 'validated' to be 'mock_location' // Object.is equality
+
+Expected: [32m"mock_location"[39m
+Received: [31m"validated"[39m
+
+ ❯ src/lib/visits.test.ts:340:53
+    338|   it('R7 una muestra simulada nunca verifica por GPS, aunque el resto …
+    339|     const mocked = body(); mocked.samples[1]!.isMocked = true;
+    340|     expect(validateVisit(mocked, destination, now)).toBe('mock_locatio…
+       |                                                     ^
+    341|     const honest = body(); honest.samples[1]!.isMocked = false;
+    342|     expect(validateVisit(honest, destination, now)).toBe('validated');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/lib/visits.test.ts > R7 señales del GPS por muestra > R7 un salto solo pasa si cabe en la precisión de las dos muestras
+AssertionError: expected 'teleport' to be 'validated' // Object.is equality
+
+Expected: [32m"validated"[39m
+Received: [31m"teleport"[39m
+
+ ❯ src/lib/visits.test.ts:359:49
+    357|     // 300 m en 5 s son 216 km/h: crudo es teletransporte; con 100 m d…
+    358|     expect(validateVisit(jump(), park, now)).toBe('teleport');
+    359|     expect(validateVisit(jump(100), park, now)).toBe('validated');
+       |                                                 ^
+    360|     expect(validateVisit(jump(10), park, now)).toBe('teleport');
+    361|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/lib/visits.test.ts > R7 señales del GPS por muestra > R7 una muestra imprecisa no reinicia la permanencia; una precisa fuera del radio sí
+AssertionError: expected 'insufficient_dwell' to be 'validated' // Object.is equality
+
+Expected: [32m"validated"[39m
+Received: [31m"insufficient_dwell"[39m
+
+ ❯ src/lib/visits.test.ts:365:57
+    363|     const chain = (accuracy: number) => withSamples([fix(0, now - 180_…
+    364|       fix(400, now - 90_000, {accuracy}), fix(0, now - 1, {accuracy: 5…
+    365|     expect(validateVisit(chain(500), destination, now)).toBe('validate…
+       |                                                         ^
+    366|     expect(validateVisit(chain(20), destination, now)).toBe('insuffici…
+    367|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/lib/visits.test.ts > R7 señales del GPS por muestra > R7 una visita que solo completan fixes imprecisos queda dudosa, no verificada
+AssertionError: expected 'validated' to be 'low_accuracy' // Object.is equality
+
+Expected: [32m"low_accuracy"[39m
+Received: [31m"validated"[39m
+
+ ❯ src/lib/visits.test.ts:370:53
+    368|   it('R7 una visita que solo completan fixes imprecisos queda dudosa, …
+    369|     const blurry = withSamples([fix(0, now - 180_001, {accuracy: 300})…
+    370|     expect(validateVisit(blurry, destination, now)).toBe('low_accuracy…
+       |                                                     ^
+    371|   });
+    372| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed | 78 skipped (83)
+   Start at  11:16:55
+   Duration  283ms (transform 52ms, setup 10ms, collect 108ms, tests 10ms, environment 0ms, prepare 48ms)
+
