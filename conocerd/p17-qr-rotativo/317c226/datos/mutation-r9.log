@@ -1,0 +1,43 @@
+# R9 at 317c226, with v2-R9.patch applied
+# $ flutter test --no-pub test/features/point_scan/point_scan_service_test.dart
+00:00 +0: loading /home/decruce/dev/wt/app/p17-qr-rotativo/test/features/point_scan/point_scan_service_test.dart
+00:00 +0: sending a scan posts the code and the chain with the ID token and App Check
+00:00 +1: sending a scan every send, retries included, carries a fresh limited-use token
+00:00 +2: sending a scan a vector code one step ahead or behind the scan time is sent
+00:00 +3: sending a scan a 403 app_check_rejected keeps the scan and retries with a new token
+00:00 +3 -1: sending a scan a 403 app_check_rejected keeps the scan and retries with a new token [E]
+  Expected: <Instance of 'PointScanQueued'>
+    Actual: <Instance of 'PointScanFailed'>
+     Which: is not an instance of 'PointScanQueued'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 194:9  main.<fn>.<fn>
+  
+00:00 +3 -1: sending a scan a code that is not a point code is never sent
+00:00 +4 -1: sending a scan a chain with a mocked sample is not sent as valid
+00:00 +5 -1: sending a scan a refusal that no signal can fix is shown, not queued
+00:00 +6 -1: a scan made without signal is queued with its scan time and sent on reconnect
+00:00 +7 -1: a scan made without signal 24 h + 1 s is dropped as Expired with a clear message, without sending
+00:00 +8 -1: a scan made without signal 23:59 old is still sent and its stamp is shown
+00:00 +9 -1: a scan made without signal the server answering expired drops the scan
+00:00 +10 -1: a scan made without signal stays queued on a 401
+00:00 +11 -1: a scan made without signal stays queued on a 503
+00:00 +12 -1: a scan made without signal is dropped when the server answers already_done
+00:00 +13 -1: a scan made without signal is dropped when the server answers code_changed
+00:00 +14 -1: a scan made without signal is dropped when the server answers not_here
+00:00 +15 -1: a scan made without signal only the traveler who made it sends it
+00:00 +16 -1: every result in the contract has its message accepted live and paid shows the XP, never a bare "cuenta"
+00:00 +17 -1: every result in the contract has its message accepted with no visit says only that the scan was recorded
+00:00 +18 -1: every result in the contract has its message already_done with a counted visit and no XP
+00:00 +19 -1: every result in the contract has its message code_changed
+00:00 +20 -1: every result in the contract has its message not_here names "este lugar" when the place is unknown
+00:00 +21 -1: every result in the contract has its message expired
+00:00 +22 -1: every result in the contract has its message a result this app does not know is not shown as good
+00:00 +23 -1: every result in the contract has its message a scan saved offline shows its real deadline, 24 h later
+00:00 +24 -1: every result in the contract has its message the clock label is the phone time of the deadline
+00:00 +25 -1: every result in the contract has its message unverified email and a plain failure
+00:00 +26 -1: Some tests failed.
+
+Failing tests:
+  /home/decruce/dev/wt/app/p17-qr-rotativo/test/features/point_scan/point_scan_service_test.dart: sending a scan a 403 app_check_rejected keeps the scan and retries with a new token
