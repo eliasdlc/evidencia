@@ -1,0 +1,36 @@
+# R1 at 968d7c5, with R1.patch applied
+# $ flutter test --no-pub test/features/destinations/foto_credito_test.dart --plain-name "DestinationModel: photoMeta"
+00:00 +0: loading /home/decruce/dev/wt/app/feat-credito-de-foto/test/features/destinations/foto_credito_test.dart
+00:00 +0: DestinationModel: photoMeta con autor guarda el crédito de esa foto, con su fuente
+00:00 +1: DestinationModel: photoMeta sin autor no hay crédito, aunque haya fuente
+00:00 +1 -1: DestinationModel: photoMeta sin autor no hay crédito, aunque haya fuente [E]
+  Expected: empty
+    Actual: {
+              'https://img.test/b.jpg': Instance of 'PhotoCredit',
+              'https://img.test/c.jpg': Instance of 'PhotoCredit'
+            }
+  
+  package:matcher                                         expect
+  package:flutter_test/src/widget_tester.dart 473:18      expect
+  test/features/destinations/foto_credito_test.dart 72:7  main.<fn>.<fn>
+  
+00:00 +1 -1: DestinationModel: photoMeta con autor y sin fuente, el crédito no trae enlace
+00:00 +2 -1: DestinationModel: photoMeta una fuente que no es web se descarta, el autor se queda
+00:00 +3 -1: DestinationModel: photoMeta ausente o malformado significa sin crédito, nunca lanza
+00:00 +3 -2: DestinationModel: photoMeta ausente o malformado significa sin crédito, nunca lanza [E]
+  Expected: {'https://img.test/b.jpg': <<Instance of 'PhotoCredit'>>}
+    Actual: {
+              'https://img.test/a.jpg': Instance of 'PhotoCredit',
+              'https://img.test/b.jpg': Instance of 'PhotoCredit'
+            }
+     Which: has different length and has extra map key 'https://img.test/a.jpg'
+  
+  package:matcher                                         expect
+  package:flutter_test/src/widget_tester.dart 473:18      expect
+  test/features/destinations/foto_credito_test.dart 94:7  main.<fn>.<fn>
+  
+00:00 +3 -2: Some tests failed.
+
+Failing tests:
+  /home/decruce/dev/wt/app/feat-credito-de-foto/test/features/destinations/foto_credito_test.dart: DestinationModel: photoMeta ausente o malformado significa sin crédito, nunca lanza
+  /home/decruce/dev/wt/app/feat-credito-de-foto/test/features/destinations/foto_credito_test.dart: DestinationModel: photoMeta sin autor no hay crédito, aunque haya fuente
