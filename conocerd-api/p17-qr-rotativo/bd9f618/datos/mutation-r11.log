@@ -1,0 +1,119 @@
+# R11 at bd9f618, with r11.patch applied
+# $ flock /tmp/claude-1000/conocerd-emulators.lock mise x node@26.8.1 -- firebase emulators:exec --only auth,firestore --project demo-conocerd "pnpm exec vitest run test/venue-points.test.ts src/lib/app-check.test.ts"
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: pnpm exec vitest run test/venue-points.test.ts src/lib/app-check.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p17-qr-rotativo
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > cada escaneo aceptado o ya hecho deja una línea por scanId; un reintento no deja otra
+[point-scan] stale_step aKtNbRqFlMWYys5s0FaX
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > una foto del QR no sirve cuando su paso vence, ni a otra cuenta desde otro sitio
+[point-scan] stale_step r9uFpWZHrOycdHYVMT8q
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > una foto del QR no sirve cuando su paso vence, ni a otra cuenta desde otro sitio
+[point-scan] outside_radius r9uFpWZHrOycdHYVMT8q
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > sin señal: se acepta hasta 24 h del paso firmado, después vence, y el reenvío devuelve lo mismo aun pasadas las 24 h
+[point-scan] expired nVNyGv7yHz9JwO3qZLde
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > rotar invalida los códigos viejos; revocar los apaga; reactivar rota otra vez
+[point-scan] bad_mac OMI9uyaQ49yjobCymXGh
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > rotar invalida los códigos viejos; revocar los apaga; reactivar rota otra vez
+[point-scan] revoked OMI9uyaQ49yjobCymXGh
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > rotar invalida los códigos viejos; revocar los apaga; reactivar rota otra vez
+[point-scan] bad_mac OMI9uyaQ49yjobCymXGh
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > quitar un operador rota el secreto que se llevó; añadir uno no
+[point-scan] bad_mac CptO5F1T4n9kLBZMOHDs
+
+stdout | test/venue-points.test.ts > puntos con QR que rota contra el emulador > la ruta del escaneo exige App Check y correo verificado
+[point-scan] expired K4kRNxhRvYK7oFfcaxOT
+
+ ❯ test/venue-points.test.ts (12 tests | 1 failed) 4713ms
+   ✓ puntos con QR que rota contra el emulador > solo el equipo crea un punto, y la respuesta no trae el secreto  590ms
+   ✓ puntos con QR que rota contra el emulador > el secreto solo llega al operador verificado o al equipo, sin caché y con bitácora 142ms
+   ✓ puntos con QR que rota contra el emulador > acepta el escaneo una vez por persona y punto; el segundo dice ya lo hiciste 100ms
+   ✓ puntos con QR que rota contra el emulador > un escaneo guardado que llega antes de 10 min del paso firmado no es sin señal 68ms
+   ✓ puntos con QR que rota contra el emulador > cada escaneo aceptado o ya hecho deja una línea por scanId; un reintento no deja otra 136ms
+   ✓ puntos con QR que rota contra el emulador > dos escaneos simultáneos de la misma persona crean un solo registro  2762ms
+   ✓ puntos con QR que rota contra el emulador > una foto del QR no sirve cuando su paso vence, ni a otra cuenta desde otro sitio 86ms
+   ✓ puntos con QR que rota contra el emulador > sin señal: se acepta hasta 24 h del paso firmado, después vence, y el reenvío devuelve lo mismo aun pasadas las 24 h 104ms
+   ✓ puntos con QR que rota contra el emulador > rotar invalida los códigos viejos; revocar los apaga; reactivar rota otra vez 149ms
+   ✓ puntos con QR que rota contra el emulador > quitar un operador rota el secreto que se llevó; añadir uno no 73ms
+   ✓ puntos con QR que rota contra el emulador > la ruta del escaneo exige App Check y correo verificado 60ms
+   × puntos con QR que rota contra el emulador > el escaneo gasta su token de App Check: la misma petición reenviada se rechaza 59ms
+     → expected 200 to be 403 // Object.is equality
+ ❯ src/lib/app-check.test.ts (4 tests | 1 failed) 10ms
+   ✓ appCheckToken > lee el token pelado, sin esquema delante 1ms
+   ✓ appCheckToken > no confunde una cabecera vacía con un token 0ms
+   × attest con consume > pide a Firebase que gaste el token y acepta solo el primer uso 7ms
+     → expected { estado: 'valido', appId: 'app' } to deeply equal { estado: 'reusado' }
+   ✓ attest con consume > sin consume verifica como antes, sin gastar el token 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/venue-points.test.ts > puntos con QR que rota contra el emulador > el escaneo gasta su token de App Check: la misma petición reenviada se rechaza
+AssertionError: expected 200 to be 403 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 403[39m
+[31m+ 200[39m
+
+ ❯ test/venue-points.test.ts:459:29
+    457|     expect(await first.json()).toMatchObject({ result: 'accepted' });
+    458|     const replayed = await scanRoute.POST(request('POST', '/qr/points/…
+    459|     expect(replayed.status).toBe(403);
+       |                             ^
+    460|     expect(await replayed.json()).toMatchObject({ error: 'app_check_re…
+    461|     // Las demás rutas no gastan el token.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/app-check.test.ts > attest con consume > pide a Firebase que gaste el token y acepta solo el primer uso
+AssertionError: expected { estado: 'valido', appId: 'app' } to deeply equal { estado: 'reusado' }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "estado": "reusado",[39m
+[31m+   "appId": "app",[39m
+[31m+   "estado": "valido",[39m
+[2m  }[22m
+
+ ❯ src/lib/app-check.test.ts:35:58
+     33| 
+     34|     verifyToken.mockResolvedValueOnce({ appId: 'app', alreadyConsumed:…
+     35|     expect(await attest(withToken(), { consume: true })).toEqual({ est…
+       |                                                          ^
+     36|   });
+     37| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 14 passed (16)
+   Start at  12:34:09
+   Duration  5.13s (transform 153ms, setup 11ms, collect 87ms, tests 4.72s, environment 0ms, prepare 92ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/venue-points.test.ts src/lib/app-check.test.ts" exited with code 1
