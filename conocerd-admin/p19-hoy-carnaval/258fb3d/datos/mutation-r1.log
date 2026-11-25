@@ -1,0 +1,28 @@
+# R1 at 258fb3d, with r1.patch applied
+# $ pnpm exec vitest run src/eventos/evento.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/admin/p19-hoy-carnaval
+
+ ❯ src/eventos/evento.test.ts (19 tests | 1 failed) 32ms
+     × imagen fuera del bucket del proyecto, y no cadena 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/eventos/evento.test.ts > R1: rechaza cada campo inválido > imagen fuera del bucket del proyecto, y no cadena
+TypeError: .toMatch() expects to receive a string, but got undefined
+ ❯ src/eventos/evento.test.ts:64:74
+     62|
+     63|   it('imagen fuera del bucket del proyecto, y no cadena', () => {
+     64|     expect(porQueFalla({ imageUrl: 'https://ejemplo.com/foto.jpg' })[0…
+       |                                                                          ^
+     65|     expect(porQueFalla({ imageUrl: 'javascript:alert(1)' })[0]).toMatc…
+     66|     expect(porQueFalla({ imageUrl: 7 })[0]).toMatch(/^imageUrl:/);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 passed (19)
+   Start at  00:19:31
+   Duration  620ms (transform 101ms, setup 0ms, import 210ms, tests 32ms, environment 0ms)
+
