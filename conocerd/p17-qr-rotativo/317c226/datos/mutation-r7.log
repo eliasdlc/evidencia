@@ -1,0 +1,54 @@
+# R7 at 317c226, with v2-R7.patch applied
+# $ flutter test --no-pub test/features/point_scan/point_code_test.dart
+00:00 +0: loading /home/decruce/dev/wt/app/p17-qr-rotativo/test/features/point_scan/point_code_test.dart
+00:00 +0: the local check reads the contract vectors accepts CRDV1.PuntoCarnavalVega001.60000000.V-8XkafJy06_FfPOkHeNSQ
+00:00 +1: the local check reads the contract vectors accepts CRDV1.PuntoCarnavalVega001.60000001.aYXsA4Lg7djpKOU6gl1tmQ
+00:00 +2: the local check reads the contract vectors accepts CRDV1.PuntoCarnavalVega001.0.Ag3QUWYSw_o-Z6f8H_zKlg
+00:00 +3: the local check reads the contract vectors accepts CRDV1.AbCdEfGhIjKlMnOpQrSt.59000000.QRjertRAF05RvHcRF3-7sA
+00:00 +4: the local check reads the contract vectors rejects a leading zero in the step
+00:00 +5: the local check reads the contract vectors rejects prefix CRDV2
+00:00 +6: the local check reads the contract vectors rejects a pointId that is not 20 chars
+00:00 +7: the local check reads the contract vectors rejects a 21 char mac
+00:00 +8: the local check reads the contract vectors rejects a negative step
+00:00 +9: the local check reads the contract vectors rejects the code inside a URL
+00:00 +10: the local check reads the contract vectors rejects a trailing newline
+00:00 +11: the local check reads the contract vectors rejects a benefit QR (CRD1)
+00:00 +12: the local check reads the contract vectors rejects an empty text
+00:00 +13: the local check reads the contract vectors rejects a null read
+00:00 +14: the local check reads the contract vectors rejects a code over 200 chars
+00:00 +15: payload building a live scan omits scannedAt and carries the contract fields
+00:00 +16: payload building a queued scan keeps scannedAt and survives a JSON round trip
+00:00 +17: payload building a mocked flag travels as it is, never hidden
+00:00 +18: payload building every sample carries accuracy and isMocked, never absent
+00:00 +19: payload building a sample with no usable accuracy is not sent
+00:00 +20: payload building a speed that is not a usable number is left out of the body
+00:00 +21: payload building the chain has no repeated times and keeps samples 5 s apart
+00:00 +21 -1: payload building the chain has no repeated times and keeps samples 5 s apart [E]
+  Expected: [10000, 15000, 20000]
+    Actual: MappedListIterable<GpsSample, int>:[10000, 10500, 14999, 15000, 18000, 20000]
+     Which: at location [1] is <10500> instead of <15000>
+  
+  package:matcher                                      expect
+  package:flutter_test/src/widget_tester.dart 473:18   expect
+  test/features/point_scan/point_code_test.dart 187:7  main.<fn>.<fn>
+  
+00:00 +21 -1: payload building the chain keeps the newest 32
+00:00 +22 -1: payload building fixes every 3 s with the 2 s gap of before still span 5 s
+00:00 +23 -1: payload building two fixes 3 s apart are not enough and the screen keeps waiting
+00:00 +24 -1: payload building inaccurate fixes do not take the place of accurate ones
+00:00 +25 -1: payload building only inaccurate fixes are still sent, the server decides by radius
+00:00 +26 -1: payload building a mocked sample never makes a chain enough
+00:00 +27 -1: payload building the chain drops a sample with no valid position
+00:00 +28 -1: the scan response (offline contract, section 1) expired is its own result, not a code that changed
+00:00 +29 -1: the scan response (offline contract, section 1) accepted carries stepAt, offline, replayed and the visit
+00:00 +30 -1: the scan response (offline contract, section 1) parses the outcome paid on accepted and already_done
+00:00 +31 -1: the scan response (offline contract, section 1) parses the outcome counted on accepted and already_done
+00:00 +32 -1: the scan response (offline contract, section 1) parses the outcome stamp on accepted and already_done
+00:00 +33 -1: the scan response (offline contract, section 1) parses the outcome none on accepted and already_done
+00:00 +34 -1: the scan response (offline contract, section 1) a response with no visit parses, with the visit null
+00:00 +35 -1: the scan response (offline contract, section 1) an unknown outcome is kept as unknown, never as paid
+00:00 +36 -1: the scan response (offline contract, section 1) a visit that is not an object is read as no visit
+00:00 +37 -1: Some tests failed.
+
+Failing tests:
+  /home/decruce/dev/wt/app/p17-qr-rotativo/test/features/point_scan/point_code_test.dart: payload building the chain has no repeated times and keeps samples 5 s apart
