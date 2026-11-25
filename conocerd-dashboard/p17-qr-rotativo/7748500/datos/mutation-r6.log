@@ -1,0 +1,108 @@
+# R6 at 7748500, with r6.patch applied
+# $ pnpm exec vitest run src/features/punto/provision.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/p17-qr-rotativo
+
+ ❯ src/features/punto/provision.test.ts (14 tests | 4 failed) 46ms
+   ❯ after provisioning the point works without signal (11)
+     × R6: an equal listed secretVersion provisions nothing and keeps the stored secret 6ms
+     × R7: a same refresh with a new serverTime takes the offset again, so a phone clock that moved is corrected 2ms
+     × R7: a list without serverTime keeps the stored offset, as before the API sent it 1ms
+     × R6: a lower listed secretVersion is not a rotation either 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/punto/provision.test.ts > after provisioning the point works without signal > R6: an equal listed secretVersion provisions nothing and keeps the stored secret
+AssertionError: expected { kind: 'offline' } to deeply equal { kind: 'same', point: { …(5) } }
+
+- Expected
++ Received
+
+  {
+-   "kind": "same",
+-   "point": {
+-     "key": CryptoKey {},
+-     "name": "Parque Duarte",
+-     "offsetMs": 0,
+-     "pointId": "PuntoCarnavalVega001",
+-     "secretVersion": 1,
+-   },
++   "kind": "offline",
+  }
+
+ ❯ src/features/punto/provision.test.ts:107:20
+    105|     const same = harness(listed(1));
+    106|     const result = await refreshStored(same.client, store, stored, () …
+    107|     expect(result).toEqual({ kind: 'same', point: stored });
+       |                    ^
+    108|     expect(same.calls.map((call) => call.method)).toEqual(['GET']);
+    109|     expect((await store.load())?.offsetMs).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/features/punto/provision.test.ts > after provisioning the point works without signal > R7: a same refresh with a new serverTime takes the offset again, so a phone clock that moved is corrected
+AssertionError: expected 'offline' to be 'same' // Object.is equality
+
+Expected: "same"
+Received: "offline"
+
+ ❯ src/features/punto/provision.test.ts:119:25
+    117|     const same = harness(json(200, { points: [{ id: POINT_ID, name: 'P…
+    118|     const result = await refreshStored(same.client, store, stored, () …
+    119|     expect(result.kind).toBe('same');
+       |                         ^
+    120|     expect(same.calls.map((call) => call.method)).toEqual(['GET']);
+    121|     expect(result.kind === 'same' && result.point).toMatchObject({ poi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/features/punto/provision.test.ts > after provisioning the point works without signal > R7: a list without serverTime keeps the stored offset, as before the API sent it
+AssertionError: expected { kind: 'offline' } to deeply equal { kind: 'same', point: { …(5) } }
+
+- Expected
++ Received
+
+  {
+-   "kind": "same",
+-   "point": {
+-     "key": CryptoKey {},
+-     "name": "Parque Duarte",
+-     "offsetMs": 40000,
+-     "pointId": "PuntoCarnavalVega001",
+-     "secretVersion": 1,
+-   },
++   "kind": "offline",
+  }
+
+ ❯ src/features/punto/provision.test.ts:130:90
+    128|     const stored = await provisionAndStore(first.client, store, POINT_…
+    129|     const same = harness(listed(1));
+    130|     expect(await refreshStored(same.client, store, stored, () => SERVE…
+       |                                                                                          ^
+    131|     expect((await store.load())?.offsetMs).toBe(40_000);
+    132|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/features/punto/provision.test.ts > after provisioning the point works without signal > R6: a lower listed secretVersion is not a rotation either
+AssertionError: expected 'offline' to be 'same' // Object.is equality
+
+Expected: "same"
+Received: "offline"
+
+ ❯ src/features/punto/provision.test.ts:139:69
+    137|     const stored = await provisionAndStore(first.client, store, POINT_…
+    138|     const lower = harness(listed(1));
+    139|     expect((await refreshStored(lower.client, store, stored)).kind).to…
+       |                                                                     ^
+    140|     expect(lower.calls).toHaveLength(1);
+    141|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 10 passed (14)
+   Start at  12:53:06
+   Duration  157ms (tests 69%, import 16%, transform 10%, worker 5%)
+
