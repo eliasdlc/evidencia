@@ -1,0 +1,120 @@
+# R1 at bd9f618, with r1.patch applied
+# $ pnpm exec vitest run src/lib/venue-points.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p17-qr-rotativo
+
+ ❯ src/lib/venue-points.test.ts (20 tests | 5 failed) 38ms
+   ✓ el código del punto > coincide con los vectores del contrato 4ms
+   ✓ el código del punto > deriva el secreto del punto de QR_SECRET, el id y la versión 1ms
+   ✓ el código del punto > solo lee la forma exacta 2ms
+   ✓ el paso del código > acepta el paso actual, el anterior y el siguiente, como margen de reloj 3ms
+   × el paso del código > rechaza una captura o foto cuyo paso ya venció 14ms
+     → expected 'accepted' to be 'stale_step' // Object.is equality
+   ✓ el paso del código > rechaza un paso del futuro más allá del margen 1ms
+   × la firma del punto > rechaza el código de un punto enviado como otro 1ms
+     → expected 'accepted' to be 'bad_mac' // Object.is equality
+   × la firma del punto > rechaza un carácter cambiado, otra versión del secreto, un punto revocado o desconocido 1ms
+     → expected 'accepted' to be 'bad_mac' // Object.is equality
+   ✓ el escaneo guardado sin señal > la hora firmada es el paso por 30 s 1ms
+   ✓ el escaneo guardado sin señal > no es sin señal a los 9:59 del paso firmado aunque mande scannedAt, y sí a los 10:01 1ms
+   ✓ el escaneo guardado sin señal > se acepta a las 23:59:59 del paso firmado y vence a las 24:00:01 1ms
+   × el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora 1ms
+     → expected 'accepted' to be 'stale_step' // Object.is equality
+   ✓ el escaneo guardado sin señal > una hora del escaneo en el futuro se rechaza 0ms
+   ✓ el escaneo guardado sin señal > un reloj del teléfono unos segundos adelantado no tumba un escaneo honesto 1ms
+   × el escaneo guardado sin señal > lo que sí acepta: una foto del código, 90 min después, con la hora de la foto y GPS de ese momento, sin señal 1ms
+     → expected 'accepted' to be 'stale_step' // Object.is equality
+   ✓ la cadena de GPS > pide al menos 2 muestras distintas dentro del radio cerca de la hora del escaneo 1ms
+   ✓ la cadena de GPS > usa el radio de las visitas: 150 m sin tipo, 500 m en una playa 0ms
+   ✓ la cadena de GPS > rechaza una muestra simulada o posterior a la llegada 0ms
+   ✓ la cadena de GPS > no cuenta una muestra débil: sin isMocked, sin precisión o con una precisión mayor que el radio 0ms
+   ✓ la cadena de GPS > pide muestras separadas por al menos 5 s 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/venue-points.test.ts > el paso del código > rechaza una captura o foto cuyo paso ya venció
+AssertionError: expected 'accepted' to be 'stale_step' // Object.is equality
+
+Expected: [32m"[7mstale_s[27mte[7mp[27m"[39m
+Received: [31m"[7maccep[27mte[7md[27m"[39m
+
+ ❯ src/lib/venue-points.test.ts:113:47
+    111| 
+    112|   it('rechaza una captura o foto cuyo paso ya venció', () => {
+    113|     expect(judge(codeAt(T - 2 * STEP_MS), T)).toBe('stale_step');
+       |                                               ^
+    114|     expect(judge(codeAt(T - 10 * MINUTE), T)).toBe('stale_step');
+    115|     expect(publicResultOf('stale_step')).toBe('code_changed');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/lib/venue-points.test.ts > la firma del punto > rechaza el código de un punto enviado como otro
+AssertionError: expected 'accepted' to be 'bad_mac' // Object.is equality
+
+Expected: [32m"bad_mac"[39m
+Received: [31m"accepted"[39m
+
+ ❯ src/lib/venue-points.test.ts:126:43
+    124|   it('rechaza el código de un punto enviado como otro', () => {
+    125|     const fromA = codeAt(T, A);
+    126|     expect(judge(fromA.replace(A, B), T)).toBe('bad_mac');
+       |                                           ^
+    127|     expect(judge(codeAt(T, B), T, {}, POINT)).toBe('accepted');
+    128|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/lib/venue-points.test.ts > la firma del punto > rechaza un carácter cambiado, otra versión del secreto, un punto revocado o desconocido
+AssertionError: expected 'accepted' to be 'bad_mac' // Object.is equality
+
+Expected: [32m"bad_mac"[39m
+Received: [31m"accepted"[39m
+
+ ❯ src/lib/venue-points.test.ts:132:76
+    130|   it('rechaza un carácter cambiado, otra versión del secreto, un punto…
+    131|     const code = codeAt(T);
+    132|     expect(judge(code.slice(0, -1) + (code.endsWith('A') ? 'B' : 'A'),…
+       |                                                                            ^
+    133|     expect(judge(code, T, {}, { ...POINT, secretVersion: 2 })).toBe('b…
+    134|     expect(judge(codeAt(T, A, 2), T, {}, { ...POINT, secretVersion: 2 …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/lib/venue-points.test.ts > el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora
+AssertionError: expected 'accepted' to be 'stale_step' // Object.is equality
+
+Expected: [32m"[7mstale_s[27mte[7mp[27m"[39m
+Received: [31m"[7maccep[27mte[7md[27m"[39m
+
+ ❯ src/lib/venue-points.test.ts:171:100
+    169|     const code = codeAt(T);
+    170|     expect(judge(code, T + HOUR, { scannedAt: T - 5 * MINUTE, samples:…
+    171|     expect(judge(code, T + HOUR, { scannedAt: T + 10 * MINUTE, samples…
+       |                                                                                                    ^
+    172|   });
+    173| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/lib/venue-points.test.ts > el escaneo guardado sin señal > lo que sí acepta: una foto del código, 90 min después, con la hora de la foto y GPS de ese momento, sin señal
+AssertionError: expected 'accepted' to be 'stale_step' // Object.is equality
+
+Expected: [32m"[7mstale_s[27mte[7mp[27m"[39m
+Received: [31m"[7maccep[27mte[7md[27m"[39m
+
+ ❯ src/lib/venue-points.test.ts:193:49
+    191|     const sentAt = T + 90 * MINUTE;
+    192|     const claimed = { scannedAt: photoTakenAt + 10_000, samples: chain…
+    193|     expect(judge(codeAt(photoTakenAt), sentAt)).toBe('stale_step');
+       |                                                 ^
+    194|     expect(judge(codeAt(photoTakenAt), sentAt, claimed)).toBe('accepte…
+    195|     expect(offlineOf(codeAt(photoTakenAt), sentAt, claimed)).toBe(true…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 15 passed (20)
+   Start at  12:28:23
+   Duration  963ms (transform 225ms, setup 35ms, collect 336ms, tests 38ms, environment 0ms, prepare 214ms)
+
