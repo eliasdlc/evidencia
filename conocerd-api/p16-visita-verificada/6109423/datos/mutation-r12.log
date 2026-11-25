@@ -1,0 +1,256 @@
+# R12 at 6109423, with R12.patch applied
+# $ mise exec node@26.8.1 -- firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "pnpm exec vitest run src/lib/stats-policy.test.ts test/stats-authority.test.ts -t 'R12 '"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run src/lib/stats-policy.test.ts test/stats-authority.test.ts -t 'R12 '
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p16-visita-verificada
+
+ ❯ test/stats-authority.test.ts (23 tests | 3 failed | 19 skipped) 2084ms
+   ↓ typed stats authority against Auth and Firestore > the shared flag gates accounting without replacing disabled behavior
+   ↓ typed stats authority against Auth and Firestore > R13 the diary never seeds the visited places: a legacy summary keeps its history, adds eligible stamps with no bonus and starts places empty
+   ↓ typed stats authority against Auth and Firestore > R11 a review pays 40 XP once per user and place, ever: concurrent, deleted or rewritten
+   ↓ typed stats authority against Auth and Firestore > diary entries never count distinct destinations, even at the Coleccionista threshold
+   ↓ typed stats authority against Auth and Firestore > auto creation preserves an existing edited entry and never adds diary growth
+   ↓ typed stats authority against Auth and Firestore > strict action bodies reject UID, XP and caller category/province fields
+   ↓ typed stats authority against Auth and Firestore > R1 the same stop twice in a trip counts one visit, idempotently
+   ↓ typed stats authority against Auth and Firestore > R5 the trip is built from the ledger and ignores client hours, km and the simulated flag
+   ↓ typed stats authority against Auth and Firestore > R5 while visit signals are off a trip answers 503 and writes no receipt
+   ↓ typed stats authority against Auth and Firestore > a verified visit counts for one trip only
+   ↓ typed stats authority against Auth and Firestore > answers visits_pending while a reached stop has no ledger entry, then counts it
+   × typed stats authority against Auth and Firestore > R12 a place visited every day pays its visits once a month and never a trip on its own 958ms
+     → expected { …(5) } to match object { applied: false, payment: null, …(1) }
+(2 matching properties omitted from actual)
+   ✓ typed stats authority against Auth and Firestore > R12 two verified visits to known places that pay nothing still pay the trip 100 and write its row  595ms
+   × typed stats authority against Auth and Firestore > R12 a saved route the client wrote never earns multi-day credit; a curated route does 167ms
+     → expected { xp: 500, totalVisits: 2, …(9) } to match object { routesCompleted: 1, …(1) }
+(13 matching properties omitted from actual)
+   ↓ typed stats authority against Auth and Firestore > R6 every trip payment writes its own timeline row with its reason, a direct trip included
+   ↓ typed stats authority against Auth and Firestore > R4 Madrugador and Maratonista are granted from ledger hours and distances
+   ↓ typed stats authority against Auth and Firestore > R2 a place pays 100, 50, 25 then 10 a month, at most once a week, and starts again each month
+   ↓ typed stats authority against Auth and Firestore > R2 a sponsored place pays 200 a week from the server doc, whatever the client says
+   ↓ typed stats authority against Auth and Firestore > R3 a review without a verified visit publishes and pays 0; with one it pays 40
+   ↓ typed stats authority against Auth and Firestore > route with no verified visit earns no award, route, Madrugador or event (CO1-T860)
+   × typed stats authority against Auth and Firestore > R12 a route with one verified visit pays nothing; with two it pays 100, completes and writes its row 81ms
+     → expected { …(5) } to match object { applied: false, payment: null }
+(3 matching properties omitted from actual)
+   ↓ typed stats authority against Auth and Firestore > real Dart typed producer, HTTP and Firebase survive a lost acknowledgement
+   ↓ typed stats authority against Auth and Firestore > activation rejects arbitrary owner summary/timeline/diary writes and owner flag bypass
+ ❯ src/lib/stats-policy.test.ts (60 tests | 2 failed | 58 skipped) 11ms
+   ↓ existing app economy > matches real Dart AchievementEngine: 'primer-viaje'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'primer-viaje-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'rutero'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'rutero-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'explorador-playas'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'explorador-playas-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'montanero'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'montanero-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'gourmet-caribe'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'gourmet-caribe-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'culturista'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'culturista-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'adrenalina'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'adrenalina-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'trotamundos'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'trotamundos-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'maratonista'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'maratonista-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'madrugador'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'madrugador-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'primera-resena'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'primera-resena-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'critico-local'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'critico-local-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'fin-de-semana-perfecto'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'fin-de-semana-perfecto-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'coleccionista'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'coleccionista-permanent'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'first-review'
+   ↓ existing app economy > matches real Dart AchievementEngine: 'review-recreated'
+   ↓ existing app economy > preserves 'primer-viaje' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'rutero' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'explorador-playas' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'montanero' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'gourmet-caribe' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'culturista' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'adrenalina' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'trotamundos' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'maratonista' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'madrugador' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'primera-resena' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'critico-local' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'fin-de-semana-perfecto' threshold, reward and permanent timestamp
+   ↓ existing app economy > preserves 'coleccionista' threshold, reward and permanent timestamp
+   ↓ existing app economy > retains current review deletion/recreation awards without revoking stamps
+   ↓ existing app economy > pays 100, 50, 25 then 10 down the curve of a Santo Domingo month and starts it again each month
+   ↓ existing app economy > pays 0 for a visit less than seven days after the last paid one, even across a month
+   ↓ existing app economy > a sponsored place pays 200 instead of the curve, under the same weekly window
+   ↓ existing app economy > a paid visit counts once on every axis and an unpaid one moves nothing
+   × existing app economy > R12 gives no trip award, route, Madrugador, multi-day or km with fewer than two verified visits (CO1-T860) 7ms
+     → expected { xp: 150, routesCompleted: 1, …(3) } to deeply equal {}
+   ↓ existing app economy > counts Madrugador from the first verified visit hour in Santo Domingo, not the client start
+   ↓ existing app economy > adds Maratonista km between consecutive verified visits and keeps the ad hoc route exclusion
+   × existing app economy > R12 multi-day credit comes only from a curated route, never from a saved route the client wrote 2ms
+     → expected { xp: 150, routesCompleted: 1, …(3) } to match object { multiDayTripsCompleted: +0, …(1) }
+(3 matching properties omitted from actual)
+   ↓ existing app economy > manual diary unions have zero base XP and legacy seeding has zero bonus
+   ↓ existing app economy > preserves level 0 -> 1
+   ↓ existing app economy > preserves level 99 -> 1
+   ↓ existing app economy > preserves level 100 -> 2
+   ↓ existing app economy > preserves level 399 -> 2
+   ↓ existing app economy > preserves level 400 -> 3
+   ↓ existing app economy > preserves level 900 -> 4
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/stats-authority.test.ts > typed stats authority against Auth and Firestore > R12 a place visited every day pays its visits once a month and never a trip on its own
+AssertionError: expected { …(5) } to match object { applied: false, payment: null, …(1) }
+(2 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -1,8 +1,11 @@[39m
+[2m  {[22m
+[32m-   "applied": false,[39m
+[32m-   "payment": null,[39m
+[31m+   "applied": true,[39m
+[31m+   "payment": {[39m
+[31m+     "reason": "trip_completed",[39m
+[31m+     "xp": 150,[39m
+[31m+   },[39m
+[2m    "stops": [[22m
+[2m      {[22m
+[2m        "outcome": "counted",[22m
+[2m      },[22m
+[2m    ],[22m
+
+ ❯ test/stats-authority.test.ts:180:54
+    178|     const daily=async(at:number)=>{await visit(at);return complete(tri…
+    179|     for(const day of [0,1,2]) {
+    180|       expect((await daily(sep+day*86_400_000)).body).toMatchObject({ap…
+       |                                                      ^
+    181|     }
+    182|     // The first visit of the month paid 25; the next ones paid 0 and …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/stats-authority.test.ts > typed stats authority against Auth and Firestore > R12 a saved route the client wrote never earns multi-day credit; a curated route does
+AssertionError: expected { xp: 500, totalVisits: 2, …(9) } to match object { routesCompleted: 1, …(1) }
+(13 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "multiDayTripsCompleted": 0,[39m
+[31m+   "multiDayTripsCompleted": 1,[39m
+[2m    "routesCompleted": 1,[22m
+[2m  }[22m
+
+ ❯ test/stats-authority.test.ts:209:29
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/stats-authority.test.ts > typed stats authority against Auth and Firestore > R12 a route with one verified visit pays nothing; with two it pays 100, completes and writes its row
+AssertionError: expected { …(5) } to match object { applied: false, payment: null }
+(3 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "applied": false,[39m
+[32m-   "payment": null,[39m
+[31m+   "applied": true,[39m
+[31m+   "payment": {[39m
+[31m+     "reason": "trip_completed",[39m
+[31m+     "xp": 150,[39m
+[31m+   },[39m
+[2m  }[22m
+
+ ❯ test/stats-authority.test.ts:288:40
+    286|     await visit(late);
+    287|     const one=tripBody([{destinationId:place,arrivedAt:late},{destinat…
+    288|     expect((await complete(one)).body).toMatchObject({applied:false,pa…
+       |                                        ^
+    289|     expect(await summary()).toMatchObject({xp:100,totalVisits:1,routes…
+    290|     await visit(late+20*60_000,second);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/lib/stats-policy.test.ts > existing app economy > R12 gives no trip award, route, Madrugador, multi-day or km with fewer than two verified visits (CO1-T860)
+AssertionError: expected { xp: 150, routesCompleted: 1, …(3) } to deeply equal {}
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- {}[39m
+[31m+ {[39m
+[31m+   "earlyDepartures": 0,[39m
+[31m+   "kmTraveled": 0,[39m
+[31m+   "multiDayTripsCompleted": 1,[39m
+[31m+   "routesCompleted": 1,[39m
+[31m+   "xp": 150,[39m
+[31m+ }[39m
+
+ ❯ src/lib/stats-policy.test.ts:69:74
+     67|   it('R12 gives no trip award, route, Madrugador, multi-day or km with…
+     68|     expect(tripGrowth([], {dayNumber:2,kind:'curated'})).toEqual({});
+     69|     expect(tripGrowth([{at:nov,point:a}], {dayNumber:2,kind:'curated'}…
+       |                                                                          ^
+     70|     expect(tripGrowth([{at:nov,point:a},{at:nov+60_000,point:b}], {day…
+     71|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/lib/stats-policy.test.ts > existing app economy > R12 multi-day credit comes only from a curated route, never from a saved route the client wrote
+AssertionError: expected { xp: 150, routesCompleted: 1, …(3) } to match object { multiDayTripsCompleted: +0, …(1) }
+(3 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "multiDayTripsCompleted": 0,[39m
+[31m+   "multiDayTripsCompleted": 1,[39m
+[2m    "routesCompleted": 1,[22m
+[2m  }[22m
+
+ ❯ src/lib/stats-policy.test.ts:86:57
+     84|     const two = [{at:nov,point:a},{at:nov+60_000,point:b}];
+     85|     expect(tripGrowth(two, {dayNumber:2,kind:'curated'})).toMatchObjec…
+     86|     expect(tripGrowth(two, {dayNumber:5,kind:'saved'})).toMatchObject(…
+       |                                                         ^
+     87|     expect(tripGrowth(two, {dayNumber:1,kind:'adhoc'})).toMatchObject(…
+     88|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 1 passed | 77 skipped (83)
+   Start at  11:19:09
+   Duration  2.93s (transform 229ms, setup 11ms, collect 424ms, tests 2.10s, environment 0ms, prepare 87ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run src/lib/stats-policy.test.ts test/stats-authority.test.ts -t 'R12 '" exited with code 1
