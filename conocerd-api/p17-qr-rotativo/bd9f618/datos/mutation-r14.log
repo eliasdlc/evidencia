@@ -1,0 +1,55 @@
+# R14 at bd9f618, with r14.patch applied
+# $ pnpm exec vitest run src/lib/venue-points.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p17-qr-rotativo
+
+ ❯ src/lib/venue-points.test.ts (20 tests | 1 failed) 19ms
+   ✓ el código del punto > coincide con los vectores del contrato 2ms
+   ✓ el código del punto > deriva el secreto del punto de QR_SECRET, el id y la versión 0ms
+   ✓ el código del punto > solo lee la forma exacta 1ms
+   ✓ el paso del código > acepta el paso actual, el anterior y el siguiente, como margen de reloj 2ms
+   ✓ el paso del código > rechaza una captura o foto cuyo paso ya venció 0ms
+   ✓ el paso del código > rechaza un paso del futuro más allá del margen 0ms
+   ✓ la firma del punto > rechaza el código de un punto enviado como otro 0ms
+   ✓ la firma del punto > rechaza un carácter cambiado, otra versión del secreto, un punto revocado o desconocido 0ms
+   ✓ el escaneo guardado sin señal > la hora firmada es el paso por 30 s 0ms
+   × el escaneo guardado sin señal > no es sin señal a los 9:59 del paso firmado aunque mande scannedAt, y sí a los 10:01 8ms
+     → expected true to be false // Object.is equality
+   ✓ el escaneo guardado sin señal > se acepta a las 23:59:59 del paso firmado y vence a las 24:00:01 1ms
+   ✓ el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora 0ms
+   ✓ el escaneo guardado sin señal > una hora del escaneo en el futuro se rechaza 0ms
+   ✓ el escaneo guardado sin señal > un reloj del teléfono unos segundos adelantado no tumba un escaneo honesto 0ms
+   ✓ el escaneo guardado sin señal > lo que sí acepta: una foto del código, 90 min después, con la hora de la foto y GPS de ese momento, sin señal 0ms
+   ✓ la cadena de GPS > pide al menos 2 muestras distintas dentro del radio cerca de la hora del escaneo 1ms
+   ✓ la cadena de GPS > usa el radio de las visitas: 150 m sin tipo, 500 m en una playa 0ms
+   ✓ la cadena de GPS > rechaza una muestra simulada o posterior a la llegada 0ms
+   ✓ la cadena de GPS > no cuenta una muestra débil: sin isMocked, sin precisión o con una precisión mayor que el radio 0ms
+   ✓ la cadena de GPS > pide muestras separadas por al menos 5 s 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/venue-points.test.ts > el escaneo guardado sin señal > no es sin señal a los 9:59 del paso firmado aunque mande scannedAt, y sí a los 10:01
+AssertionError: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ src/lib/venue-points.test.ts:153:67
+    151|     const queued = { scannedAt: S, samples: chain(S) };
+    152|     expect(judge(codeAt(S), S + 9 * MINUTE + 59_000, queued)).toBe('ac…
+    153|     expect(offlineOf(codeAt(S), S + 9 * MINUTE + 59_000, queued)).toBe…
+       |                                                                   ^
+    154|     expect(judge(codeAt(S), S + 10 * MINUTE + 1_000, queued)).toBe('ac…
+    155|     expect(offlineOf(codeAt(S), S + 10 * MINUTE + 1_000, queued)).toBe…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  12:34:25
+   Duration  368ms (transform 78ms, setup 16ms, collect 126ms, tests 19ms, environment 0ms, prepare 68ms)
+
