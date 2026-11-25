@@ -1,0 +1,67 @@
+# R9 at 8245849, with r9.patch applied
+# $ pnpm exec vitest run src/lib/venue-points.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p17-qr-rotativo
+
+ ❯ src/lib/venue-points.test.ts (18 tests | 2 failed) 13ms
+   ✓ el código del punto > coincide con los vectores del contrato 1ms
+   ✓ el código del punto > deriva el secreto del punto de QR_SECRET, el id y la versión 0ms
+   ✓ el código del punto > solo lee la forma exacta 1ms
+   × el paso del código > acepta el paso actual, el anterior y el siguiente, como margen de reloj 6ms
+     → expected 'future_step' to be 'accepted' // Object.is equality
+   ✓ el paso del código > rechaza una captura o foto cuyo paso ya venció 0ms
+   ✓ el paso del código > rechaza un paso del futuro más allá del margen 0ms
+   ✓ la firma del punto > rechaza el código de un punto enviado como otro 0ms
+   ✓ la firma del punto > rechaza un carácter cambiado, otra versión del secreto, un punto revocado o desconocido 0ms
+   ✓ el escaneo guardado sin señal > se acepta 2 h después y se rechaza a las 2 h 1 min 0ms
+   ✓ el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora 0ms
+   ✓ el escaneo guardado sin señal > una hora del escaneo en el futuro se rechaza 0ms
+   × el escaneo guardado sin señal > un reloj del teléfono unos segundos adelantado no tumba un escaneo honesto 1ms
+     → expected 'future_claim' to be 'accepted' // Object.is equality
+   ✓ el escaneo guardado sin señal > lo que sí acepta: una foto del código, 90 min después, con la hora de la foto y GPS de ese momento 0ms
+   ✓ la cadena de GPS > pide al menos 2 muestras distintas dentro del radio cerca de la hora del escaneo 0ms
+   ✓ la cadena de GPS > usa el radio de las visitas: 150 m sin tipo, 500 m en una playa 0ms
+   ✓ la cadena de GPS > rechaza una muestra simulada o posterior a la llegada 0ms
+   ✓ la cadena de GPS > no cuenta una muestra débil: sin isMocked, sin precisión o con una precisión mayor que el radio 0ms
+   ✓ la cadena de GPS > pide muestras separadas por al menos 5 s 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/venue-points.test.ts > el paso del código > acepta el paso actual, el anterior y el siguiente, como margen de reloj
+AssertionError: expected 'future_step' to be 'accepted' // Object.is equality
+
+Expected: [32m"[7maccep[27mte[7md[27m"[39m
+Received: [31m"[7mfuture_s[27mte[7mp[27m"[39m
+
+ ❯ src/lib/venue-points.test.ts:95:43
+     93|     expect(judge(codeAt(T), T)).toBe('accepted');
+     94|     expect(judge(codeAt(T - STEP_MS), T)).toBe('accepted');
+     95|     expect(judge(codeAt(T + STEP_MS), T)).toBe('accepted');
+       |                                           ^
+     96|   });
+     97| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/venue-points.test.ts > el escaneo guardado sin señal > un reloj del teléfono unos segundos adelantado no tumba un escaneo honesto
+AssertionError: expected 'future_claim' to be 'accepted' // Object.is equality
+
+Expected: [32m"accepted"[39m
+Received: [31m"future_claim"[39m
+
+ ❯ src/lib/venue-points.test.ts:144:78
+    142| 
+    143|   it('un reloj del teléfono unos segundos adelantado no tumba un escan…
+    144|     expect(judge(codeAt(T), T, { scannedAt: T + 3_000, samples: chain(…
+       |                                                                              ^
+    145|     expect(judge(codeAt(T), T, { scannedAt: T + 6_000, samples: chain(…
+    146|     expect(judge(codeAt(T), T, { samples: [at(T - 10_000), at(T + 3_00…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 16 passed (18)
+   Start at  10:22:21
+   Duration  255ms (transform 51ms, setup 9ms, collect 80ms, tests 13ms, environment 0ms, prepare 40ms)
+
