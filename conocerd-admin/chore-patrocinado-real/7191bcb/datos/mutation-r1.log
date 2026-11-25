@@ -1,0 +1,39 @@
+# R1 at 7191bcb, with mutate-dryrun.patch applied
+# $ pnpm exec vitest run src/editorial/patrocinado.test.ts -t "el seco lista"
+
+ RUN  v4.1.10 /home/decruce/dev/wt/admin/chore-patrocinado-real
+
+ ❯ src/editorial/patrocinado.test.ts (5 tests | 1 failed | 4 skipped) 14ms
+     × el seco lista exactamente los patrocinados y no escribe nada 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/patrocinado.test.ts > patrocinado real > el seco lista exactamente los patrocinados y no escribe nada
+AssertionError: expected [ 'a', 'b', 'c' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "a",
++   "b",
++   "c",
++ ]
+
+ ❯ src/editorial/patrocinado.test.ts:43:24
+     41|       ['a', 'Uno', 'La Vega', true], ['b', 'Dos', 'Santiago', true], […
+     42|     ]);
+     43|     expect(escrituras).toEqual([]);
+       |                        ^
+     44|     expect(docs).toEqual(base());
+     45|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  10:29:35
+   Duration  206ms (transform 32ms, setup 0ms, import 48ms, tests 14ms, environment 0ms)
+
