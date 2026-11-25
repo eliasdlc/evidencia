@@ -1,0 +1,42 @@
+# R7 at 7748500, with r7.patch applied
+# $ pnpm exec vitest run src/features/punto/provision.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/p17-qr-rotativo
+
+ ❯ src/features/punto/provision.test.ts (14 tests | 1 failed) 43ms
+   ❯ after provisioning the point works without signal (11)
+     × R7: a same refresh with a new serverTime takes the offset again, so a phone clock that moved is corrected 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/punto/provision.test.ts > after provisioning the point works without signal > R7: a same refresh with a new serverTime takes the offset again, so a phone clock that moved is corrected
+AssertionError: expected { …(5) } to match object { …(4) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "key": CryptoKey {},
+-   "offsetMs": -45000,
++   "offsetMs": 0,
+    "pointId": "PuntoCarnavalVega001",
+    "secretVersion": 1,
+  }
+
+ ❯ src/features/punto/provision.test.ts:121:52
+    119|     expect(result.kind).toBe('same');
+    120|     expect(same.calls.map((call) => call.method)).toEqual(['GET']);
+    121|     expect(result.kind === 'same' && result.point).toMatchObject({ poi…
+       |                                                    ^
+    122|     expect((await store.load())?.offsetMs).toBe(-45_000);
+    123|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  12:53:11
+   Duration  286ms (tests 51%, import 34%, transform 12%, worker 4%)
+
