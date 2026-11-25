@@ -1,0 +1,72 @@
+# R1 at f677c0a, with r1.patch applied
+# $ pnpm exec vitest run src/features/punto/code.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/p17-qr-rotativo
+
+ ❯ src/features/punto/code.test.ts (17 tests | 3 failed) 87ms
+   ❯ the point code against the contract vectors (13)
+     × t=1800000029999 gives step 60000000 and the pinned code 19ms
+   ❯ the display redraws at each step boundary of the corrected clock (3)
+     × shows the same code until the boundary and a new one exactly on it, with the bar matching the seconds left 17ms
+     × follows the server clock, not the phone clock, when they differ 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/punto/code.test.ts > the point code against the contract vectors > t=1800000029999 gives step 60000000 and the pinned code
+AssertionError: expected 60000001 to be 60000000 // Object.is equality
+
+- Expected
++ Received
+
+- 60000000
++ 60000001
+
+ ❯ src/features/punto/code.test.ts:20:23
+     18| describe('the point code against the contract vectors', () => {
+     19|   it.each(VECTORS)('t=$t gives step $step and the pinned code', async …
+     20|     expect(stepOf(t)).toBe(step);
+       |                       ^
+     21|     expect(await pointCode(await importPointKey(secret), pointId, t)).…
+     22|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/features/punto/code.test.ts > the display redraws at each step boundary of the corrected clock > shows the same code until the boundary and a new one exactly on it, with the bar matching the seconds left
+AssertionError: expected Set{ 'CRDV1.PuntoCarnavalVega001.600…' } to deeply equal Set{ 'CRDV1.PuntoCarnavalVega001.600…' }
+
+- Expected
++ Received
+
+  Set {
+-   "CRDV1.PuntoCarnavalVega001.60000000.V-8XkafJy06_FfPOkHeNSQ",
++   "CRDV1.PuntoCarnavalVega001.60000001.aYXsA4Lg7djpKOU6gl1tmQ",
+  }
+
+ ❯ src/features/punto/code.test.ts:92:56
+     90|     const before = frames.filter((frame) => frame.at < boundary);
+     91|     const after = frames.filter((frame) => frame.at >= boundary);
+     92|     expect(new Set(before.map((frame) => frame.code))).toEqual(new Set…
+       |                                                        ^
+     93|     expect(new Set(after.map((frame) => frame.code))).toEqual(new Set(…
+     94|     // The first frame of the new step lands on the boundary, not up t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/features/punto/code.test.ts > the display redraws at each step boundary of the corrected clock > follows the server clock, not the phone clock, when they differ
+AssertionError: expected undefined to be defined
+ ❯ src/features/punto/code.test.ts:139:19
+    137|     const early = frames.find((frame) => frame.step === 60000000);
+    138|     const late = frames.find((frame) => frame.step === 60000001);
+    139|     expect(early).toBeDefined();
+       |                   ^
+    140|     expect(late?.at).toBe(serverBoundary);
+    141|     expect(late?.code).toBe('CRDV1.PuntoCarnavalVega001.60000001.aYXsA…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 14 passed (17)
+   Start at  01:31:11
+   Duration  491ms (tests 41%, transform 36%, import 17%, worker 5%)
+
