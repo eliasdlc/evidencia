@@ -1,0 +1,97 @@
+# R1 at 37d9cee, with r1.patch applied
+# $ pnpm exec vitest run src/lib/venue-points.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p17-qr-rotativo
+
+ ❯ src/lib/venue-points.test.ts (14 tests | 4 failed) 14ms
+   ✓ el código del punto > coincide con los vectores del contrato 2ms
+   ✓ el código del punto > deriva el secreto del punto de QR_SECRET, el id y la versión 0ms
+   ✓ el código del punto > solo lee la forma exacta 1ms
+   ✓ el paso del código > acepta el paso actual y el anterior, como margen de reloj 1ms
+   × el paso del código > rechaza una captura o foto cuyo paso ya venció 6ms
+     → expected 'accepted' to be 'stale_step' // Object.is equality
+   ✓ el paso del código > rechaza un paso del futuro 0ms
+   × la firma del punto > rechaza el código de un punto enviado como otro 1ms
+     → expected 'accepted' to be 'bad_mac' // Object.is equality
+   × la firma del punto > rechaza un carácter cambiado, otra versión del secreto, un punto revocado o desconocido 1ms
+     → expected 'accepted' to be 'bad_mac' // Object.is equality
+   ✓ el escaneo guardado sin señal > se acepta 2 h después y se rechaza a las 2 h 1 min 0ms
+   × el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora 1ms
+     → expected 'accepted' to be 'stale_step' // Object.is equality
+   ✓ el escaneo guardado sin señal > una hora del escaneo en el futuro se rechaza 0ms
+   ✓ la cadena de GPS > pide al menos 2 muestras distintas dentro del radio cerca de la hora del escaneo 0ms
+   ✓ la cadena de GPS > usa el radio de las visitas: 150 m sin tipo, 500 m en una playa 0ms
+   ✓ la cadena de GPS > rechaza una muestra simulada o posterior a la llegada 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/venue-points.test.ts > el paso del código > rechaza una captura o foto cuyo paso ya venció
+AssertionError: expected 'accepted' to be 'stale_step' // Object.is equality
+
+Expected: [32m"[7mstale_s[27mte[7mp[27m"[39m
+Received: [31m"[7maccep[27mte[7md[27m"[39m
+
+ ❯ src/lib/venue-points.test.ts:93:47
+     91| 
+     92|   it('rechaza una captura o foto cuyo paso ya venció', () => {
+     93|     expect(judge(codeAt(T - 2 * STEP_MS), T)).toBe('stale_step');
+       |                                               ^
+     94|     expect(judge(codeAt(T - 10 * MINUTE), T)).toBe('stale_step');
+     95|     expect(publicResultOf('stale_step')).toBe('code_changed');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/lib/venue-points.test.ts > la firma del punto > rechaza el código de un punto enviado como otro
+AssertionError: expected 'accepted' to be 'bad_mac' // Object.is equality
+
+Expected: [32m"bad_mac"[39m
+Received: [31m"accepted"[39m
+
+ ❯ src/lib/venue-points.test.ts:106:43
+    104|   it('rechaza el código de un punto enviado como otro', () => {
+    105|     const fromA = codeAt(T, A);
+    106|     expect(judge(fromA.replace(A, B), T)).toBe('bad_mac');
+       |                                           ^
+    107|     expect(judge(codeAt(T, B), T, {}, POINT)).toBe('accepted');
+    108|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/lib/venue-points.test.ts > la firma del punto > rechaza un carácter cambiado, otra versión del secreto, un punto revocado o desconocido
+AssertionError: expected 'accepted' to be 'bad_mac' // Object.is equality
+
+Expected: [32m"bad_mac"[39m
+Received: [31m"accepted"[39m
+
+ ❯ src/lib/venue-points.test.ts:112:76
+    110|   it('rechaza un carácter cambiado, otra versión del secreto, un punto…
+    111|     const code = codeAt(T);
+    112|     expect(judge(code.slice(0, -1) + (code.endsWith('A') ? 'B' : 'A'),…
+       |                                                                            ^
+    113|     expect(judge(code, T, {}, { ...POINT, secretVersion: 2 })).toBe('b…
+    114|     expect(judge(codeAt(T, A, 2), T, {}, { ...POINT, secretVersion: 2 …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/lib/venue-points.test.ts > el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora
+AssertionError: expected 'accepted' to be 'stale_step' // Object.is equality
+
+Expected: [32m"[7mstale_s[27mte[7mp[27m"[39m
+Received: [31m"[7maccep[27mte[7md[27m"[39m
+
+ ❯ src/lib/venue-points.test.ts:130:100
+    128|     const code = codeAt(T);
+    129|     expect(judge(code, T + HOUR, { scannedAt: T - 5 * MINUTE, samples:…
+    130|     expect(judge(code, T + HOUR, { scannedAt: T + 10 * MINUTE, samples…
+       |                                                                                                    ^
+    131|   });
+    132| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 10 passed (14)
+   Start at  23:11:59
+   Duration  245ms (transform 46ms, setup 10ms, collect 74ms, tests 14ms, environment 0ms, prepare 47ms)
+
