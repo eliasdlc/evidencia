@@ -1,0 +1,45 @@
+# R6 at f677c0a, with r6.patch applied
+# $ pnpm exec vitest run src/features/punto/provision.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/p17-qr-rotativo
+
+ ❯ src/features/punto/provision.test.ts (12 tests | 1 failed) 101ms
+   ❯ after provisioning the point works without signal (9)
+     × R6: an equal listed secretVersion provisions nothing and keeps the stored secret 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/punto/provision.test.ts > after provisioning the point works without signal > R6: an equal listed secretVersion provisions nothing and keeps the stored secret
+AssertionError: expected { kind: 'offline' } to deeply equal { kind: 'same', point: { …(5) } }
+
+- Expected
++ Received
+
+  {
+-   "kind": "same",
+-   "point": {
+-     "key": CryptoKey {},
+-     "name": "Parque Duarte",
+-     "offsetMs": 0,
+-     "pointId": "PuntoCarnavalVega001",
+-     "secretVersion": 1,
+-   },
++   "kind": "offline",
+  }
+
+ ❯ src/features/punto/provision.test.ts:107:20
+    105|     const same = harness(listed(1));
+    106|     const result = await refreshStored(same.client, store, stored, () …
+    107|     expect(result).toEqual({ kind: 'same', point: stored });
+       |                    ^
+    108|     expect(same.calls.map((call) => call.method)).toEqual(['GET']);
+    109|     expect((await store.load())?.offsetMs).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  01:31:38
+   Duration  413ms (tests 52%, transform 29%, import 14%, worker 5%)
+
