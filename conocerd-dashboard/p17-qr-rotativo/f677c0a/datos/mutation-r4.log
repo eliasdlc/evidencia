@@ -1,0 +1,36 @@
+# R4 at f677c0a, with r4.patch applied
+# $ pnpm exec vitest run src/features/punto/provision.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/p17-qr-rotativo
+
+ ❯ src/features/punto/provision.test.ts (12 tests | 1 failed) 108ms
+   ❯ after provisioning the point works without signal (9)
+     × replaces the secret when provisioning reports another secretVersion, so the next code uses the new one 19ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/punto/provision.test.ts > after provisioning the point works without signal > replaces the secret when provisioning reports another secretVersion, so the next code uses the new one
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ src/features/punto/provision.test.ts:95:33
+     93|     expect(rotated.calls.map((call) => `${call.method} ${call.url}`)).…
+     94|     const next = await store.load();
+     95|     expect(next?.secretVersion).toBe(2);
+       |                                 ^
+     96|     const newCode = await pointCode(next!.key, POINT_ID, SERVER_TIME);
+     97|     expect(newCode).not.toBe(oldCode);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  01:31:26
+   Duration  432ms (tests 44%, transform 37%, import 15%, worker 4%)
+
