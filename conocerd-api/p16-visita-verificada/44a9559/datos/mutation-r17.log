@@ -1,0 +1,95 @@
+# R17 at 44a9559, with R17.patch applied
+# $ mise exec node@26.8.1 -- firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "pnpm exec vitest run test/scan-visit.test.ts -t 'R17 '"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/scan-visit.test.ts -t 'R17 '
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p16-visita-verificada
+
+ ❯ test/scan-visit.test.ts (5 tests | 2 failed) 2447ms
+   ✓ the visit of a QR scan against Firestore > R17 the first live scan pays 100 and counts where both rebuilds read it  1461ms
+   ✓ the visit of a QR scan against Firestore > R17 a live scan 2 days later is counted with no XP; a second one the same day is duplicate_24h 281ms
+   ✓ the visit of a QR scan against Firestore > R17 a sponsored place pays 200, and a place missing from the catalog gives nothing 141ms
+   × the visit of a QR scan against Firestore > R17 an offline scan is a stamp only and leaves visitCount, XP and the summaries unchanged 130ms
+     → expected { outcome: 'paid', …(4) } to deeply equal { outcome: 'stamp', …(4) }
+   × the visit of a QR scan against Firestore > R17 a second call with the same scanId writes nothing and answers the same visit 118ms
+     → expected { outcome: 'paid', …(4) } to match object { outcome: 'stamp' }
+(4 matching properties omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/scan-visit.test.ts > the visit of a QR scan against Firestore > R17 an offline scan is a stamp only and leaves visitCount, XP and the summaries unchanged
+AssertionError: expected { outcome: 'paid', …(4) } to deeply equal { outcome: 'stamp', …(4) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "destinationId": "place-mwwcgxwk-10",[22m
+[32m-   "outcome": "stamp",[39m
+[32m-   "reason": "stamp_offline",[39m
+[31m+   "outcome": "paid",[39m
+[31m+   "reason": "visit_paid",[39m
+[2m    "unlocked": [],[22m
+[32m-   "xp": 0,[39m
+[31m+   "xp": 50,[39m
+[2m  }[22m
+
+ ❯ test/scan-visit.test.ts:106:51
+    104|     // Eight days later a live scan would pay again; offline it gives …
+    105|     const at = base + 8 * DAY;
+    106|     expect(await scan('offline-later', at, true)).toEqual({outcome: 's…
+       |                                                   ^
+    107|       destinationId: place});
+    108|     expect(await entry('qr_offline-later')).toEqual({destinationId: pl…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/scan-visit.test.ts > the visit of a QR scan against Firestore > R17 a second call with the same scanId writes nothing and answers the same visit
+AssertionError: expected { outcome: 'paid', …(4) } to match object { outcome: 'stamp' }
+(4 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "outcome": "stamp",[39m
+[31m+   "outcome": "paid",[39m
+[2m  }[22m
+
+ ❯ test/scan-visit.test.ts:125:63
+    123|     const first = await scan('live-twice', base);
+    124|     expect(await scan('live-twice', base + 60_000)).toEqual({...first,…
+    125|     expect(await scan('offline-twice', base + 9 * DAY, true)).toMatchO…
+       |                                                               ^
+    126|     expect(await scan('offline-twice', base + 9 * DAY + 60_000, true))…
+    127|       xp: 0, unlocked: [], destinationId: place});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 3 passed (5)
+   Start at  12:35:07
+   Duration  3.17s (transform 211ms, setup 19ms, collect 393ms, tests 2.45s, environment 0ms, prepare 108ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/scan-visit.test.ts -t 'R17 '" exited with code 1
