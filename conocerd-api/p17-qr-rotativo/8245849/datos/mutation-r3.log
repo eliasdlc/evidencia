@@ -1,0 +1,50 @@
+# R3 at 8245849, with r3.patch applied
+# $ pnpm exec vitest run src/lib/venue-points.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p17-qr-rotativo
+
+ ❯ src/lib/venue-points.test.ts (18 tests | 1 failed) 13ms
+   ✓ el código del punto > coincide con los vectores del contrato 2ms
+   ✓ el código del punto > deriva el secreto del punto de QR_SECRET, el id y la versión 0ms
+   ✓ el código del punto > solo lee la forma exacta 1ms
+   ✓ el paso del código > acepta el paso actual, el anterior y el siguiente, como margen de reloj 2ms
+   ✓ el paso del código > rechaza una captura o foto cuyo paso ya venció 0ms
+   ✓ el paso del código > rechaza un paso del futuro más allá del margen 0ms
+   ✓ la firma del punto > rechaza el código de un punto enviado como otro 0ms
+   ✓ la firma del punto > rechaza un carácter cambiado, otra versión del secreto, un punto revocado o desconocido 0ms
+   × el escaneo guardado sin señal > se acepta 2 h después y se rechaza a las 2 h 1 min 4ms
+     → expected 'accepted' to be 'too_late' // Object.is equality
+   ✓ el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora 0ms
+   ✓ el escaneo guardado sin señal > una hora del escaneo en el futuro se rechaza 0ms
+   ✓ el escaneo guardado sin señal > un reloj del teléfono unos segundos adelantado no tumba un escaneo honesto 0ms
+   ✓ el escaneo guardado sin señal > lo que sí acepta: una foto del código, 90 min después, con la hora de la foto y GPS de ese momento 0ms
+   ✓ la cadena de GPS > pide al menos 2 muestras distintas dentro del radio cerca de la hora del escaneo 0ms
+   ✓ la cadena de GPS > usa el radio de las visitas: 150 m sin tipo, 500 m en una playa 0ms
+   ✓ la cadena de GPS > rechaza una muestra simulada o posterior a la llegada 0ms
+   ✓ la cadena de GPS > no cuenta una muestra débil: sin isMocked, sin precisión o con una precisión mayor que el radio 0ms
+   ✓ la cadena de GPS > pide muestras separadas por al menos 5 s 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/venue-points.test.ts > el escaneo guardado sin señal > se acepta 2 h después y se rechaza a las 2 h 1 min
+AssertionError: expected 'accepted' to be 'too_late' // Object.is equality
+
+Expected: [32m"[7mtoo_la[27mte"[39m
+Received: [31m"[7maccep[27mte[7md[27m"[39m
+
+ ❯ src/lib/venue-points.test.ts:130:62
+    128|     const offline = { scannedAt: T, samples: chain(T) };
+    129|     expect(judge(codeAt(T), T + 2 * HOUR, offline)).toBe('accepted');
+    130|     expect(judge(codeAt(T), T + 2 * HOUR + MINUTE, offline)).toBe('too…
+       |                                                              ^
+    131|   });
+    132| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 passed (18)
+   Start at  10:20:54
+   Duration  234ms (transform 52ms, setup 11ms, collect 69ms, tests 13ms, environment 0ms, prepare 44ms)
+
