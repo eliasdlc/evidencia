@@ -1,0 +1,241 @@
+# R10 at 317c226, with v2-R10.patch applied
+# $ flutter test --no-pub test/features/point_scan/point_scan_service_test.dart
+00:00 +0: loading /home/decruce/dev/wt/app/p17-qr-rotativo/test/features/point_scan/point_scan_service_test.dart
+00:00 +0: sending a scan posts the code and the chain with the ID token and App Check
+00:00 +0 -1: sending a scan posts the code and the chain with the ID token and App Check [E]
+  Expected: <Instance of 'PointScanAccepted'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanAccepted'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 116:9  main.<fn>.<fn>
+  
+00:00 +0 -1: sending a scan every send, retries included, carries a fresh limited-use token
+00:00 +0 -2: sending a scan every send, retries included, carries a fresh limited-use token [E]
+  Expected: ['un-solo-uso-1', 'un-solo-uso-2', 'un-solo-uso-3']
+    Actual: []
+     Which: at location [0] is [] which shorter than expected
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 149:9  main.<fn>.<fn>
+  
+00:00 +0 -2: sending a scan a vector code one step ahead or behind the scan time is sent
+00:00 +0 -3: sending a scan a vector code one step ahead or behind the scan time is sent [E]
+  Expected: <Instance of 'PointScanCodeChanged'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanCodeChanged'
+  CRDV1.PuntoCarnavalVega001.60000000.V-8XkafJy06_FfPOkHeNSQ
+  
+  package:matcher                                               expect
+  package:flutter_test/src/widget_tester.dart 473:18            expect
+  test/features/point_scan/point_scan_service_test.dart 178:11  main.<fn>.<fn>
+  
+00:00 +0 -3: sending a scan a 403 app_check_rejected keeps the scan and retries with a new token
+00:00 +0 -4: sending a scan a 403 app_check_rejected keeps the scan and retries with a new token [E]
+  Expected: <Instance of 'PointScanQueued'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanQueued'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 194:9  main.<fn>.<fn>
+  
+00:00 +0 -4: sending a scan a code that is not a point code is never sent
+00:00 +1 -4: sending a scan a chain with a mocked sample is not sent as valid
+00:00 +1 -5: sending a scan a chain with a mocked sample is not sent as valid [E]
+  Expected: <Instance of 'PointScanNotHere'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanNotHere'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 241:7  main.<fn>.<fn>
+  
+00:00 +1 -5: sending a scan a refusal that no signal can fix is shown, not queued
+00:00 +1 -6: sending a scan a refusal that no signal can fix is shown, not queued [E]
+  Expected: <Instance of 'PointScanFailed'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanFailed'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 250:7  main.<fn>.<fn>
+  
+00:00 +1 -6: a scan made without signal is queued with its scan time and sent on reconnect
+00:00 +1 -7: a scan made without signal is queued with its scan time and sent on reconnect [E]
+  Expected: <Instance of 'PointScanQueued'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanQueued'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 263:7  main.<fn>.<fn>
+  
+00:00 +1 -7: a scan made without signal 24 h + 1 s is dropped as Expired with a clear message, without sending
+00:00 +1 -8: a scan made without signal 24 h + 1 s is dropped as Expired with a clear message, without sending [E]
+  Bad state: No element
+  dart:core                                                     List.single
+  test/features/point_scan/point_scan_service_test.dart 321:24  main.<fn>.<fn>
+  
+00:00 +1 -8: a scan made without signal 23:59 old is still sent and its stamp is shown
+00:00 +1 -9: a scan made without signal 23:59 old is still sent and its stamp is shown [E]
+  Expected: <1>
+    Actual: <0>
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 361:7  main.<fn>.<fn>
+  
+00:00 +1 -9: a scan made without signal the server answering expired drops the scan
+00:00 +1 -10: a scan made without signal the server answering expired drops the scan [E]
+  Bad state: No element
+  dart:core                                                     List.single
+  test/features/point_scan/point_scan_service_test.dart 381:22  main.<fn>.<fn>
+  
+00:00 +1 -10: a scan made without signal stays queued on a 401
+00:00 +1 -11: a scan made without signal stays queued on a 401 [E]
+  Expected: an object with length of <1>
+    Actual: []
+     Which: has length of <0>
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 395:9  main.<fn>.<fn>
+  
+00:00 +1 -11: a scan made without signal stays queued on a 503
+00:00 +1 -12: a scan made without signal stays queued on a 503 [E]
+  Expected: an object with length of <1>
+    Actual: []
+     Which: has length of <0>
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 395:9  main.<fn>.<fn>
+  
+00:00 +1 -12: a scan made without signal is dropped when the server answers already_done
+00:00 +1 -13: a scan made without signal is dropped when the server answers already_done [E]
+  Expected: an object with length of <1>
+    Actual: []
+     Which: has length of <0>
+  
+  package:matcher                                               expect
+  package:flutter_test/src/widget_tester.dart 473:18            expect
+  test/features/point_scan/point_scan_service_test.dart 410:23  main.<fn>.<fn>.<fn>
+  
+00:00 +1 -13: a scan made without signal is dropped when the server answers code_changed
+00:00 +1 -14: a scan made without signal is dropped when the server answers code_changed [E]
+  Expected: an object with length of <1>
+    Actual: []
+     Which: has length of <0>
+  
+  package:matcher                                               expect
+  package:flutter_test/src/widget_tester.dart 473:18            expect
+  test/features/point_scan/point_scan_service_test.dart 410:23  main.<fn>.<fn>.<fn>
+  
+00:00 +1 -14: a scan made without signal is dropped when the server answers not_here
+00:00 +1 -15: a scan made without signal is dropped when the server answers not_here [E]
+  Expected: an object with length of <1>
+    Actual: []
+     Which: has length of <0>
+  
+  package:matcher                                               expect
+  package:flutter_test/src/widget_tester.dart 473:18            expect
+  test/features/point_scan/point_scan_service_test.dart 410:23  main.<fn>.<fn>.<fn>
+  
+00:00 +1 -15: a scan made without signal only the traveler who made it sends it
+00:00 +2 -15: every result in the contract has its message accepted live and paid shows the XP, never a bare "cuenta"
+00:00 +2 -16: every result in the contract has its message accepted live and paid shows the XP, never a bare "cuenta" [E]
+  Expected: <Instance of 'PointScanAccepted'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanAccepted'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 440:9  main.<fn>.<fn>
+  
+00:00 +2 -16: every result in the contract has its message accepted with no visit says only that the scan was recorded
+00:00 +2 -17: every result in the contract has its message accepted with no visit says only that the scan was recorded [E]
+  Expected: 'Escaneo registrado.'
+    Actual: 'Ese QR no es de un punto de ConoceRD.'
+     Which: is different.
+            Expected: Escaneo regi ...
+              Actual: Ese QR no es ...
+                        ^
+             Differ at offset 2
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 451:9  main.<fn>.<fn>
+  
+00:00 +2 -17: every result in the contract has its message already_done with a counted visit and no XP
+00:00 +2 -18: every result in the contract has its message already_done with a counted visit and no XP [E]
+  Expected: <Instance of 'PointScanAlreadyDone'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanAlreadyDone'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 467:7  main.<fn>.<fn>
+  
+00:00 +2 -18: every result in the contract has its message code_changed
+00:00 +2 -19: every result in the contract has its message code_changed [E]
+  Expected: <Instance of 'PointScanCodeChanged'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanCodeChanged'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 477:7  main.<fn>.<fn>
+  
+00:00 +2 -19: every result in the contract has its message not_here names "este lugar" when the place is unknown
+00:00 +2 -20: every result in the contract has its message not_here names "este lugar" when the place is unknown [E]
+  Expected: <Instance of 'PointScanNotHere'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanNotHere'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 487:7  main.<fn>.<fn>
+  
+00:00 +2 -20: every result in the contract has its message expired
+00:00 +2 -21: every result in the contract has its message expired [E]
+  Expected: <Instance of 'PointScanExpired'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanExpired'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 497:7  main.<fn>.<fn>
+  
+00:00 +2 -21: every result in the contract has its message a result this app does not know is not shown as good
+00:00 +2 -22: every result in the contract has its message a result this app does not know is not shown as good [E]
+  Expected: <Instance of 'PointScanFailed'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanFailed'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 508:7  main.<fn>.<fn>
+  
+00:00 +2 -22: every result in the contract has its message a scan saved offline shows its real deadline, 24 h later
+00:00 +2 -23: every result in the contract has its message a scan saved offline shows its real deadline, 24 h later [E]
+  Expected: <Instance of 'PointScanQueued'>
+    Actual: <Instance of 'PointScanNotOurs'>
+     Which: is not an instance of 'PointScanQueued'
+  
+  package:matcher                                              expect
+  package:flutter_test/src/widget_tester.dart 473:18           expect
+  test/features/point_scan/point_scan_service_test.dart 516:7  main.<fn>.<fn>
+  
+00:00 +2 -23: every result in the contract has its message the clock label is the phone time of the deadline
+00:00 +3 -23: every result in the contract has its message unverified email and a plain failure
+00:00 +4 -23: Some tests failed.
+
+Failing tests:
+  /home/decruce/dev/wt/app/p17-qr-rotativo/test/features/point_scan/point_scan_service_test.dart: a scan made without signal 23:59 old is still sent and its stamp is shown
+  /home/decruce/dev/wt/app/p17-qr-rotativo/test/features/point_scan/point_scan_service_test.dart: a scan made without signal 24 h + 1 s is dropped as Expired with a clear message, without sending
+  /home/decruce/dev/wt/app/p17-qr-rotativo/test/features/point_scan/point_scan_service_test.dart: a scan made without signal is dropped when the server answers already_done
+  /home/decruce/dev/wt/app/p17-qr-rotativo/test/features/point_scan/point_scan_service_test.dart: a scan made without signal is dropped when the server answers code_changed
+  ... and 19 more
