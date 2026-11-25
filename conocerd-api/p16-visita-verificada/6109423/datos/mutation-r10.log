@@ -1,0 +1,72 @@
+# R10 at 6109423, with R10.patch applied
+# $ mise exec node@26.8.1 -- firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "pnpm exec vitest run test/visit-confirm.test.ts -t 'R10 '"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/visit-confirm.test.ts -t 'R10 '
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p16-visita-verificada
+
+ ❯ test/visit-confirm.test.ts (7 tests | 1 failed | 6 skipped) 1237ms
+   ↓ pending visits, nonce and the benefit against the emulators > R8 a mocked visit is pending, pays nothing, and a QR scan of the place verifies it once
+   ↓ pending visits, nonce and the benefit against the emulators > R8 a second pending visit at a place scanned long ago is confirmed by its own later scan
+   ↓ pending visits, nonce and the benefit against the emulators > R8 a user holds at most 20 open pending visits; the next doubtful one is rejected
+   ↓ pending visits, nonce and the benefit against the emulators > R8 a pending visit lapses after 7 days with no penalty, even with a scan
+   ↓ pending visits, nonce and the benefit against the emulators > R9 the visit nonce works once; a failed or missing integrity proof is pending, not paid
+   ↓ pending visits, nonce and the benefit against the emulators > R9 a user holds at most 10 open nonces, and each request deletes the expired ones
+   × pending visits, nonce and the benefit against the emulators > R10 a benefit is not issued on pending visits, and is once QR scans verify them 860ms
+     → expected { code: 'resolved' } to match object { status: 409, …(2) }
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-confirm.test.ts > pending visits, nonce and the benefit against the emulators > R10 a benefit is not issued on pending visits, and is once QR scans verify them
+AssertionError: expected { code: 'resolved' } to match object { status: 409, …(2) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "code": "visits_pending",[39m
+[32m-   "details": {[39m
+[32m-     "required": 2,[39m
+[32m-     "visits": 0,[39m
+[32m-   },[39m
+[32m-   "status": 409,[39m
+[31m+   "code": "resolved",[39m
+[2m  }[22m
+
+ ❯ test/visit-confirm.test.ts:187:58
+    185|     expect((await visits.recordVisit(uid, a, first)).status).toBe('pen…
+    186|     expect((await visits.recordVisit(uid, b, second)).status).toBe('pe…
+    187|     expect(await failure(qr.issueQr(context, business))).toMatchObject…
+       |                                                          ^
+    188|       details: {visits: 0, required: 2}});
+    189|     await scan('scan-a', business, first + 60_000); await scan('scan-b…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 skipped (7)
+   Start at  11:18:10
+   Duration  1.65s (transform 276ms, setup 10ms, collect 228ms, tests 1.24s, environment 0ms, prepare 55ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/visit-confirm.test.ts -t 'R10 '" exited with code 1
