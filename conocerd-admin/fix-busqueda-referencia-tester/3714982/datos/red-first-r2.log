@@ -1,0 +1,37 @@
+# R2 at 3714982, with src/testers/modelo.ts back at 7587e58
+# $ pnpm exec vitest run src/testers/modelo.test.ts -t "código antiguo"
+
+ RUN  v4.1.10 /home/decruce/dev/wt/admin/fix-busqueda-referencia-tester
+
+ ❯ src/testers/modelo.test.ts (10 tests | 1 failed | 9 skipped) 22ms
+     × sigue encontrando el código antiguo derivado del id 18ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/testers/modelo.test.ts > filtrar > sigue encontrando el código antiguo derivado del id
+AssertionError: expected [] to deeply equal [ 'abc123xyz' ]
+
+- Expected
++ Received
+
+- [
+-   "abc123xyz",
+- ]
++ []
+
+ ❯ src/testers/modelo.test.ts:48:63
+     46|     const lista = [aOpinion('abc123xyz', { titulo: 'Vieja', estado: 'n…
+     47|     for (const q of ['T-ABC123', 't-abc123', 'abc123', 'T ABC123', 'ta…
+     48|       expect(filtrar(lista, { ...base, q }).map((o) => o.id)).toEqual(…
+       |                                                               ^
+     49|     }
+     50|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 skipped (10)
+   Start at  00:51:25
+   Duration  729ms (transform 415ms, setup 0ms, import 451ms, tests 22ms, environment 0ms)
+
