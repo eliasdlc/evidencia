@@ -1,0 +1,103 @@
+# R10 at bd9f618, with r10.patch applied
+# $ pnpm exec vitest run src/lib/venue-points.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p17-qr-rotativo
+
+ ❯ src/lib/venue-points.test.ts (20 tests | 4 failed) 18ms
+   ✓ el código del punto > coincide con los vectores del contrato 3ms
+   ✓ el código del punto > deriva el secreto del punto de QR_SECRET, el id y la versión 1ms
+   ✓ el código del punto > solo lee la forma exacta 1ms
+   ✓ el paso del código > acepta el paso actual, el anterior y el siguiente, como margen de reloj 1ms
+   ✓ el paso del código > rechaza una captura o foto cuyo paso ya venció 0ms
+   ✓ el paso del código > rechaza un paso del futuro más allá del margen 0ms
+   ✓ la firma del punto > rechaza el código de un punto enviado como otro 0ms
+   ✓ la firma del punto > rechaza un carácter cambiado, otra versión del secreto, un punto revocado o desconocido 0ms
+   ✓ el escaneo guardado sin señal > la hora firmada es el paso por 30 s 0ms
+   ✓ el escaneo guardado sin señal > no es sin señal a los 9:59 del paso firmado aunque mande scannedAt, y sí a los 10:01 0ms
+   ✓ el escaneo guardado sin señal > se acepta a las 23:59:59 del paso firmado y vence a las 24:00:01 0ms
+   ✓ el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora 0ms
+   ✓ el escaneo guardado sin señal > una hora del escaneo en el futuro se rechaza 0ms
+   ✓ el escaneo guardado sin señal > un reloj del teléfono unos segundos adelantado no tumba un escaneo honesto 0ms
+   ✓ el escaneo guardado sin señal > lo que sí acepta: una foto del código, 90 min después, con la hora de la foto y GPS de ese momento, sin señal 0ms
+   × la cadena de GPS > pide al menos 2 muestras distintas dentro del radio cerca de la hora del escaneo 6ms
+     → expected 'accepted' to be 'outside_radius' // Object.is equality
+   × la cadena de GPS > usa el radio de las visitas: 150 m sin tipo, 500 m en una playa 1ms
+     → expected 'accepted' to be 'outside_radius' // Object.is equality
+   ✓ la cadena de GPS > rechaza una muestra simulada o posterior a la llegada 0ms
+   × la cadena de GPS > no cuenta una muestra débil: sin isMocked, sin precisión o con una precisión mayor que el radio 1ms
+     → expected 'accepted' to be 'outside_radius' // Object.is equality
+   × la cadena de GPS > pide muestras separadas por al menos 5 s 1ms
+     → expected 'accepted' to be 'outside_radius' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/venue-points.test.ts > la cadena de GPS > pide al menos 2 muestras distintas dentro del radio cerca de la hora del escaneo
+AssertionError: expected 'accepted' to be 'outside_radius' // Object.is equality
+
+Expected: [32m"outside_radius"[39m
+Received: [31m"accepted"[39m
+
+ ❯ src/lib/venue-points.test.ts:201:62
+    199| describe('la cadena de GPS', () => {
+    200|   it('pide al menos 2 muestras distintas dentro del radio cerca de la …
+    201|     expect(judge(codeAt(T), T, { samples: chain(T, HOME) })).toBe('out…
+       |                                                              ^
+    202|     expect(judge(codeAt(T), T, { samples: [at(T - 5_000), at(T - 2_000…
+    203|     expect(judge(codeAt(T), T, { samples: [at(T - 5_000), at(T - 5_000…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/lib/venue-points.test.ts > la cadena de GPS > usa el radio de las visitas: 150 m sin tipo, 500 m en una playa
+AssertionError: expected 'accepted' to be 'outside_radius' // Object.is equality
+
+Expected: [32m"outside_radius"[39m
+Received: [31m"accepted"[39m
+
+ ❯ src/lib/venue-points.test.ts:211:62
+    209|   it('usa el radio de las visitas: 150 m sin tipo, 500 m en una playa'…
+    210|     const near = { latitude: POINT.latitude + 0.003, longitude: POINT.…
+    211|     expect(judge(codeAt(T), T, { samples: chain(T, near) })).toBe('out…
+       |                                                              ^
+    212|     expect(judge(codeAt(T), T, { samples: chain(T, near) }, { ...POINT…
+    213|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/lib/venue-points.test.ts > la cadena de GPS > no cuenta una muestra débil: sin isMocked, sin precisión o con una precisión mayor que el radio
+AssertionError: expected 'accepted' to be 'outside_radius' // Object.is equality
+
+Expected: [32m"outside_radius"[39m
+Received: [31m"accepted"[39m
+
+ ❯ src/lib/venue-points.test.ts:225:67
+    223|     const { isMocked: _mocked, ...noMockFlag } = second;
+    224|     const { accuracy: _accuracy, ...noAccuracy } = second;
+    225|     expect(judge(codeAt(T), T, { samples: [first, noMockFlag] })).toBe…
+       |                                                                   ^
+    226|     expect(judge(codeAt(T), T, { samples: [first, noAccuracy] })).toBe…
+    227|     expect(judge(codeAt(T), T, { samples: [first, { ...second, accurac…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/lib/venue-points.test.ts > la cadena de GPS > pide muestras separadas por al menos 5 s
+AssertionError: expected 'accepted' to be 'outside_radius' // Object.is equality
+
+Expected: [32m"outside_radius"[39m
+Received: [31m"accepted"[39m
+
+ ❯ src/lib/venue-points.test.ts:232:78
+    230| 
+    231|   it('pide muestras separadas por al menos 5 s', () => {
+    232|     expect(judge(codeAt(T), T, { samples: [at(T - 6_000), at(T - 2_000…
+       |                                                                              ^
+    233|     expect(judge(codeAt(T), T, { samples: [at(T - 7_000), at(T - 2_000…
+    234|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 16 passed (20)
+   Start at  12:33:43
+   Duration  358ms (transform 70ms, setup 15ms, collect 109ms, tests 18ms, environment 0ms, prepare 63ms)
+
