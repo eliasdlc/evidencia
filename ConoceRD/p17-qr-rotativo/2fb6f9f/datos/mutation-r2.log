@@ -1,0 +1,56 @@
+# R2 at 2fb6f9f, with r2-boundary-wake.patch applied
+# $ pnpm exec vitest run src/features/punto/code.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/p17-qr-rotativo
+
+ ❯ src/features/punto/code.test.ts (16 tests | 2 failed) 63ms
+   ❯ the display redraws at each step boundary of the corrected clock (2)
+     × shows the same code until the boundary and a new one exactly on it, with the bar matching the seconds left 24ms
+     × follows the server clock, not the phone clock, when they differ 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/punto/code.test.ts > the display redraws at each step boundary of the corrected clock > shows the same code until the boundary and a new one exactly on it, with the bar matching the seconds left
+AssertionError: expected 1800000030070 to be 1800000030000 // Object.is equality
+
+- Expected
++ Received
+
+- 1800000030000
++ 1800000030070
+
+ ❯ src/features/punto/code.test.ts:95:26
+     93|     expect(new Set(after.map((frame) => frame.code))).toEqual(new Set(…
+     94|     // The first frame of the new step lands on the boundary, not up t…
+     95|     expect(after[0]!.at).toBe(boundary);
+       |                          ^
+     96|     expect(after[0]!.seconds).toBe(30);
+     97|     expect(after[0]!.fraction).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/punto/code.test.ts > the display redraws at each step boundary of the corrected clock > follows the server clock, not the phone clock, when they differ
+AssertionError: expected 1800000030070 to be 1800000030000 // Object.is equality
+
+- Expected
++ Received
+
+- 1800000030000
++ 1800000030070
+
+ ❯ src/features/punto/code.test.ts:116:22
+    114|     const late = frames.find((frame) => frame.step === 60000001);
+    115|     expect(early).toBeDefined();
+    116|     expect(late?.at).toBe(serverBoundary);
+       |                      ^
+    117|     expect(late?.code).toBe('CRDV1.PuntoCarnavalVega001.60000001.aYXsA…
+    118|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 14 passed (16)
+   Start at  00:13:59
+   Duration  359ms (tests 48%, import 27%, transform 16%, worker 8%)
+
