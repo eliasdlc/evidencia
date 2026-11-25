@@ -1,0 +1,42 @@
+# mutation: refreshStored keeps current.offsetMs on a same refresh (src/features/punto/provision.ts)
+i  emulators: Starting emulators: auth
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  Running script: pnpm exec playwright test e2e/punto.spec.ts -g R7 --project emulator-phone
+
+Running 1 test using 1 worker
+
+[WebServer] 12:15:30 PM [vite] (client) [console.warn] No `HydrateFallback` element provided to render during initial hydration
+  ✘  1 [emulator-phone] › e2e/punto.spec.ts:151:1 › R7: with the phone clock 45 s ahead, a refresh brings the drawn step back to the server step (11.3s)
+FAIL [emulator-phone] e2e/punto.spec.ts > R7: with the phone clock 45 s ahead, a refresh brings the drawn step back to the server step (failed)
+
+
+  1) [emulator-phone] › e2e/punto.spec.ts:151:1 › R7: with the phone clock 45 s ahead, a refresh brings the drawn step back to the server step 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 10000ms exceeded while waiting on the predicate
+
+      172 |   await context.setOffline(true);
+      173 |   await context.setOffline(false);
+    > 174 |   await expect.poll(() => onServerStep(page), { timeout: 10_000 }).toBe(true);
+          |                                                                    ^
+      175 |   expect(api.calls.map((call) => `${call.method} ${call.path}`)).toEqual(['GET /qr/points', `POST /qr/points/${POINT_ID}/provision`, 'GET /qr/points']);
+      176 | });
+      177 |
+        at /home/decruce/dev/wt/dashboard/p17-qr-rotativo/e2e/punto.spec.ts:174:68
+
+    Error Context: node_modules/.cache/playwright/punto-R7-with-the-phone-cl-53edf-tep-back-to-the-server-step-emulator-phone/error-context.md
+
+  1 failed
+    [emulator-phone] › e2e/punto.spec.ts:151:1 › R7: with the phone clock 45 s ahead, a refresh brings the drawn step back to the server step 
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec playwright test e2e/punto.spec.ts -g R7 --project emulator-phone" exited with code 1
