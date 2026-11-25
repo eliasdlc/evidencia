@@ -1,0 +1,150 @@
+# R1 at 44713ea, with r1-mac-length.patch applied
+# $ pnpm exec vitest run src/features/punto/code.test.ts
+
+ RUN  v5.0.5 /home/decruce/dev/wt/dashboard/p17-qr-rotativo
+
+ ❯ src/features/punto/code.test.ts (16 tests | 8 failed) 83ms
+   ❯ the point code against the contract vectors (13)
+     × t=1800000000000 gives step 60000000 and the pinned code 31ms
+     × t=1800000029999 gives step 60000000 and the pinned code 7ms
+     × t=1800000030000 gives step 60000001 and the pinned code 2ms
+     × t=0 gives step 0 and the pinned code 2ms
+     × t=1770000000000 gives step 59000000 and the pinned code 2ms
+     × produces codes the contract expression accepts, with the step and point it was given 5ms
+   ❯ the display redraws at each step boundary of the corrected clock (2)
+     × shows the same code until the boundary and a new one exactly on it, with the bar matching the seconds left 18ms
+     × follows the server clock, not the phone clock, when they differ 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/punto/code.test.ts > the point code against the contract vectors > t=1800000000000 gives step 60000000 and the pinned code
+ FAIL  src/features/punto/code.test.ts > the point code against the contract vectors > t=1800000029999 gives step 60000000 and the pinned code
+AssertionError: expected 'CRDV1.PuntoCarnavalVega001.60000000.V…' to be 'CRDV1.PuntoCarnavalVega001.60000000.V…' // Object.is equality
+
+Expected: "CRDV1.PuntoCarnavalVega001.60000000.V-8XkafJy06_FfPOkHeNSQ"
+Received: "CRDV1.PuntoCarnavalVega001.60000000.V-8XkafJy06_FfPOkHeN"
+
+ ❯ src/features/punto/code.test.ts:21:71
+     19|   it.each(VECTORS)('t=$t gives step $step and the pinned code', async …
+     20|     expect(stepOf(t)).toBe(step);
+     21|     expect(await pointCode(await importPointKey(secret), pointId, t)).…
+       |                                                                       ^
+     22|   });
+     23|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/features/punto/code.test.ts > the point code against the contract vectors > t=1800000030000 gives step 60000001 and the pinned code
+AssertionError: expected 'CRDV1.PuntoCarnavalVega001.60000001.a…' to be 'CRDV1.PuntoCarnavalVega001.60000001.a…' // Object.is equality
+
+Expected: "CRDV1.PuntoCarnavalVega001.60000001.aYXsA4Lg7djpKOU6gl1tmQ"
+Received: "CRDV1.PuntoCarnavalVega001.60000001.aYXsA4Lg7djpKOU6gl1t"
+
+ ❯ src/features/punto/code.test.ts:21:71
+     19|   it.each(VECTORS)('t=$t gives step $step and the pinned code', async …
+     20|     expect(stepOf(t)).toBe(step);
+     21|     expect(await pointCode(await importPointKey(secret), pointId, t)).…
+       |                                                                       ^
+     22|   });
+     23|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/features/punto/code.test.ts > the point code against the contract vectors > t=0 gives step 0 and the pinned code
+AssertionError: expected 'CRDV1.PuntoCarnavalVega001.0.Ag3QUWYS…' to be 'CRDV1.PuntoCarnavalVega001.0.Ag3QUWYS…' // Object.is equality
+
+Expected: "CRDV1.PuntoCarnavalVega001.0.Ag3QUWYSw_o-Z6f8H_zKlg"
+Received: "CRDV1.PuntoCarnavalVega001.0.Ag3QUWYSw_o-Z6f8H_zK"
+
+ ❯ src/features/punto/code.test.ts:21:71
+     19|   it.each(VECTORS)('t=$t gives step $step and the pinned code', async …
+     20|     expect(stepOf(t)).toBe(step);
+     21|     expect(await pointCode(await importPointKey(secret), pointId, t)).…
+       |                                                                       ^
+     22|   });
+     23|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/features/punto/code.test.ts > the point code against the contract vectors > t=1770000000000 gives step 59000000 and the pinned code
+AssertionError: expected 'CRDV1.AbCdEfGhIjKlMnOpQrSt.59000000.Q…' to be 'CRDV1.AbCdEfGhIjKlMnOpQrSt.59000000.Q…' // Object.is equality
+
+Expected: "CRDV1.AbCdEfGhIjKlMnOpQrSt.59000000.QRjertRAF05RvHcRF3-7sA"
+Received: "CRDV1.AbCdEfGhIjKlMnOpQrSt.59000000.QRjertRAF05RvHcRF3-7"
+
+ ❯ src/features/punto/code.test.ts:21:71
+     19|   it.each(VECTORS)('t=$t gives step $step and the pinned code', async …
+     20|     expect(stepOf(t)).toBe(step);
+     21|     expect(await pointCode(await importPointKey(secret), pointId, t)).…
+       |                                                                       ^
+     22|   });
+     23|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/features/punto/code.test.ts > the point code against the contract vectors > produces codes the contract expression accepts, with the step and point it was given
+AssertionError: expected null to deeply equal { …(3) }
+
+- Expected:
+{
+  "mac": "V-8XkafJy06_FfPOkHeNSQ",
+  "pointId": "PuntoCarnavalVega001",
+  "step": 60000000,
+}
+
++ Received:
+null
+
+ ❯ src/features/punto/code.test.ts:32:34
+     30|   it('produces codes the contract expression accepts, with the step an…
+     31|     const code = await pointCode(await importPointKey(SEQUENTIAL), POI…
+     32|     expect(parsePointCode(code)).toEqual({ pointId: POINT, step: 60000…
+       |                                  ^
+     33|     expect(code.length).toBeLessThan(70);
+     34|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/features/punto/code.test.ts > the display redraws at each step boundary of the corrected clock > shows the same code until the boundary and a new one exactly on it, with the bar matching the seconds left
+AssertionError: expected Set{ 'CRDV1.PuntoCarnavalVega001.600…' } to deeply equal Set{ 'CRDV1.PuntoCarnavalVega001.600…' }
+
+- Expected
++ Received
+
+  Set {
+-   "CRDV1.PuntoCarnavalVega001.60000000.V-8XkafJy06_FfPOkHeNSQ",
++   "CRDV1.PuntoCarnavalVega001.60000000.V-8XkafJy06_FfPOkHeN",
+  }
+
+ ❯ src/features/punto/code.test.ts:92:56
+     90|     const before = frames.filter((frame) => frame.at < boundary);
+     91|     const after = frames.filter((frame) => frame.at >= boundary);
+     92|     expect(new Set(before.map((frame) => frame.code))).toEqual(new Set…
+       |                                                        ^
+     93|     expect(new Set(after.map((frame) => frame.code))).toEqual(new Set(…
+     94|     // The first frame of the new step lands on the boundary, not up t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/features/punto/code.test.ts > the display redraws at each step boundary of the corrected clock > follows the server clock, not the phone clock, when they differ
+AssertionError: expected 'CRDV1.PuntoCarnavalVega001.60000001.a…' to be 'CRDV1.PuntoCarnavalVega001.60000001.a…' // Object.is equality
+
+Expected: "CRDV1.PuntoCarnavalVega001.60000001.aYXsA4Lg7djpKOU6gl1tmQ"
+Received: "CRDV1.PuntoCarnavalVega001.60000001.aYXsA4Lg7djpKOU6gl1t"
+
+ ❯ src/features/punto/code.test.ts:117:24
+    115|     expect(early).toBeDefined();
+    116|     expect(late?.at).toBe(serverBoundary);
+    117|     expect(late?.code).toBe('CRDV1.PuntoCarnavalVega001.60000001.aYXsA…
+       |                        ^
+    118|   });
+    119| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 8 passed (16)
+   Start at  00:13:04
+   Duration  668ms (transform 73%, tests 18%, import 7%, worker 2%)
+
