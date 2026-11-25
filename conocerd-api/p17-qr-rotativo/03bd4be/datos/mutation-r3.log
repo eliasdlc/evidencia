@@ -1,0 +1,46 @@
+# R3 at 03bd4be, with r3.patch applied
+# $ pnpm exec vitest run src/lib/venue-points.test.ts
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p17-qr-rotativo
+
+ ❯ src/lib/venue-points.test.ts (14 tests | 1 failed) 33ms
+   ✓ el código del punto > coincide con los vectores del contrato 4ms
+   ✓ el código del punto > deriva el secreto del punto de QR_SECRET, el id y la versión 1ms
+   ✓ el código del punto > solo lee la forma exacta 2ms
+   ✓ el paso del código > acepta el paso actual y el anterior, como margen de reloj 3ms
+   ✓ el paso del código > rechaza una captura o foto cuyo paso ya venció 1ms
+   ✓ el paso del código > rechaza un paso del futuro 1ms
+   ✓ la firma del punto > rechaza el código de un punto enviado como otro 1ms
+   ✓ la firma del punto > rechaza un carácter cambiado, otra versión del secreto, un punto revocado o desconocido 1ms
+   × el escaneo guardado sin señal > se acepta 2 h después y se rechaza a las 2 h 1 min 13ms
+     → expected 'accepted' to be 'too_late' // Object.is equality
+   ✓ el escaneo guardado sin señal > una hora inventada no hace valer un código de otra hora 1ms
+   ✓ el escaneo guardado sin señal > una hora del escaneo en el futuro se rechaza 0ms
+   ✓ la cadena de GPS > pide al menos 2 muestras distintas dentro del radio cerca de la hora del escaneo 1ms
+   ✓ la cadena de GPS > usa el radio de las visitas: 150 m sin tipo, 500 m en una playa 1ms
+   ✓ la cadena de GPS > rechaza una muestra simulada o posterior a la llegada 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/venue-points.test.ts > el escaneo guardado sin señal > se acepta 2 h después y se rechaza a las 2 h 1 min
+AssertionError: expected 'accepted' to be 'too_late' // Object.is equality
+
+Expected: [32m"[7mtoo_la[27mte"[39m
+Received: [31m"[7maccep[27mte[7md[27m"[39m
+
+ ❯ src/lib/venue-points.test.ts:124:62
+    122|     const offline = { scannedAt: T, samples: chain(T) };
+    123|     expect(judge(codeAt(T), T + 2 * HOUR, offline)).toBe('accepted');
+    124|     expect(judge(codeAt(T), T + 2 * HOUR + MINUTE, offline)).toBe('too…
+       |                                                              ^
+    125|   });
+    126| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  23:22:34
+   Duration  384ms (transform 73ms, setup 13ms, collect 123ms, tests 33ms, environment 0ms, prepare 72ms)
+
