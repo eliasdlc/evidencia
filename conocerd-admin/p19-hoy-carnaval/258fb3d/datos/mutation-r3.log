@@ -1,0 +1,66 @@
+# R3 at 258fb3d, with r3.patch applied
+# $ pnpm exec vitest run src/app/eventos/acciones.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/admin/p19-hoy-carnaval
+
+ ❯ src/app/eventos/acciones.test.ts (6 tests | 2 failed) 69ms
+     × sin marcar la casilla escribe published: false, y descarta la fila de punto en blanco 45ms
+     × con la casilla marcada publica, y la edición la puede volver a quitar 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/eventos/acciones.test.ts > R3: guardar desde el formulario > sin marcar la casilla escribe published: false, y descarta la fila de punto en blanco
+AssertionError: expected { published: true, …(8) } to match object { published: false, …(7) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+@@ -7,10 +7,10 @@
+        "lat": 19.2209,
+        "lng": -70.5289,
+        "name": "Parque Duarte",
+      },
+    ],
+-   "published": false,
++   "published": true,
+    "routeId": "ruta-carnaval",
+    "startDate": "2027-02-07",
+    "title": "Carnaval de La Vega",
+  }
+
+ ❯ src/app/eventos/acciones.test.ts:89:21
+     87|
+     88|     const escrito = bd.datos.get('curatedEvents')?.get('carnaval-2027'…
+     89|     expect(escrito).toMatchObject({
+       |                     ^
+     90|       published: false,
+     91|       title: 'Carnaval de La Vega',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/app/eventos/acciones.test.ts > R3: guardar desde el formulario > con la casilla marcada publica, y la edición la puede volver a quitar
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/app/eventos/acciones.test.ts:108:76
+    106|     const r = await guardarEvento('carnaval-2027', null, formulario(ba…
+    107|     expect(r.ok).toBe(true);
+    108|     expect(bd.datos.get('curatedEvents')?.get('carnaval-2027')?.publis…
+       |                                                                            ^
+    109|   });
+    110|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  00:19:54
+   Duration  1.61s (transform 741ms, setup 0ms, import 1.28s, tests 69ms, environment 0ms)
+
