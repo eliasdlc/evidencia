@@ -1,0 +1,49 @@
+# R4 at 7442d5f, with R4.patch applied
+# $ pnpm exec vitest run src/editorial/retiro-fotos.test.ts
+
+ RUN  v4.1.10 /home/decruce/dev/wt/admin/feat-fotos-de-cualquier-fuente
+
+ ❯ src/editorial/retiro-fotos.test.ts (11 tests | 2 failed) 17ms
+     × quita todas las fotos de una cuenta y deja en borrador la ficha sin portada 8ms
+     × quita las fotos de un enlace y, si no queda ninguna, la ficha vuelve a borrador 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/editorial/retiro-fotos.test.ts > planearRetiro > quita todas las fotos de una cuenta y deja en borrador la ficha sin portada
+AssertionError: expected 'preparacion' to be 'borrador' // Object.is equality
+
+Expected: "borrador"
+Received: "preparacion"
+
+ ❯ src/editorial/retiro-fotos.test.ts:44:22
+     42|     expect(p.fotos).toEqual([{ assetId: C, rol: 'galeria' }]);
+     43|     expect(p.sinPortada).toBe(true);
+     44|     expect(p.estado).toBe('borrador');
+       |                      ^
+     45|   });
+     46|   it('quita las fotos de un enlace y, si no queda ninguna, la ficha vu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/editorial/retiro-fotos.test.ts > planearRetiro > quita las fotos de un enlace y, si no queda ninguna, la ficha vuelve a borrador
+AssertionError: expected 'preparacion' to be 'borrador' // Object.is equality
+
+Expected: "borrador"
+Received: "preparacion"
+
+ ❯ src/editorial/retiro-fotos.test.ts:50:22
+     48|     expect(p.fotos).toEqual([]);
+     49|     expect(p.derechosFotos).toEqual({});
+     50|     expect(p.estado).toBe('borrador');
+       |                      ^
+     51|   });
+     52|   it('una fuente que ninguna foto tiene no retira nada', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  23:02:42
+   Duration  187ms (transform 26ms, setup 0ms, import 40ms, tests 17ms, environment 0ms)
+
