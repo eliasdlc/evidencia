@@ -1,0 +1,91 @@
+# R8 at 6109423, with R8.patch applied
+# $ mise exec node@26.8.1 -- firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "pnpm exec vitest run test/visit-confirm.test.ts -t 'R8 '"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: pnpm exec vitest run test/visit-confirm.test.ts -t 'R8 '
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/p16-visita-verificada
+
+ ❯ test/visit-confirm.test.ts (7 tests | 2 failed | 3 skipped) 2253ms
+   × pending visits, nonce and the benefit against the emulators > R8 a mocked visit is pending, pays nothing, and a QR scan of the place verifies it once 905ms
+     → expected undefined to match object { validatedVisits: 1, …(1) }
+   × pending visits, nonce and the benefit against the emulators > R8 a second pending visit at a place scanned long ago is confirmed by its own later scan 252ms
+     → expected undefined to match object { validatedVisits: 1, …(1) }
+   ✓ pending visits, nonce and the benefit against the emulators > R8 a user holds at most 20 open pending visits; the next doubtful one is rejected  688ms
+   ✓ pending visits, nonce and the benefit against the emulators > R8 a pending visit lapses after 7 days with no penalty, even with a scan 60ms
+   ↓ pending visits, nonce and the benefit against the emulators > R9 the visit nonce works once; a failed or missing integrity proof is pending, not paid
+   ↓ pending visits, nonce and the benefit against the emulators > R9 a user holds at most 10 open nonces, and each request deletes the expired ones
+   ↓ pending visits, nonce and the benefit against the emulators > R10 a benefit is not issued on pending visits, and is once QR scans verify them
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/visit-confirm.test.ts > pending visits, nonce and the benefit against the emulators > R8 a mocked visit is pending, pays nothing, and a QR scan of the place verifies it once
+AssertionError: expected undefined to match object { validatedVisits: 1, …(1) }
+
+[32m- Expected:[39m 
+{
+  "uniqueDestinations": 1,
+  "validatedVisits": 1,
+}
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/visit-confirm.test.ts:94:78
+     92|     expect(await pending.listPendingVisits(uid)).toEqual([]);
+     93|     // The confirmation counts like a verified GPS visit: summary, pla…
+     94|     expect((await db.doc(`users/${uid}/visitSummary/current`).get()).d…
+       |                                                                              ^
+     95|     const month = (await db.collection(`destinations/${place}/stats`).…
+     96|     expect(month).toEqual([1]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/visit-confirm.test.ts > pending visits, nonce and the benefit against the emulators > R8 a second pending visit at a place scanned long ago is confirmed by its own later scan
+AssertionError: expected undefined to match object { validatedVisits: 1, …(1) }
+
+[32m- Expected:[39m 
+{
+  "uniqueDestinations": 1,
+  "validatedVisits": 1,
+}
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/visit-confirm.test.ts:120:78
+    118|     expect(await pending.confirmPendingVisit(uid, again.eventId)).toMa…
+    119|     expect(await visits.recordVisit(uid, again, Date.now())).toMatchOb…
+    120|     expect((await db.doc(`users/${uid}/visitSummary/current`).get()).d…
+       |                                                                              ^
+    121|     expect((await summary())?.xp).toBe(100);
+    122|   }, 20000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed | 3 skipped (7)
+   Start at  11:17:20
+   Duration  2.66s (transform 261ms, setup 11ms, collect 235ms, tests 2.25s, environment 0ms, prepare 52ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "pnpm exec vitest run test/visit-confirm.test.ts -t 'R8 '" exited with code 1
