@@ -1,0 +1,55 @@
+# R2 at 1c183c5, with m2.patch applied
+# $ pnpm exec vitest run src/lib/tester-feedback.test.ts -t "se normaliza igual"
+
+ RUN  v3.2.7 /home/decruce/dev/wt/api/fix-textos-y-codigos
+
+ ❯ src/lib/tester-feedback.test.ts (23 tests | 1 failed | 22 skipped) 30ms
+   ↓ lo que se acepta > un error con todo lo que un error pide
+   ↓ lo que se acepta > los cuatro tipos
+   ↓ lo que se acepta > una idea no guarda lo que solo pregunta un error
+   ↓ lo que se acepta > un correo vacío cuenta como no dado
+   ↓ lo que se acepta > pero no un correo que no se entiende, ni una zona fuera de la lista
+   ↓ lo que se acepta > ni una calificación fuera de una a cinco
+   ↓ los adjuntos > reconoce JPEG, PNG y WebP por sus bytes
+   ↓ los adjuntos > rechaza un fichero que dice ser imagen y no lo es
+   ↓ los adjuntos > acepta hasta 6 y rechaza una más
+   ↓ los adjuntos > rechaza un cuerpo por encima del límite antes de leerlo
+   ↓ los adjuntos > rechaza un cuerpo que no es multipart
+   ↓ el código de referencia > no lleva vocales ni 0, 1, O, I, L, en diez mil códigos
+   × el código de referencia > se normaliza igual con o sin prefijo, separador y caja 25ms
+     → expected '-K7MD-2XQ9' to be 'K7MD2XQ9' // Object.is equality
+   ↓ el código de referencia > una T que abre el código no se confunde con el prefijo
+   ↓ el código de referencia > rechaza lo que no es un código
+   ↓ el código de referencia > los códigos antiguos T-XXXXXX siguen siendo válidos y se derivan del id
+   ↓ la cuota > deja pasar ciento veinte en la misma hora y frena el siguiente
+   ↓ la cuota > y se olvida al pasar la hora
+   ↓ lo que se guarda > sube las imágenes bajo el id y guarda el documento como nuevo
+   ↓ lo que se guarda > si la primera subida falla, limpia el prefijo igual
+   ↓ lo que se guarda > si el documento falla, borra lo que ya subió
+   ↓ la URL de una captura > es la de Firebase Storage con su token
+   ↓ la URL de una captura > y la del emulador cuando se corre contra él
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/tester-feedback.test.ts > el código de referencia > se normaliza igual con o sin prefijo, separador y caja
+AssertionError: expected '-K7MD-2XQ9' to be 'K7MD2XQ9' // Object.is equality
+
+Expected: [32m"K7MD2XQ9"[39m
+Received: [31m"[7m-[27mK7MD[7m-[27m2XQ9"[39m
+
+ ❯ src/lib/tester-feedback.test.ts:152:46
+    150|   it('se normaliza igual con o sin prefijo, separador y caja', () => {
+    151|     for (const variante of ['T-K7MD-2XQ9', 't-k7md-2xq9', 'K7MD2XQ9', …
+    152|       expect(normalizarReferencia(variante)).toBe('K7MD2XQ9');
+       |                                              ^
+    153|       expect(esReferenciaValida(variante)).toBe(true);
+    154|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 22 skipped (23)
+   Start at  23:48:05
+   Duration  1.58s (transform 276ms, setup 29ms, collect 957ms, tests 30ms, environment 0ms, prepare 160ms)
+
