@@ -1,0 +1,79 @@
+# R1 at ec86683, with r1.patch applied
+# $ pnpm exec vitest run src/lib/ponlo/proxy.test.ts src/app/api/ponlo-en-el-mapa/route.test.ts
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/web/feat-agregar-destino-e16655d681332354
+
+ ❯ src/lib/ponlo/proxy.test.ts (5 tests | 2 failed) 34ms
+     × reenvía el multipart a /place-proposals con la IP de quien escribe 28ms
+     × devuelve el 422 del API para marcar los campos 1ms
+ ❯ src/app/api/ponlo-en-el-mapa/route.test.ts (4 tests | 1 failed) 46ms
+     × reenvía la propuesta a la API y devuelve su respuesta 31ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/ponlo/proxy.test.ts > forwardPropuesta > reenvía el multipart a /place-proposals con la IP de quien escribe
+AssertionError: expected 200 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 200
+
+ ❯ src/lib/ponlo/proxy.test.ts:17:22
+     15|     const f = form();
+     16|     const r = await forwardPropuesta({ apiUrl: "https://api.test/", fo…
+     17|     expect(r.status).toBe(201);
+       |                      ^
+     18|     const [url, init] = fetchPropuesta.mock.calls[0]!;
+     19|     expect(String(url)).toBe("https://api.test/place-proposals");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/lib/ponlo/proxy.test.ts > forwardPropuesta > devuelve el 422 del API para marcar los campos
+AssertionError: expected 200 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 200
+
+ ❯ src/lib/ponlo/proxy.test.ts:28:22
+     26|     const fetchPropuesta: FetchPropuesta = async () => Response.json({…
+     27|     const r = await forwardPropuesta({ apiUrl: "https://api.test", for…
+     28|     expect(r.status).toBe(422);
+       |                      ^
+     29|     expect(await r.json()).toEqual({ error: "invalid_body", issues });
+     30|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/app/api/ponlo-en-el-mapa/route.test.ts > POST /api/ponlo-en-el-mapa > reenvía la propuesta a la API y devuelve su respuesta
+AssertionError: expected 200 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 200
+
+ ❯ src/app/api/ponlo-en-el-mapa/route.test.ts:34:30
+     32|     const respuesta = await POST(formulario());
+     33|
+     34|     expect(respuesta.status).toBe(201);
+       |                              ^
+     35|     expect(await respuesta.json()).toEqual({ ok: true, id: "p1" });
+     36|     expect(String(fetchSimulado.mock.calls[0]?.[0])).toBe("https://api…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 6 passed (9)
+   Start at  20:23:50
+   Duration  220ms (transform 64ms, setup 0ms, import 96ms, tests 80ms, environment 0ms)
+
