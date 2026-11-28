@@ -1,0 +1,58 @@
+# R1 at dd3e679, with r1.patch applied
+# $ pnpm exec vitest run src/lib/ponlo/proxy.test.ts
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/web/feat-agregar-destino-e16655d681332354
+
+ ❯ src/lib/ponlo/proxy.test.ts (5 tests | 2 failed) 33ms
+     × reenvía el multipart a /place-proposals con la IP de quien escribe 29ms
+     × devuelve el 422 del API para marcar los campos 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/ponlo/proxy.test.ts > forwardPropuesta > reenvía el multipart a /place-proposals con la IP de quien escribe
+AssertionError: expected 200 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 200
+
+ ❯ src/lib/ponlo/proxy.test.ts:17:22
+     15|     const f = form();
+     16|     const r = await forwardPropuesta({ apiUrl: "https://api.test/", fo…
+     17|     expect(r.status).toBe(201);
+       |                      ^
+     18|     const [url, init] = fetchPropuesta.mock.calls[0]!;
+     19|     expect(String(url)).toBe("https://api.test/place-proposals");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/ponlo/proxy.test.ts > forwardPropuesta > devuelve el 422 del API para marcar los campos
+AssertionError: expected 200 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 200
+
+ ❯ src/lib/ponlo/proxy.test.ts:28:22
+     26|     const fetchPropuesta: FetchPropuesta = async () => Response.json({…
+     27|     const r = await forwardPropuesta({ apiUrl: "https://api.test", for…
+     28|     expect(r.status).toBe(422);
+       |                      ^
+     29|     expect(await r.json()).toEqual({ error: "invalid_body", issues });
+     30|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 3 passed (5)
+   Start at  20:22:05
+   Duration  175ms (transform 24ms, setup 0ms, import 36ms, tests 33ms, environment 0ms)
+
