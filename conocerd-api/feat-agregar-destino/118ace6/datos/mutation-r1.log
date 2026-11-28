@@ -1,0 +1,72 @@
+# R1 at 118ace6, with api-r1.patch applied
+# $ pnpm exec vitest run src/lib/place-proposals.test.ts
+
+ RUN  v3.2.7 /home/decruce/.t3/worktrees/api/feat-agregar-destino
+
+ ❯ src/lib/place-proposals.test.ts (34 tests | 1 failed) 48ms
+   ✓ lo obligatorio > nombre, tipo y dónde bastan 3ms
+   ✓ lo obligatorio > un enlace de Maps sirve en lugar del pueblo 1ms
+   ✓ lo obligatorio > sin dónde ni enlace no pasa 1ms
+   ✓ lo obligatorio > sin tipo no pasa, y un tipo fuera del vocabulario tampoco 0ms
+   ✓ lo obligatorio > un nombre de una letra no pasa 0ms
+   ✓ ref > se guarda en minúsculas 0ms
+   ✓ ref > una ref con caracteres raros se descarta sin rechazar la propuesta 0ms
+   ✓ enlaces de Google Maps > acepta https://maps.app.goo.gl/x1Y2z3 0ms
+   ✓ enlaces de Google Maps > acepta https://www.google.com/maps/place/Charco+Azul/@18.03,-71.74,15z 0ms
+   ✓ enlaces de Google Maps > acepta https://maps.google.com/?q=18.03,-71.74 0ms
+   ✓ enlaces de Google Maps > acepta https://goo.gl/maps/abc 0ms
+   ✓ enlaces de Google Maps > acepta https://www.google.com.do/maps/place/X 0ms
+   ✓ enlaces de Google Maps > rechaza https://evil.example/maps 0ms
+   ✓ enlaces de Google Maps > rechaza javascript:alert(1) 0ms
+   ✓ enlaces de Google Maps > rechaza https://goo.gl/abc 0ms
+   ✓ enlaces de Google Maps > rechaza https://www.google.com/search?q=x 0ms
+   ✓ enlaces de Google Maps > rechaza no es un enlace 0ms
+   ✓ enlaces de Google Maps > lee el pin del lugar antes que el centro de la vista 1ms
+   ✓ enlaces de Google Maps > lee @lat,lng y q=lat,lng 0ms
+   ✓ enlaces de Google Maps > un enlace corto no trae coordenadas y no se inventan 0ms
+   × enlaces de Google Maps > unas coordenadas fuera del país se descartan 6ms
+     → expected { lat: 40.41, lng: -3.7 } to be null
+   ✓ la foto > sin la cesión aceptada no pasa 1ms
+   ✓ la foto > con una versión de cesión que no es la vigente no pasa 0ms
+   ✓ la foto > un JPEG limpio con su cesión se acepta 6ms
+   ✓ la foto > un JPEG con EXIF se rechaza: puede llevar la ubicación de quien la tomó 2ms
+   ✓ la foto > un PNG se rechaza 1ms
+   ✓ la foto > una foto sin cesión se rechaza 1ms
+   ✓ la foto > una cesión sin foto se descarta 0ms
+   ✓ lo que se escribe > entra a la cola del panel como lugar nuevo de la web, sin dueño, con el enriquecimiento pendiente 2ms
+   ✓ lo que se escribe > sin coordenadas en el enlace no escribe latitud ni longitud 0ms
+   ✓ lo que se escribe > con foto la sube primero y guarda crédito y versión de la cesión 1ms
+   ✓ lo que se escribe > si la escritura falla, borra la foto subida 1ms
+   ✓ la cuota del API > aguanta un evento entero llegando por la misma IP del sitio 9ms
+   ✓ la cuota del API > frena un volumen que ningún evento manda 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/place-proposals.test.ts > enlaces de Google Maps > unas coordenadas fuera del país se descartan
+AssertionError: expected { lat: 40.41, lng: -3.7 } to be null
+
+[32m- Expected:[39m 
+null
+
+[31m+ Received:[39m 
+{
+  "lat": 40.41,
+  "lng": -3.7,
+}
+
+ ❯ src/lib/place-proposals.test.ts:116:81
+    114| 
+    115|   it('unas coordenadas fuera del país se descartan', () => {
+    116|     expect(coordenadasDeEnlace('https://www.google.com/maps/@40.41,-3.…
+       |                                                                                 ^
+    117|   });
+    118| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 33 passed (34)
+   Start at  20:25:21
+   Duration  567ms (transform 95ms, setup 9ms, collect 319ms, tests 48ms, environment 0ms, prepare 59ms)
+
