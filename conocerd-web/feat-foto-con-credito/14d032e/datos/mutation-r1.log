@@ -1,0 +1,38 @@
+# R1 at 14d032e, with foto-web-r1b.patch applied
+# $ pnpm exec vitest run "src/app/[lang]/ponlo-en-el-mapa/textos.test.ts"
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/web/propuestas-secreto
+
+ ❯ src/app/[lang]/ponlo-en-el-mapa/textos.test.ts (14 tests | 1 failed) 16ms
+     × en es el permiso de la foto siempre promete el crédito y ya no promete quitarla 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/[lang]/ponlo-en-el-mapa/textos.test.ts > la página /ponlo-en-el-mapa > en es el permiso de la foto siempre promete el crédito y ya no promete quitarla
+AssertionError: expected 'Al enviarla, nos das permiso gratuito…' to match /crédito|credit/
+
+- Expected:
+/crédito|credit/
+
++ Received:
+"Al enviarla, nos das permiso gratuito y sin límite de tiempo para publicarla en la app de ConoceRD y en conocerd.app, con tu permiso. La foto sigue siendo tuya. Confirmas que la tomaste tú y que no sale nadie reconocible sin su permiso. Antes de enviarla le quitamos los datos de ubicación."
+
+ ❯ src/app/[lang]/ponlo-en-el-mapa/textos.test.ts:29:20
+     27|   it.each(["es", "en"] as const)("en %s el permiso de la foto siempre …
+     28|     const { cesion } = textosPonlo[idioma];
+     29|     expect(cesion).toMatch(/crédito|credit/);
+       |                    ^
+     30|     expect(cesion).not.toMatch(/quiten|removed/);
+     31|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  14:08:51
+   Duration  369ms (transform 129ms, setup 0ms, import 156ms, tests 16ms, environment 0ms)
+
