@@ -1,0 +1,84 @@
+# R4 at 277a019, with mutation-r4.patch applied
+# $ pnpm exec vitest run src/lib/catalogo/clasificar.test.ts src/lib/seo.test.ts
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/web/t3-057265bf-9826afd6e21fd681
+
+ ❯ src/lib/seo.test.ts (1 test | 1 failed) 17ms
+     × declares a place as a TouristAttraction and a business as its own schema.org type 15ms
+ ❯ src/lib/catalogo/clasificar.test.ts (5 tests | 2 failed) 26ms
+     × publishes from the committed snapshot what the baked generator published 17ms
+     × publishes a business with its kind, and skips documents without Spanish text or a web category 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/seo.test.ts > datosDelDestino > declares a place as a TouristAttraction and a business as its own schema.org type
+AssertionError: expected 'TouristAttraction' to be 'Restaurant' // Object.is equality
+
+Expected: "Restaurant"
+Received: "TouristAttraction"
+
+ ❯ src/lib/seo.test.ts:18:87
+     16|   it("declares a place as a TouristAttraction and a business as its ow…
+     17|     expect(datosDelDestino(lugar, "x", "es")["@type"]).toBe("TouristAt…
+     18|     expect(datosDelDestino({ ...lugar, negocio: "restaurante" }, "x", …
+       |                                                                                       ^
+     19|     expect(datosDelDestino({ ...lugar, negocio: "hotel" }, "x", "en")[…
+     20|     expect(datosDelDestino({ ...lugar, negocio: "cafeteria" }, "x", "e…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/lib/catalogo/clasificar.test.ts > clasificar > publishes from the committed snapshot what the baked generator published
+AssertionError: expected [ { guia: { …(9) }, …(2) }, …(63) ] to have a length of 76 but got 64
+
+- Expected
++ Received
+
+- 76
++ 64
+
+ ❯ src/lib/catalogo/clasificar.test.ts:36:24
+     34|     // (28 Nov 2026, CO1-T1035), plus its 12 businesses and the 2 docu…
+     35|     // that `excluded` kept out as businesses by their description.
+     36|     expect(publicadas).toHaveLength(76);
+       |                        ^
+     37|     expect(publicadas.filter((p) => p.guia.negocio)).toHaveLength(12);
+     38|     expect(publicadas.map((p) => p.guia.id)).toEqual(GUIAS_CATALOGO.ma…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/lib/catalogo/clasificar.test.ts > clasificar > publishes a business with its kind, and skips documents without Spanish text or a web category
+AssertionError: expected [ [ 'mirador', undefined ] ] to deeply equal [ [ 'hotel-real', 'hotel' ], …(1) ]
+
+- Expected
++ Received
+
+  [
+    [
+-     "hotel-real",
+-     "hotel",
+-   ],
+-   [
+      "mirador",
+      undefined,
+    ],
+  ]
+
+ ❯ src/lib/catalogo/clasificar.test.ts:100:64
+     98|       VACIO,
+     99|     );
+    100|     expect(publicadas.map((p) => [p.guia.id, p.guia.negocio])).toEqual…
+       |                                                                ^
+    101|       ["hotel-real", "hotel"],
+    102|       ["mirador", undefined],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 3 passed (6)
+   Start at  10:30:43
+   Duration  464ms (transform 299ms, setup 0ms, import 418ms, tests 42ms, environment 0ms)
+
