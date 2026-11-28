@@ -1,0 +1,32 @@
+# R1 at 575f05b, with admin-r1.patch applied
+# $ pnpm exec vitest run src/solicitudes/repositorio.test.ts
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/admin/feat-agregar-destino
+
+ ❯ src/solicitudes/repositorio.test.ts (14 tests | 1 failed) 18ms
+     × se lee como "Desde la web", con confianza baja, y no cae en "Desde el perfil" 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/solicitudes/repositorio.test.ts > una propuesta que llega desde la web > se lee como "Desde la web", con confianza baja, y no cae en "Desde el perfil"
+AssertionError: expected 'profile' to be 'web' // Object.is equality
+
+Expected: "web"
+Received: "profile"
+
+ ❯ src/solicitudes/repositorio.test.ts:78:22
+     76|   it('se lee como "Desde la web", con confianza baja, y no cae en "Des…
+     77|     const s = aSolicitud('p1', desdeLaWeb);
+     78|     expect(s.origen).toBe('web');
+       |                      ^
+     79|     expect(TODOS_LOS_ORIGENES.web).toEqual({ etiqueta: 'Desde la web',…
+     80|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  20:26:41
+   Duration  399ms (transform 45ms, setup 0ms, import 216ms, tests 18ms, environment 0ms)
+
