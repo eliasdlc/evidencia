@@ -1,0 +1,104 @@
+# R1 at d4343f8, with web-s1.patch applied
+# $ pnpm exec vitest run src/lib/ponlo/proxy.test.ts src/app/api/ponlo-en-el-mapa/route.test.ts
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/web/propuestas-secreto
+
+ ❯ src/lib/ponlo/proxy.test.ts (6 tests | 2 failed) 42ms
+     × reenvía el multipart a /place-proposals con la IP de quien escribe 35ms
+     × sin secreto responde 503 sin llamar a nadie 2ms
+ ❯ src/app/api/ponlo-en-el-mapa/route.test.ts (5 tests | 2 failed) 54ms
+     × reenvía la propuesta a la API y devuelve su respuesta 36ms
+     × sin el secreto configurado responde 503 sin llamar a la API 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/ponlo/proxy.test.ts > forwardPropuesta > reenvía el multipart a /place-proposals con la IP de quien escribe
+AssertionError: expected { 'x-forwarded-for': '1.2.3.4' } to deeply equal { …(2) }
+
+- Expected
++ Received
+
+  {
+-   "x-conocerd-sitio": "secreto-de-prueba",
+    "x-forwarded-for": "1.2.3.4",
+  }
+
+ ❯ src/lib/ponlo/proxy.test.ts:23:27
+     21|     expect(String(url)).toBe("https://api.test/place-proposals");
+     22|     expect(init?.body).toBe(f);
+     23|     expect(init?.headers).toEqual({ "x-conocerd-sitio": secreto, "x-fo…
+       |                           ^
+     24|   });
+     25|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/lib/ponlo/proxy.test.ts > forwardPropuesta > sin secreto responde 503 sin llamar a nadie
+AssertionError: expected 502 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 502
+
+ ❯ src/lib/ponlo/proxy.test.ts:29:22
+     27|     const fetchPropuesta = vi.fn<FetchPropuesta>();
+     28|     const r = await forwardPropuesta({ apiUrl: "https://api.test", for…
+     29|     expect(r.status).toBe(503);
+       |                      ^
+     30|     expect(fetchPropuesta).not.toHaveBeenCalled();
+     31|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/app/api/ponlo-en-el-mapa/route.test.ts > POST /api/ponlo-en-el-mapa > reenvía la propuesta a la API y devuelve su respuesta
+AssertionError: expected { 'x-forwarded-for': '203.0.113.7' } to match object { Object (x-conocerd-sitio) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "x-conocerd-sitio": "secreto-de-prueba",
++   "x-forwarded-for": "203.0.113.7",
+  }
+
+ ❯ src/app/api/ponlo-en-el-mapa/route.test.ts:38:55
+     36|     expect(await respuesta.json()).toEqual({ ok: true, id: "p1" });
+     37|     expect(String(fetchSimulado.mock.calls[0]?.[0])).toBe("https://api…
+     38|     expect(fetchSimulado.mock.calls[0]?.[1]?.headers).toMatchObject({ …
+       |                                                       ^
+     39|   });
+     40|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/app/api/ponlo-en-el-mapa/route.test.ts > POST /api/ponlo-en-el-mapa > sin el secreto configurado responde 503 sin llamar a la API
+AssertionError: expected 502 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 502
+
+ ❯ src/app/api/ponlo-en-el-mapa/route.test.ts:48:30
+     46|     const respuesta = await POST(formulario());
+     47|
+     48|     expect(respuesta.status).toBe(503);
+       |                              ^
+     49|     expect(fetchSimulado).not.toHaveBeenCalled();
+     50|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 7 passed (11)
+   Start at  21:01:01
+   Duration  234ms (transform 55ms, setup 0ms, import 90ms, tests 96ms, environment 0ms)
+
