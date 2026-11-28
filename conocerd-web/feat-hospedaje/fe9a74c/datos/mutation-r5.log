@@ -1,0 +1,44 @@
+# R5 at fe9a74c, with pines-r5.patch applied
+# $ pnpm exec vitest run src/lib/catalogo/pines.test.ts
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/web/t3-cdd0bb0c-a315116a7408b6ca
+
+ ❯ src/lib/catalogo/pines.test.ts (1 test | 1 failed) 11ms
+     × draws the Hospedaje pins last so they stay on top, the rest in catalog order 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/catalogo/pines.test.ts > ordenDePines > draws the Hospedaje pins last so they stay on top, the rest in catalog order
+AssertionError: expected [ 'a', 'b', 'c', 'd' ] to deeply equal [ 'b', 'd', 'a', 'c' ]
+
+- Expected
++ Received
+
+  [
+-   "b",
+-   "d",
+    "a",
++   "b",
+    "c",
++   "d",
+  ]
+
+ ❯ src/lib/catalogo/pines.test.ts:13:50
+     11|       { id: "d", category: "gastronomia" },
+     12|     ] as const;
+     13|     expect(ordenDePines(guias).map((d) => d.id)).toEqual(["b", "d", "a…
+       |                                                  ^
+     14|   });
+     15| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  11:16:54
+   Duration  202ms (transform 24ms, setup 0ms, import 37ms, tests 11ms, environment 0ms)
+
