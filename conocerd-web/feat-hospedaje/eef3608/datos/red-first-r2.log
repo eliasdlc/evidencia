@@ -1,0 +1,44 @@
+# R2 at eef3608, with scripts/generar_guias.py, src/app/[lang]/destinos/[slug]/piezas.tsx, src/app/[lang]/destinos/page.tsx, src/components/Icon.tsx, src/data/catalogo/reglas.json, src/data/destinations.en.ts, src/data/destinations.ts, src/i18n/textos/paginas.ts, src/lib/catalogo/clasificar.ts, src/lib/catalogo/pines.ts, src/sections/MapaSection.tsx back at 7e7a454
+# $ python3 -m unittest discover -s scripts/tests -p test_catalogo.py -v
+test_decodes_typed_values_and_keeps_only_public_fields (test_catalogo.ExportTest.test_decodes_typed_values_and_keeps_only_public_fields) ... ok
+test_follows_pages_with_get_only (test_catalogo.ExportTest.test_follows_pages_with_get_only) ... ok
+test_a_lodging_place_with_no_category_is_hospedaje (test_catalogo.GenerateTest.test_a_lodging_place_with_no_category_is_hospedaje) ... FAIL
+test_merges_a_match_and_refuses_one_too_far_away (test_catalogo.GenerateTest.test_merges_a_match_and_refuses_one_too_far_away) ... ok
+test_never_publishes_a_demo_and_merges_a_namesake_of_the_38_nearby (test_catalogo.GenerateTest.test_never_publishes_a_demo_and_merges_a_namesake_of_the_38_nearby) ... ok
+test_photo_needs_an_author_and_an_allowed_license (test_catalogo.GenerateTest.test_photo_needs_an_author_and_an_allowed_license) ... ok
+test_publishes_a_business_with_its_kind_and_excludes_documents_without_spanish_text (test_catalogo.GenerateTest.test_publishes_a_business_with_its_kind_and_excludes_documents_without_spanish_text) ... ok
+test_publishes_a_place_with_its_verbatim_text_and_first_web_category (test_catalogo.GenerateTest.test_publishes_a_place_with_its_verbatim_text_and_first_web_category) ... ok
+test_slug_is_ascii_and_unique (test_catalogo.GenerateTest.test_slug_is_ascii_and_unique) ... ok
+test_the_committed_data_accounts_for_every_document (test_catalogo.GenerateTest.test_the_committed_data_accounts_for_every_document) ... ok
+
+======================================================================
+FAIL: test_a_lodging_place_with_no_category_is_hospedaje (test_catalogo.GenerateTest.test_a_lodging_place_with_no_category_is_hospedaje)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/decruce/.t3/worktrees/web/t3-cdd0bb0c-a315116a7408b6ca/scripts/tests/test_catalogo.py", line 88, in test_a_lodging_place_with_no_category_is_hospedaje
+    self.assertEqual([[g['catalogId'], g['category']] for g in guides], cases['published'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [['d-hotel-de-playa', 'playa']] != [['a-hotel-sin-categoria', 'hospedaje'], ['b[101 chars]ya']]
+
+First differing element 0:
+['d-hotel-de-playa', 'playa']
+['a-hotel-sin-categoria', 'hospedaje']
+
+Second list contains 3 additional elements.
+First extra element 1:
+['b-cabana-sin-campo', 'hospedaje']
+
++ [['a-hotel-sin-categoria', 'hospedaje'],
++  ['b-cabana-sin-campo', 'hospedaje'],
++  ['c-camping-sin-categoria', 'hospedaje'],
+- [['d-hotel-de-playa', 'playa']]
+? ^
+
++  ['d-hotel-de-playa', 'playa']]
+? ^
+
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.004s
+
+FAILED (failures=1)
