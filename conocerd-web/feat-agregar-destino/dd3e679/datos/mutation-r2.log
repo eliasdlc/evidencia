@@ -1,0 +1,41 @@
+# R2 at dd3e679, with r2.patch applied
+# $ pnpm exec vitest run src/lib/ponlo/modelo.test.ts
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/web/feat-agregar-destino-e16655d681332354
+
+ ❯ src/lib/ponlo/modelo.test.ts (22 tests | 1 failed) 16ms
+     × vacío pide los tres obligatorios 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/ponlo/modelo.test.ts > faltantes > vacío pide los tres obligatorios
+AssertionError: expected [ 'nombre', 'donde' ] to deeply equal [ 'nombre', 'tipo', 'donde' ]
+
+- Expected
++ Received
+
+  [
+    "nombre",
+-   "tipo",
+    "donde",
+  ]
+
+ ❯ src/lib/ponlo/modelo.test.ts:26:47
+     24|
+     25|   it("vacío pide los tres obligatorios", () => {
+     26|     expect(faltantes(PROPUESTA_VACIA, false)).toEqual(["nombre", "tipo…
+       |                                               ^
+     27|   });
+     28|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 passed (22)
+   Start at  20:22:10
+   Duration  178ms (transform 26ms, setup 0ms, import 41ms, tests 16ms, environment 0ms)
+
