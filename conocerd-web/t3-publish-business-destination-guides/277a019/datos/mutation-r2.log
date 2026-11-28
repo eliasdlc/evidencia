@@ -1,0 +1,38 @@
+# R2 at 277a019, with mutation-r2.patch applied
+# $ pnpm exec vitest run src/app/api/revalidar-destinos/route.test.ts
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/web/t3-057265bf-9826afd6e21fd681
+
+ ❯ src/app/api/revalidar-destinos/route.test.ts (3 tests | 1 failed) 26ms
+     × refuses a missing or wrong secret 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/api/revalidar-destinos/route.test.ts > POST /api/revalidar-destinos > refuses a missing or wrong secret
+AssertionError: expected 200 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 200
+
+ ❯ src/app/api/revalidar-destinos/route.test.ts:25:36
+     23|   it("refuses a missing or wrong secret", async () => {
+     24|     vi.stubEnv("REVALIDAR_DESTINOS_SECRETO", "s3creto-de-prueba");
+     25|     expect((await pedir()).status).toBe(401);
+       |                                    ^
+     26|     expect((await pedir("Bearer s3creto-de-prueb")).status).toBe(401);
+     27|     expect((await pedir("s3creto-de-prueba")).status).toBe(401);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  10:30:25
+   Duration  179ms (transform 28ms, setup 0ms, import 47ms, tests 26ms, environment 0ms)
+
