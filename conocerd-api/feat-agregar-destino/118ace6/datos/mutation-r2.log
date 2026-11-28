@@ -1,0 +1,75 @@
+# R2 at 118ace6, with api-r2.patch applied
+# $ /home/decruce/.local/share/mise/installs/node/26.8.1/bin/firebase emulators:exec --only auth,firestore,storage --project demo-conocerd "npx vitest run test/place-proposals.test.ts"
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-conocerd", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  firestore: Cloud Firestore Emulator does not support multiple databases yet.
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+⚠  Unexpected rules runtime error: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/home/decruce/.cache/firebase/emulators/cloud-storage-rules-runtime-v1.1.3.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+i  Running script: npx vitest run test/place-proposals.test.ts
+npm notice run conocerd-api@0.1.0 npx
+npm notice run 'vitest' run test/place-proposals.test.ts
+
+ RUN  v3.2.7 /home/decruce/.t3/worktrees/api/feat-agregar-destino
+
+ ❯ test/place-proposals.test.ts (3 tests | 1 failed) 1061ms
+   × place-proposals contra el emulador > escribe una solicitud pendiente de la web con su ref 600ms
+     → expected { Object (type, source, ...) } to match object { type: 'new', source: 'web', …(6) }
+(3 matching properties omitted from actual)
+   ✓ place-proposals contra el emulador > sin dónde da 422 y no escribe 73ms
+   ✓ place-proposals contra el emulador > texto mal formado da 422 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/place-proposals.test.ts > place-proposals contra el emulador > escribe una solicitud pendiente de la web con su ref
+AssertionError: expected { Object (type, source, ...) } to match object { type: 'new', source: 'web', …(6) }
+(3 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -3,10 +3,10 @@[39m
+[2m      "status": "pending",[22m
+[2m    },[22m
+[2m    "name": "Charco 84234b91",[22m
+[2m    "placeType": "rio",[22m
+[2m    "ref": "p4f",[22m
+[32m-   "source": "web",[39m
+[31m+   "source": "profile",[39m
+[2m    "status": "pending",[22m
+[2m    "town": "Pedernales",[22m
+[2m    "type": "new",[22m
+[2m  }[22m
+
+ ❯ test/place-proposals.test.ts:41:24
+     39| 
+     40|     const doc = await db.collection('destinationRequests').doc(id).get…
+     41|     expect(doc.data()).toMatchObject({
+       |                        ^
+     42|       type: 'new',
+     43|       source: 'web',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  20:25:45
+   Duration  1.31s (transform 103ms, setup 14ms, collect 46ms, tests 1.06s, environment 0ms, prepare 58ms)
+
+⚠  Script exited unsuccessfully (code 1)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+Error: Script "npx vitest run test/place-proposals.test.ts" exited with code 1
