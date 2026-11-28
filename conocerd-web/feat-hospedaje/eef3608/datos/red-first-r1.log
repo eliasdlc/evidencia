@@ -1,0 +1,54 @@
+# R1 at eef3608, with src/components/Icon.tsx, src/data/catalogo/reglas.json, src/data/destinations.en.ts, src/data/destinations.ts, src/lib/catalogo/clasificar.ts back at 7e7a454
+# $ pnpm exec vitest run src/lib/catalogo/clasificar.test.ts
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.10 /home/decruce/.t3/worktrees/web/t3-cdd0bb0c-a315116a7408b6ca
+
+ ❯ src/lib/catalogo/clasificar.test.ts (6 tests | 1 failed) 29ms
+     × files a lodging place the catalog left with no category under Hospedaje, as the generator does 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/catalogo/clasificar.test.ts > clasificar > files a lodging place the catalog left with no category under Hospedaje, as the generator does
+AssertionError: expected [ [ 'd-hotel-de-playa', 'playa' ] ] to deeply equal [ …(4) ]
+
+- Expected
++ Received
+
+  [
+    [
+-     "a-hotel-sin-categoria",
+-     "hospedaje",
+-   ],
+-   [
+-     "b-cabana-sin-campo",
+-     "hospedaje",
+-   ],
+-   [
+-     "c-camping-sin-categoria",
+-     "hospedaje",
+-   ],
+-   [
+      "d-hotel-de-playa",
+      "playa",
+    ],
+  ]
+
+ ❯ src/lib/catalogo/clasificar.test.ts:121:67
+    119|       VACIO,
+    120|     );
+    121|     expect(publicadas.map((p) => [p.catalogId, p.guia.category])).toEq…
+       |                                                                   ^
+    122|     expect(excluidas.map((e) => e.catalogId)).toEqual(casosHospedaje.e…
+    123|     expect(publicadas[0].guia).toMatchObject({ category: "hospedaje", …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  11:14:31
+   Duration  446ms (transform 193ms, setup 0ms, import 271ms, tests 29ms, environment 0ms)
+
